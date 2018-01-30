@@ -54,10 +54,10 @@ exports.run = async (bot, msg, args) => {
             messages.push({ fields: fields.splice(0, i) });
         }
 
-        msg.delete().catch(() => { });
+        //msg.delete().catch(() => { });
         messages.map(m => m.fields).forEach(async fields => {
             (await msg.channel.send({
-                embed: bot.utils.embed(title, '_Commands', fields)
+                embed: bot.utils.embed(title, 'Commands List', fields)
             }));
         });
     } else {
