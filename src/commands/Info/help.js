@@ -71,7 +71,7 @@ exports.run = async (bot, msg, args) => {
             Do \`${bot.config.prefix}help category <name>\` for a list of commands in a specific category.
             Do \`${bot.config.prefix}help all\` for a list of every command available in this bot.
             Do \`${bot.config.prefix}help <command>\` for **extended** command help and command options.`)
-        })).delete(15000);
+        }));
     }
 };
 
