@@ -69,7 +69,7 @@ bot.on('ready', () => {
     // === use the //status command to make the bot invis. ===
     // =======================================================
     // bot.user.setStatus('invisible');
-    bot.user.setPresence({ game: { name: `'${bot.config.prefix}help all' for command list`, type: 0 } });
+    bot.user.setPresence({ game: { name: `${bot.config.prefix}help for commands`, type: 0 } });
     // Fix mobile notifications
     bot.user.setAFK(true);
 
