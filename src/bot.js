@@ -59,7 +59,7 @@ let loaded = false;
 bot.utils = global.utils = require('./utils');
 
 bot.on('ready', () => {
-    if (bot.user.bot) {
+    if (!bot.user.bot) {
         logger.severe(`Crips SelfBot is a selfbot, but you entered a bot token. Please follow the instructions at ${chalk.green('https://github.com/RayzrDev/SharpBot#getting-your-user-token')} and re-enter your token by running ${chalk.green('yarn run config')}.`);
         process.exit(666);
     }
