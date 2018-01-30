@@ -62,9 +62,9 @@ exports.run = async (bot, msg, args) => {
         });
     } else {
         let categories = bot.commands.categories().sort();
-        msg.channel.send("Loading...").then((msg)=>{
+        (await msg.channel.send("Loading...").then((msg)=>{
          (await msg.edit({
-            (await embed: bot.utils.embed(title, stripIndents`
+            embed: bot.utils.embed(title, stripIndents`
             **Available categories:**
             ${categories.map(c => `- __${c}__`).join('\n')}
 
