@@ -62,6 +62,7 @@ exports.run = async (bot, msg, args) => {
         });
     } else {
         let categories = bot.commands.categories().sort();
+        msg.channel.send("Gathering commands...");
         (await msg.edit({
             embed: bot.utils.embed(title, stripIndents`
             **Available categories:**
