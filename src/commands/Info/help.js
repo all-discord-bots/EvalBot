@@ -57,8 +57,8 @@ exports.run = async (bot, msg, args) => {
         msg.delete().catch(() => { });
         messages.map(m => m.fields).forEach(async fields => {
             (await msg.channel.send({
-                embed: bot.utils.embed(title, '_This message will self-destruct in 90 seconds._ :boom:', fields)
-            })).delete(90000);
+                embed: bot.utils.embed(title, '_Commands', fields)
+            }));
         });
     } else {
         let categories = bot.commands.categories().sort();
