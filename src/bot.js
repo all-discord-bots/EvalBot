@@ -59,17 +59,17 @@ let loaded = false;
 bot.utils = global.utils = require('./utils');
 
 bot.on('ready', () => {
-    if (!bot.user.bot) {
-        logger.severe(`EvalBot is a bot, but you entered a selfbot token. Please follow the instructions at ${chalk.green('https://discordapp.com/developers')} and re-enter your token by running ${chalk.green('yarn run config')}.`);
-        process.exit(666);
-    }
+	if (!bot.user.bot) {
+		logger.severe(`EvalBot is a bot, but you entered a selfbot token. Please follow the instructions at ${chalk.green('https://discordapp.com/developers')} and re-enter your token by running ${chalk.green('yarn run config')}.`);
+		process.exit(666);
+	}
 
     // =======================================================
     // === Until we know how to fix this, just make people ===
     // === use the //status command to make the bot invis. ===
     // =======================================================
     // bot.user.setStatus('invisible');
-
+    bot.user.setPresence({ game: { name: `'${bot.config.prefix}help all' for command list`, type: 0 } });
     // Fix mobile notifications
     bot.user.setAFK(true);
 
@@ -126,7 +126,7 @@ bot.on('disconnect', event => {
         logger.info('Disconnected from Discord cleanly');
     } else if (event.code === 4004) {
         // Force the user to reconfigure if their token is invalid
-        logger.severe(`Failed to authenticate with Discord. Please follow the instructions at ${chalk.green('https://github.com/RayzrDev/SharpBot#getting-your-user-token')} and re-enter your token by running ${chalk.green('yarn run config')}.`);
+        logger.severe(`Failed to authenticate with Discord. Please follow the instructions at ${chalk.green('https://discordapp.com/developers')} and re-enter your token by running ${chalk.green('yarn run config')}.`);
         process.exit(666);
     } else {
         logger.warn(`Disconnected from Discord with code ${event.code}`);
