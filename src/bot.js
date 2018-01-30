@@ -60,7 +60,7 @@ bot.utils = global.utils = require('./utils');
 
 bot.on('ready', () => {
     if (!bot.user.bot) {
-        logger.severe(`Crips SelfBot is a selfbot, but you entered a bot token. Please follow the instructions at ${chalk.green('https://github.com/RayzrDev/SharpBot#getting-your-user-token')} and re-enter your token by running ${chalk.green('yarn run config')}.`);
+        logger.severe(`EvalBot is a bot, but you entered a selfbot token. Please follow the instructions at ${chalk.green('https://discordapp.com/developers')} and re-enter your token by running ${chalk.green('yarn run config')}.`);
         process.exit(666);
     }
 
@@ -100,13 +100,14 @@ bot.on('ready', () => {
 });
 
 bot.on('message', (msg) => {
-    if (msg.author.bot) return;
-    if (msg.guild.owner.user.id !== msg.author.id) return;
-    if (msg.guild && bot.config.blacklistedServers && bot.config.blacklistedServers.indexOf(msg.guild.id.toString()) > -1) {
-        return;
-    }
-    
-    return bot.commands.handleCommand(msg, msg.content);
+	if(bot.config.blockBots) {
+		if (msg.author.bot) return;
+	}
+	if (msg.guild.owner.user.id !== msg.author.id) return;
+	if (msg.guild && bot.config.blacklistedServers && bot.config.blacklistedServers.indexOf(msg.guild.id.toString()) > -1) {
+		return;
+	}
+	return bot.commands.handleCommand(msg, msg.content);
 });
 
 bot.on('messageDelete', (msg) => {
