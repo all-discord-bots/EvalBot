@@ -64,7 +64,7 @@ exports.run = async (bot, msg, args) => {
         let categories = bot.commands.categories().sort();
         msg.channel.send("Loading...").then((msg)=>{
          (await msg.edit({
-            embed: bot.utils.embed(title, stripIndents`
+            (await embed: bot.utils.embed(title, stripIndents`
             **Available categories:**
             ${categories.map(c => `- __${c}__`).join('\n')}
 
@@ -73,7 +73,7 @@ exports.run = async (bot, msg, args) => {
             Do \`${bot.config.prefix}help all\` for a list of every command available in this bot.
             Do \`${bot.config.prefix}help <command>\` for **extended** command help and command options.`)
         }));
-      })
+      }));
     }
 };
 
