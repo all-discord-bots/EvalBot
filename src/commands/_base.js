@@ -4,7 +4,6 @@ exports.run = function (bot, msg, args) {
 
 exports.info = {
     name: '',
-    aliases: '',
     usage: '',
     description: ''
 };
