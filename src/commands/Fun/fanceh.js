@@ -24,13 +24,15 @@ exports.run = (bot, msg, args) => {
     if (args.length < 1) {
         throw 'You must provide some text to fanceh-fy!';
     }
-
-    msg.edit(
-        args.join(' ')
+    
+    (await msg.channel.send("Loading message...").then((msg)=>{
+        msg.edit(
+            args.join(' ')
             .split('')
             .map(c => mapping[c] || c)
             .join('')
-    );
+        );
+    }));
 };
 
 exports.info = {
