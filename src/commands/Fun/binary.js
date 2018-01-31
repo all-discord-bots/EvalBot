@@ -19,21 +19,27 @@ exports.run = (bot, msg, args) => {
     let input = args.slice(1).join(' ');
 
     if (args[0].match(/^enc(ode(Text)?)?$/i)) {
-        msg.edit(this.methods.encode(input).join(' '));
+        (await msg.channel.send("Loading binary...").then((msg)=>{
+            msg.edit(this.methods.encode(input).join(' '));
+        }));
     } else if (args[0].match(/^dec(ode(Text)?)?$/i)) {
-        msg.edit(this.methods.decode(input));
+        (await msg.channel.send("Loading binary...").then((msg)=>{
+            msg.edit(this.methods.decode(input));
+        }));
     } else if (args[0].match(/^decToBin$/i)) {
         if (isNaN(input)) {
             throw 'Input must be a number!';
         }
-
-        msg.edit(parseInt(input).toString(2));
+        (await msg.channel.send("Loading binary...").then((msg)=>{
+            msg.edit(parseInt(input).toString(2));
+        }));
     } else if (args[0].match(/^binToDec$/i)) {
         if (isNaN(input)) {
             throw 'Input must be a number!';
         }
-
-        msg.edit(parseInt(input, 2));
+        (await msg.channel.send("Loading binary...").then((msg)=>{
+            msg.edit(parseInt(input, 2));
+        }));
     } else {
         throw `Unknown sub command: \`${args[0]}\``;
     }
