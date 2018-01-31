@@ -1,6 +1,6 @@
 const figlet = require('figlet');
 
-exports.run = (bot, msg, args) => {
+exports.run = async (bot, msg, args) => {
     // -l -- List all fonts
     // -f <font> -- Set font
     const parsed = bot.utils.parseArgs(args, ['l', 'f:']);
