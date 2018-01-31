@@ -56,7 +56,7 @@ exports.run = async (bot, msg, args) => {
         }
     ], { inline: true });
 
-    (async msg.channel.send("Loading Weather...").then((msg)=>{
+    (await msg.channel.send("Loading Weather...").then((msg)=>{
         msg.edit({ embed });
     }));
 };
