@@ -11,7 +11,7 @@ exports.run = async (bot, msg) => {
         }
     });
 
-    msg.delete();
+//    msg.delete();
 };
 
 exports.info = {
