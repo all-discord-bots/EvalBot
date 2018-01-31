@@ -18,7 +18,7 @@ exports.run = async (bot, msg, args) => {
         return errorHandler(msg, bot, code, `${message}`);
     }
 
-    msg.delete();
+    //msg.delete(); // Delete the error message
 
     if (parsed.options.q) {
         return;
@@ -57,7 +57,7 @@ exports.run = async (bot, msg, args) => {
 };
 
 function errorHandler(msg, bot, code, err) {
-    msg.delete();
+    //msg.delete(); // Delete the error message
     msg.channel.send({
         embed: bot.utils.embed('', `**Input:**\n\`\`\`js\n${code}\n\`\`\`\n:x: **Error!**\n\`\`\`xl\n${clean(err)}\n\`\`\``, [], {
             color: '#ff0000'
