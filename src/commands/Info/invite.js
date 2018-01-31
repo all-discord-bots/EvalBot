@@ -4,7 +4,7 @@ exports.run = async (bot, msg) => {
         embed: bot.utils.embed(`${bot.user.username} Invite`, '***Invite***', [
             {
                 name: '**Invite Link**:',
-                value: 'https://discordapp.com/api/oauth2/authorize?client_id=318570329733595136&permissions=8&scope=bot',
+                value: `https://discordapp.com/api/oauth2/authorize?client_id=${bot.user.id}&permissions=8&scope=bot`,
             }
         ], { inline: false })
     });
