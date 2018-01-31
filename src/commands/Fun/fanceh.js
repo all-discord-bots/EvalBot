@@ -20,7 +20,7 @@ const mapping = {
     mapping[c] = mapping[c.toUpperCase()] = ` :regional_indicator_${c}:`;
 });
 
-exports.run = (bot, msg, args) => {
+exports.run = async (bot, msg, args) => {
     if (args.length < 1) {
         throw 'You must provide some text to fanceh-fy!';
     }
