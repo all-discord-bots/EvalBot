@@ -23,18 +23,18 @@ exports.run = async (bot, msg) => {
         msg.edit({
         //embed: bot.utils.embed('EvalBot Stats', '***This message will dissappear in 30 seconds.***', [
         embed: bot.utils.embed('EvalBot Stats', '***Stats***', [
-            {
-                name: ':outbox_tray: Messages sent',
-                value: bot.managers.stats.get('messages-sent') || 0,
-            },
-            {
-                name: ':inbox_tray: Messages received',
-                value: bot.managers.stats.get('messages-received') || 0,
-            },
-            {
-                name: ':mailbox: Mentions',
-                value: bot.managers.stats.get('mentions') || 0
-            },
+//            {
+//                name: ':outbox_tray: Messages sent',
+//                value: bot.managers.stats.get('messages-sent') || 0,
+//            },
+//            {
+//                name: ':inbox_tray: Messages received',
+//                value: bot.managers.stats.get('messages-received') || 0,
+//            },
+//            {
+//                name: ':mailbox: Mentions',
+//                value: bot.managers.stats.get('mentions') || 0
+//            },
             {
                 name: ':baby: Users',
                 value: `${bot.guilds.reduce((mem, g) => mem += g.memberCount, 0)}`,
@@ -52,19 +52,19 @@ exports.run = async (bot, msg) => {
                 value: `${(process.memoryUsage().heapUsed / 1024 / 1024).toFixed(2)} MB`,
             },
             {
-                name: ':stopwatch: Uptime',
+                name: ':stopwatch: Shard Uptime',
                 value: formatTime(process.hrtime(bot.managers.stats.get('start-time')))
             },
+//            {
+//                name: ':video_game: Game',
+//                value: (game.name) ? `*${activityTypes[game.type]}* ${game.name} ${game.streaming ? `[(Streaming)](${game.url})` : ''}` : 'none'
+//            },
             {
-                name: ':video_game: Game',
-                value: (game.name) ? `*${activityTypes[game.type]}* ${game.name} ${game.streaming ? `[(Streaming)](${game.url})` : ''}` : 'none'
-            },
-            {
-                name: ':robot: Shard Count',
+                name: ':robot: Total Shards',
                 value: `${bot.options.shardCount.toLocaleString()}`,
             },
             {
-                name: ':1234: Shard',
+                name: ':1234: Shard ID',
                 value: `${bot.options.shardId.toLocaleString()}`,
             }
         ], { inline: true })
