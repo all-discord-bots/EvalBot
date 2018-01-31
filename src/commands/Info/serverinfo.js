@@ -69,8 +69,10 @@ exports.run = async (bot, msg) => {
     if (msg.guild.iconURL != null) {
         embed.setThumbnail(`${msg.guild.iconURL}`);
     }
-
-    (await msg.edit({ embed })).delete(60000);
+    
+    (await msg.channel.send("Loading guild information...").then((msg)=>{
+        msg.edit({ embed });
+    }));
 };
 
 exports.info = {
