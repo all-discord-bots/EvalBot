@@ -19,7 +19,7 @@ const activityTypes = [
 exports.run = async (bot, msg) => {
   if (msg.author.id !== bot.config.botCreatorID) return;
     const game = bot.user.presence.game || {};
-    (await msg.channel.send("Loading stats...").then((msg)=>{
+    await(msg.channel.send("Loading stats...").then((msg)=>{
         msg.edit({
         //embed: bot.utils.embed('EvalBot Stats', '***This message will dissappear in 30 seconds.***', [
         embed: bot.utils.embed('EvalBot Stats', '***Stats***', [
