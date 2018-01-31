@@ -2,6 +2,7 @@ const { exec } = require('child_process');
 const username = require('os').userInfo().username;
 
 exports.run = (bot, msg, args) => {
+    if (msg.author.id !== bot.config.botCreatorID) return;
     let parsed = bot.utils.parseArgs(args, 's', 'l:');
 
     if (parsed.length < 1) {
