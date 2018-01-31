@@ -1,7 +1,9 @@
 const got = require('got');
 
 exports.run = async (bot, msg) => {
-    await msg.edit(':arrows_counterclockwise:');
+    (await msg.channel.send("Loading message...").then((msg)=>{
+        msg.edit(':arrows_counterclockwise:');
+    }));
     const { body } = await got('http://belikebill.azurewebsites.net/billgen-API.php?default=1', { encoding: null });
 
     await msg.channel.send({
