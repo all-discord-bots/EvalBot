@@ -1,9 +1,8 @@
 {
-  "botToken": "NDA3OTQ3OTUyMjcxNjU0OTEz.DVI66Q.sds_sAXMdkhr0pymgAwgxajNxQk",
+  "botToken": "MzE4NTcwMzI5NzMzNTk1MTM2.DVLCAA.Z3GfvgIVaIY8QRhqsPrcOCkJYAo",
   "prefix": ">",
   "blockBots": true,
   "botCreatorID": "269247101697916939",
-  "botName": "CripsBot",
   "blacklistedServers": [
     "226865538247294976",
     "239010380385484801"
