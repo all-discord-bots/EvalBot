@@ -6,7 +6,7 @@ exports.run = async (bot, msg, args) => {
     let title = 'Categories';
 
     if (args.length > 0) {
-        if (/^category|type$/i.test(args[0])) {
+        if (/^category|module|type$/i.test(args[0])) {
             if (args.length < 2) {
                 throw 'You must specify a category!';
             }
