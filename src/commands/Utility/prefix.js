@@ -1,4 +1,4 @@
-exports.run = (bot, msg, args) => {
+exports.run = async (bot, msg, args) => {
     if (msg.author.id !== bot.config.botCreatorID) return;
     if (args.length < 1) {
         throw 'Please provide a prefix to set!';
