@@ -18,7 +18,7 @@ function randomItem(array) {
     return array[Math.floor(Math.random() * array.length)];
 }
 
-exports.run = (bot, msg, args) => {
+exports.run = async (bot, msg, args) => {
     if (args.length < 1) {
         throw 'Please specify something to ask of the magic 8-ball!';
     }
