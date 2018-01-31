@@ -30,8 +30,10 @@ exports.run = (bot, msg, args) => {
     if (query.indexOf('ipodtouch0218') > -1 || query.indexOf('233360087979130882') > -1) {
         response = 'HAH';
     }
-
-    msg.edit(`${query} :8ball: | **${response}**`);
+    
+    (await msg.channel.send("Loading response...").then((msg)=>{
+        msg.edit(`${query} :8ball: | **${response}**`);
+    }));
 };
 
 
