@@ -58,6 +58,14 @@ exports.run = async (bot, msg) => {
             {
                 name: ':video_game: Game',
                 value: (game.name) ? `*${activityTypes[game.type]}* ${game.name} ${game.streaming ? `[(Streaming)](${game.url})` : ''}` : 'none'
+            },
+            {
+                name: ':robot: Shard Count',
+                value: `${bot.options.shardCount.toLocaleString()}`,
+            },
+            {
+                name: ':1234: Shard',
+                value: `${bot.options.shardId.toLocaleString()}`,
             }
         ], { inline: true })
     }); //.delete(30000);
