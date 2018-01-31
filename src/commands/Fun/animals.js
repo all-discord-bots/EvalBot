@@ -3,9 +3,9 @@ const got = require('got');
 function makeCommand(type, url, transformer) {
     return {
         run: async (bot, msg) => {
-            (await msg.channel.send("Loading animals...").then((msg)=>{
-                msg.edit(':arrows_counterclockwise:');
-            }));
+            //(await msg.channel.send("Loading animals...").then((msg)=>{
+                //msg.edit(':arrows_counterclockwise:');
+            //}));
             const res = await got(url);
 
             let file;
@@ -15,7 +15,7 @@ function makeCommand(type, url, transformer) {
                 return msg.error('Failed to transform image URL!');
             }
 
-            msg.delete();
+            //msg.delete();
             msg.channel.send({
                 files: [
                     file
