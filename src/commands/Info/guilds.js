@@ -15,7 +15,7 @@ exports.run = (bot, msg) => {
 
     for (let i = 0; i < servers.length / 20; i += 20) {
       (await msg.channel.send("Loading all guild information...").then((msg)=>{
-        msg.edit('', {
+        msg.edit({
           embed: bot.utils.embed(`${bot.user.username}'s Servers`, '\u200b', servers.slice(i, i + 20), { inline: true })
         });
       }));
