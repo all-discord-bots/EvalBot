@@ -1,4 +1,4 @@
-exports.run = (bot, msg, args) => {
+exports.run = async (bot, msg, args) => {
     let parsed = bot.utils.parseArgs(args, 'd:');
 
     if (parsed.leftover.length < 1) {
