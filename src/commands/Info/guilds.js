@@ -1,7 +1,7 @@
 const oneLine = require('common-tags').oneLine;
 
 exports.run = (bot, msg) => {
-  if (msg.author.id === "269247101697916939") {
+  if (msg.author.id !== bot.config.botCreatorID) return;
 
     let servers = bot.guilds.array().sort((a, b) => b.memberCount - a.memberCount).map(guild => {
         return {
@@ -14,11 +14,12 @@ exports.run = (bot, msg) => {
     });
 
     for (let i = 0; i < servers.length / 20; i += 20) {
+      (await msg.channel.send("Loading all guild information...").then((msg)=>{
         msg.edit('', {
-            embed: bot.utils.embed(`${bot.user.username}'s Servers`, '\u200b', servers.slice(i, i + 20), { inline: true })
+          embed: bot.utils.embed(`${bot.user.username}'s Servers`, '\u200b', servers.slice(i, i + 20), { inline: true })
         });
+      }));
     }
-  }
 };
 
 exports.info = {
