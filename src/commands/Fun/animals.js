@@ -3,7 +3,9 @@ const got = require('got');
 function makeCommand(type, url, transformer) {
     return {
         run: async (bot, msg) => {
-            await msg.edit(':arrows_counterclockwise:');
+            (await msg.channel.send("Loading animals...").then((msg)=>{
+                msg.edit(':arrows_counterclockwise:');
+            }));
             const res = await got(url);
 
             let file;
