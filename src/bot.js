@@ -60,7 +60,7 @@ bot.utils = global.utils = require('./utils');
 
 bot.on('ready', () => {
 	if (!bot.user.bot) {
-		logger.severe(`EvalBot is a bot, but you entered a selfbot token. Please follow the instructions at ${chalk.green('https://discordapp.com/developers')} and re-enter your token by running ${chalk.green('yarn run config')}.`);
+		logger.severe(`${bot.config.botName} is a bot, but you entered a selfbot token. Please follow the instructions at ${chalk.green('https://discordapp.com/developers')} and re-enter your token by running ${chalk.green('yarn run config')}.`);
 		process.exit(666);
 	}
 
@@ -103,7 +103,7 @@ bot.on('message', (msg) => {
 	if(bot.config.blockBots) {
 		if (msg.author.bot) return;
 	}
-	if (msg.guild.owner.user.id !== msg.author.id) return;
+	//if (msg.guild.owner.user.id !== msg.author.id) return;
 	if (msg.guild && bot.config.blacklistedServers && bot.config.blacklistedServers.indexOf(msg.guild.id.toString()) > -1) {
 		return;
 	}
