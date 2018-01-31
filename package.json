@@ -2,7 +2,7 @@
   "name": "EvalBot",
   "version": "1.0.0",
   "description": "A bot created by BannerBomb#9772 this bot only has a eval command, which can only be interacted with the server owner only!",
-  "main": "src/bot.js",
+  "main": "src/shard.js",
   "scripts": {
     "start": "gulp",
     "background": "screen -dmS sharpBot gulp",
