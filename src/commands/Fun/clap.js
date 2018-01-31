@@ -4,8 +4,9 @@ exports.run = (bot, msg, args) => {
     if (args.length < 1) {
         throw 'Please provide some text to clapify';
     }
-
-    msg.edit(args.map(randomizeCase).join(':clap:'));
+    (await msg.channel.send("Loading message...").then((msg)=>{
+        msg.edit(args.map(randomizeCase).join(':clap:'));
+    }));
 };
 
 exports.info = {
