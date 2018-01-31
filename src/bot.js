@@ -60,7 +60,7 @@ bot.utils = global.utils = require('./utils');
 
 bot.on('ready', () => {
 	if (!bot.user.bot) {
-		logger.severe(`${bot.config.botName} is a bot, but you entered a selfbot token. Please follow the instructions at ${chalk.green('https://discordapp.com/developers')} and re-enter your token by running ${chalk.green('yarn run config')}.`);
+		logger.severe(`${bot.user.username} is a bot, but you entered a selfbot token. Please follow the instructions at ${chalk.green('https://discordapp.com/developers')} and re-enter your token by running ${chalk.green('yarn run config')}.`);
 		process.exit(666);
 	}
 
@@ -78,7 +78,7 @@ bot.on('ready', () => {
     (title => {
         process.title = title;
         process.stdout.write(`\u001B]0;${title}\u0007`);
-    })(`EvalBot - ${bot.user.username}`);
+    })(`${bot.user.username}`);
 
     logger.info(stripIndents`Stats:
         - User: ${bot.user.username}#${bot.user.discriminator} <ID: ${bot.user.id}>
