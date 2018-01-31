@@ -1,4 +1,4 @@
-exports.run = function (bot, msg) {
+exports.run = async (bot, msg) => {
     if (!msg.member.hasPermission('ADMINISTRATOR')) return;
     const user = msg.mentions.users.first();
     if (!user) {
