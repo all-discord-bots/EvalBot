@@ -20,7 +20,6 @@ exports.run = async (bot, msg) => {
     const game = bot.user.presence.game || {};
     (await msg.channel.send("Loading stats...").then((msg)=>{
         msg.edit({
-        //embed: bot.utils.embed('EvalBot Stats', '***This message will dissappear in 30 seconds.***', [
         embed: bot.utils.embed(`${bot.config.botName} Stats`, '***Stats***', [
 //            {
 //                name: ':outbox_tray: Messages sent',
@@ -67,12 +66,12 @@ exports.run = async (bot, msg) => {
                 value: `${bot.options.shardId.toLocaleString()}`,
             }
         ], { inline: true })
-    }); //.delete(30000);
+    });
   }));
 };
 
 exports.info = {
     name: 'stats',
     usage: 'stats',
-    description: 'Shows you stats about EvalBot'
+    description: 'Shows you stats about CripsBot'
 };
