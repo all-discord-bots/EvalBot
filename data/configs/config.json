@@ -3,6 +3,7 @@
   "prefix": ">",
   "blockBots": true,
   "botCreatorID": "269247101697916939",
+  "botName": "CripsBot",
   "blacklistedServers": [
     "226865538247294976",
     "239010380385484801"
