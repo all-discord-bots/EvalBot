@@ -29,7 +29,7 @@ exports.run = (bot, msg, args) => {
         options.font = parsed.options.f;
     }
 
-    msg.delete();
+    //msg.delete();
 
     const input = parsed.leftover.join(' ');
     msg.channel.send(`\`\`\`\n${figlet.textSync(input, options)}\n\`\`\``);
