@@ -62,7 +62,7 @@ exports.run = async (bot, msg, args) => {
 };
 
 exports.info = {
-    name: 'weather',
+    name: ['weather','weath'],
     usage: 'weather <city>',
     description: 'Shows weather info for city'
 };
