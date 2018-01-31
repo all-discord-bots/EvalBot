@@ -1,8 +1,9 @@
 exports.run = async (bot, msg) => {
-    if (msg.author.id === "269247101697916939") {
-      await msg.edit(':white_check_mark: Shutting down. Bye!');
-      process.exit(666);
-    }
+    if (msg.author.id !== bot.config.botCreatorID) return;
+    (await msg.channel.send("Shutting down...").then((msg)=>{
+        msg.edit(':white_check_mark: Shutting down. Bye!');
+    }));
+    process.exit(666);
 };
 
 exports.info = {
