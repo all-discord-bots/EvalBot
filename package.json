@@ -1,7 +1,7 @@
 {
-  "name": "EvalBot",
+  "name": "CripsBot",
   "version": "1.0.0",
-  "description": "A bot created by BannerBomb#9772 this bot only has a eval command, which can only be interacted with the server owner only!",
+  "description": "A bot created by BannerBomb#9772",
   "main": "src/shard.js",
   "scripts": {
     "start": "gulp",
