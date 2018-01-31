@@ -11,7 +11,7 @@ exports.methods = {
     }
 };
 
-exports.run = (bot, msg, args) => {
+exports.run = async (bot, msg, args) => {
     if (args.length < 2) {
         throw `Do \`${bot.config.prefix}help binary\` to see how to use this.`;
     }
