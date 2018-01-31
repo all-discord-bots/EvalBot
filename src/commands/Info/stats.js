@@ -20,7 +20,7 @@ exports.run = async (bot, msg) => {
     const game = bot.user.presence.game || {};
     (await msg.channel.send("Loading stats...").then((msg)=>{
         msg.edit({
-        embed: bot.utils.embed(`${bot.config.botName} Stats`, '***Stats***', [
+        embed: bot.utils.embed(`${bot.user.username} Stats`, '***Stats***', [
 //            {
 //                name: ':outbox_tray: Messages sent',
 //                value: bot.managers.stats.get('messages-sent') || 0,
@@ -73,5 +73,5 @@ exports.run = async (bot, msg) => {
 exports.info = {
     name: 'stats',
     usage: 'stats',
-    description: 'Shows you stats about CripsBot'
+    description: `Shows you stats about ${bot.user.username}`
 };
