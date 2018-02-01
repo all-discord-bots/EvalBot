@@ -1,6 +1,6 @@
 exports.run = async (bot, msg) => {
         if (msg.author.id !== bot.config.botCreatorID) {
-            if (!msg.member.hasPermission('ADMINISTRATOR')) return;
+            if (!msg.member.hasPermission('ADMINISTRATOR') || !msg.member.hasPermission('manageServer')) return;
         }
     const user = msg.mentions.users.first();
     if (!user) {
