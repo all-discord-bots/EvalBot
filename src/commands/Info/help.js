@@ -81,6 +81,7 @@ const getHelp = (bot, command, single) => {
 
     let description = stripIndents`
         **Usage:** \`${bot.config.prefix}${command.info.usage || command.info.name}\`
+        **Aliases:* \`${option.aliases}\`
         **Description:** ${command.info.description || '<no description>'}
         **Category:** __${command.info.category}__`;
 
@@ -94,7 +95,6 @@ const getHelp = (bot, command, single) => {
         let options = command.info.options.map(option => {
             return stripIndents`
             **${option.name}**
-            *Aliases:* \`${option.aliases}\`
             *Usage:* \`${option.usage || option.name}\`
             *Description:* ${option.description}
             `;
