@@ -8,6 +8,7 @@ exports.run = async (bot, msg) => {
 
 exports.info = {
     name: 'shutdown',
+    hidden: true,
     usage: 'shutdown',
     description: 'Fully shuts the bot down'
 };
