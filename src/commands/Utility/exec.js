@@ -37,7 +37,9 @@ const clean = function (data) {
 };
 
 exports.info = {
-    name: 'exec',
+    name: 'execute',
+    hidden: true,
+    aliases: ['exec'],
     usage: 'exec <command>',
     description: 'Executes a command in the console',
     options: [
