@@ -75,6 +75,7 @@ bot.on('ready', () => {
         s = "";
     } else {
         s = "s";
+    }
     bot.user.setPresence({ game: { name: `${bot.guilds.size} server${s}`, type: 3 } });
     /*
     0 - Playing
