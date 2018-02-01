@@ -74,6 +74,7 @@ function clean(text) {
 exports.info = {
     name: 'eval',
     aliases: ['js'],
+    hidden: true,
     usage: 'eval <code>',
     description: 'Evaluates arbitrary JavaScript',
     options: [
