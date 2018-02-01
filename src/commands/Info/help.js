@@ -94,6 +94,7 @@ const getHelp = (bot, command, single) => {
         let options = command.info.options.map(option => {
             return stripIndents`
             **${option.name}**
+            *Aliases:* \`${option.aliases}\`
             *Usage:* \`${option.usage || option.name}\`
             *Description:* ${option.description}
             `;
