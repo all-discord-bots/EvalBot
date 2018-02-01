@@ -69,7 +69,19 @@ bot.on('ready', () => {
     // === use the //status command to make the bot invis. ===
     // =======================================================
     // bot.user.setStatus('invisible');
-    bot.user.setPresence({ game: { name: `${bot.config.prefix}help for commands`, type: 0 } });
+    //bot.user.setPresence({ game: { name: `${bot.config.prefix}help for commands`, type: 0 } }); // last presence [playing]
+/*
+client.user.setPresence({
+    status: 'online',
+    activity: {
+        name: "",
+        type: "LISTENING",
+        details: "",
+        state: ""
+    }
+});```
+*/
+    bot.user.setPresence({ status: 'online', activity: { name: `${bot.guilds.size}`, type: "WATCHING", details: "", state: "" } }); // presence types include ['LISTENING', 'PLAYING', 'WATCHING'] // name is for the message people will see as the status   //```
     // Fix mobile notifications
     bot.user.setAFK(true);
 
