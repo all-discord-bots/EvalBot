@@ -73,7 +73,7 @@ function clean(text) {
 
 exports.info = {
     name: 'eval',
-    aliases: ['js','eval1'],
+    aliases: ['js'],
     usage: 'eval <code>',
     description: 'Evaluates arbitrary JavaScript',
     options: [
