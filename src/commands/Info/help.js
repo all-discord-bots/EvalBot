@@ -78,10 +78,9 @@ exports.run = async (bot, msg, args) => {
 };
 
 const getHelp = (bot, command, single) => {
-var countaliases = command.info.aliases.length;
 var aliasesstr = "," + command.info.aliases.toString() + ",";
 var replacecomma = aliasesstr.replace(/,/g, "` `");
-var replacecomma1 = replacecomma.replace("` ","")+"remove-this-string";
+var replacecomma1 = replacecomma.replace("` ","") + "remove-this-string";
 var replacecomma2 = replacecomma1.replace(" `remove-this-string","");
 
     let description = stripIndents`
