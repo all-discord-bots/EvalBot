@@ -83,7 +83,7 @@ var replacecomma = aliasesstr.replace(/,/g, "` `");
 var replacecomma1 = replacecomma.replace("` ","") + "remove-this-string";
 var replacecomma2 = replacecomma1.replace(" `remove-this-string","");
 var finishedstr;
-if (replacecomma2 === undefined || command.info.aliases == "") {
+if (command.info.aliases === undefined || command.info.aliases == "") {
     finishedstr = "`<no aliases>`";
 } else {
     finishedstr = replacecomma2;
