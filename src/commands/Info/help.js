@@ -81,7 +81,7 @@ const getHelp = (bot, command, single) => {
 
     let description = stripIndents`
         **Usage:** \`${bot.config.prefix}${command.info.usage || command.info.name}\`
-        **Aliases:* \`${option.aliases}\`
+        **Aliases:* \`${command.info.aliases}\`
         **Description:** ${command.info.description || '<no description>'}
         **Category:** __${command.info.category}__`;
 
