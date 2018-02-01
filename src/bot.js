@@ -70,6 +70,7 @@ bot.on('ready', () => {
     // =======================================================
     // bot.user.setStatus('invisible');
     //bot.user.setPresence({ game: { name: `${bot.config.prefix}help for commands`, type: 0 } }); // last presence [playing]
+    bot.user.setPresence({ game: { name: `on ${bot.guilds.size} servers`, type: 0 } });
 /*
 client.user.setPresence({
     status: 'online',
@@ -81,7 +82,7 @@ client.user.setPresence({
     }
 });```
 */
-    bot.user.setPresence({ status: 'online', activity: { name: `${bot.guilds.size}`, type: "WATCHING", details: "", state: "" } }); // presence types include ['LISTENING', 'PLAYING', 'WATCHING'] // name is for the message people will see as the status   //```
+//    bot.user.setPresence({ status: 'online', activity: { name: `${bot.guilds.size}`, type: "WATCHING", details: "", state: "" } }); // presence types include ['LISTENING', 'PLAYING', 'WATCHING'] // name is for the message people will see as the status   //```
     // Fix mobile notifications
     bot.user.setAFK(true);
 
