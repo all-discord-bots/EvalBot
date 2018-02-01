@@ -1,6 +1,6 @@
 const stripIndents = require('common-tags').stripIndents;
 
-exports.run = async (bot, msg, args) => {
+exports.run = async (bot, client, msg, args) => {
     if (msg.author.id !== bot.config.botCreatorID) return;
     let parsed = bot.utils.parseArgs(args, ['l:', 'i', 'q']);
     let lang = parsed.options.l || '';
