@@ -1,5 +1,5 @@
 exports.run = async (bot, msg) => {
-    if (!msg.member.hasPermission('ADMINISTRATOR')) return;
+    if (!msg.member.hasPermission('ADMINISTRATOR') || !msg.member.hasPermission('ADMINISTRATOR') && msg.author.id !== bot.config.botCreatorID) return;
     const user = msg.mentions.users.first();
     if (!user) {
         throw 'Please mention a user.';
