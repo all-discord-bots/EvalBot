@@ -1,6 +1,6 @@
 const stripIndents = require('common-tags').stripIndents;
 
-exports.run = async (bot, client, msg, args) => {
+exports.run = async (bot, msg, args) => {
     if (msg.author.id !== bot.config.botCreatorID) return;
     let parsed = bot.utils.parseArgs(args, ['l:', 'i', 'q']);
     let lang = parsed.options.l || '';
@@ -73,6 +73,7 @@ function clean(text) {
 
 exports.info = {
     name: 'eval',
+    aliases: 'js',
     usage: 'eval <code>',
     description: 'Evaluates arbitrary JavaScript',
     options: [
