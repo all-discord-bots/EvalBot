@@ -21,6 +21,7 @@ exports.run = async (bot, msg) => {
 
 exports.info = {
   name: 'join',
+  hidden: true,
   usage: 'join',
   description: 'Joins the voice channel you are currently in'
 };
