@@ -39,5 +39,5 @@ exports.info = {
   name: 'mute',
   aliases: ['unmute'],
   description: 'mutes or unmutes a mentioned user',
-  usage: 'un/mute <mention> [reason]'
+  usage: 'mute <mention> [reason]'
 };
