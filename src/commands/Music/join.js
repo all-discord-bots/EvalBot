@@ -13,8 +13,8 @@ exports.run = async (bot, msg) => {
   msg.member.voiceChannel.join().then(connection => {
     require('http').get("http://www.internet-radio.com/servers/tools/playlistgenerator/?u=http://www.partyviberradio.com:8016/listen.pls?sid=1&t=.m3u", (res) => {
       connection.playStream(res);
-    });
-  });
+    })
+  })
   .catch(console.error);
   return;
 }
