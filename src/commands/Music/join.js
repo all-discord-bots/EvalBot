@@ -11,7 +11,8 @@ exports.run = async (bot, msg) => {
   }
   msg.channel.send(`✅ Voice channel successfully joined!`);
   msg.member.voiceChannel.join().then(connection => {
-    require('http').get("http://www.internet-radio.com/servers/tools/playlistgenerator/?u=http://www.partyviberradio.com:8016/listen.pls?sid=1&t=.m3u", (res) => {
+    require('http').get("http://www.partyviberradio.com:8016/listen.pls?sid=1", (res) => {
+      // http://www.internet-radio.com/servers/tools/playlistgenerator/?u=http://www.partyviberradio.com:8016/listen.pls?sid=1&t=.m3u
       connection.playStream(res);
     })
   })
