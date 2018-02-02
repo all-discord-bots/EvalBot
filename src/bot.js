@@ -162,7 +162,7 @@ music(bot, {
 	global: false, // Wether to use a global queue instead of a server-specific queue.
 	maxQueueSize: 100, // Maximum queue size.
 	anyoneCanSkip: true, // Allow anybody to skip the song. If false then only admins and the user that requested the song can skip it.
-	//volume: 100, // The default volume of the player.
+	volume: 100, // The default volume of the player.
 	clearInvoker: false // Clear the command message.
 	//channel: 'music' // Name of the channel to join, If omitted, will instead join user's voice channel.
 });
