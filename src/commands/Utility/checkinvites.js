@@ -3,7 +3,7 @@ exports.run = (client, msg, args) => {
   return msg.channel.send(members.map(member => `\`${member.id}\` ${member.displayName}`).join("\n") || "Nobody has an invite link as game name.");
 };
 
-exports.help = {
+exports.info = {
   name: 'checkinvites',
   hidden: true,
   aliases: ['ci'],
