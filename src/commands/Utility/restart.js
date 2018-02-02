@@ -9,7 +9,6 @@ exports.run = async (bot, msg) => {
 exports.info = {
     name: 'restart',
     hidden: true,
-    aliases: ['reboot'],
     usage: 'restart',
     description: 'Restarts all shards'
 };
