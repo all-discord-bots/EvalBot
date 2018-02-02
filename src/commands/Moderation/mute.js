@@ -8,9 +8,9 @@ exports.run = (bot, msg, args) => {
   }
   let reason = args.slice(1).join(' ');
   let member = msg.mentions.members.first();
-  let modlog = msg.guild.channels.find('name', 'mod-log');
+  let modlog = msg.guild.channels.find('name', 'mod_logs');
   let muteRole = msg.guild.roles.find('name', 'Muted');
-  if (!modlog) return msg.channel.send('Please create a channel named `mod-log` first!').catch(console.error);
+  if (!modlog) return msg.channel.send('Please create a channel named `mod_logs` first!').catch(console.error);
   if (!muteRole) return msg.channel.send('Please create a role named `Muted` first!').catch(console.error);
   if (reason.length < 1) return msg.channel.send('You must supply a reason for the mute.').catch(console.error);
   if (msg.mentions.users.size < 1) return msg.channel.send('You must mention someone to mute them.').catch(console.error);
