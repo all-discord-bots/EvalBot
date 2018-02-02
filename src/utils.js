@@ -211,7 +211,7 @@ exports.hastebinUpload = text => {
 };
 
 exports.gistUpload = (text, lang = 'js') => {
-    const filename = 'sharpbot_upload.' + lang;
+    const filename = 'cripsbot_upload.' + lang;
     return got.post('https://api.github.com/gists', {
         body: JSON.stringify({
             files: {
