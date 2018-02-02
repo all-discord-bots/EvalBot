@@ -8,6 +8,7 @@ const client = new Discord.Client();
 const stripIndents = require('common-tags').stripIndents;
 const chalk = require('chalk');
 const Managers = require('./managers');
+const music = require('discord.js-music-v11');
 
 
 //const extdir = './extensions/'
@@ -155,4 +156,5 @@ process.on('unhandledRejection', err => {
     logger.severe('Uncaught Promise error: \n' + err.stack);
 });
 
+music(bot);
 bot.config && bot.login(bot.config.botToken);
