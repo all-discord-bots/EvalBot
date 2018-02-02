@@ -17,6 +17,7 @@ exports.run = (bot, msg, args) => {
 
 exports.info = {
   name: 'clearreactions',
+  hidden: true,
   aliases: ['cr'],
   description: 'Clears all reactions from given number of messages.',
   usage: 'clearreactions <message count>'
