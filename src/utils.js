@@ -169,7 +169,7 @@ exports.now = () => {
     return now[0] * 1e3 + now[1] / 1e6;
 };
 
-exports.playAnimation = (msg, delay, list) => {
+exports.playAnimation = async (msg, delay, list) => {
     if (list.length < 1)
         return;
 
