@@ -144,9 +144,7 @@ bot.on('message', (msg) => {
 		if (msg.author.bot) return;
 	}
 	if (!bot.config.allowDMCmds) {
-		if (msg.channel.type == "dm") {
-			return msg.channel.send("Commands must be run in a guild only!");
-		}
+		if (msg.channel.type == "dm") return;
 	}
 	//if (msg.guild.owner.user.id !== msg.author.id) return;
 	if (msg.guild && bot.config.blacklistedServers && bot.config.blacklistedServers.indexOf(msg.guild.id.toString()) > -1) {
