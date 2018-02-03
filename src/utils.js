@@ -176,7 +176,7 @@ exports.playAnimation = (msg, delay, list) => {
     let next = list.shift();
     let start = this.now();
 
-    msg.edit(next).then(() => {
+    msg.channel.send(next).then(() => {
         let elapsed = this.now() - start;
 
         setTimeout(() => {
