@@ -175,14 +175,16 @@ exports.playAnimation = (msg, delay, list) => {
 
     let next = list.shift();
     let start = this.now();
-
-    msg.channel.send(next).then(() => {
-        let elapsed = this.now() - start;
-
-        setTimeout(() => {
-            this.playAnimation(msg, delay, list);
-        }, Math.max(50, delay - elapsed));
-    }).catch(bot.client.logger.severe);
+    
+    (await msg.channel.send('Loading animation...').then((msg)=>{
+        msg.edit(next).then(() => {
+            let elapsed = this.now() - start;
+            
+            setTimeout(() => {
+                this.playAnimation(msg, delay, list);
+            }, Math.max(50, delay - elapsed));
+        }).catch(bot.client.logger.severe);
+    }));
 };
 
 exports.hastebinUpload = text => {
