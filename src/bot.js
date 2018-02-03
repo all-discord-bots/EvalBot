@@ -17,6 +17,8 @@ const fs = require('fs')
 
 const bot = global.bot = exports.client = new Discord.Client();
 
+let guildArray = bot.guilds.array();
+
 bot.managers = {};
 
 const logger = bot.logger = new Managers.Logger(bot);
@@ -111,6 +113,30 @@ bot.on('ready', () => {
     logger.info('Bot loaded');
 
     loaded = true;
+});
+
+//joined a server
+bot.on("guildCreate", (guild) => {
+	console.log("Joined a new guild: " + guild.name);
+	var s;
+	if (bot.guilds.size === 1) {
+		s = "";
+	} else {
+		s = "s";
+	}
+	bot.user.setPresence({ game: { name: `${bot.guilds.size} server${s}`, type: 3 } });
+});
+
+//removed from a server
+bot.on("guildDelete", (guild) => {
+	console.log("Left a guild: " + guild.name);
+	var s;
+	if (bot.guilds.size === 1) {
+		s = "";
+	} else {
+		s = "s";
+	}
+	bot.user.setPresence({ game: {name: `${bot.guilds.size} server${s}`, type: 3 } });
 });
 
 bot.on('message', (msg) => {
