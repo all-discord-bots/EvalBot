@@ -2,6 +2,7 @@
   "botToken": "NDA4NzQxMzAzODM3MzkyOTI2.DVUdjA.HS2fWB0zPaG4H3Vm8XwDcPhcBTU",
   "prefix": ">",
   "blockBots": true,
+  "allowDMCmds": false,
   "botCreatorID": "269247101697916939",
   "botMainServerID": "291563214649688064",
   "cripsBotModeratorRole": "CripsBot Mod",
