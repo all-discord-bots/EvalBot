@@ -1,14 +1,10 @@
-const Discord = require("discord.js");
 exports.run = async (bot, msg, args) => {
-  const embed = new Discord.MessageEmbed()
-    .setDescription(args.join(" "))
-    .setColor([114, 137, 218]);
-  msg.channel.send({embed});
+  msg.channel.send({ embed: bot.utils.embed('', `${args.join(" ")}`) });
 };
 
 exports.info = {
   name: 'embed',
-  hidden: true,
+  hidden: false,
   description: 'Embeds some text.',
   usage: 'embed [text]'
 };
