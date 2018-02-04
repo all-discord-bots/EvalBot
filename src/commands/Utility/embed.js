@@ -1,5 +1,5 @@
 const Discord = require("discord.js");
-exports.run = (bot, msg, args) => {
+exports.run = async (bot, msg, args) => {
   const embed = new Discord.MessageEmbed()
     .setDescription(args.join(" "))
     .setColor([114, 137, 218]);
