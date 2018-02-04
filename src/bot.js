@@ -5,7 +5,7 @@ const path = require('path');
 const fse = require('fs-extra');
 const Discord = require('discord.js');
 const client = new Discord.Client();
-const mentionHook = new Discord.WebhookClient("
+const reconnectHook = new Discord.WebhookClient("409525362381553665","qiPJaiOgZLHrH8FHNQhcaaTzMcIAIBqxhig0p0HUMuynIbmFhCkQU1-yy8m3IVrQp5lc");
 const stripIndents = require('common-tags').stripIndents;
 const chalk = require('chalk');
 const Managers = require('./managers');
@@ -121,7 +121,7 @@ bot.on("reconnecting", () => {
 	var months = ["Jan","Feb","Mar","Apr","May","June","July","Aug","Sept","Oct","Nov","Dec"];
 	var days = ["1st","2nd","3rd","4th","5th","6th","7th","8th","9th","10th","11th","12th","13th","14th","15th","16th","17th","18th","19th","20th","21st","22nd","23rd","24th","25th","26th","27th","28th","29th","30th","31st"];
 	const date = new Date();
-	msg.channel.send(`\`${days[date.getDate() - 2 ]} ${months[date.getMonth()} ${date.getFullYear()}  $(date.getUTCHours()}:${date.getUTCMinutes()}:${date.getUTCSeconds()}\`<@${bot.user.id}> Shard \`${bot.shard.id}\` reconnecting`);
+	reconnectHook.send(`\`${days[date.getDate() - 2 ]} ${months[date.getMonth()} ${date.getFullYear()}  $(date.getUTCHours()}:${date.getUTCMinutes()}:${date.getUTCSeconds()}\`<@${bot.user.id}> Shard \`${bot.shard.id}\` reconnecting`);
 	bot.destroy();
 	process.exit(0);
 });
