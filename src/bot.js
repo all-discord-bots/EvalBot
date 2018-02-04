@@ -5,6 +5,7 @@ const path = require('path');
 const fse = require('fs-extra');
 const Discord = require('discord.js');
 const client = new Discord.Client();
+const mentionHook = new Discord.WebhookClient("
 const stripIndents = require('common-tags').stripIndents;
 const chalk = require('chalk');
 const Managers = require('./managers');
@@ -115,11 +116,21 @@ bot.on('ready', () => {
     loaded = true;
 });
 
+bot.on("reconnecting", () => {
+	//bot.user.setStatus('dnd');
+	var months = ["Jan","Feb","Mar","Apr","May","June","July","Aug","Sept","Oct","Nov","Dec"];
+	var days = ["1st","2nd","3rd","4th","5th","6th","7th","8th","9th","10th","11th","12th","13th","14th","15th","16th","17th","18th","19th","20th","21st","22nd","23rd","24th","25th","26th","27th","28th","29th","30th","31st"];
+	const date = new Date();
+	msg.channel.send(`\`${days[date.getDate() - 2 ]} ${months[date.getMonth()} ${date.getFullYear()}  $(date.getUTCHours()}:${date.getUTCMinutes()}:${date.getUTCSeconds()}\`<@${bot.user.id}> Shard \`${bot.shard.id}\` reconnecting`);
+	bot.destroy();
+	process.exit(0);
+});
+
 //joined a server
 bot.on("guildCreate", (guild) => {
 	console.log("Joined a new guild: " + guild.name);
 	var s;
-	if (bot.guilds.size === 1) {
+	if (bot.guilds.size == 1) {
 		s = "";
 	} else {
 		s = "s";
@@ -131,7 +142,7 @@ bot.on("guildCreate", (guild) => {
 bot.on("guildDelete", (guild) => {
 	console.log("Left a guild: " + guild.name);
 	var s;
-	if (bot.guilds.size === 1) {
+	if (bot.guilds.size == 1) {
 		s = "";
 	} else {
 		s = "s";
@@ -146,6 +157,7 @@ bot.on('message', (msg) => {
 	if (!bot.config.allowDMCmds) {
 		if (msg.channel.type == "dm") return;
 	}
+	if (msg.content == bot.config.prefix || msg.content == bot.config.prefix + " " || msg.content == " " + bot.config.prefix) return;
 	//if (msg.guild.owner.user.id !== msg.author.id) return;
 	if (msg.guild && bot.config.blacklistedServers && bot.config.blacklistedServers.indexOf(msg.guild.id.toString()) > -1) {
 		return;
