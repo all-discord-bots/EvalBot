@@ -6,5 +6,5 @@ exports.info = {
   name: 'embed',
   hidden: false,
   description: 'Embeds some text.',
-  usage: 'embed [text]'
+  usage: 'embed <text>'
 };
