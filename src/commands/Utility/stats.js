@@ -1,7 +1,7 @@
 const Discord = require('discord.js');
 
 exports.run = async (bot, msg) => {
-  msg.channel.sendMessage(`**Statistics**
+  msg.channel.send(`**Statistics**
 \`\`\`
 STATISTICS
 • Mem Usage    : ${(process.memoryUsage().heapUsed / 1024 / 1024).toFixed(2)} MB
