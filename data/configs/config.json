@@ -6,6 +6,8 @@
   "botCreatorID": "269247101697916939",
   "botMainServerID": "291563214649688064",
   "cripsBotModeratorRole": "CripsBot Mod",
+  "botCommanderRole": "CripsBot Commander",
+  "shards": 1,
   "blacklistedServers": [
     "226865538247294976",
     "239010380385484801"
