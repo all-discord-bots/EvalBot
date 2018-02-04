@@ -12,7 +12,7 @@ const music = require('discord.js-music-v11');
 
 
 //const extdir = './extensions/'
-const fs = require('fs')
+const fs = require('fs');
 
 
 const bot = global.bot = exports.client = new Discord.Client();
