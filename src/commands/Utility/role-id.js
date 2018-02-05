@@ -3,7 +3,7 @@ exports.run = async (bot, msg, args) => {
     return msg.channel.send("Invalid arguments! Please provide a role name.");
   }
   let rolename = args.join(" ");
-  msg.channel.send(`\`\`\`\n${msg.channel.guild.roles.find('name', rolename).id}\n\`\`\``);
+  msg.channel.send(`${msg.channel.guild.roles.find('name', rolename).id}`);
 };
 
 exports.info = {
