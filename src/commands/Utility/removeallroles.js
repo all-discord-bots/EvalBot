@@ -16,7 +16,7 @@ exports.run = async (bot, msg, args) => {
 };
   
 exports.info = {
-  name: 'managerole',
-  usage: 'managerole <name|id> <role name|role id>',
+  name: 'takeallrole',
+  usage: 'takeallrole <name|id> <role name|role id>',
   description: 'Remove a role from every member in your server if they have it'
 };
