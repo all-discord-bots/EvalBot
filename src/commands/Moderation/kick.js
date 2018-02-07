@@ -5,7 +5,9 @@ exports.run = async (bot, message, args) => {
     let kUser = msg.guild.member(msg.mentions.users.first() || msg.guild.members.get(args[0]));
     if(!kUser) return msg.channel.send("Can't find user!");
     let kReason = args.join(" ").slice(22);
-    if(!msg.member.hasPermission("KICK_MEMBERS")) return msg.channel.send("You are missing the permissions `Kick Members`!");
+    if (msg.author.id !== bot.config.botCreatorID) {
+        if(!msg.member.hasPermission("KICK_MEMBERS")) return msg.channel.send("You are missing the permissions `Kick Members`!");
+    }
 //    if(kUser.hasPermission("MANAGE_MESSAGES")) return msg.channel.send("That person can't be kicked!");
 
     let kickEmbed = new Discord.RichEmbed()
