@@ -2,7 +2,7 @@ const Discord = require("discord.js");
 
 exports.run = async (bot, msg, args) => {
     if (msg.author.id !== bot.config.botCreatorID) {
-      if (!msg.member.hasPermission('KICK_MEMBERS')) return msg.channel.send("You are missing permissions `Kick Members`!;
+      if (!msg.member.hasPermission('KICK_MEMBERS')) return msg.channel.send("You are missing permissions `Kick Members`!");
     }
     let reportchannel = "mod_logs";
     let rUser = msg.guild.member(msg.mentions.users.first() || msg.guild.members.get(args[0]));
