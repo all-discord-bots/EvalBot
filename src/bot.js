@@ -165,7 +165,7 @@ bot.on('message', (msg) => {
 	return bot.commands.handleCommand(msg, msg.content);
 });
 
-bot.on('messageUpdated', (msg) => {
+/*bot.on('messageUpdated', (msg) => {
 	if (bot.config.blockBots) {
 		if (msg.author.bot) return;
 	}
@@ -177,7 +177,7 @@ bot.on('messageUpdated', (msg) => {
 		return;
 	}
 	return bot.commands.handleCommand(msg, msg.content);
-});
+});*/
 
 bot.on('messageDelete', (msg) => {
     bot.deleted.set(msg.author.id, msg);
