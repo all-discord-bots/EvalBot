@@ -13,6 +13,6 @@ exports.run = async (bot, msg, args) => {
 exports.info = {
   name: 'role-id',
   aliases: ['roleid'],
-  usage: 'role-id <role name>',
+  usage: 'role-id <role>',
   description: 'Easy and simple way to get the ID of any role.'
 };
