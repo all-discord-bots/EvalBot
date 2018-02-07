@@ -123,9 +123,9 @@ class CommandManager {
             });
 
             if (maybe) {
-                return msg.edit(`:question: Did you mean \`${this.bot.config.prefix}${maybe}\`?`).then(m => m.delete(5000));
+                return msg.channel.send(`:question: Did you mean \`${this.bot.config.prefix}${maybe}\`?`).then(m => m.delete(5000));
             } else {
-                return msg.edit(`:no_entry_sign: No commands were found that were similar to \`${this.bot.config.prefix}${name}\``)
+                return msg.channel.send(`:no_entry_sign: No commands were found that were similar to \`${this.bot.config.prefix}${name}\``)
                     .then(m => m.delete(5000));
             }
         }
@@ -142,7 +142,7 @@ class CommandManager {
                 if (command) {
                     return this.execute(msg, command, args);
                 } else {
-                    return msg.edit(`:no_entry_sign: The shortcut \`${shortcut.name}\` is improperly set up!`)
+                    return msg.channel.send(`:no_entry_sign: The shortcut \`${shortcut.name}\` is improperly set up!`)
                         .then(m => m.delete(2000));
                 }
             })
@@ -162,7 +162,7 @@ class CommandManager {
 
             const discordOutput = `:x: ${displayMessage || 'Something failed!'}`;
 
-            msg.edit(discordOutput)
+            msg.channel.send(discordOutput)
                 .then(m => m.delete(delay || 2000))
                 .catch(() => {
                     msg.channel.send(discordOutput)
