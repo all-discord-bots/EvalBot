@@ -8,7 +8,7 @@ exports.run = async (bot, msg, args) => {
     msg.channel.send(`\`\`\`\n${msg.channel.guild.roles.find('id', `${args[1]}`).members.size}\n\`\`\``);
     //msg.channel.send(`\`\`\`\n${msg.channel.guild.roles.find(args[0].value).members.map(m => m.user.tag)}\n\`\`\``);
   } else if (args[0].toLowerCase != "size" || args[0].toLowerCase != "users") {
-    msg.channel.send(`\`\`\`\n${msg.channel.guild.roles.find('id', `${args[1]}`).members.size}\n\`\`\``);
+    msg.channel.send(`\`\`\`\n${msg.channel.guild.roles.find('id', `${args[0]}`).members.size}\n\`\`\``);
   }
 };
 
