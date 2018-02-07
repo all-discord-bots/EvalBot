@@ -1,6 +1,6 @@
 exports.run = async (bot, msg, args) => {
   if (args.length < 1) {
-    return msg.channel.send("Invalid arguments! Please provide a role ID.");
+    return msg.channel.send("Invalid arguments!");
   }
   if (args[0].toLowerCase() == "users") {
     msg.channel.send(`\`\`\`\n${msg.channel.guild.roles.find('id', `${args[1]}`).members.map(m => m.user.tag)}\n\`\`\``);
