@@ -20,7 +20,7 @@ Massive Servers [ 5000+]:  ${fivethousandplus}
 exports.info = {
   name: 'guild-stats',
   hidden: true,
-  aliases: 'guildstats',
+  aliases: ['guildstats'],
   usage: 'guild-stats',
   description: 'Displays a list of guilds by number of members in each guild.'
 };
