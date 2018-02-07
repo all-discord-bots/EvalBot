@@ -4,9 +4,7 @@ exports.run = async (bot, msg, args) => {
   }
   const rolename = args.join(" ");
   let getroleid = msg.guild.roles.find('name', `${rolename}`).id;
-  //(await msg.channel.send("Loading role id...").then((msg)=>{
-  //  msg.edit(`${getroleid}`);
-  //}));
+  if (getroleid === null) return msg.channel.send("Role not found!");
   msg.channel.send(`${getroleid}`);
 };
 
