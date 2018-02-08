@@ -11,12 +11,8 @@ const chalk = require('chalk');
 const Managers = require('./managers');
 const music = require('discord.js-music-v11');
 const mysql = require('mysql');
-
-
 //const extdir = './extensions/'
 const fs = require('fs');
-
-
 const bot = global.bot = exports.client = new Discord.Client();
 
 let guildArray = bot.guilds.array();
@@ -152,17 +148,17 @@ bot.on("guildDelete", (guild) => {
 });
 
 var con = mysql.createConnection({
-  host: "databases.000webhost.com",
-  user: "id3223004_bannerbomb",
-  password: "Trains39",
-  database: "id3223004_discordbot",
+//  host: "localhost",
+//  user: "id3223004_bannerbomb",
+//  password: "PASSWORD",
+//  database: "id3223004_discordbot",
 });
 
-con.connect(err => {
-	if (err) throw err;
-	console.log("Connected to database!");
-	con.query("SHOW TABLES", console.log);
-});
+//con.connect(err => {
+//	if (err) throw err;
+//	console.log("Connected to database!");
+//	con.query("SHOW TABLES", console.log);
+//});
 
 bot.on('message', (msg) => {
 	if (bot.config.blockBots) {
