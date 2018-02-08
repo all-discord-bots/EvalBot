@@ -11,7 +11,7 @@ exports.run = async (bot, msg, args) => {
   if (args[0].toLowerCase() == "name") {
     msg.guild.roles.find('name', `${args[1]}`).members.map(m => m.addRole('name', `${args[1]}`));
   } else if (args[0].toLowerCase() == "id") {
-    msg.guild.roles.find(`${args[1]}`).members.map(m => m.addRole(`${args[1]}`));
+    msg.guild.roles.find('id', `${args[1]}`).members.map(m => m.addRole('id', `${args[1]}`));
   }
 };
   
