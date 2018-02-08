@@ -155,7 +155,7 @@ var con = mysql.createConnection({
   host: "localhost",
   user: "id3223004_bannerbomb",
   password: "Trains39",
-  database: "id3223004_discordbot",
+  database: "databases.000webhost.com",
 });
 
 con.connect(err => {
