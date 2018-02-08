@@ -40,7 +40,8 @@
     "discord-eco": "^0.0.10",
     "enmap": "^0.4.2",
     "enmap-level": "^1.0.0",
-    "ms": "^2.1.1"
+    "ms": "^2.1.1",
+    "country-data": "^0.0.31"
   },
   "devDependencies": {
     "eslint": "^3.16.1",
