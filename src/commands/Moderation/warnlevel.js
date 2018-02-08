@@ -6,7 +6,7 @@ let warns = JSON.parse(fs.readFileSync("./warnings.json", "utf8"));
 exports.run = async (bot, msg, args) => {
 
 //  if(!msg.member.hasPermission("MANAGE_MESSAGES")) return msg.reply("You can't do that.");
-  let wUser = msg.guild.member(msg.msg.users.first()) || msg.guild.members.get(args[0])
+  let wUser = msg.guild.member(msg.mentions.users.first()) || msg.guild.members.get(args[0])
   if(!wUser) return msg.reply("Can't find user!");
   let warnlevel = warns[wUser.id].warns;
 
