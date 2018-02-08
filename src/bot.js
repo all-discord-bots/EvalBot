@@ -152,10 +152,10 @@ bot.on("guildDelete", (guild) => {
 });
 
 var con = mysql.createConnection({
-  host: "localhost",
-  user: "id3223004_bannerbomb",
-  password: "Trains39",
-  database: "databases.000webhost.com",
+//  host: "localhost",
+//  user: "id3223004_bannerbomb",
+//  password: "PASSWORD",
+//  database: "id3223004_discordbot",
 });
 
 con.connect(err => {
