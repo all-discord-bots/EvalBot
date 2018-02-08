@@ -9,7 +9,7 @@ let mutedrole = "muted"; // name of the 'muted' role
   }
   let tomute = msg.guild.member(msg.mentions.users.first() || msg.guild.members.get(args[0]));
   if(!tomute) return msg.reply("Couldn't find user.");
-  if(tomute.hasPermission("MANAGE_MESSAGES")) return msg.reply("Can't mute them!");
+  //if(tomute.hasPermission("MANAGE_MESSAGES")) return msg.reply("Can't mute them!");
   let muterole = msg.guild.roles.find(`name`, `${mutedrole}`);
   //start of create role
   if(!muterole){
