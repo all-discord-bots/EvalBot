@@ -10,6 +10,7 @@ const stripIndents = require('common-tags').stripIndents;
 const chalk = require('chalk');
 const Managers = require('./managers');
 const music = require('discord.js-music-v11');
+const mysql = require('mysql');
 
 
 //const extdir = './extensions/'
@@ -150,6 +151,19 @@ bot.on("guildDelete", (guild) => {
 	bot.user.setPresence({ game: {name: `${bot.guilds.size} server${s}`, type: 3 } });
 });
 
+var con = mysql.createConnection({
+  host: "localhost",
+  user: "id3223004_bannerbomb",
+  password: "Trains39",
+  database: "id3223004_discordbot",
+});
+
+con.connect(err => {
+	if (err) throw err;
+	console.log("Connected to database!");
+	con.query("SHOW TABLES", console.log);
+});
+
 bot.on('message', (msg) => {
 	if (bot.config.blockBots) {
 		if (msg.author.bot) return;
@@ -162,7 +176,7 @@ bot.on('message', (msg) => {
 	if (msg.guild && bot.config.blacklistedServers && bot.config.blacklistedServers.indexOf(msg.guild.id.toString()) > -1) {
 		return;
 	}
-	return bot.commands.handleCommand(msg, msg.content);
+	return bot.commands.handleCommand(msg, msg.content); // run the commands
 });
 
 /*bot.on('messageUpdated', (msg) => {
