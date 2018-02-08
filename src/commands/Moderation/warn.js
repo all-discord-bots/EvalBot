@@ -10,7 +10,7 @@ exports.run = async (bot, msg, args) => {
   let modlogs = "mod_logs";
   //!warn @daeshan <reason>
   if(!msg.member.hasPermission("KICK_MEMBERS")) return msg.reply("You are missing the permissions `Kick Members`!");
-  let wUser = msg.guild.member(message.mentions.users.first()) || msg.guild.members.get(args[0])
+  let wUser = msg.guild.member(msg.mentions.users.first()) || msg.guild.members.get(args[0])
   if(!wUser) return msg.reply("Can't find user!");
 //  if(wUser.hasPermission("MANAGE_MESSAGES")) return message.reply("They waaaay too kewl");
   let reason = args.join(" ").slice(22);
