@@ -60,7 +60,7 @@ exports.run = async (bot, msg, args) => {
         }
     ], { inline: true });
 
-    msg.edit({ embed });
+    msg.channel.send({ embed });
 };
 
 exports.info = {
