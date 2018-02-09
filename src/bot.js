@@ -147,12 +147,12 @@ bot.on("guildDelete", (guild) => {
 	bot.user.setPresence({ game: {name: `${bot.guilds.size} server${s}`, type: 3 } });
 });
 
-var con = mysql.createConnection({
+//var con = mysql.createConnection({
 //  host: "localhost",
 //  user: "id3223004_bannerbomb",
 //  password: "PASSWORD",
 //  database: "id3223004_discordbot",
-});
+//});
 
 //con.connect(err => {
 //	if (err) throw err;
@@ -173,6 +173,25 @@ bot.on('message', (msg) => {
 		return;
 	}
 	return bot.commands.handleCommand(msg, msg.content); // run the commands
+});
+
+bot.on('messageUpdate', (msgOld, msgNew) => {
+            if (!this.options.msgedit) return
+	    if (bot.config.blockBots) {
+		    if (msgNew.author.bot) return;
+	    }
+	    if (!bot.config.allowDMCmds) {
+		    if (msgNew.channel.type == "dm") return;
+	    }
+            if (msgNew.channel.type == "text") {
+		    if (msgNew.content == bot.config.prefix || msgNew.content == bot.config.prefix + " " || msgNew.content == " " + bot.config.prefix) return;
+		    if (msgNew.guild && bot.config.blacklistedServers && bot.config.blacklistedServers.indexOf(msgNew.guild.id.toString()) > -1) {
+			    return;
+		    }
+		    return bot.commands.handleCommand(msgNew, msgNew.content);
+            }
+            // else if (msg.author.id != this.bot.client.id)
+            //     this.event.emit('commandFailed', this.errors.WRONG_CHANNEL, msg, 'Defaulty messages will be only parsed in public text channels.')
 });
 
 /*bot.on('messageUpdated', (msg) => {
