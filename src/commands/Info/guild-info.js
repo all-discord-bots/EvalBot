@@ -17,5 +17,5 @@ exports.run = async (bot, msg, args) => {
 exports.info = {
   name: 'serverinfo1',
   usage: 'serverinfo1',
-  description: 'displays information on the current guild.',
+  description: 'displays information on the current guild.'
 }
