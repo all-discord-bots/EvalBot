@@ -6,6 +6,7 @@
 const Discord = require('discord.js');
 //const SpawnShards = require('../data/configs/config.json');
 const Manager = new Discord.ShardingManager('./src/bot.js', {
+    token: bot.config.token,
     totalShards: "auto"
 });
 Manager.spawn(this.totalShards, 15000);
