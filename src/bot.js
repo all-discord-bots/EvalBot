@@ -124,6 +124,7 @@ bot.on('ready', () => {
 //});
 
 //joined a server
+
 bot.on("guildCreate", (guild) => {
 	console.log("Joined a new guild: " + guild.name);
 	var s;
@@ -175,7 +176,7 @@ bot.on('message', (msg) => {
 	return bot.commands.handleCommand(msg, msg.content); // run the commands
 });
 
-bot.on('messageUpdate', (msgOld, msgNew) => {
+/*bot.on('messageUpdate', (msgOld, msgNew) => {
             if (!this.options.msgedit) return
 	    if (bot.config.blockBots) {
 		    if (msgNew.author.bot) return;
@@ -190,10 +191,8 @@ bot.on('messageUpdate', (msgOld, msgNew) => {
 		    }
 		    return bot.commands.handleCommand(msgNew, msgNew.content);
             }
-            // else if (msg.author.id != this.bot.client.id)
-            //     this.event.emit('commandFailed', this.errors.WRONG_CHANNEL, msg, 'Defaulty messages will be only parsed in public text channels.')
 });
-
+*/
 /*bot.on('messageUpdated', (msg) => {
 	if (bot.config.blockBots) {
 		if (msg.author.bot) return;
