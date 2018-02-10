@@ -154,7 +154,7 @@ bot.on("guildDelete", (guild) => {
 	bot.channels.get("409525042137792533").send({embed: ({
 		color: 3447003,
 		title: 'Removed',
-		description: `${guild.name} (${guild.id})\n${guild.members.filter(user => !user.bot).size} members   -   ${guild.members.filter(user => user.bot).size} bots (PERCENTAGE HERE%)\n\nOwner <@${guild.owner.id}> \`[${guild.owner.tag}]\``
+		description: `${guild.name} (${guild.id})\n${guild.members.filter(user => !user.bot).size} members   -   ${guild.members.filter(user => user.bot).size} bots (PERCENTAGE HERE%)\n\nOwner <@${guild.owner.id}> \`[${guild.owner.tag}]\``,
 		footer: {
 			text: `Today at [TIME HERE]`
 		}
