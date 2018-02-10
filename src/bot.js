@@ -126,16 +126,18 @@ bot.on('ready', () => {
 //joined a server
 
 bot.on("guildCreate", (guild) => {
-	let gusers = guild.members.filter(user => !user.bot).size;
-	let gbots = guild.members.filter(user => user.bot).size;
 	console.log("Joined a new guild: " + guild.name);
+	let gusers = guild.members.filter(user => !user.user.bot).size; // get only users and exclude bots
+	let gtotal = guild.members.filter(user => user.user).size; // get all users and bots
+	let gbots = guild.members.filter(user => user.user.bot).size; // get all bots excluding users
+	let gpercent = `${gtotalusers}%`; // total users and bots to percentage
+	let gparsepercent = parseFloat(gpercent); // parses the percentage
+	let gdecimal = gparsepercent/100; // percentage to decimal
 	bot.channels.get("409525042137792533").send({embed: ({
-		color: 3447003,
+		color: 6732650,
 		title: 'Added',
-		description: `${guild.name} (${guild.id})\n${guild.members.filter(user => !user.bot).size} members   -   ${guild.members.filter(user => user.bot).size} bots (PERCENTAGE HERE%)\n\nOwner <@${guild.owner.id}> \`[${guild.owner.tag}]\``
-		//footer: {
-		//	text: `Today at [TIME HERE]`
-		//}
+		timestamp: new Date(),
+		description: `${guild.name} (${guild.id})\n\`${gusers} members   -   ${gbots} bots  (${Math.floor(gbots/gdecimal)}%)\`\n\nOwner: <@${guild.owner.id}>  \`[${guild.owner.user.username}#${guild.owner.user.discriminator}]\``
 	})});
 	var s;
 	if (bot.guilds.size == 1) {
@@ -148,16 +150,19 @@ bot.on("guildCreate", (guild) => {
 
 //removed from a server
 bot.on("guildDelete", (guild) => {
+        //>eval let prob = "10%"; let dec = parseFloat(prob); let p = dec/100;  msg.channel.send(0/p);
 	console.log("Left a guild: " + guild.name);
-	let gusers = guild.members.filter(user => !user.bot).size;
-	let gbots = guild.members.filter(user => user.bot).size;
+	let gusers = guild.members.filter(user => !user.user.bot).size; // get only users and exclude bots
+	let gtotal = guild.members.filter(user => user.user).size; // get all users and bots
+	let gbots = guild.members.filter(user => user.user.bot).size; // get all bots excluding users
+	let gpercent = `${gtotalusers}%`; // total users and bots to percentage
+	let gparsepercent = parseFloat(gpercent); // parses the percentage
+	let gdecimal = gparsepercent/100; // percentage to decimal
 	bot.channels.get("409525042137792533").send({embed: ({
-		color: 3447003,
+		color: 15684432,
 		title: 'Removed',
-		description: `${guild.name} (${guild.id})\n${guild.members.filter(user => !user.bot).size} members   -   ${guild.members.filter(user => user.bot).size} bots (PERCENTAGE HERE%)\n\nOwner <@${guild.owner.id}> \`[${guild.owner.tag}]\``
-		//footer: {
-		//	text: `Today at [TIME HERE]`
-		//}
+		timestamp: new Date(),
+		description: `${guild.name} (${guild.id})\n\`${gusers} members   -   ${gbots} bots  (${Math.floor(gbots/gdecimal)}%)\`\n\nOwner: <@${guild.owner.id}>  \`[${guild.owner.user.username}#${guild.owner.user.discriminator}]\``
 	})});
 	var s;
 	if (bot.guilds.size == 1) {
