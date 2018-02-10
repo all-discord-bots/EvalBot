@@ -4,11 +4,16 @@ exports.run = async (bot, msg, args) => {
     if (!msg.member.hasPermission('MANAGE_CHANNELS')) return msg.channel.send(`<:redx:411978781226696705> You are missing the permissions \`Manage Channels\`!`);
   }
   let gchannel;
+  let cping = args[0];
+  let rping = cping.replace(/<#/g, '');
+  let roneping = rping.replace(/>/g, '');
   if (msg.guild.channels.find(`name`, `${args[0]}`)) {
     gchannel = msg.guild.channels.find(`name`, `${args[0]}`);
   } else if (msg.guild.channels.find(`id`, `${args[0]}`)) {
     gchannel = msg.guild.channels.find(`id`, `${args[0]}`);
-  } else {
+  } else if (msg.content.includes("<#") && msg.content.includes(">")) {
+    gchannel = roneping; // gets the channels id
+  }else {
     gchannel = msg.guild.channels.find(`id`, `${msg.channel.id}`);
   }
   if (!bot.lockit) bot.lockit = [];
