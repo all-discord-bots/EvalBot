@@ -9,7 +9,7 @@ exports.run = async (bot, msg, args) => {
   } else if (msg.guild.channels.find(`id`, `${args[0]}`)) {
     gchannel = msg.guild.channels.find(`id`, `${args[0]}`);
   } else {
-    gchannel = msg.channel;
+    gchannel = msg.guild.channels.find(`id`, `${msg.channel.id}`);
   }
   if (!bot.lockit) bot.lockit = [];
   //let time = args.join(' ');
