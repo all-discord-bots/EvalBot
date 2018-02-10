@@ -62,5 +62,5 @@ exports.info = {
 	name: 'user-info',
 	aliases: ['user','userinfo','member','member-info','profile'],
 	usage: 'user-info <user>',
-	description: 'Shows various information and data on the mentioned user.',
+	description: 'Shows various information and data on the mentioned user.'
 };
