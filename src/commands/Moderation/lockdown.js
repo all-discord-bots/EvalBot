@@ -13,14 +13,7 @@ exports.run = async (bot, msg, args) => {
   }
   if (!bot.lockit) bot.lockit = [];
   //let time = args.join(' ');
-  let time;
-  if (args[1]) {
-    time = args[1];
-  } else if (!args[1]) {
-    time = args[0];
-  } else if (!args[1] && args[0] === gchannel.id || !args[1] && args[0] === gchannel.name) {
-    time = "99999999999999999999h";
-  }
+  let time = args[1];
   let validUnlocks = ['release', 'unlock'];
   if (!time) return msg.channel.send(`<:redx:411978781226696705> You must set a duration for the lockdown in either hours, minutes or seconds`);
   if (validUnlocks.includes(time)) {
@@ -56,6 +49,6 @@ exports.run = async (bot, msg, args) => {
 exports.info = {
   name: 'lock-down',
   aliases: ['channel-lock-down','lock-down-channel','lockdown'],
-  description: 'Lock down a channel, to prevent anyone sending messages. (Unless they have Administrator permission, or Send Messages is set to Allow in channel permissions for a role they have.) If no duration is provided, the channel is locked-down until the command is run again. Example 1s, 1m, 1h .etc',
+  description: 'Lock down a channel, to prevent anyone sending messages. (Unless they have Administrator permission, or Send Messages is set to Allow in channel permissions for a role they have.) If no duration is provided, the channel is locked-down until the command is run again. Example 1s, 1m, 1h .etc you can use `unlock` or `release` to un-lockdown a channel.',
   usage: 'lock-down [channel] [duration]'
 };
