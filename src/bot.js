@@ -133,7 +133,7 @@ bot.on("guildCreate", (guild) => {
 		color: 3447003,
 		title: 'Added',
 		description: `${guild.name} (${guild.id})\n${guild.members.filter(user => !user.bot).size} members   -   ${guild.members.filter(user => user.bot).size} bots (PERCENTAGE HERE%)\n\nOwner <@${guild.owner.id}> \`[${guild.owner.tag}]\``
-		"footer": {
+		footer: {
 			text: `Today at [TIME HERE]`
 		}
 	})});
@@ -155,7 +155,7 @@ bot.on("guildDelete", (guild) => {
 		color: 3447003,
 		title: 'Removed',
 		description: `${guild.name} (${guild.id})\n${guild.members.filter(user => !user.bot).size} members   -   ${guild.members.filter(user => user.bot).size} bots (PERCENTAGE HERE%)\n\nOwner <@${guild.owner.id}> \`[${guild.owner.tag}]\``
-		"footer": {
+		footer: {
 			text: `Today at [TIME HERE]`
 		}
 	})});
