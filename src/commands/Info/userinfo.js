@@ -38,7 +38,8 @@ exports.run = async (bot, msg) => {
 		}, author: {
 			name: `${user.tag}`,
 			icon_url: `${user.avatarURL}`
-		}, fields: [{
+		}, fields: [
+		{
 			name: 'User ID',
 			value: `${user.id}`
 		}, {
@@ -55,8 +56,9 @@ exports.run = async (bot, msg) => {
 			name: 'Member #',
 			value: 'N/A',
 			inline: true
-		}],
-	})});
+		}
+	],
+})})
 }
 exports.info = {
 	name: 'user-info',
