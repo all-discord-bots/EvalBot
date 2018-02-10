@@ -13,7 +13,7 @@ exports.run = async (bot, msg, args) => {
     gchannel = msg.guild.channels.find(`id`, `${args[0]}`);
   } else if (msg.content.includes("<#") && msg.content.includes(">")) {
     gchannel = msg.guild.channels.find(`id`, `${roneping}`); // gets the channels id
-  }else {
+  } else {
     gchannel = msg.guild.channels.find(`id`, `${msg.channel.id}`);
   }
   if (!bot.lockit) bot.lockit = [];
