@@ -126,7 +126,17 @@ bot.on('ready', () => {
 //joined a server
 
 bot.on("guildCreate", (guild) => {
+	let gusers = guild.members.filter(user => !user.bot).size;
+	let gbots = guild.members.filter(user => user.bot).size;
 	console.log("Joined a new guild: " + guild.name);
+	bot.channels.get("409525042137792533").send({embed: ({
+		color: 3447003,
+		title: 'Added',
+		description: `${guild.name} (${guild.id})\n${guild.members.filter(user => !user.bot).size} members   -   ${guild.members.filter(user => user.bot).size} bots (PERCENTAGE HERE%)\n\nOwner <@${guild.owner.id}> \`[${guild.owner.tag}]\``
+		"footer": {
+			text: `Today at [TIME HERE]`
+		}
+	})});
 	var s;
 	if (bot.guilds.size == 1) {
 		s = "";
@@ -139,6 +149,16 @@ bot.on("guildCreate", (guild) => {
 //removed from a server
 bot.on("guildDelete", (guild) => {
 	console.log("Left a guild: " + guild.name);
+	let gusers = guild.members.filter(user => !user.bot).size;
+	let gbots = guild.members.filter(user => user.bot).size;
+	bot.channels.get("409525042137792533").send({embed: ({
+		color: 3447003,
+		title: 'Removed',
+		description: `${guild.name} (${guild.id})\n${guild.members.filter(user => !user.bot).size} members   -   ${guild.members.filter(user => user.bot).size} bots (PERCENTAGE HERE%)\n\nOwner <@${guild.owner.id}> \`[${guild.owner.tag}]\``
+		"footer": {
+			text: `Today at [TIME HERE]`
+		}
+	})});
 	var s;
 	if (bot.guilds.size == 1) {
 		s = "";
