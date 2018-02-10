@@ -12,7 +12,7 @@ exports.run = async (bot, msg, args) => {
   } else if (msg.guild.channels.find(`id`, `${args[0]}`)) {
     gchannel = msg.guild.channels.find(`id`, `${args[0]}`);
   } else if (msg.content.includes("<#") && msg.content.includes(">")) {
-    gchannel = roneping; // gets the channels id
+    gchannel = msg.guild.channels.find(`id`, `${roneping}`); // gets the channels id
   }else {
     gchannel = msg.guild.channels.find(`id`, `${msg.channel.id}`);
   }
