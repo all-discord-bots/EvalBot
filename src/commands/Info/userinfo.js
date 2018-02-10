@@ -55,7 +55,7 @@ exports.run = async (bot, msg) => {
 			name: 'Member #',
 			value: 'N/A',
 			inline: true
-		],
+		}],
 	})});
 }
 exports.info = {
