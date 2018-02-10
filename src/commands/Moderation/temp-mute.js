@@ -2,7 +2,7 @@ const Discord = require("discord.js");
 const ms = require("ms");
 
 exports.run = async (bot, msg, args) => {
-let mutedrole = "muted"; // name of the 'muted' role
+let mutedrole = "Muted"; // name of the 'muted' role
   //!tempmute @user 1s/m/h/d
   if (msg.author.id !== bot.config.botCreatorID) {
     if(!msg.member.hasPermission("KICK_MEMBERS")) return msg.channel.send("You are missing permissions `Kick Members`!");
