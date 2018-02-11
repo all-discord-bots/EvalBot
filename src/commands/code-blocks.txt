@@ -36,3 +36,19 @@ let user;
 			user = bot.users.find(`id`, `${gdiscrim.id}`);
 		}
 	}
+
+
+
+
+
+
+
+
+
+
+
+// get users notes
+, {
+				name: 'User Notes',
+				value: ((user.note === null || user.note === '') ? 'None' : user.note)
+			}
