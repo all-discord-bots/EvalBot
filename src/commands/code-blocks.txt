@@ -1,0 +1,31 @@
+if (
+
+
+
+
+let gargs = args[0];
+	if (args.length < 1) { // do this is there is no arguments get the user running the command
+		user = msg.guild.members.get(`${msg.member.id}`);
+	} else if (gargs.includes("<@") && gargs.includes(">") && !gargs.includes("<@&")) { // get user pinged in command
+		let r;
+		if (gargs.includes("<@!")) {
+			r = gargs.replace(/<@!/g, '');
+		} else if (gargs.includes("<@") && !gargs.includes("<@!")) {
+			r = gargs.replace(/<@/g, '');
+		}
+		let rone = r.replace(/>/g, '');
+		if (msg.guild.members.get(`${rone}`)) { // in current guild
+			user = msg.guild.members.get(`${rone}`);
+		} else if (!msg.guild.members.get(`${rone}`)) { // not in current guild
+			user = bot.users.find(`id`, `${rone}`);
+		}
+	} else if (bot.users.find(`id`, `${args[0]}`)) { // get user by id
+		if (msg.guild.members.get(`${args[0]}`)) {
+			user = msg.guild.members.get(`${args[0]}`);
+		} else if (!msg.guild.members.get(`${args[0]}`)) {
+			user = bot.users.find(`id`, `${args[0]}`);
+		}
+	} else if (bot.users.find("username", `${args[0]}`)) { // get the user by username eg. >user BannerBomb
+		let gusername = bot.users.find("username", `${args[0]}`).id;
+    let user = bot.users.find(`id`, `${gusername}`);
+  }
