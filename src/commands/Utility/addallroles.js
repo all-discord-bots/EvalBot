@@ -5,7 +5,7 @@ exports.run = async (bot, msg, args) => {
   if (args.length < 1) {
     return msg.channel.send("Invalid arguments!");
   }
-  if (args[1].toLowerCase() != "name" || args[1].toLowerCase() != "id") {
+  if (args[0].toLowerCase() != "name" || args[0].toLowerCase() != "id") {
     return msg.channel.send("Invalid arguments!");
   }
   if (args[0].toLowerCase() == "name") {
