@@ -16,7 +16,7 @@ exports.run = async (bot, msg, args) => {
 		user = msg.mentions.users.first();
 	} else if (bot.users.find(`id`, `${gusers}`)) {
 		user = msg.guild.members.get(`${gusers}`);
-	} else if (!msg.mentions.users.first() && !bot.users.find(`id`, `${gusers}`)) {
+	} else if (!args[0]/*!msg.mentions.users.first() && !bot.users.find(`id`, `${gusers}`)*/) {
 		user = msg.guild.members.get(`${msg.member.id}`);
 	} // meed to get the user by plain name eg. BannerBomb
 	let statusemoji;
