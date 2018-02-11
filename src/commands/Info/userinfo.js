@@ -8,16 +8,18 @@ exports.run = async (bot, msg, args) => {
 		'Listening to',
 		'Watching',
 	];
-	if (args[0]) {
-		let gusers = args.join(' ');
-	}
+	let gusers = args.join(' ');
+	let joined;
 	let user;
 	if (msg.mentions.users.first()) {
 		user = msg.mentions.users.first();
+		joined = msg.guild.members.get(`${gusers}`).joinedTimestamp;
 	} else if (bot.users.find(`id`, `${gusers}`)) {
 		user = msg.guild.members.get(`${gusers}`);
-	} else if (!args[0]/*!msg.mentions.users.first() && !bot.users.find(`id`, `${gusers}`)*/) {
+		joined = msg.guild.members.get(`${msg.member.id}`).joinedTimestamp;
+	} else if (!gusers/*!msg.mentions.users.first() && !bot.users.find(`id`, `${gusers}`)*/) {
 		user = msg.guild.members.get(`${msg.member.id}`);
+		joined = msg.guild.members.get(`${msg.member.id}`).joinedTimestamp;
 	} // meed to get the user by plain name eg. BannerBomb
 	let statusemoji;
 	if (user.presence.status === "online") {
@@ -38,7 +40,7 @@ exports.run = async (bot, msg, args) => {
 	let newyear = new Date();
 	let gnewmonth = months[newyear.getMonth()];
 	let gnewyear = newyear.getYear()-100;
-	let jdate = new Date(user.joinedTimestamp); // msg.member.joinedTimestamp
+	let jdate = new Date(joined); // msg.member.joinedTimestamp
 	let jmonth = jdate.getMonth()+1;
 	let jday = jdate.getDate();
 	let jyear = jdate.getFullYear();
