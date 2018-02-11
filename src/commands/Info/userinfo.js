@@ -32,11 +32,19 @@ exports.run = async (bot, msg, args) => {
 			user = bot.users.find(`id`, `${args[0]}`);
 		} 
 	} else if (bot.users.find(`username`, `${args[0]}`)) {
-		let gusername = bot.users.find(`username`, `${args[0]}`).id;
-		user = bot.users.find(`id`, `${gusername}`);
+		let gusername = bot.users.find(`username`, `${args[0]}`);
+		if (msg.guild.members.get(`${gusername.id}`)) {
+			user = msg.guild.members.get(`${gusername.id}`);
+		} else if (!msg.guild.members.get(`${gusername.id}`)) {
+			user = bot.users.find(`id`, `${gusername.id}`);
+		}
 	} else if (bot.users.find(`discriminator`, `${args[0]}`)) {
-		let gdiscrim = bot.users.find(`discriminator`, `${args[0]}`).id;
-		user = bot.users.find(`id`, `${gdiscrim}`);
+		let gdiscrim = bot.users.find(`discriminator`, `${args[0]}`);
+		if (msg.guild.members.get(`${gdiscrim.id}`)) {
+			user = msg.guild.members.get(`${gdiscrim.id}`);
+		} else if (!msg.guild.members.get(`${gdiscrim.id}`)) {
+			user = bot.users.find(`id`, `${gdiscrim.id}`);
+		}
 	}
 	let statusemoji;
 	if (user.presence.status === "online") {
