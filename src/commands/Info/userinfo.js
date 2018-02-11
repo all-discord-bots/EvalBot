@@ -41,7 +41,7 @@ exports.run = async (bot, msg, args) => {
 	let gnewyear = newyear.getYear()-100;
 	let jdate = new Date(joined); // msg.member.joinedTimestamp
 	let jmonth = jdate.getMonth()+1;
-	let jday = jdate.getDate();
+	let jday = days[jdate.getDate()];
 	let jyear = jdate.getFullYear();
 	let ggame;
 	if (user.presence.game !== null) {
@@ -55,7 +55,7 @@ exports.run = async (bot, msg, args) => {
 		thumbnail: {
 			url: `${user.user.avatarURL}`
 		}, author: {
-			name: `${user.tag}`,
+			name: `${user.user.tag}`,
 			icon_url: `${user.user.avatarURL}`
 		}, fields: [
 		{
