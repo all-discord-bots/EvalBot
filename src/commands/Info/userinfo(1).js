@@ -27,7 +27,8 @@ exports.run = async (bot, msg) => {
 	})})
 }
 exports.info = {
-	name: 'userinfo',
-	usage: 'userinfo <user>',
-	description: 'Shows info about a user.',
+	name: 'userinfo(1)',
+	hidden: true,
+	usage: 'userinfo(1) <user>',
+	description: 'Shows info about a user.'
 };
