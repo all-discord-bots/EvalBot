@@ -9,10 +9,19 @@ exports.run = async (bot, msg, args) => {
 		'Watching',
 	];
 	let user;
-	if (msg.mentions.users.first()) {
-		let guserone = msg.mentions.users.first();
-		let gid = user.user.id;
-		user = msg.guild.members.get(`${gid}`);
+	let gargs = args[0];
+	// msg.mentions.users.first()
+	if (gargs.includes("<@") && gargs.includes(">") && !gargs.includes("<@&")) {
+		let r;
+		if (gargs.includes("<@!")) {
+			r = gargs.replace(/<@!/g, '');
+		} else if (gargs.includes("<@") && !gargs.includes("<@!")) {
+			r = gargs.replace(/<@/g, '');
+		}
+		let rone = r.replace(/>/g, '');
+		//let guserone = msg.mentions.users.first();
+		//let gid = user.user.id;
+		user = msg.guild.members.get(`${rone}`);
 		//tag = msg.mentions.users.first().tag;
 	} else if (bot.users.find(`id`, `${args[0]}`)) {
 		user = msg.guild.members.get(`${args[0]}`);
