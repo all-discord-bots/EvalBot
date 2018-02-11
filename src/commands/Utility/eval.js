@@ -1,8 +1,10 @@
 const stripIndents = require('common-tags').stripIndents;
+const moment = require('moment');
+require('moment-duration-format');
 
 exports.run = async (bot, msg, args) => {
     const client = bot;
-    //const message = msg;
+    const message = msg;
     const guild = msg.guild;
     const channel = msg.channel;
     if (msg.author.id !== bot.config.botCreatorID) return;
@@ -15,12 +17,12 @@ exports.run = async (bot, msg, args) => {
     try {
         output = await eval(code);
     } catch (err) {
-        let message = err;
+        let messageone = err;
         if (err && err.response && err.response.body && err.response.body.message) {
-            message = err.response.body.message;
+            messageone = err.response.body.message;
         }
 
-        return errorHandler(msg, bot, code, `${message}`);
+        return errorHandler(msg, bot, code, `${messageone}`);
     }
 
     //msg.delete(); // Delete the error message
