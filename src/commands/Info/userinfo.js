@@ -9,16 +9,20 @@ exports.run = async (bot, msg, args) => {
 		'Watching',
 	];
 	let joined;
+	let created;
 	let user;
 	if (msg.mentions.users.first()) {
 		user = msg.mentions.users.first();
 		joined = msg.mentions.users.first().joinedTimestamp;
+		created = msg.mentions.users.first().createdTimestamp;
 	} else if (bot.users.find(`id`, `${args[0]}`)) {
 		user = msg.guild.members.get(`${args[0]}`);
 		joined = msg.guild.members.get(`${args[0]}`).joinedTimestamp;
+		created = msg.guild.members.get(`${args[0]}`).user.createdTimestamp;
 	} else if (!args[0]/*!msg.mentions.users.first() && !bot.users.find(`id`, `${gusers}`)*/) {
 		user = msg.guild.members.get(`${msg.member.id}`);
 		joined = msg.guild.members.get(`${msg.member.id}`).joinedTimestamp;
+		created = msg.guild.members.get(`${msg.member.id}`).createdTimestamp;
 	} // meed to get the user by plain name eg. BannerBomb
 	let statusemoji;
 	if (user.presence.status === "online") {
@@ -30,7 +34,7 @@ exports.run = async (bot, msg, args) => {
 	} else if (user.presence.status === "offline") {
 		statusemoji = `<:offline:411637359361392650>`;
 	}
-	let gdate = new Date(user.user.createdTimestamp);
+	let gdate = new Date(created);
 	let months = ['01','02','03','04','05','06','07','08','09','10','11','12'];
 	let days = ['00','01','02','03','04','05','06','07','08','09','10','11','12','13','14','15','16','17','18','19','20','21','22','23','24','25','26','27','28','29','30','31'];
 	let gmonth = months[gdate.getMonth()];
