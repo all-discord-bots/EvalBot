@@ -1,4 +1,6 @@
 const stripIndents = require('common-tags').stripIndents;
+const Discord = require('discord.js');
+const sql = require('mysql');
 const moment = require('moment');
 require('moment-duration-format');
 
