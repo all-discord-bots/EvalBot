@@ -9,6 +9,7 @@ exports.run = async (bot, msg, args) => {
 		'Watching',
 	];
 	let user;
+	let toprole;
 	let gargs = args[0];
 	if (args.length < 1) {
 		user = msg.guild.members.get(`${msg.member.id}`);
@@ -22,12 +23,16 @@ exports.run = async (bot, msg, args) => {
 		let rone = r.replace(/>/g, '');
 		if (msg.guild.members.get(`${rone}`)) { // in current guild
 			user = msg.guild.members.get(`${rone}`);
+			let gtoprole = user.roles.filter(m => m.name).map(m => m.position).sort(function(a, b){return b-a});
+			toprole = user.roles.filter(m => m.position === gtoprole[0]).map(m => m.name);
 		} else if (!msg.guild.members.get(`${rone}`)) { // not in current guild
 			user = bot.users.find(`id`, `${rone}`);
 		}
 	} else if (bot.users.find(`id`, `${args[0]}`)) {
 		if (msg.guild.members.get(`${args[0]}`)) {
 			user = msg.guild.members.get(`${args[0]}`);
+			let gtoprole = user.roles.filter(m => m.name).map(m => m.position).sort(function(a, b){return b-a});
+			toprole = user.roles.filter(m => m.position === gtoprole[0]).map(m => m.name);
 		} else if (!msg.guild.members.get(`${args[0]}`)) {
 			user = bot.users.find(`id`, `${args[0]}`);
 		} 
@@ -35,6 +40,8 @@ exports.run = async (bot, msg, args) => {
 		let gusername = bot.users.find(`username`, `${args[0]}`);
 		if (msg.guild.members.get(`${gusername.id}`)) {
 			user = msg.guild.members.get(`${gusername.id}`);
+			let gtoprole = user.roles.filter(m => m.name).map(m => m.position).sort(function(a, b){return b-a});
+			toprole = user.roles.filter(m => m.position === gtoprole[0]).map(m => m.name);
 		} else if (!msg.guild.members.get(`${gusername.id}`)) {
 			user = bot.users.find(`id`, `${gusername.id}`);
 		}
@@ -42,6 +49,8 @@ exports.run = async (bot, msg, args) => {
 		let gdiscrim = bot.users.find(`discriminator`, `${args[0]}`);
 		if (msg.guild.members.get(`${gdiscrim.id}`)) {
 			user = msg.guild.members.get(`${gdiscrim.id}`);
+			let gtoprole = user.roles.filter(m => m.name).map(m => m.position).sort(function(a, b){return b-a});
+			toprole = user.roles.filter(m => m.position === gtoprole[0]).map(m => m.name);
 		} else if (!msg.guild.members.get(`${gdiscrim.id}`)) {
 			user = bot.users.find(`id`, `${gdiscrim.id}`);
 		}
@@ -103,7 +112,7 @@ exports.run = async (bot, msg, args) => {
 			value: `${moment.utc(jdate).format(`${jday}-${jmonth}-${jyear}`, "DD-MM-YY")}`
 		}, {
 			name: 'Highest Role',
-			value: 'N/A',
+			value: `${toprole}`,
 			inline: true
 		}, {
 			name: 'Member #',
