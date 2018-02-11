@@ -91,15 +91,30 @@ exports.run = async (bot, msg, args) => {
 	} else {
 		ggame = "";
 	}
+	
 	if (msg.guild.members.get(`${user.id}`)) {
+		let avatarurl;
+		if (user.user.avatarURL !== null) {
+			avatarurl = user.user.avatarURL;
+		} else {
+			let gennumber = Math.floor(Math.random(0) * 5); // 0-4
+			/*
+			* 0 - Blue
+			* 1 - Grey
+			* 2 - Green
+			* 3 - Orange
+			* 4 - Red
+			*/
+			avatarurl = `https://cdn.discordapp.com/embed/avatars/${gennumber}.png?width=80&height=80`;
+		}
 	msg.channel.send({embed: ({
 		color: 3447003,
 		description: `${statusemoji} <@${user.id}>${ggame}`,
 		thumbnail: {
-			url: `${user.user.avatarURL}`
+			url: `${avatarurl}`
 		}, author: {
 			name: `${user.user.tag}`,
-			icon_url: `${user.user.avatarURL}`
+			icon_url: `${avatarurl}`
 		}, fields: [
 		{
 			name: 'User ID',
@@ -124,14 +139,28 @@ exports.run = async (bot, msg, args) => {
 	],
 })})
 	} else if (!msg.guild.members.get(`${user.id}`)) {
+		let avatarurl;
+		if (user.avatarURL !== null) {
+			avatarurl = user.avatarURL;
+		} else {
+			let gennumber = Math.floor(Math.random(0) * 5); // 0-4
+			/*
+			* 0 - Blue
+			* 1 - Grey
+			* 2 - Green
+			* 3 - Orange
+			* 4 - Red
+			*/
+			avatarurl = `https://cdn.discordapp.com/embed/avatars/${gennumber}.png?width=80&height=80`;
+		}
 		msg.channel.send({embed: ({
 		color: 3447003,
 		description: `${statusemoji} <@${user.id}>${ggame}`,
 		thumbnail: {
-			url: `${user.avatarURL}`
+			url: `${avatarurl}`
 		}, author: {
 			name: `${user.tag}`,
-			icon_url: `${user.avatarURL}`
+			icon_url: `${avatarurl}`
 		}, fields: [
 		{
 			name: 'User ID',
