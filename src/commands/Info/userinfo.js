@@ -32,10 +32,10 @@ exports.run = async (bot, msg, args) => {
 		} else if (!msg.guild.members.get(`${args[0]}`)) {
 			user = bot.users.find(`id`, `${args[0]}`);
 		} else if (bot.users.find(`username`, `${args[0]}`)) {
-			let gusername = bot.users.find(`username`, `${`${args[0]}`).id;
+			let gusername = bot.users.find(`username`, `${args[0]}`).id;
 			user = bot.users.find(`id`, `${gusername}`);
-		} else if (bot.users.find(`discriminator`, `${`${args[0]}`)) {
-			let gdiscrim = bot.users.find(`discriminator`, `${`args[0]}`).id;
+		} else if (bot.users.find(`discriminator`, `${args[0]}`)) {
+			let gdiscrim = bot.users.find(`discriminator`, `${args[0]}`).id;
 			user = bot.users.find(`id`, `${gdiscrim}`);
 		}
 	} // meed to get the user by plain name eg. BannerBomb
