@@ -30,18 +30,18 @@ exports.run = async (bot, msg, args) => {
 	} else if (user.presence.status === "offline") {
 		statusemoji = `<:offline:411637359361392650>`;
 	}
-	let gdate = new Date(user.createdTimestamp);
+	let gdate = new Date(user.user.createdTimestamp);
 	let months = ['01','02','03','04','05','06','07','08','09','10','11','12'];
 	let days = ['00','01','02','03','04','05','06','07','08','09','10','11','12','13','14','15','16','17','18','19','20','21','22','23','24','25','26','27','28','29','30','31'];
 	let gmonth = months[gdate.getMonth()];
-	let gday = days[gdate.getDate()+1];
+	let gday = days[gdate.getDate()];
 	let gyear = gdate.getYear()-100;
 	let newyear = new Date();
 	let gnewmonth = months[newyear.getMonth()];
 	let gnewyear = newyear.getYear()-100;
 	let jdate = new Date(joined); // msg.member.joinedTimestamp
 	let jmonth = months[jdate.getMonth()];
-	let jday = days[jdate.getDate()+1];
+	let jday = days[jdate.getDate()];
 	let jyear = jdate.getYear()-100;
 	let ggame;
 	if (user.presence.game !== null) {
@@ -64,7 +64,7 @@ exports.run = async (bot, msg, args) => {
 		}, {
 			name: 'Joined Discord',
 			//value: `${gday}-${gmonth}-${gyear} (${gnewyear-gyear} year and ${gnewmonth-gmonth} month ago)`
-			value: `${moment.utc(gdate).format(`${gday}-${jmonth}-${jyear}`, "DD-MM-YY")}`
+			value: `${moment.utc(gdate).format(`${gday}-${gmonth}-${gyear}`, "DD-MM-YY")}`
 		}, {
 			name: 'Joined Server',
 			//value: `${gsday}-${gsmonth}-${gsyear} (${gsmonth-gmonth} month ago)`
