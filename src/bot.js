@@ -4,7 +4,10 @@ const https = require('https');
 const path = require('path');
 const fse = require('fs-extra');
 const Discord = require('discord.js');
-const client = new Discord.Client();
+//const client = new Discord.Client();
+const client = new Discord.Client({
+	autoReconnect: true
+});
 //const reconnectHook = new Discord.WebhookClient("409525362381553665", "qiPJaiOgZLHrH8FHNQhcaaTzMcIAIBqxhig0p0HUMuynIbmFhCkQU1-yy8m3IVrQp5lc");
 const stripIndents = require('common-tags').stripIndents;
 const chalk = require('chalk');
