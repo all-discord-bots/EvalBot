@@ -13,6 +13,8 @@ exports.run = async (bot, msg, args) => {
 	let gargs = args[0];
 	if (args.length < 1) {
 		user = msg.guild.members.get(`${msg.member.id}`);
+		let gtoprole = user.roles.filter(m => m.name).map(m => m.position).sort(function(a, b){return b-a});
+		toprole = user.roles.filter(m => m.position === gtoprole[0]).map(m => m.name);
 	} else if (gargs.includes("<@") && gargs.includes(">") && !gargs.includes("<@&")) {
 		let r;
 		if (gargs.includes("<@!")) {
