@@ -6,9 +6,9 @@ exports.run = async (bot, msg, args) => {
     return msg.channel.send("Invalid arguments!");
   }
   if (msg.guild.roles.find(`name`, `${args[0]}`)) {
-    msg.guild.roles.find(`name`, `${args[0]}`).members.map(m => m.addRole(`name`, `${args[0]}`));
+    msg.guild.roles.find(`name`, `${args[0]}`).members.filter(m => !m.user.bot).map(m => m.addRole(`name`, `${args[0]}`));
   } else if (msg.guild.roles.find(`id`, `${args[0]}`)) {
-    msg.guild.roles.find(`id`, `${args[0]}`).members.map(m => m.addRole(`id`, `${args[0]}`));
+    msg.guild.roles.find(`id`, `${args[0]}`).members.filter(m => !m.user.bot).map(m => m.addRole(`id`, `${args[0]}`));
   }
 };
   
