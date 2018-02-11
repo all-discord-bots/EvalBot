@@ -3,10 +3,10 @@ const moment = require('moment');
 require('moment-duration-format');
 exports.run = async (bot, msg, args) => {
 	const activityTypes = [
-		'playing',
-		'streaming',
-		'listening to',
-		'watching',
+		'Playing',
+		'Streaming',
+		'Listening to',
+		'Watching',
 	];
 	let gusers = args.join(' ');
 	let user;
@@ -15,7 +15,7 @@ exports.run = async (bot, msg, args) => {
 	} else if (bot.users.find(`id`, `${gusers}`)) {
 		user = bot.users.find(`id`, `${gusers}`);
 	} else if (!msg.mentions.users.first() && bot.users.find(`id`, `${gusers}`)) {
-		user = msg.member;
+		user = bot.users.find(`id`, `${msg.member.id}`);
 	} // meed to get the user by plain name eg. BannerBomb
 	let statusemoji;
 	if (user.presence.status === "online") {
@@ -41,7 +41,7 @@ exports.run = async (bot, msg, args) => {
 	let jday = jdate.getDate();
 	let jyear = jdate.getFullYear();
 	let ggame;
-	if (user.presence.game != null) {
+	if (user.presence.game !== null) {
 		ggame = `\n <:transparent:411703305467854889>${activityTypes[user.presence.game.type]} **${user.presence.game.name}**`; // For bot.user.localPresence.game.since
 	} else {
 		ggame = "";
