@@ -19,7 +19,7 @@ exports.run = async (bot, msg, args) => {
 		let r;
 		if (gargs.includes("<@!")) {
 			r = gargs.replace(/<@!/g, '');
-		} else if (gargs.includes("<@") && !gargs.includes("<@!")) {
+		} else if (gargs.includes("<@") && !gargs.includes("!")) {
 			r = gargs.replace(/<@/g, '');
 		}
 		let rone = r.replace(/>/g, '');
