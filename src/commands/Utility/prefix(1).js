@@ -14,7 +14,8 @@ exports.run = async (bot, msg, args) => {
 };
 
 exports.info = {
-    name: 'prefix',
-    usage: 'prefix <new prefix>',
+    name: 'prefix1',
+    hidden: true,
+    usage: 'prefix1 <new prefix>',
     description: 'Sets the bot prefix'
 };
