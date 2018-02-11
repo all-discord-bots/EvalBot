@@ -1,14 +1,22 @@
 const https = require('https')
 const moment = require('moment');
 require('moment-duration-format');
-exports.run = async (bot, msg) => {
+exports.run = async (bot, msg, args) => {
 	const activityTypes = [
 		'playing',
 		'streaming',
 		'listening to',
 		'watching',
 	];
-	var user = msg.mentions.users.first();
+	let gusers = args.join(' ');
+	let user;
+	if (msg.mentions.users.first()) {
+		user = msg.mentions.users.first();
+	} else if (bot.users.find(`id`, `${gusers}`)) {
+		user = bot.users.find(`id`, `${gusers}`);
+	} else if (!msg.mentions.users.first() && bot.users.find(`id`, `${gusers}`)) {
+		user = msg.member;
+	} // meed to get the user by plain name eg. BannerBomb
 	let statusemoji;
 	if (user.presence.status === "online") {
 		statusemoji = `<:online:411637359398879232>`;
@@ -28,7 +36,7 @@ exports.run = async (bot, msg) => {
 	//let newyear = new Date();
 	//let gnewmonth = months[newyear.getMonth()];
 	//let gnewyear = newyear.getYear()-100;
-	let jdate = new Date(user.member.joinedTimestamp); // msg.member.joinedTimestamp
+	let jdate = new Date(user.joinedTimestamp); // msg.member.joinedTimestamp
 	//let gsmonth = months[gsdate.getMonth()];
 	//let gsday = days[gsdate.getDate()+1];
 	//let gsyear = gsdate.getYear()-100;
