@@ -52,3 +52,10 @@ let user;
 				name: 'User Notes',
 				value: ((user.note === null || user.note === '') ? 'None' : user.note)
 			}
+			
+			
+			
+			
+// get users top role name
+let rol = msg.member.roles.filter(m => m.name).map(m => m.position).sort(function(a, b){return b-a});
+let rolone = msg.member.roles.filter(m => m.position === rol[0]).map(m => m.name); rolone
