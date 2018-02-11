@@ -1,12 +1,8 @@
-if (
-
-
-
-
-let gargs = args[0];
-	if (args.length < 1) { // do this is there is no arguments get the user running the command
+let user;
+	let gargs = args[0];
+	if (args.length < 1) { // get the user who is using the command if no arguments are provided
 		user = msg.guild.members.get(`${msg.member.id}`);
-	} else if (gargs.includes("<@") && gargs.includes(">") && !gargs.includes("<@&")) { // get user pinged in command
+	} else if (gargs.includes("<@") && gargs.includes(">") && !gargs.includes("<@&")) { // get pinged user
 		let r;
 		if (gargs.includes("<@!")) {
 			r = gargs.replace(/<@!/g, '');
@@ -19,16 +15,24 @@ let gargs = args[0];
 		} else if (!msg.guild.members.get(`${rone}`)) { // not in current guild
 			user = bot.users.find(`id`, `${rone}`);
 		}
-	} else if (bot.users.find(`id`, `${args[0]}`)) { // get user by id
+	} else if (bot.users.find(`id`, `${args[0]}`)) { // get user by ID
 		if (msg.guild.members.get(`${args[0]}`)) {
 			user = msg.guild.members.get(`${args[0]}`);
 		} else if (!msg.guild.members.get(`${args[0]}`)) {
 			user = bot.users.find(`id`, `${args[0]}`);
+		} 
+	} else if (bot.users.find(`username`, `${args[0]}`)) { // get user by username
+		let gusername = bot.users.find(`username`, `${args[0]}`);
+		if (msg.guild.members.get(`${gusername.id}`)) {
+			user = msg.guild.members.get(`${gusername.id}`);
+		} else if (!msg.guild.members.get(`${gusername.id}`)) {
+			user = bot.users.find(`id`, `${gusername.id}`);
 		}
-	} else if (bot.users.find("username", `${args[0]}`)) { // get the user by username eg. >user BannerBomb
-		let gusername = bot.users.find("username", `${args[0]}`).id;
-    let user = bot.users.find(`id`, `${gusername}`);
-  }  else if (bot.users.find(`discriminator`, `${args[0]}`)) { // get user by discriminator
-		let gdiscrim = bot.users.find(`discriminator`, `${args[0]}`).id;
-		user = bot.users.find(`id`, `${gdiscrim}`);
+	} else if (bot.users.find(`discriminator`, `${args[0]}`)) { // get user by discriminator
+		let gdiscrim = bot.users.find(`discriminator`, `${args[0]}`);
+		if (msg.guild.members.get(`${gdiscrim.id}`)) {
+			user = msg.guild.members.get(`${gdiscrim.id}`);
+		} else if (!msg.guild.members.get(`${gdiscrim.id}`)) {
+			user = bot.users.find(`id`, `${gdiscrim.id}`);
+		}
 	}
