@@ -28,4 +28,7 @@ let gargs = args[0];
 	} else if (bot.users.find("username", `${args[0]}`)) { // get the user by username eg. >user BannerBomb
 		let gusername = bot.users.find("username", `${args[0]}`).id;
     let user = bot.users.find(`id`, `${gusername}`);
-  }
+  }  else if (bot.users.find(`discriminator`, `${args[0]}`)) { // get user by discriminator
+		let gdiscrim = bot.users.find(`discriminator`, `${args[0]}`).id;
+		user = bot.users.find(`id`, `${gdiscrim}`);
+	}
