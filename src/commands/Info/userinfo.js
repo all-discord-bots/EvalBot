@@ -11,7 +11,9 @@ exports.run = async (bot, msg, args) => {
 	let user;
 	let gargs = args[0];
 	// msg.mentions.users.first()
-	if (gargs.includes("<@") && gargs.includes(">") && !gargs.includes("<@&")) {
+	if (args.length < 1) { // !msg.mentions.users.first() && !bot.users.find(`id`, `${gusers}`)) {
+		user = msg.guild.members.get(`${msg.member.id}`);
+	} else if (gargs.includes("<@") && gargs.includes(">") && !gargs.includes("<@&")) {
 		let r;
 		if (gargs.includes("<@!")) {
 			r = gargs.replace(/<@!/g, '');
@@ -34,8 +36,6 @@ exports.run = async (bot, msg, args) => {
 		} else if (!msg.guild.members.get(`${args[0]}`)) {
 			user = bot.users.find(`id`, `${args[0]}`);
 		}
-	} else if (args.length < 1) { // !msg.mentions.users.first() && !bot.users.find(`id`, `${gusers}`)) {
-		user = msg.guild.members.get(`${msg.member.id}`);
 	} // meed to get the user by plain name eg. BannerBomb
 	let statusemoji;
 	if (user.presence.status === "online") {
