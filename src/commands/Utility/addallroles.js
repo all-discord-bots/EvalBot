@@ -5,13 +5,10 @@ exports.run = async (bot, msg, args) => {
   if (args.length < 1) {
     return msg.channel.send("Invalid arguments!");
   }
-  if (args[0].toLowerCase() != "name" || args[0].toLowerCase() != "id") {
-    return msg.channel.send("Invalid arguments!");
-  }
-  if (args[0].toLowerCase() == "name") {
-    msg.guild.roles.find('name', `${args[1]}`).members.map(m => m.addRole('name', `${args[1]}`));
-  } else if (args[0].toLowerCase() == "id") {
-    msg.guild.roles.find('id', `${args[1]}`).members.map(m => m.addRole('id', `${args[1]}`));
+  if (msg.guild.roles.find(`name`, `${args[0]}`)) {
+    msg.guild.roles.find(`name`, `${args[0]}`).members.map(m => m.addRole(`name`, `${args[0]}`));
+  } else if (msg.guild.roles.find(`id`, `${args[0]}`)) {
+    msg.guild.roles.find(`id`, `${args[0]}`).members.map(m => m.addRole(`id`, `${args[0]}`));
   }
 };
   
