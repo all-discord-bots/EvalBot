@@ -13,7 +13,7 @@ exports.run = async (bot, msg, args) => {
 	let user;
 	if (msg.mentions.users.first()) {
 		user = msg.mentions.users.first();
-		joined = msg.guild.members.get(`${gusers}`).joinedTimestamp;
+		joined = msg.mentions.users.first().joinedTimestamp;
 	} else if (bot.users.find(`id`, `${gusers}`)) {
 		user = msg.guild.members.get(`${gusers}`);
 		joined = msg.guild.members.get(`${msg.member.id}`).joinedTimestamp;
