@@ -8,13 +8,15 @@ exports.run = async (bot, msg, args) => {
 		'Listening to',
 		'Watching',
 	];
-	let gusers = args.join(' ');
+	if (args[0]) {
+		let gusers = args.join(' ');
+	}
 	let user;
 	if (msg.mentions.users.first()) {
 		user = msg.mentions.users.first();
 	} else if (bot.users.find(`id`, `${gusers}`)) {
 		user = bot.users.find(`id`, `${gusers}`);
-	} else if (!msg.mentions.users.first() && bot.users.find(`id`, `${gusers}`)) {
+	} else if (!msg.mentions.users.first() && !bot.users.find(`id`, `${gusers}`)) {
 		user = bot.users.find(`id`, `${msg.member.id}`);
 	} // meed to get the user by plain name eg. BannerBomb
 	let statusemoji;
