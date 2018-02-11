@@ -10,19 +10,25 @@ exports.run = async (bot, msg, args) => {
 	];
 	let joined;
 	let created;
+	let avatar;
+	//let tag;
 	let user;
 	if (msg.mentions.users.first()) {
 		user = msg.mentions.users.first();
 		joined = msg.mentions.users.first().joinedTimestamp;
 		created = msg.mentions.users.first().createdTimestamp;
+		avatar = msg.mentions.users.first().avatarURL;
+		//tag = msg.mentions.users.first().tag;
 	} else if (bot.users.find(`id`, `${args[0]}`)) {
 		user = msg.guild.members.get(`${args[0]}`);
 		joined = msg.guild.members.get(`${args[0]}`).joinedTimestamp;
 		created = msg.guild.members.get(`${args[0]}`).user.createdTimestamp;
+		avatar = msg.guild.members.get(`${args[0]}`).user.avatarURL;
 	} else if (!args[0]/*!msg.mentions.users.first() && !bot.users.find(`id`, `${gusers}`)*/) {
 		user = msg.guild.members.get(`${msg.member.id}`);
 		joined = msg.guild.members.get(`${msg.member.id}`).joinedTimestamp;
-		created = msg.guild.members.get(`${msg.member.id}`).createdTimestamp;
+		created = msg.guild.members.get(`${msg.member.id}`).user.createdTimestamp;
+		avatar = msg.guild.members.get(`${args[0]}`).user.avatarURL;
 	} // meed to get the user by plain name eg. BannerBomb
 	let statusemoji;
 	if (user.presence.status === "online") {
@@ -57,10 +63,10 @@ exports.run = async (bot, msg, args) => {
 		color: 3447003,
 		description: `${statusemoji} <@${user.id}>${ggame}`,
 		thumbnail: {
-			url: `${user.user.avatarURL}`
+			url: `${avatar}`
 		}, author: {
 			name: `${user.user.tag}`,
-			icon_url: `${user.user.avatarURL}`
+			icon_url: `${avatar}`
 		}, fields: [
 		{
 			name: 'User ID',
