@@ -4,7 +4,7 @@ exports.run = async (bot, msg, args) => {
       return msg.channel.send('You must have the permission `Manage Messages`!');
     }
   }
-  const user = (msg.mentions.users.first() || bot.users.get(args[0]) || null);
+/*  const user = (msg.mentions.users.first() || bot.users.get(args[0]) || null);
   const amount = !!user ? parseInt(msg.content.split(" ")[2], 10) : parseInt(msg.content.split(" ")[1], 10);
   if (!amount) return msg.channel.send("Must specify an amount to delete!");
   if (!amount && !user) return msg.channel.send("Must specify a user and amount, or just an amount, of messages to purge!");
@@ -19,10 +19,13 @@ exports.run = async (bot, msg, args) => {
     messages.length = amount + 1;
   }
   messages.map(async m => await m.delete().catch(console.error));
+*/
+  msg.channel.bulkDelete(`${args[0]}`);
 };
 
 exports.info = {
   name: 'purge',
   description: 'Deletes messages from anyone in the channel',
-  usage: 'purge <user>|<number of messages>'
+  //usage: 'purge <user>|<number of messages>'
+  usage: 'purge <amount>'
 };
