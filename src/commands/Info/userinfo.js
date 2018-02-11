@@ -11,7 +11,7 @@ exports.run = async (bot, msg, args) => {
 	let user;
 	if (msg.mentions.users.first()) {
 		let guserone = msg.mentions.users.first();
-		let gid = user.id;
+		let gid = user.member.id;
 		user = msg.guild.members.get(`${gid}`);
 		//tag = msg.mentions.users.first().tag;
 	} else if (bot.users.find(`id`, `${args[0]}`)) {
