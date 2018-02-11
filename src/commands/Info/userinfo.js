@@ -15,9 +15,9 @@ exports.run = async (bot, msg, args) => {
 	if (msg.mentions.users.first()) {
 		user = msg.mentions.users.first();
 	} else if (bot.users.find(`id`, `${gusers}`)) {
-		user = bot.users.find(`id`, `${gusers}`);
+		user = msg.guild.members.get(`${gusers}`);
 	} else if (!msg.mentions.users.first() && !bot.users.find(`id`, `${gusers}`)) {
-		user = bot.users.find(`id`, `${msg.member.id}`);
+		user = msg.guild.members.get(`${msg.member.id}`);
 	} // meed to get the user by plain name eg. BannerBomb
 	let statusemoji;
 	if (user.presence.status === "online") {
@@ -38,7 +38,7 @@ exports.run = async (bot, msg, args) => {
 	let newyear = new Date();
 	let gnewmonth = months[newyear.getMonth()];
 	let gnewyear = newyear.getYear()-100;
-	let jdate = new Date(user.member.joinedTimestamp); // msg.member.joinedTimestamp
+	let jdate = new Date(user.joinedTimestamp); // msg.member.joinedTimestamp
 	let jmonth = jdate.getMonth()+1;
 	let jday = jdate.getDate();
 	let jyear = jdate.getFullYear();
