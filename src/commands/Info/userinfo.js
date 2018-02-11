@@ -27,8 +27,8 @@ exports.run = async (bot, msg, args) => {
 	} else if (!args[0]/*!msg.mentions.users.first() && !bot.users.find(`id`, `${gusers}`)*/) {
 		user = msg.guild.members.get(`${msg.member.id}`);
 		joined = msg.guild.members.get(`${msg.member.id}`).joinedTimestamp;
-		created = msg.guild.members.get(`${msg.member.id}`).user.createdTimestamp;
-		avatar = msg.guild.members.get(`${args[0]}`).user.avatarURL;
+		created = msg.guild.members.get(`${msg.member.id}`).createdTimestamp;
+		avatar = msg.guild.members.get(`${msg.member.id}`).avatarURL;
 	} // meed to get the user by plain name eg. BannerBomb
 	let statusemoji;
 	if (user.presence.status === "online") {
