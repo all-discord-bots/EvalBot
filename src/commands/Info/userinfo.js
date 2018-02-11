@@ -54,10 +54,10 @@ exports.run = async (bot, msg, args) => {
 		color: 3447003,
 		description: `${statusemoji} <@${user.id}>${ggame}`,
 		thumbnail: {
-			url: `${user.avatarURL}`
+			url: `${user.user.avatarURL}`
 		}, author: {
 			name: `${user.tag}`,
-			icon_url: `${user.avatarURL}`
+			icon_url: `${user.user.avatarURL}`
 		}, fields: [
 		{
 			name: 'User ID',
