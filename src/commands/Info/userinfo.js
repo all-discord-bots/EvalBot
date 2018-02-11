@@ -8,16 +8,15 @@ exports.run = async (bot, msg, args) => {
 		'Listening to',
 		'Watching',
 	];
-	let gusers = args.join(' ');
 	let joined;
 	let user;
 	if (msg.mentions.users.first()) {
 		user = msg.mentions.users.first();
 		joined = msg.mentions.users.first().joinedTimestamp;
-	} else if (bot.users.find(`id`, `${gusers}`)) {
-		user = msg.guild.members.get(`${gusers}`);
-		joined = msg.guild.members.get(`${msg.member.id}`).joinedTimestamp;
-	} else if (!gusers/*!msg.mentions.users.first() && !bot.users.find(`id`, `${gusers}`)*/) {
+	} else if (bot.users.find(`id`, `${args[0]}`)) {
+		user = msg.guild.members.get(`${args[0]}`);
+		joined = msg.guild.members.get(`${args[0]}`).joinedTimestamp;
+	} else if (!args[0]/*!msg.mentions.users.first() && !bot.users.find(`id`, `${gusers}`)*/) {
 		user = msg.guild.members.get(`${msg.member.id}`);
 		joined = msg.guild.members.get(`${msg.member.id}`).joinedTimestamp;
 	} // meed to get the user by plain name eg. BannerBomb
