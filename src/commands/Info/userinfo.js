@@ -40,9 +40,9 @@ exports.run = async (bot, msg, args) => {
 	let gnewmonth = months[newyear.getMonth()];
 	let gnewyear = newyear.getYear()-100;
 	let jdate = new Date(joined); // msg.member.joinedTimestamp
-	let jmonth = jdate.getMonth()+1;
-	let jday = days[jdate.getDate()];
-	let jyear = jdate.getFullYear();
+	let jmonth = months[jdate.getMonth()];
+	let jday = days[jdate.getDate()+1];
+	let jyear = jdate.getYear()-100;
 	let ggame;
 	if (user.presence.game !== null) {
 		ggame = `\n <:transparent:411703305467854889>${activityTypes[user.presence.game.type]} **${user.presence.game.name}**`; // For bot.user.localPresence.game.since
@@ -63,8 +63,8 @@ exports.run = async (bot, msg, args) => {
 			value: `${user.id}`
 		}, {
 			name: 'Joined Discord',
-			value: `${gday}-${gmonth}-${gyear} (${gnewyear-gyear} year and ${gnewmonth-gmonth} month ago)`
-			//value: `${moment.utc(cdate).format(`${cday}-${jmonth}-${jyear}`, "DD-MM-YY")}`
+			//value: `${gday}-${gmonth}-${gyear} (${gnewyear-gyear} year and ${gnewmonth-gmonth} month ago)`
+			value: `${moment.utc(gdate).format(`${gday}-${jmonth}-${jyear}`, "DD-MM-YY")}`
 		}, {
 			name: 'Joined Server',
 			//value: `${gsday}-${gsmonth}-${gsyear} (${gsmonth-gmonth} month ago)`
