@@ -14,6 +14,6 @@ exports.run = async (bot, msg, args) => {
   
 exports.info = {
   name: 'giveallrole',
-  usage: 'giveallrole <name|id> <role name|role id>',
+  usage: 'giveallrole <role name|role id>',
   description: 'Add a role to every member in your server'
 };
