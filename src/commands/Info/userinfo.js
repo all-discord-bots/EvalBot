@@ -10,8 +10,7 @@ exports.run = async (bot, msg, args) => {
 	];
 	let user;
 	let gargs = args[0];
-	// msg.mentions.users.first()
-	if (args.length < 1) { // !msg.mentions.users.first() && !bot.users.find(`id`, `${gusers}`)) {
+	if (args.length < 1) {
 		user = msg.guild.members.get(`${msg.member.id}`);
 	} else if (gargs.includes("<@") && gargs.includes(">") && !gargs.includes("<@&")) {
 		let r;
@@ -21,9 +20,6 @@ exports.run = async (bot, msg, args) => {
 			r = gargs.replace(/<@/g, '');
 		}
 		let rone = r.replace(/>/g, '');
-		//let guserone = msg.mentions.users.first();
-		//let gid = user.user.id;
-		
 		if (msg.guild.members.get(`${rone}`)) { // in current guild
 			user = msg.guild.members.get(`${rone}`);
 		} else if (!msg.guild.members.get(`${rone}`)) { // not in current guild
@@ -35,6 +31,12 @@ exports.run = async (bot, msg, args) => {
 			user = msg.guild.members.get(`${args[0]}`);
 		} else if (!msg.guild.members.get(`${args[0]}`)) {
 			user = bot.users.find(`id`, `${args[0]}`);
+		} else if (bot.users.find(`username`, `${args[0]}`)) {
+			let gusername = bot.users.find(`username`, `${args[0]}`).id;
+			user = bot.users.find(`id`, `${gusername}`);
+		} else if (bot.users.find(`discriminator`, `${args[0]}`)) {
+			let gdiscrim = bot.users.find(`discriminator`, `${args[0]}`).id;
+			user = bot.users.find(`id`, `${gdiscrim}`);
 		}
 	} // meed to get the user by plain name eg. BannerBomb
 	let statusemoji;
