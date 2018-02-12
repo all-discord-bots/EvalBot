@@ -197,7 +197,11 @@ bot.on('message', (msg) => {
 	if (!bot.config.allowDMCmds) {
 		if (msg.channel.type == "dm") return;
 	}
-	if (msg.content == bot.config.prefix || msg.content == bot.config.prefix + " " || msg.content == " " + bot.config.prefix) return;
+	if (!bot.config[msg.guild.id]) {
+		if (msg.content == bot.config.prefix || msg.content == bot.config.prefix + " " || msg.content == " " + bot.config.prefix) return;
+	} else if (bot.config[msg.guild.id]) {
+		if (msg.content == bot.config[msg.guild.id].prefix || msg.content == bot.config[msg.guild.id].prefix + " " || msg.content == " " + bot.config[msg.guild.id].prefix) return;
+	}
 	//if (msg.guild.owner.user.id !== msg.author.id) return;
 	if (msg.guild && bot.config.blacklistedServers && bot.config.blacklistedServers.indexOf(msg.guild.id.toString()) > -1) {
 		return;
@@ -267,10 +271,15 @@ process.on('uncaughtException', (err) => {
 process.on('unhandledRejection', err => {
     logger.severe('Uncaught Promise error: \n' + err.stack);
 });
-
+let gp;
+if (!bot.config[msg.guild.id]) {
+	gp = bot.config.prefix;
+} else if (bot.config[msg.guild.id]) {
+	gp = bot.config[msg.guild.id].prefix;
+}
 music(bot, {
 	// https://github.com/nexu-dev/discord.js-music/blob/master/README.md
-	prefix: bot.config.prefix, // The prefix to use for the commands.
+	prefix: gp, // The prefix to use for the commands.
 	global: false, // Wether to use a global queue instead of a server-specific queue.
 	maxQueueSize: 100, // Maximum queue size.
 	anyoneCanSkip: true, // Allow anybody to skip the song. If false then only admins and the user that requested the song can skip it.
