@@ -1,15 +1,10 @@
 exports.run = async (bot, msg) => {
-console.log("view queue");
+  if (msg.author.id !== bot.config.botCreatorID) return;
+  console.log("view queue");
 };
-let hide;
-if (!bot.config.usemusic) {
-  hide = true;
-} else {
-  hide = false;
-}
 exports.info = {
   name: 'queue',
-  hidden: `${hide}`,
+  hidden: true,
   usage: 'queue',
   description: 'Display the current queue.'
 };
