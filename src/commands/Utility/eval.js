@@ -3,6 +3,7 @@ const Discord = require('discord.js');
 const sql = require('mysql');
 const moment = require('moment');
 require('moment-duration-format');
+const chalk = require('chalk');
 
 exports.run = async (bot, msg, args) => {
     const client = bot;
