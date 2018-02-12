@@ -1,8 +1,6 @@
 exports.run = async (bot, msg) => {
     if (msg.author.id !== bot.config.botCreatorID) return;
-    (await msg.channel.send("Rebooting Bot...").then((msg)=>{
-        msg.edit('✅ Rebooting bot.');
-    }));
+        msg.channel.send(`<:check:411976443522711552> Rebooting bot.`);
     process.exit(1);
 };
 
