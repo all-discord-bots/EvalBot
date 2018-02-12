@@ -92,7 +92,7 @@ class CommandManager {
     }
 
     handleCommand(msg, input) {
-        const prefix;
+        let prefix;
         if (!this.bot.config[msg.guild.id]) {
             prefix = this.bot.config.prefix;
         } else if (this.bot.config[msg.guild.id]) {
@@ -128,7 +128,7 @@ class CommandManager {
             });
 
             if (maybe) {
-                const mprefix;
+                let mprefix;
                 if (!this.bot.config[msg.guild.id]) {
                     mprefix = this.bot.config.prefix;
                 } else if (this.bot.config[msg.guild.id]) {
@@ -136,7 +136,7 @@ class CommandManager {
                 }
                 return msg.channel.send(`:question: Did you mean \`${mprefix}${maybe}\`?`);//.then(m => m.delete(5000));
             } else {
-                const nprefix;
+                let nprefix;
                 if (!this.bot.config[msg.guild.id]) {
                     nprefix = this.bot.config.prefix;
                 } else if (this.bot.config[msg.guild.id]) {
