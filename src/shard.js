@@ -4,12 +4,12 @@
 */
 
 const Discord = require('discord.js');
-const SpawnShards = require('../data/configs/config.json');
 const Manager = new Discord.ShardingManager('./src/bot.js', {
     token: SpawnShards.botToken,
     totalShards: "auto"
 });
 Manager.spawn(this.totalShards, 15000);
+Manager.on('launch', shard => console.log(`Successfully launched shard ${shard.id}`));
 //const Manager = new Discord.ShardingManager('./src/bot.js');
 //Manager.spawn(SpawnShards.shards); // Current set will spawn 1 shard // This example will spawn 2 shards (5,000 guilds);
 //'auto'
