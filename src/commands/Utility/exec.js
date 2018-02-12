@@ -1,3 +1,4 @@
+const chalk = require('chalk');
 const { exec } = require('child_process');
 const username = require('os').userInfo().username;
 
