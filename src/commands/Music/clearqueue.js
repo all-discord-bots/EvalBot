@@ -1,15 +1,9 @@
 exports.run = async (bot, msg) => {
+  if (!bot.config.nomusic) return;
 console.log("cleared song queue");
-};
-let hide;
-if (!bot.config.usemusic) {
-  hide = true;
-} else {
-  hide = false;
-}
 exports.info = {
   name: 'clearqueue',
-  hidden: `${hide}`,
+  hidden: `${bot.config.nomusic}`,
   usage: 'clearqueue',
   description: 'Clears the song queue.'
 };
