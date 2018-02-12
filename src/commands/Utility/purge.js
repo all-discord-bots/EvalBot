@@ -1,10 +1,11 @@
 exports.run = async (bot, msg, args) => {
   if (msg.author.id !== bot.config.botCreatorID) {
     if (!msg.member.hasPermission('MANAGE_MESSAGES')) {
-      return msg.channel.send('You must have the permission `Manage Messages`!');
+      return msg.channel.send(`<:redx:411978781226696705> You are missing permissions \`Manage Messages\`!`);
     }
   }
-/*  const user = (msg.mentions.users.first() || bot.users.get(args[0]) || null);
+  if (args.length < 1) return msg.channel.send(`<:redx:411978781226696705> Invalid arguments provided!`);
+  /*const user = (msg.mentions.users.first() || bot.users.get(args[0]) || null);
   const amount = !!user ? parseInt(msg.content.split(" ")[2], 10) : parseInt(msg.content.split(" ")[1], 10);
   if (!amount) return msg.channel.send("Must specify an amount to delete!");
   if (!amount && !user) return msg.channel.send("Must specify a user and amount, or just an amount, of messages to purge!");
