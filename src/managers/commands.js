@@ -92,7 +92,12 @@ class CommandManager {
     }
 
     handleCommand(msg, input) {
-        const prefix = this.bot.config.prefix;
+        const prefix;
+        if (!this.bot.config[msg.guild.id]) {
+            prefix = this.bot.config.prefix;
+        } else if (this.bot.config[msg.guild.id]) {
+            prefix = this.bot.config[msg.guild.id].prefix;
+        }
         if (!input.startsWith(prefix)) return;
 
         let split = input.substr(prefix.length).trim().split(' ');
@@ -123,10 +128,22 @@ class CommandManager {
             });
 
             if (maybe) {
-                return msg.channel.send(`:question: Did you mean \`${this.bot.config.prefix}${maybe}\`?`).then(m => m.delete(5000));
+                const mprefix;
+                if (!this.bot.config[msg.guild.id]) {
+                    mprefix = this.bot.config.prefix;
+                } else if (this.bot.config[msg.guild.id]) {
+                    mprefix = this.bot.config[msg.guild.id].prefix;
+                }
+                return msg.channel.send(`:question: Did you mean \`${mprefix}${maybe}\`?`);//.then(m => m.delete(5000));
             } else {
-                return msg.channel.send(`:no_entry_sign: No commands were found that were similar to \`${this.bot.config.prefix}${name}\``)
-                    .then(m => m.delete(5000));
+                const nprefix;
+                if (!this.bot.config[msg.guild.id]) {
+                    nprefix = this.bot.config.prefix;
+                } else if (this.bot.config[msg.guild.id]) {
+                    nprefix = this.bot.config[msg.guild.id].prefix;
+                }
+                return msg.channel.send(`:no_entry_sign: No commands were found that were similar to \`${nprefix}${name}\``);
+                    //.then(m => m.delete(5000));
             }
         }
 
@@ -142,8 +159,8 @@ class CommandManager {
                 if (command) {
                     return this.execute(msg, command, args);
                 } else {
-                    return msg.channel.send(`:no_entry_sign: The shortcut \`${shortcut.name}\` is improperly set up!`)
-                        .then(m => m.delete(2000));
+                    return msg.channel.send(`:no_entry_sign: The shortcut \`${shortcut.name}\` is improperly set up!`);
+                        //.then(m => m.delete(2000));
                 }
             })
         );
