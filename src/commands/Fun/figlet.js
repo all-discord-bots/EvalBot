@@ -10,11 +10,9 @@ exports.run = async (bot, msg, args) => {
             if (!url) {
                 return msg.error('Failed to upload fonts list!');
             }
-            (await msg.channel.send("Loading fonts list...").then((msg)=>{
-              msg.edit({
+              msg.channel.send({
                 embed: bot.utils.embed('Available Fonts', `A list of available fonts can be found [here](${url}).`)
-              }); //.then(m => m.delete(5000));
-            }));
+              });
         });
         return;
     }
