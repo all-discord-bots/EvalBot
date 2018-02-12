@@ -44,7 +44,9 @@
     "country-data": "^0.0.31",
     "mysql": "^2.15.0",
     "moment": "^2.20.1",
-    "moment-duration-format": "^2.2.1"
+    "moment-duration-format": "^2.2.1",
+    "child_process": "^1.0.2",
+    "events": "^2.0.0"
   },
   "devDependencies": {
     "eslint": "^3.16.1",
