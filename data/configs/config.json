@@ -7,7 +7,6 @@
   "botMainServerID": "291563214649688064",
   "cripsBotModeratorRole": "CripsBot Mod",
   "botCommanderRole": "CripsBot Commander",
-  "nomusic": true,
   "blacklistedServers": [
     "226865538247294976",
     "239010380385484801"
