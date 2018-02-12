@@ -6,7 +6,7 @@ exports.run = async (bot, msg, args) => {
   try {
     guildList.forEach(guild => guild.defaultChannel.send(`${getMessageToSend}`));
   } catch (err) {
-    console.log(`✅ Could not send message to ${guild.name}`);
+    guildList.forEach(guild => console.log(`✅ Could not send message to ${guild.name}`));
   }
 };
 
