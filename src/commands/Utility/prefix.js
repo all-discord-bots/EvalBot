@@ -1,8 +1,8 @@
 exports.run = async (bot, msg) => {
 	let newPrefix = msg.content.split(' ').slice(1).join(' ');
 	if (!newPrefix) {
-		if (!bot.config[msg.guild.id]) return msg.channel.send(`This guilds current prefix is ${bot.config.prefix}`);
-		if (bot.config[msg.guild.id]) return msg.channel.send(`This guilds current prefix is ${bot.config[msg.guild.id].prefix}`);
+		if (!bot.config[msg.guild.id]) return msg.channel.send(`This guilds current prefix is \`${bot.config.prefix}\``);
+		if (bot.config[msg.guild.id]) return msg.channel.send(`This guilds current prefix is \`${bot.config[msg.guild.id].prefix}\``);
 	}
 	if (msg.author.id !== bot.config.botCreatorID) {
 		if (!msg.member.hasPermission('MANAGE_SERVER')) return;
