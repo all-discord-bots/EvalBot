@@ -61,7 +61,7 @@ let loaded = false;
 
 bot.utils = global.utils = require('./utils');
 
-if (bot.config.usemusic) {
+if (!bot.config.nomusic) {
 	const music = require('discord.js-music-v11');
 }
 
@@ -269,7 +269,7 @@ process.on('uncaughtException', (err) => {
 process.on('unhandledRejection', err => {
     logger.severe('Uncaught Promise error: \n' + err.stack);
 });
-if (bot.config.usemusic) {
+if (!bot.config.nomusic) {
 	music(bot, {
 		// https://github.com/nexu-dev/discord.js-music/blob/master/README.md
 		prefix: bot.config.prefix, // The prefix to use for the commands.
