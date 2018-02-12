@@ -4,7 +4,7 @@ exports.run = async (bot, msg) => {
 	}
 	let newPrefix = msg.content.split(' ').slice(1).join(' ');
 	//var globalPrefOld = bot.config.[msg.guild.id].prefix;
-	bot.config.set(msg.guild.id, {prefix: newPrefix})
+	bot.managers.config.set(msg.guild.id, {prefix: newPrefix})
 	msg.channel.send(`Prefix changed to ${newPrefix}`);
 };
 
