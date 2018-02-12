@@ -1,15 +1,10 @@
 exports.run = async (bot, msg) => {
+  if (bot.config.nomusic) return;
 console.log("stopped playing and left voice channel");
 };
-let hide;
-if (!bot.config.usemusic) {
-  hide = true;
-} else {
-  hide = false;
-}
 exports.info = {
   name: 'leave',
-  hidden: `${hide}`,
+  hidden: `${bot.config.nomusic}`,
   usage: 'leave',
   description: 'Clears the song queue and leaves the channel.'
 };
