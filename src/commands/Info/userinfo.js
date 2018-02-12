@@ -57,6 +57,7 @@ exports.run = async (bot, msg, args) => {
 			user = bot.users.find(`id`, `${gdiscrim.id}`);
 		}
 	}
+	if (!user) return msg.channel.send(`<:redx:411978781226696705> I could not find that user!`)
 	let statusemoji;
 	if (user.presence.status === "online") {
 		statusemoji = `<:online:411637359398879232>`;
