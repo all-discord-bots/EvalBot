@@ -5,7 +5,7 @@ exports.run = async (bot, msg) => {
 
 exports.info = {
   name: 'play',
-  hidden: true,,
+  hidden: true,
   usage: 'play <url>|<search string>',
   description: 'Play a video/music. from (Youtube, Vimeo, YouKo, etc). You can also search using a string.'
 };
