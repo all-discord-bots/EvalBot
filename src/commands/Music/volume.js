@@ -1,15 +1,11 @@
 exports.run = async (bot, msg) => {
-console.log("changed volume");
+  if (msg.author.id !== bot.config.botCreatorID) return;
+  console.log("changed volume");
 };
-let hide;
-if (!bot.config.usemusic) {
-  hide = true;
-} else {
-  hide = false;
-}
+
 exports.info = {
   name: 'volume',
-  hidden: `${hide}`,
+  hidden: true,
   usage: 'volume <number>',
   description: 'Adjust the playback volume between 1 and 200'
 };
