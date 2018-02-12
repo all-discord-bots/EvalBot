@@ -113,7 +113,7 @@ bot.on('ready', () => {
 	
 	console.info(`Connected user ${bot.user.username}`)
 	logger.info('Bot loaded');
-	bot.shards.forEach(s => logger.info(`Loaded shard ${s.id}`))
+	//bot.shards.forEach(s => logger.info(`Loaded shard ${s.id}`))
 	
 	loaded = true;
 });
