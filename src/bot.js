@@ -271,15 +271,11 @@ process.on('uncaughtException', (err) => {
 process.on('unhandledRejection', err => {
     logger.severe('Uncaught Promise error: \n' + err.stack);
 });
-let gp;
-if (!bot.config[msg.guild.id]) {
-	gp = bot.config.prefix;
-} else if (bot.config[msg.guild.id]) {
-	gp = bot.config[msg.guild.id].prefix;
-}
+
 music(bot, {
+	
 	// https://github.com/nexu-dev/discord.js-music/blob/master/README.md
-	prefix: gp, // The prefix to use for the commands.
+	prefix: bot.config.prefix, // The prefix to use for the commands.
 	global: false, // Wether to use a global queue instead of a server-specific queue.
 	maxQueueSize: 100, // Maximum queue size.
 	anyoneCanSkip: true, // Allow anybody to skip the song. If false then only admins and the user that requested the song can skip it.
