@@ -1,8 +1,6 @@
 exports.run = async (bot, msg) => {
     if (msg.author.id !== bot.config.botCreatorID) return;
-    (await msg.channel.send("Restarting Bot...").then((msg)=>{
-        msg.edit(':white_check_mark: Restarting all shards.');
-    }));
+    msg.channel.send(`<:check:411976443522711552> Restarting bot.`);
     process.exit(42);
 };
 
@@ -10,5 +8,5 @@ exports.info = {
     name: 'restart',
     hidden: true,
     usage: 'restart',
-    description: 'Restarts all shards'
+    description: 'Resprings the bot.'
 };
