@@ -9,7 +9,7 @@ if (!bot.config.usemusic) {
 }
 exports.info = {
   name: 'clearqueue',
-  hidden: hide,
+  hidden: `${hide}`,
   usage: 'clearqueue',
   description: 'Clears the song queue.'
 };
