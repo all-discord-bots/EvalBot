@@ -1,15 +1,11 @@
 exports.run = async (bot, msg) => {
-console.log("resumed song");
+  if (msg.author.id !== bot.config.botCreatorID) return;
+  console.log("resumed song");
 };
-let hide;
-if (!bot.config.usemusic) {
-  hide = true;
-} else {
-  hide = false;
-}
+
 exports.info = {
   name: 'resume',
-  hidden: `${hide}`,
+  hidden: true,
   usage: 'resume',
   description: 'Resume music playback.'
 };
