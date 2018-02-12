@@ -105,16 +105,17 @@ bot.on('ready', () => {
         - Channels: ${bot.channels.size}
         - Guilds: ${bot.guilds.size}`
     );
-
-    stats.set('start-time', process.hrtime());
-
-    delete bot.user.email;
-    delete bot.user.verified;
+	
+	stats.set('start-time', process.hrtime());
+	
+	delete bot.user.email;
+	delete bot.user.verified;
 	
 	console.info(`Connected user ${bot.user.username}`)
-    logger.info('Bot loaded');
-
-    loaded = true;
+	logger.info('Bot loaded');
+	bot.shards.forEach(s => logger.info(`Loaded shard ${s.id}`))
+	
+	loaded = true;
 });
 
 //bot.on("reconnecting", () => {
