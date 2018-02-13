@@ -12,5 +12,5 @@ exports.info = {
 	name: 'massdm',
 	aliases: ['mdm','massdirectmessage','masspm','massprivatemessage','mpm'],
 	usage: 'massdm [message]',
-	description: 'Message everyone in your server in one command.'
+	description: 'Message everyone in the server, except the user that invoked the command.'
 };
