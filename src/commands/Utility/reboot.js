@@ -1,7 +1,10 @@
 exports.run = async (bot, msg) => {
     if (msg.author.id !== bot.config.botCreatorID) return;
-    msg.channel.send(`<:check:411976443522711552> Rebooting bot.`);
-    process.exit(1);
+    (await msg.channel.send(`<:check:411976443522711552> Rebooting bot...`).then((msg)=>{
+		(await process.exit(1).then((msg)=> {
+			msg.edit(`<:check:411976443522711552> Bot rebooted successfully.`);
+		}));
+	}));
 };
 
 exports.info = {
