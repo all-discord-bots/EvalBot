@@ -8,6 +8,7 @@ exports.run = async (bot, msg, args) => {
 
 exports.info = {
 	name: 'massannounce',
+	hidden: true,
 	aliases: ['massa','massyell','massnews','massupdate','massping'],
 	usage: 'massannounce [message]',
 	description: 'Direct message every guild owner that the bot is in for important news and updates.'
