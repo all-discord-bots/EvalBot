@@ -1,33 +1,36 @@
 exports.run = async (bot, msg) => {
- let text = "";
- let shardcount = [];
- //while (i < gshards) { text += i; shardcount = i; i++; msg.channel.send(i - 1); }
- let listshards;
- let gshards = bot.shard.count;
- let i = 0;
- let tag;
- while (i < gshards + 1) {
-  text += i;
-  shardcount = i;
-  i++;
-  if (i === bot.shard.id) {
-   if (i < 10) {
-    tag = "# ";
-   } else if (i > 9 && i < 100) {
-    tag = "#";
-   }
-  } else {
-   if (i < 10) {
-    tag = "  ";
-   } else if (i > 9 && i < 100) {
-    tag = " ";
-   }
-   listshards = tag + " " + i - 1;
+let i = 0;
+let shardids = "";
+let spaces;
+let ss = " "; // ss stands for 'single spaced'
+while(i < parseInt(bot.shard.count)+1) { // search 'i' until it equals the current guilds shard id for numbers 0-9
+  if (i < 10) {
+    if (i === parseInt(bot.shard.id)) {
+      spaces = "#  ";
+    } else {
+      spaces = "   ";
+    }
+  } else if (i > 9 && i < 100) { // search 'i' until it equals the current guilds shard id for numbers 10-99
+    if (i === parseInt(bot.shard.id)) {
+      spaces = "# ";
+    } else {
+      spaces = "  ";
+    }
+  } else if (i > 99 && i < 1000) { // search 'i' until it equals the current guilds shard id for numbers 100-999
+    if (i === parseInt(bot.shard.id)) {
+      spaces = "#";
+    } else {
+      spaces = " ";
+    }
   }
- }
+  //shardids += "\n" + spaces + i;
+  shardids += "\n" + spaces + i + ss + ss + ss + ss + ss + ss + "110ms" + ss + ss + ss + ss + ss + ss + "947" + ss + ss + ss + ss + ss + ss + "55,011" + ss + ss + ss + "281mb" + ss + ss + ss + ss + ss + ss + ss + "1 day";
+  i++;
+}
 msg.channel.send(`\`\`\`md
- shard |  ping  |  guilds  |  users  | memory |  uptime
-${listshards + "\n"}
+ shard${ss}|${ss}${ss}ping${ss}${ss}|${ss}${ss}guilds${ss}${ss}|${ss}${ss}users${ss}${ss}|${ss}memory${ss}|${ss}${ss}uptime${shardids}
+ 
+ total:${ss}${ss}${ss}124ms${ss}${ss}${ss}36,080${ss}${ss}${ss}2,218,146${ss}${ss}9723mb${ss}${ss}${ss}${ss}${ss}${ss}${ss}1 day
 \`\`\``);
 };
 
