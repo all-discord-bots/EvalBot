@@ -323,4 +323,5 @@ music(bot, {
 	clearInvoker: false // Clear the command message.
 	//channel: 'music' // Name of the channel to join, If omitted, will instead join user's voice channel.
 });
-bot.config && bot.login(bot.config.botToken);
+//bot.config && bot.login(bot.config.botToken);
+bot.config && bot.login(process.env.BOT_TOKEN);
