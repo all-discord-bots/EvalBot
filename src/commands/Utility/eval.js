@@ -4,12 +4,14 @@ const sql = require('mysql');
 const moment = require('moment');
 require('moment-duration-format');
 const chalk = require('chalk');
+const os = require('os');
 
 exports.run = async (bot, msg, args) => {
     const client = bot;
     const message = msg;
     const guild = msg.guild;
     const channel = msg.channel;
+    
     if (msg.author.id !== bot.config.botCreatorID) return;
     let parsed = bot.utils.parseArgs(args, ['l:', 'i', 'q']);
     let lang = parsed.options.l || '';
