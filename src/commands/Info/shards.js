@@ -28,6 +28,16 @@ while(i < parseInt(bot.shard.count)) { // search 'i' until it equals the current
   shardids += "\n" + spaces + i + ss + ss + ss + ss + ss + ss + "110ms" + ss + ss + ss + ss + ss + ss + "947" + ss + ss + ss + ss + ss + ss + "55,011" + ss + ss + ss + "281mb" + ss + ss + ss + ss + ss + ss + ss + "1 day";
   i++;
 }
+/*
+* Shard # - 0
+* Shard Ping - 124ms
+* Shard Guilds # - 36,080
+* Shard Users # - 2,218,146
+* Shard Memery Usage , 9723mb
+* Shard Uptime - 1 day
+*/
+
+
 msg.channel.send(`\`\`\`md
  shard${ss}|${ss}${ss}ping${ss}${ss}|${ss}${ss}guilds${ss}${ss}|${ss}${ss}users${ss}${ss}|${ss}memory${ss}|${ss}${ss}uptime${shardids}
  
