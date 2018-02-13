@@ -145,7 +145,7 @@ bot.on("guildCreate", (guild) => {
 		description: `${guild.name} (${guild.id})\n\`${gusers} members   -   ${gbots} bots  (${Math.floor(gbots/gdecimal)}%)\`\n\nOwner: <@${guild.owner.id}>  \`[${guild.owner.user.username}#${guild.owner.user.discriminator}]\``
 	})});
 	var s;
-	if (bot.guilds.size == 1) {
+	if (bot.guilds.size === 1) {
 		s = "";
 	} else {
 		s = "s";
@@ -252,7 +252,7 @@ process.on('exit', () => {
 
 bot.on('error', console.error);
 bot.on('warn', console.warn);
-bot.on('disconnect', event => {
+/*bot.on('disconnect', event => {
     if (event.code === 1000) {
         logger.info('Disconnected from Discord cleanly');
     } else if (event.code === 4004) {
@@ -260,6 +260,44 @@ bot.on('disconnect', event => {
         logger.severe(`Failed to authenticate with Discord. Please follow the instructions at ${chalk.green('https://discordapp.com/developers')} and re-enter your token by running ${chalk.green('yarn run config')}.`);
         process.exit(666);
     } else {
+        logger.warn(`Disconnected from Discord with code ${event.code}`);
+    }
+});
+*/
+bot.on('disconnect', event => {
+	if (event.code === 0) {
+		logger.warn('Gateway Error');
+	} else if (event.code === 1000) {
+        logger.info('Disconnected from Discord cleanly');
+    } else if (event.code === 4000) {
+		logger.severe('Unknown Error');
+		process.exit(666);
+	} else if (event.code === 4001) {
+		logger.warn('Unknown Opcode');
+	} else if (event.code === 4002) {
+		logger.warn('Decode Error');
+	} else if (event.code === 4003) {
+		logger.severe('Not Authenticated');
+		process.exit(666);
+	} else if (event.code === 4004) {
+        // Force the user to reconfigure if their token is invalid
+        logger.severe(`Failed to authenticate with Discord. Please follow the instructions at ${chalk.green('https://discordapp.com/developers')} and re-enter your token by running ${chalk.green('yarn run config')}.`);
+        process.exit(666);
+    } else if (event.code === 4005) {
+		logger.info('Already Authenticated');
+	} else if (event.code === 4006) {
+		logger.severe('Session Not Valid');
+		process.exit(666);
+	} else if (event.code === 4007) {
+		logger.warn('Invalid Sequence Number');
+	} else if (event.code === 4008) {
+		logger.info('Rate Limited');
+	} else if (event.code === 4009) {
+		logger.severe('Session Timeout');
+		process.exit(666);
+	} else if (event.code === 4010) {
+		logger.warn('Invalid Shard');
+	} else {
         logger.warn(`Disconnected from Discord with code ${event.code}`);
     }
 });
