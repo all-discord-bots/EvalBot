@@ -3,7 +3,8 @@ let i = 0;
 let shardids = "";
 let spaces;
 let ss = " "; // ss stands for 'single spaced'
-while(i < parseInt(bot.shard.count)+1) { // search 'i' until it equals the current guilds shard id for numbers 0-9
+//while(i < parseInt(bot.shard.count)+1) { // search 'i' until it equals the current guilds shard id for numbers 0-9
+while(i < parseInt(bot.shard.count)) { // search 'i' until it equals the current guilds shard id for numbers 0-9
   if (i < 10) {
     if (i === parseInt(bot.shard.id)) {
       spaces = "#  ";
