@@ -14,7 +14,6 @@ const stripIndents = require('common-tags').stripIndents;
 const chalk = require('chalk');
 const Managers = require('./managers');
 const mysql = require('mysql');
-const redis-cli = require('redis-cli');
 //const extdir = './extensions/'
 const fs = require('fs');
 const bot = global.bot = exports.client = new Discord.Client();
