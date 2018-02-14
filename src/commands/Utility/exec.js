@@ -1,6 +1,6 @@
 const { exec } = require('child_process');
 const username = require('os').userInfo().username;
-const rdcli = require('redis-cli');
+//const rdcli = require('redis-cli');
 const events = require('events');
 
 exports.run = (bot, msg, args) => {
