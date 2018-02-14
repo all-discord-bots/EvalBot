@@ -136,7 +136,7 @@ bot.on("guildCreate", (guild) => {
 	let gusers = guild.members.filter(user => !user.user.bot).size; // get only users and exclude bots
 	let gtotal = guild.members.filter(user => user.user).size; // get all users and bots
 	let gbots = guild.members.filter(user => user.user.bot).size; // get all bots excluding users
-	let gpercent = `${gtotalusers}%`; // total users and bots to percentage
+	let gpercent = `${gtotal}%`; // total users and bots to percentage
 	let gparsepercent = parseFloat(gpercent); // parses the percentage
 	let gdecimal = gparsepercent/100; // percentage to decimal
 	guild.channels.get("409525042137792533").send({embed: ({
@@ -161,7 +161,7 @@ bot.on("guildDelete", (guild) => {
 	let gusers = guild.members.filter(user => !user.user.bot).size; // get only users and exclude bots
 	let gtotal = guild.members.filter(user => user.user).size; // get all users and bots
 	let gbots = guild.members.filter(user => user.user.bot).size; // get all bots excluding users
-	let gpercent = `${gtotalusers}%`; // total users and bots to percentage
+	let gpercent = `${gtotal}%`; // total users and bots to percentage
 	let gparsepercent = parseFloat(gpercent); // parses the percentage
 	let gdecimal = gparsepercent/100; // percentage to decimal
 	guild.channels.get("409525042137792533").send({embed: ({
