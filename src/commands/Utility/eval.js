@@ -5,10 +5,9 @@ const moment = require('moment');
 require('moment-duration-format');
 const chalk = require('chalk');
 const os = require('os');
-const { redis-cli } = require('redis-cli');
 const ms = require('ms');
 const enmap = require('enmap');
-const enmap-level = require('enmap-level');
+const enmaplvl = require('enmap-level');
 const child_process = require('child_process');
 const events = require('events');
 
