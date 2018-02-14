@@ -124,7 +124,7 @@ exports.run = async (bot, msg, args) => {
 			name: 'Joined Discord',
 			//value: `${gday}-${gmonth}-${gyear} (${gnewyear-gyear} year and ${gnewmonth-gmonth} month ago)`
 			//value: `${moment.utc(gdate).format(`${gday}-${gmonth}-${gyear}`, "DD-MM-YY")}`
-			value: `${moment.utc(gdate).format("DD-MM-YY") (${moment.duration(nowdate - gdate).format()} ago)`
+			value: `${moment.utc(gdate).format("DD-MM-YY")} (${moment.duration(nowdate - gdate).format()} ago)`
 		}, {
 			name: 'Joined Server',
 			//value: `${gsday}-${gsmonth}-${gsyear} (${gsmonth-gmonth} month ago)`
