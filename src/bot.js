@@ -198,11 +198,10 @@ bot.on("guildMemberAdd", (member) => {
 	}
 	bot.channels.get("413371120234921987").send({embed: ({
 		color: 6732650,
-		title: 'User Joined!',
 		timestamp: new Date(),
 		description: `<@${member.user.id}> \`[${member.user.tag}]\``,
 		author: {
-			name: `${member.user.tag}`,
+			name: 'User Joined!',
 			icon_url: `${avatarurl}`
 		},
 	})});
@@ -227,11 +226,10 @@ bot.on("guildMemberRemove", (member) => {
 	}
 	bot.channels.get("413371120234921987").send({embed: ({
 		color: 15684432,
-		title: 'User Left!',
 		timestamp: new Date(),
 		description: `<@${member.user.id}> \`[${member.user.tag}]\``,
 		author: {
-			name: `${member.user.tag}`,
+			name: 'User Left!',
 			icon_url: `${avatarurl}`
 		},
 	})});
