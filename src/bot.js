@@ -200,7 +200,7 @@ bot.on("guildMemberAdd", (member) => {
 		color: 6732650,
 		title: 'User Joined!',
 		timestamp: new Date(),
-		description: `<@${member.user.id}> \`[member.user.tag]\``,
+		description: `<@${member.user.id}> \`[${member.user.tag}]\``,
 		author: {
 			name: `${member.user.tag}`,
 			icon_url: `${avatarurl}`
@@ -229,7 +229,7 @@ bot.on("guildMemberRemove", (member) => {
 		color: 15684432,
 		title: 'User Left!',
 		timestamp: new Date(),
-		description: `<@${member.user.id}> \`[member.user.tag]\``,
+		description: `<@${member.user.id}> \`[${member.user.tag}]\``,
 		author: {
 			name: `${member.user.tag}`,
 			icon_url: `${avatarurl}`
