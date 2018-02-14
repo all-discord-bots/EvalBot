@@ -139,7 +139,7 @@ bot.on("guildCreate", (guild) => {
 	let gpercent = `${gtotal}%`; // total users and bots to percentage
 	let gparsepercent = parseFloat(gpercent); // parses the percentage
 	let gdecimal = gparsepercent/100; // percentage to decimal
-	guild.channels.get("409525042137792533").send({embed: ({
+	bot.channels.get("409525042137792533").send({embed: ({
 		color: 6732650,
 		title: 'Added',
 		timestamp: new Date(),
@@ -164,7 +164,7 @@ bot.on("guildDelete", (guild) => {
 	let gpercent = `${gtotal}%`; // total users and bots to percentage
 	let gparsepercent = parseFloat(gpercent); // parses the percentage
 	let gdecimal = gparsepercent/100; // percentage to decimal
-	guild.channels.get("409525042137792533").send({embed: ({
+	bot.channels.get("409525042137792533").send({embed: ({
 		color: 15684432,
 		title: 'Removed',
 		timestamp: new Date(),
