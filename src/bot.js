@@ -183,8 +183,8 @@ bot.on("guildMemberAdd", (member) => {
 	let guild = member.guild;
 	if (guild.id !== bot.config.botMainServerID) return;
 	let avatarurl;
-	if (member.avatarURL !== null) {
-		avatarurl = member.avatarURL;
+	if (member.user.avatarURL !== null) {
+		avatarurl = member.user.avatarURL;
 	} else {
 		let gennumber = Math.floor(Math.random(0) * 5); // 0-4
 		/*
@@ -200,9 +200,9 @@ bot.on("guildMemberAdd", (member) => {
 		color: 6732650,
 		title: 'User Joined!',
 		timestamp: new Date(),
-		description: `<@${member.id}> \`[member.tag]\``,
+		description: `<@${member.user.id}> \`[member.user.tag]\``,
 		author: {
-			name: `${member.tag}`,
+			name: `${member.user.tag}`,
 			icon_url: `${avatarurl}`
 		},
 	})});
@@ -212,8 +212,8 @@ bot.on("guildMemberRemove", (member) => {
 	let guild = member.guild;
 	if (guild.id !== bot.config.botMainServerID) return;
 	let avatarurl;
-	if (member.avatarURL !== null) {
-		avatarurl = member.avatarURL;
+	if (member.user.avatarURL !== null) {
+		avatarurl = member.user.avatarURL;
 	} else {
 		let gennumber = Math.floor(Math.random(0) * 5); // 0-4
 		/*
@@ -229,9 +229,9 @@ bot.on("guildMemberRemove", (member) => {
 		color: 15684432,
 		title: 'User Left!',
 		timestamp: new Date(),
-		description: `<@${member.id}> \`[member.tag]\``,
+		description: `<@${member.user.id}> \`[member.user.tag]\``,
 		author: {
-			name: `${member.tag}`,
+			name: `${member.user.tag}`,
 			icon_url: `${avatarurl}`
 		},
 	})});
