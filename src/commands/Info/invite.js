@@ -10,7 +10,6 @@ exports.run = async (bot, msg) => {
             }
         ], { inline: true })
     });
-  }));
 };
 
 exports.info = {
