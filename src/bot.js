@@ -104,7 +104,8 @@ bot.on('ready', () => {
         - Users: ${bot.users.filter(user => !user.bot).size}
         - Bots: ${bot.users.filter(user => user.bot).size}
         - Channels: ${bot.channels.size}
-        - Guilds: ${bot.guilds.size}`
+        - Guilds: ${bot.guilds.size}
+	- Shards: ${bot.shard.count}`
     );
 	
 	stats.set('start-time', process.hrtime());
