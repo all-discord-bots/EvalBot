@@ -10,6 +10,7 @@ const enmap = require('enmap');
 const enmaplvl = require('enmap-level');
 const child_process = require('child_process');
 const events = require('events');
+const cluster = require('cluster');
 
 exports.run = async (bot, msg, args) => {
     const client = bot;
