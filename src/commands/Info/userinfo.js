@@ -79,7 +79,7 @@ exports.run = async (bot, msg, args) => {
 	//let gmonth = months[gdate.getMonth()];
 	//let gday = days[gdate.getDate()]; // +1
 	//let gyear = gdate.getYear()-100;
-	//let newyear = new Date();
+	let nowdate = new Date();
 	//let gnewmonth = months[newyear.getMonth()];
 	//let gnewyear = newyear.getYear()-100;
 	let jdate = new Date(user.joinedTimestamp); // get when the user joined the server
@@ -94,11 +94,11 @@ exports.run = async (bot, msg, args) => {
 	}
 	
 	if (msg.guild.members.get(`${user.id}`)) {
-		let avatarurl;
-		if (user.user.avatarURL !== null) {
-			avatarurl = user.user.avatarURL;
-		} else {
-			let gennumber = Math.floor(Math.random(0) * 5); // 0-4
+//		let avatarurl;
+//		if (user.user.avatarURL !== null) {
+//			avatarurl = user.user.avatarURL;
+//		} else {
+//			let gennumber = Math.floor(Math.random(0) * 5); // 0-4
 			/*
 			* 0 - Blue
 			* 1 - Grey
@@ -106,16 +106,16 @@ exports.run = async (bot, msg, args) => {
 			* 3 - Orange
 			* 4 - Red
 			*/
-			avatarurl = `https://cdn.discordapp.com/embed/avatars/${gennumber}.png?width=80&height=80`;
-		}
+//			avatarurl = `https://cdn.discordapp.com/embed/avatars/${gennumber}.png?width=80&height=80`;
+//		}
 	msg.channel.send({embed: ({
 		color: 3447003,
 		description: `${statusemoji} <@${user.id}>${ggame}`,
 		thumbnail: {
-			url: `${avatarurl}`
+			url: `${user.user.displayAvatarURL}`
 		}, author: {
 			name: `${user.user.tag}`,
-			icon_url: `${avatarurl}`
+			icon_url: `${user.user.displayAvatarURL}`
 		}, fields: [
 		{
 			name: 'User ID',
@@ -124,12 +124,12 @@ exports.run = async (bot, msg, args) => {
 			name: 'Joined Discord',
 			//value: `${gday}-${gmonth}-${gyear} (${gnewyear-gyear} year and ${gnewmonth-gmonth} month ago)`
 			//value: `${moment.utc(gdate).format(`${gday}-${gmonth}-${gyear}`, "DD-MM-YY")}`
-			value: `${moment.utc(gdate).format("DD-MM-YY")}`
+			value: `${moment.utc(gdate).format("DD-MM-YY") (${moment.duration(nowdate - gdate).format()} ago)}`
 		}, {
 			name: 'Joined Server',
 			//value: `${gsday}-${gsmonth}-${gsyear} (${gsmonth-gmonth} month ago)`
 			//value: `${moment.utc(jdate).format(`${jday}-${jmonth}-${jyear}`, "DD-MM-YY")}`
-			value: `${moment.utc(jdate).format("DD-MM-YY")}`
+			value: `${moment.utc(jdate).format("DD-MM-YY")} (${moment.duration(nowdate - jdate).format()} ago)`
 		}, {
 			name: 'Highest Role',
 			value: `${toprole}`,
@@ -142,11 +142,11 @@ exports.run = async (bot, msg, args) => {
 	],
 })})
 	} else if (!msg.guild.members.get(`${user.id}`)) {
-		let avatarurl;
-		if (user.avatarURL !== null) {
-			avatarurl = user.avatarURL;
-		} else {
-			let gennumber = Math.floor(Math.random(0) * 5); // 0-4
+//		let avatarurl;
+//		if (user.avatarURL !== null) {
+//			avatarurl = user.avatarURL;
+//		} else {
+//			let gennumber = Math.floor(Math.random(0) * 5); // 0-4
 			/*
 			* 0 - Blue
 			* 1 - Grey
@@ -154,16 +154,16 @@ exports.run = async (bot, msg, args) => {
 			* 3 - Orange
 			* 4 - Red
 			*/
-			avatarurl = `https://cdn.discordapp.com/embed/avatars/${gennumber}.png?width=80&height=80`;
-		}
+//			avatarurl = `https://cdn.discordapp.com/embed/avatars/${gennumber}.png?width=80&height=80`;
+//		}
 		msg.channel.send({embed: ({
 		color: 3447003,
 		description: `${statusemoji} <@${user.id}>${ggame}`,
 		thumbnail: {
-			url: `${avatarurl}`
+			url: `${user.displayAvatarURL}`
 		}, author: {
 			name: `${user.tag}`,
-			icon_url: `${avatarurl}`
+			icon_url: `${user.displayAvatarURL}`
 		}, fields: [
 		{
 			name: 'User ID',
@@ -172,7 +172,7 @@ exports.run = async (bot, msg, args) => {
 			name: 'Joined Discord',
 			//value: `${gday}-${gmonth}-${gyear} (${gnewyear-gyear} year and ${gnewmonth-gmonth} month ago)`
 			//value: `${moment.utc(gdate).format(`${gday}-${gmonth}-${gyear}`, "DD-MM-YY")}`
-			value: `${moment.utc(gdate).format("DD-MM-YY")}`
+			value: `${moment.utc(gdate).format("DD-MM-YY")} (${moment.duration(nowdate - gdate).format()} ago)`
 		}
 	],
 })})
