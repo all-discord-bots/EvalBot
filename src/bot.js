@@ -179,6 +179,64 @@ bot.on("guildDelete", (guild) => {
 	bot.user.setPresence({ game: {name: `${bot.guilds.size} server${s}`, type: 3 } });
 });
 
+bot.on("guildMemberAdd", (member) => {
+	let guild = member.guild;
+	if (guild.id !== bot.config.botMainServerID) return;
+	let avatarurl;
+	if (member.avatarURL !== null) {
+		avatarurl = member.avatarURL;
+	} else {
+		let gennumber = Math.floor(Math.random(0) * 5); // 0-4
+		/*
+		* 0 - Blue
+		* 1 - Grey
+		* 2 - Green
+		* 3 - Orange
+		* 4 - Red
+		*/
+		avatarurl = `https://cdn.discordapp.com/embed/avatars/${gennumber}.png?width=80&height=80`;
+	}
+	bot.channels.get("413371120234921987").send({embed: ({
+		color: 6732650,
+		title: 'User Joined!',
+		timestamp: new Date(),
+		description: `<@${member.id}> \`[member.tag]\``,
+		author: {
+			name: `${member.tag}`,
+			icon_url: `${avatarurl}`
+		},
+	})});
+});
+
+bot.on("guildMemberRemove", (member) => {
+	let guild = member.guild;
+	if (guild.id !== bot.config.botMainServerID) return;
+	let avatarurl;
+	if (member.avatarURL !== null) {
+		avatarurl = member.avatarURL;
+	} else {
+		let gennumber = Math.floor(Math.random(0) * 5); // 0-4
+		/*
+		* 0 - Blue
+		* 1 - Grey
+		* 2 - Green
+		* 3 - Orange
+		* 4 - Red
+		*/
+		avatarurl = `https://cdn.discordapp.com/embed/avatars/${gennumber}.png?width=80&height=80`;
+	}
+	bot.channels.get("413371120234921987").send({embed: ({
+		color: 15684432,
+		title: 'User Left!',
+		timestamp: new Date(),
+		description: `<@${member.id}> \`[member.tag]\``,
+		author: {
+			name: `${member.tag}`,
+			icon_url: `${avatarurl}`
+		},
+	})});
+});
+	
 //var con = mysql.createConnection({
 //  host: "localhost",
 //  user: "id3223004_bannerbomb",
