@@ -94,20 +94,12 @@ exports.run = async (bot, msg, args) => {
 	}
 	
 	if (msg.guild.members.get(`${user.id}`)) {
-//		let avatarurl;
-//		if (user.user.avatarURL !== null) {
-//			avatarurl = user.user.avatarURL;
-//		} else {
-//			let gennumber = Math.floor(Math.random(0) * 5); // 0-4
-			/*
-			* 0 - Blue
-			* 1 - Grey
-			* 2 - Green
-			* 3 - Orange
-			* 4 - Red
-			*/
-//			avatarurl = `https://cdn.discordapp.com/embed/avatars/${gennumber}.png?width=80&height=80`;
-//		}
+	let membernum;
+	if (msg.guild.owner.id === user.id) {
+		membernum = '1';
+	} else {
+		membernum = 'N/A';
+	}
 	msg.channel.send({embed: ({
 		color: 3447003,
 		description: `${statusemoji} <@${user.id}>${ggame}`,
@@ -122,8 +114,6 @@ exports.run = async (bot, msg, args) => {
 			value: `${user.id}`
 		}, {
 			name: 'Joined Discord',
-			//value: `${gday}-${gmonth}-${gyear} (${gnewyear-gyear} year and ${gnewmonth-gmonth} month ago)`
-			//value: `${moment.utc(gdate).format(`${gday}-${gmonth}-${gyear}`, "DD-MM-YY")}`
 			value: `${moment.utc(gdate).format("DD-MM-YY")} (${moment.duration(nowdate - gdate).format()} ago)`
 		}, {
 			name: 'Joined Server',
@@ -136,26 +126,12 @@ exports.run = async (bot, msg, args) => {
 			inline: true
 		}, {
 			name: 'Member #',
-			value: 'N/A',
+			value: `${membernum}`,
 			inline: true
 		}
 	],
 })})
 	} else if (!msg.guild.members.get(`${user.id}`)) {
-//		let avatarurl;
-//		if (user.avatarURL !== null) {
-//			avatarurl = user.avatarURL;
-//		} else {
-//			let gennumber = Math.floor(Math.random(0) * 5); // 0-4
-			/*
-			* 0 - Blue
-			* 1 - Grey
-			* 2 - Green
-			* 3 - Orange
-			* 4 - Red
-			*/
-//			avatarurl = `https://cdn.discordapp.com/embed/avatars/${gennumber}.png?width=80&height=80`;
-//		}
 		msg.channel.send({embed: ({
 		color: 3447003,
 		description: `${statusemoji} <@${user.id}>${ggame}`,
@@ -170,8 +146,6 @@ exports.run = async (bot, msg, args) => {
 			value: `${user.id}`
 		}, {
 			name: 'Joined Discord',
-			//value: `${gday}-${gmonth}-${gyear} (${gnewyear-gyear} year and ${gnewmonth-gmonth} month ago)`
-			//value: `${moment.utc(gdate).format(`${gday}-${gmonth}-${gyear}`, "DD-MM-YY")}`
 			value: `${moment.utc(gdate).format("DD-MM-YY")} (${moment.duration(nowdate - gdate).format()} ago)`
 		}
 	],
