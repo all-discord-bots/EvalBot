@@ -48,7 +48,8 @@
     "child_process": "^1.0.2",
     "events": "^2.0.0",
     "redis-cli": "^1.0.2",
-    "cluster": "^0.7.7"
+    "cluster": "^0.7.7",
+    "dblapi.js": "^1.1.0"
   },
   "devDependencies": {
     "eslint": "^3.16.1",
