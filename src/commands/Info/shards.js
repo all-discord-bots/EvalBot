@@ -1,11 +1,11 @@
 exports.run = async (bot, msg) => {
-let i = 0;
-let shardids = "";
-let usersize = parseInt(bot.users.size);
-let numguilds = parseInt(bot.guilds.size);
-let botping = parseInt(Math.floor(bot.ping));
-let spaces;
-let ss = " "; // ss stands for 'single spaced'
+	let i = 0;
+	let shardids = "";
+	let usersize = parseInt(bot.users.size);
+	let numguilds = parseInt(bot.guilds.size);
+	let botping = parseInt(Math.floor(bot.ping));
+	let spaces;
+	let ss = " "; // ss stands for 'single spaced'
 //while(i < parseInt(bot.shard.count)+1) { // search 'i' until it equals the current guilds shard id for numbers 0-9
 while(i < parseInt(bot.shard.count)) { // search 'i' until it equals the current guilds shard id for numbers 0-9
   if (i < 10) {
@@ -27,7 +27,7 @@ while(i < parseInt(bot.shard.count)) { // search 'i' until it equals the current
       spaces = " ";
     }
   }
-	let bspace;
+	let bspace = "";
 	if (botping < 10) {
 		bspace = `${ss}${ss}${ss}${ss}${ss}${ss}${botping}ms`;
 	} else if (botping > 9 && botping < 100) {
@@ -41,7 +41,7 @@ while(i < parseInt(bot.shard.count)) { // search 'i' until it equals the current
 	} else if (botping > 999999 && botping < 1000000) {
 		bspace = `${ss}${botping}ms`;
 	}
-	let gspace;
+	let gspace = "";
 	if (numguilds < 10) {
 		gspace = `${ss}${ss}${ss}${ss}${ss}${ss}${ss}${ss}${ss}${numguilds}`;
 	} else if (numguilds > 9 && numguilds < 100) {
@@ -61,7 +61,7 @@ while(i < parseInt(bot.shard.count)) { // search 'i' until it equals the current
 	} else if (numguilds > 99999999 && numguilds < 1000000000) {
 		gspace = `${ss}${numguilds}`;
 	}
-	let uspace;
+	let uspace = "";
 	if (usersize < 10) {
 		uspace = `${ss}${ss}${ss}${ss}${ss}${ss}${ss}${ss}${ss}${ss}${ss}${usersize}`;
 	} else if (usersize > 9 && usersize < 100) {
