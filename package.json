@@ -5,7 +5,7 @@
   "main": "src/shard.js",
   "scripts": {
     "start": "gulp",
-    "background": "screen -dmS sharpBot gulp",
+    "background": "screen -dmS CripsBot gulp",
     "config": "node src/scripts/configure.js",
     "debug": "node src/scripts/debug.js",
     "dev": "gulp --dev"
