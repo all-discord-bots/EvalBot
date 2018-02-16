@@ -42,36 +42,32 @@ exports.run = async (bot, msg) => {
 	
 	let bspace;
 		if (botping < 10) {
-			bspace = `${ss}${ss}${ss}${ss}${ss}${ss}${botping}ms`;
+			bspace = `${ss}${ss}${ss}${ss}${ss}${botping}ms`; // 1
 		} else if (botping > 9 && botping < 100) {
-			bspace = `${ss}${ss}${ss}${ss}${ss}${botping}ms`;
-		} else if (botping > 999 && botping < 1000) {
 			bspace = `${ss}${ss}${ss}${ss}${botping}ms`;
-		} else if (botping > 9999 && botping < 10000) {
+		} else if (botping > 999 && botping < 1000) {
 			bspace = `${ss}${ss}${ss}${botping}ms`;
-		} else if (botping > 99999 && botping < 100000) {
+		} else if (botping > 9999 && botping < 10000) {
 			bspace = `${ss}${ss}${botping}ms`;
-		} else if (botping > 999999 && botping < 1000000) {
+		} else if (botping > 99999 && botping < 100000) {
 			bspace = `${ss}${botping}ms`;
 		}
 		let gspace;
 		if (numguilds < 10) {
-			gspace = `${ss}${ss}${ss}${ss}${ss}${ss}${ss}${ss}${ss}${numguilds}`;
+			gspace = `${ss}${ss}${ss}${ss}${ss}${ss}${ss}${ss}${numguilds}`; // 1
 		} else if (numguilds > 9 && numguilds < 100) {
-			gspace = `${ss}${ss}${ss}${ss}${ss}${ss}${ss}${ss}${numguilds}`;
-		} else if (numguilds > 99 && numguilds < 1000) {
 			gspace = `${ss}${ss}${ss}${ss}${ss}${ss}${ss}${numguilds}`;
-		} else if (numguilds > 999 && numguilds < 10000) {
+		} else if (numguilds > 99 && numguilds < 1000) {
 			gspace = `${ss}${ss}${ss}${ss}${ss}${ss}${numguilds}`;
-		} else if (numguilds > 9999 && numguilds < 100000) {
+		} else if (numguilds > 999 && numguilds < 10000) {
 			gspace = `${ss}${ss}${ss}${ss}${ss}${numguilds}`;
-		} else if (numguilds > 99999 && numguilds < 1000000) {
+		} else if (numguilds > 9999 && numguilds < 100000) {
 			gspace = `${ss}${ss}${ss}${ss}${numguilds}`;
-		} else if (numguilds > 999999 && numguilds < 10000000) {
+		} else if (numguilds > 99999 && numguilds < 1000000) {
 			gspace = `${ss}${ss}${ss}${numguilds}`;
-		} else if (numguilds > 9999999 && numguilds < 100000000) {
+		} else if (numguilds > 999999 && numguilds < 10000000) {
 			gspace = `${ss}${ss}${numguilds}`;
-		} else if (numguilds > 99999999 && numguilds < 1000000000) {
+		} else if (numguilds > 9999999 && numguilds < 100000000) {
 			gspace = `${ss}${numguilds}`;
 		}
 		let uspace;
