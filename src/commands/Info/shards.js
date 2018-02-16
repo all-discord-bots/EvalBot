@@ -1,6 +1,9 @@
 exports.run = async (bot, msg) => {
 let i = 0;
 let shardids = "";
+let usersize = bot.users.size;
+let numguilds = bot.guilds.size;
+let botping = Math.floor(bot.ping);
 let spaces;
 let ss = " "; // ss stands for 'single spaced'
 //while(i < parseInt(bot.shard.count)+1) { // search 'i' until it equals the current guilds shard id for numbers 0-9
@@ -24,6 +27,64 @@ while(i < parseInt(bot.shard.count)) { // search 'i' until it equals the current
       spaces = " ";
     }
   }
+	let uspace;
+	if (usersize < 10) {
+		uspace = `${ss}${ss}${ss}${ss}${ss}${ss}${ss}${ss}${ss}${ss}${ss}${usersize}`;
+	} else if (usersize > 9 && usersize < 100) {
+		uspace = `${ss}${ss}${ss}${ss}${ss}${ss}${ss}${ss}${ss}${ss}${usersize}`;
+	} else if (usersize > 99 && usersize < 1000) {
+		uspace = `${ss}${ss}${ss}${ss}${ss}${ss}${ss}${ss}${ss}${usersize}`;
+	} else if (usersize > 999 && usersize < 10000) {
+		uspace = `${ss}${ss}${ss}${ss}${ss}${ss}${ss}${ss}${usersize}`;
+	} else if (usersize > 9999 && usersize < 100000) {
+		uspace = `${ss}${ss}${ss}${ss}${ss}${ss}${ss}${usersize}`;
+	} else if (usersize > 99999 && usersize < 1000000) {
+		uspace = `${ss}${ss}${ss}${ss}${ss}${ss}${usersize}`;
+	} else if (usersize > 999999 && usersize < 10000000) {
+		uspace = `${ss}${ss}${ss}${ss}${ss}${usersize}`;
+	} else if (usersize > 9999999 && usersize < 100000000) {
+		uspace = `${ss}${ss}${ss}${ss}${usersize}`;
+	} else if (usersize > 99999999 && usersize < 1000000000) {
+		uspace = `${ss}${ss}${ss}${usersize}`;
+	} else if (usersize > 999999999 && usersize < 10000000000) {
+		uspace = `${ss}${ss}${usersize}`;
+	} else if (usersize > 9999999999 && usersize < 100000000000) {
+		uspace = `${ss}${usersize}`;
+	}
+	let gspace;
+	if (numguilds < 10) {
+		gspace = `${ss}${ss}${ss}${ss}${ss}${ss}${ss}${ss}${ss}${numguilds}`;
+	} else if (numguilds > 9 && numguilds < 100) {
+		gspace = `${ss}${ss}${ss}${ss}${ss}${ss}${ss}${ss}${numguilds}`;
+	} else if (numguilds > 99 && numguilds < 1000) {
+		gspace = `${ss}${ss}${ss}${ss}${ss}${ss}${ss}${numguilds}`;
+	} else if (numguilds > 999 && numguilds < 10000) {
+		gspace = `${ss}${ss}${ss}${ss}${ss}${ss}${numguilds}`;
+	} else if (numguilds > 9999 && numguilds < 100000) {
+		gspace = `${ss}${ss}${ss}${ss}${ss}${numguilds}`;
+	} else if (numguilds > 99999 && numguilds < 1000000) {
+		gspace = `${ss}${ss}${ss}${ss}${numguilds}`;
+	} else if (numguilds > 999999 && numguilds < 10000000) {
+		gspace = `${ss}${ss}${ss}${numguilds}`;
+	} else if (numguilds > 9999999 && numguilds < 100000000) {
+		gspace = `${ss}${ss}${numguilds}`;
+	} else if (numguilds > 99999999 && numguilds < 1000000000) {
+		gspace = `${ss}${numguilds}`;
+	}
+	let bspace;
+	if (botping < 10) {
+		bspace = `${ss}${ss}${ss}${ss}${ss}${ss}${botping}ms`;
+	} else if (botping > 9 && botping < 100) {
+		bspace = `${ss}${ss}${ss}${ss}${ss}${botping}ms`;
+	} else if (botping > 999 && botping < 1000) {
+		bspace = `${ss}${ss}${ss}${ss}${botping}ms`;
+	} else if (botping > 9999 && botping < 10000) {
+		bspace = `${ss}${ss}${ss}${botping}ms`;
+	} else if (botping > 99999 && botping < 100000) {
+		bspace = `${ss}${ss}${botping}ms`;
+	} else if (botping > 999999 && botping < 1000000) {
+		bspace = `${ss}${botping}ms`;
+	}
   //shardids += "\n" + spaces + i;
   shardids += "\n" + spaces + i + ss + ss + ss + ss + ss + ss + "110ms" + ss + ss + ss + ss + ss + ss + "947" + ss + ss + ss + ss + ss + ss + "55,011" + ss + ss + ss + "281mb" + ss + ss + ss + ss + ss + ss + ss + "1 day";
   i++;
@@ -41,7 +102,7 @@ while(i < parseInt(bot.shard.count)) { // search 'i' until it equals the current
 msg.channel.send(`\`\`\`md
  shard${ss}|${ss}${ss}ping${ss}${ss}|${ss}${ss}guilds${ss}${ss}|${ss}${ss}users${ss}${ss}|${ss}memory${ss}|${ss}${ss}uptime${shardids}
  
- total:${ss}${ss}${ss}124ms${ss}${ss}${ss}36,080${ss}${ss}${ss}2,218,146${ss}${ss}9723mb${ss}${ss}${ss}${ss}${ss}${ss}${ss}1 day
+ total:${bspace}${gspace}${uspace}${ss}${ss}9723mb${ss}${ss}${ss}${ss}${ss}${ss}${ss}1 day
 \`\`\``);
 };
 
