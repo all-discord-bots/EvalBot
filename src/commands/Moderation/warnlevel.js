@@ -16,6 +16,7 @@ exports.run = async (bot, msg, args) => {
 
 exports.info = {
   name: 'warnlevel',
+  hidden: true, // broken atm
   aliases: ['warnlvl','warn-level'],
   usage: 'warnlevel <user>',
   description: 'Displays the number of a users warnings on the current guild.'
