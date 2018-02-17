@@ -261,6 +261,7 @@ bot.on('message', (msg) => {
 	} else if (bot.config[msg.guild.id]) {
 		if (msg.content == bot.config[msg.guild.id].prefix || msg.content == bot.config[msg.guild.id].prefix + " " || msg.content == " " + bot.config[msg.guild.id].prefix) return;
 	}
+	if (msg === "") return;
 	//if (msg.guild.owner.user.id !== msg.author.id) return;
 	if (msg.guild && bot.config.blacklistedServers && bot.config.blacklistedServers.indexOf(msg.guild.id.toString()) > -1) {
 		return;
