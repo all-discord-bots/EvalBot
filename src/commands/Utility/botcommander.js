@@ -16,6 +16,7 @@ exports.run = async (bot, msg, args) => {
 
 exports.info = {
   name: 'bot-commander',
+  hidden: true, // for now till it becomes useful
   aliases: ['bot-commander-role','commander-role','botcommander'],
   usage: 'bot-commander <enable | disable>',
   description: 'Enable a role to use commands that need require higher permissions, without having those permissions (e.g. Manage Server). Moderation commands are excluded from this.'
