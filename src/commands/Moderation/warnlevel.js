@@ -7,16 +7,16 @@ exports.run = async (bot, msg, args) => {
 
 //  if(!msg.member.hasPermission("MANAGE_MESSAGES")) return msg.reply("You can't do that.");
   let wUser = msg.guild.member(msg.mentions.users.first()) || msg.guild.members.get(args[0])
-  if(!wUser) return msg.reply("Can't find user!");
+  if(!wUser) return msg.channel.send(`<:redx:411978781226696705> Can't find user!`);
   let warnlevel = warns[wUser.id].warns;
 
-  msg.reply(`<@${wUser.id}> has ${warnlevel} warnings.`);
+  msg.channel.send(`<@${wUser.id}> has ${warnlevel} warnings.`);
 
-}
+};
 
 exports.info = {
   name: 'warnlevel',
   aliases: ['warnlvl','warn-level'],
   usage: 'warnlevel <user>',
   description: 'Displays the number of a users warnings on the current guild.'
-}
+};
