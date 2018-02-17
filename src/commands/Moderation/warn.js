@@ -9,9 +9,11 @@ exports.run = async (bot, msg, args) => {
   let mutedrole = "muted";
   let modlogs = "mod_logs";
   //!warn @daeshan <reason>
-  if(!msg.member.hasPermission("KICK_MEMBERS")) return msg.reply("You are missing the permissions `Kick Members`!");
+  if (msg.author.id !== bot.config.botCreatorID) {
+    if(!msg.member.hasPermission("KICK_MEMBERS")) return msg.channel.send(`<:redx:411978781226696705> You are missing the permissions \`Kick Members\`!`);
+  }
   let wUser = msg.guild.member(msg.mentions.users.first()) || msg.guild.members.get(args[0])
-  if(!wUser) return msg.reply("Can't find user!");
+  if(!wUser) return msg.channel.send(`<:redx:411978781226696705> Can't find user!`);
 //  if(wUser.hasPermission("MANAGE_MESSAGES")) return message.reply("They waaaay too kewl");
   let reason = args.join(" ").slice(22);
 
@@ -35,29 +37,29 @@ exports.run = async (bot, msg, args) => {
   .addField("Reason", reason);
 
   let warnchannel = msg.guild.channels.find(`name`, `${modlogs}`);
-  if(!warnchannel) return msg.reply(`Couldn't find ${modlogs} channel`);
+  if(!warnchannel) return msg.channel.send(`<:redx:411978781226696705> Couldn't find ${modlogs} channel!`);
 
   warnchannel.send(warnEmbed);
 
   if (automute) {
-    if(warns[wUser.id].warns == 2){
+    if(warns[wUser.id].warns === 2){
       let muterole = msg.guild.roles.find(`name`, `${mutedrole}`);
-      if(!muterole) return msg.reply(`Cannot find ${mutedrole} role!`);
+      if(!muterole) return msg.channel.send(`<:redx:411978781226696705> Cannot find ${mutedrole} role!`);
 
       let mutetime = "10s";
       await(wUser.addRole(muterole.id));
-      msg.channel.send(`<@${wUser.id}> has been temporarily muted`);
+      msg.channel.send(`<:check:411976443522711552> <@${wUser.id}> has been temporarily muted.`);
 
-      setTimeout(function(){
+      setTimeout(function() {
         wUser.removeRole(muterole.id)
-        msg.reply(`<@${wUser.id}> has been unmuted.`)
+        msg.channel.send(`<:check:411976443522711552> <@${wUser.id}> has been unmuted.`)
       }, ms(mutetime))
     }
   }
   if (autoban) {
-    if(warns[wUser.id].warns == 3){
+    if(warns[wUser.id].warns === 3){
       msg.guild.member(wUser).ban(reason);
-      msg.reply(`<@${wUser.id}> has been banned.`)
+      msg.reply(`<:check:411976443522711552> <@${wUser.id}> has been banned.`)
     }
   }
 
