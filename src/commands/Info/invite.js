@@ -3,7 +3,8 @@ exports.run = async (bot, msg) => {
         embed: bot.utils.embed(`${bot.user.username} Invite`, '***Invite***', [
             {
                 name: '**Bot Invite**:',
-                value: `[Invite](https://discordapp.com/api/oauth2/authorize?client_id=${bot.user.id}&permissions=8&scope=bot)`,
+                //value: `[Invite](https://discordapp.com/api/oauth2/authorize?client_id=${bot.user.id}&permissions=8&scope=bot)`,
+                    value: `[Invite](https://discordapp.com/oauth2/authorize?client_id=${bot.user.id}&scope=bot&permissions=8)`,
             }, {
                 name: '**Support Server**:',
                 value: '[Join](https://discord.gg/AY6z42D)',
