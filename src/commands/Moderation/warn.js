@@ -16,7 +16,7 @@ exports.run = async (bot, msg, args) => {
   if(!wUser) return msg.channel.send(`<:redx:411978781226696705> Can't find user!`);
 //  if(wUser.hasPermission("MANAGE_MESSAGES")) return message.reply("They waaaay too kewl");
   let reason = args.join(" ").slice(22);
-
+  if (!reason) return msg.channel.send(`<:redx:411978781226696705> Please provide a reason.`);
   if(!warns[wUser.id]) warns[wUser.id] = {
     warns: 0
   };
@@ -26,7 +26,7 @@ exports.run = async (bot, msg, args) => {
   fs.writeFile("./warnings.json", JSON.stringify(warns), (err) => {
     if (err) console.log(err)
   });
-
+  
   let warnEmbed = new Discord.RichEmbed()
   .setDescription("Warns")
   .setAuthor(msg.author.username)
