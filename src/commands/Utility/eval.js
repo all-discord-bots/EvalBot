@@ -11,12 +11,14 @@ const enmaplvl = require('enmap-level');
 const child_process = require('child_process');
 const events = require('events');
 const cluster = require('cluster');
+const DBL = require("dblapi.js");
 
 exports.run = async (bot, msg, args) => {
     const client = bot;
     const message = msg;
     const guild = msg.guild;
     const channel = msg.channel;
+    const dbl = new DBL(bot.env.DB_TOKEN, client);
     
     if (msg.author.id !== bot.config.botCreatorID) return;
     let parsed = bot.utils.parseArgs(args, ['l:', 'i', 'q']);
