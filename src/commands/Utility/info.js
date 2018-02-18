@@ -53,6 +53,10 @@ exports.run = async (bot, msg) => {
                 name: ':stopwatch: Shard Uptime',
                 value: formatTime(process.hrtime(bot.managers.stats.get('start-time')))
             },
+            {
+                name: ':book: Library',
+                value: 'discord.js',
+            },
 //            {
 //                name: ':video_game: Game',
 //                value: (game.name) ? `*${activityTypes[game.type]}* ${game.name} ${game.streaming ? `[(Streaming)](${game.url})` : ''}` : 'none'
@@ -72,6 +76,7 @@ exports.run = async (bot, msg) => {
 
 exports.info = {
     name: 'info',
+    aliases: ['botinfo','bot-info'],
     usage: 'info',
     description: 'Shows you stats about the bot'
 };
