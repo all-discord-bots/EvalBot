@@ -3,9 +3,8 @@ function hasRole(member, roleName) {
 }
 
 exports.run = async (bot, msg, args) => {
-    if (msg.author.id !== bot.config.botCreatorID) return;
-    if (!msg.guild || !msg.guild.members) {
-        throw 'You must run this command from within a server.';
+    if (msg.author.id !== bot.config.botCreatorID) {
+        if (!msg.member.hasPermission('MANAGE_SERVER')) return msg.channel.send(`You are missing permissions \`Manage Server\``);
     }
 
     let members = msg.guild.members.array().sort((a, b) => a.user.username.localeCompare(b.user.username));
