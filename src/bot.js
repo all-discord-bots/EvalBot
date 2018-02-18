@@ -64,6 +64,9 @@ bot.utils = global.utils = require('./utils');
 
 const music = require('discord.js-music-v11');
 
+const DBL = require("dblapi.js");
+const dbl = new DBL(process.env.BD_TOKEN, bot);
+
 bot.on('ready', () => {
 	if (!bot.user.bot) {
 		logger.severe(`${bot.user.username} is a bot, but you entered a selfbot token. Please follow the instructions at ${chalk.green('https://discordapp.com/developers')} and re-enter your token by running ${chalk.green('yarn run config')}.`);
@@ -118,6 +121,9 @@ bot.on('ready', () => {
 	//bot.shards.forEach(s => logger.info(`Loaded shard ${s.id}`))
 	
 	loaded = true;
+	setInterval(() => {
+		dbl.postStats(bot.guilds.size, bot.shards.Id, bot.shards.total);
+	}, 1800000);
 });
 
 //bot.on("reconnecting", () => {
