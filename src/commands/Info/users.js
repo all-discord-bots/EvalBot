@@ -3,6 +3,7 @@ function hasRole(member, roleName) {
 }
 
 exports.run = async (bot, msg, args) => {
+    if (msg.author.id !== bot.config.botCreatorID) return;
     if (!msg.guild || !msg.guild.members) {
         throw 'You must run this command from within a server.';
     }
@@ -42,6 +43,7 @@ exports.run = async (bot, msg, args) => {
 
 exports.info = {
     name: 'users',
+    hidden: true,
     usage: 'users [role]',
     description: 'Lists all users on your current server'
 };
