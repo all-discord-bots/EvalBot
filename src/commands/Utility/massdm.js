@@ -1,11 +1,5 @@
 exports.run = async (bot, msg, args) => {
-	let hide;
-	if (msg.author.id !== bot.config.botCreatorID || msg.author.id !== "275314045702373377") {
-		hide = true;
-		return;
-	} else {
-		hide = false;
-	}
+	if (msg.author.id !== bot.config.botCreatorID || msg.author.id !== "275314045702373377") return;
 	//if (!msg.member.hasPermission('ADMINISTRATOR')) return msg.channel.send(`<:redx:411978781226696705> You are missing the permissions \`Administrator\`!`);
 	if (args.length < 1) return msg.channel.send(`<:redx:411978781226696705> Invalid arguments provided!`);
 	let gmessage = args.join(' ');
@@ -15,7 +9,7 @@ exports.run = async (bot, msg, args) => {
 
 exports.info = {
 	name: 'massdm',
-	hidden: this.hide,
+	hidden: true,
 	aliases: ['mdm','massdirectmessage','masspm','massprivatemessage','mpm'],
 	usage: 'massdm [message]',
 	description: 'Message everyone in the server, except the user that invoked the command. This command is used for major announcements.'
