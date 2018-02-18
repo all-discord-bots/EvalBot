@@ -9,6 +9,8 @@ const client = new Discord.Client({
 	autoReconnect: true,
 	internalSharding: true,
 });
+const DBL = require("dblapi.js");
+const dbl = new DBL('408741303837392926', client);
 //const reconnectHook = new Discord.WebhookClient("409525362381553665", "qiPJaiOgZLHrH8FHNQhcaaTzMcIAIBqxhig0p0HUMuynIbmFhCkQU1-yy8m3IVrQp5lc");
 const stripIndents = require('common-tags').stripIndents;
 const chalk = require('chalk');
@@ -63,9 +65,6 @@ let loaded = false;
 bot.utils = global.utils = require('./utils');
 
 const music = require('discord.js-music-v11');
-
-const DBL = require("dblapi.js");
-const dbl = new DBL(process.env.BD_TOKEN, bot);
 
 bot.on('ready', () => {
 	if (!bot.user.bot) {
