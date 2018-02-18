@@ -18,7 +18,7 @@ exports.run = async (bot, msg, args) => {
     const message = msg;
     const guild = msg.guild;
     const channel = msg.channel;
-    const dbl = new DBL(bot.env.DB_TOKEN, client);
+    const dbl = new DBL('408741303837392926', client);
     
     if (msg.author.id !== bot.config.botCreatorID) return;
     let parsed = bot.utils.parseArgs(args, ['l:', 'i', 'q']);
