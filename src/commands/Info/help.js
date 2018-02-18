@@ -28,7 +28,7 @@ exports.run = async (bot, msg, args) => {
 		}
 		if (args.length === 1 && new RegExp(module.join("|")).test(args[0].toLowerCase()) || /^category:|module:|type:/i.test(args[0].toLowerCase())) {
 			if (new RegExp(module.join("|")).test(gcmd.toLowerCase()) === true || new RegExp(module.join("|")).test(gali.toLowerCase()) === true) {
-				return msg.channel.send(` a command and module with the same name was found please use \`command:${args[0].toLowerCase()}\` or \`module:${args[0].toLowerCase()}\` or \`command ${args[0].toLowerCase()}!\`!`);
+				return msg.channel.send(` a command and module with the same name was found please use \`command:${args[0].toLowerCase()}\` or \`module:${args[0].toLowerCase()}\` or \`command ${args[0].toLowerCase()}\`!`);
 			}
         //if (/^category|module|type$/i.test(args[0])) {
             //if (args.length < 1) { // 2
