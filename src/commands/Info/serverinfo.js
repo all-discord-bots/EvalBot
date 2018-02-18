@@ -70,9 +70,7 @@ exports.run = async (bot, msg) => {
         embed.setThumbnail(`${msg.guild.iconURL}`);
     }
     
-    (await msg.channel.send("Loading guild information...").then((msg)=>{
-        msg.edit({ embed });
-    }));
+        msg.channel.send({ embed });
 };
 
 exports.info = {
