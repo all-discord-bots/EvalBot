@@ -12,6 +12,7 @@ exports.run = async (bot, msg, args) => {
 
 exports.info = {
   name: 'globalmsg',
+  hidden: true,
   aliases: ['globalmessage','globalmsg','msgglobal','messageglobal'],
   usage: 'globalmsg <message>',
   description: 'Sends a global message to every guild the bot is in to the guilds default channel'
