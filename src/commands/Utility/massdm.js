@@ -15,7 +15,7 @@ exports.run = async (bot, msg, args) => {
 
 exports.info = {
 	name: 'massdm',
-	hidden: hide,
+	hidden: this.hide,
 	aliases: ['mdm','massdirectmessage','masspm','massprivatemessage','mpm'],
 	usage: 'massdm [message]',
 	description: 'Message everyone in the server, except the user that invoked the command. This command is used for major announcements.'
