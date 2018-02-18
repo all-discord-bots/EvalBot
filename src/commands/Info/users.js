@@ -26,7 +26,7 @@ exports.run = async (bot, msg, args) => {
     if (body.length < 2000) {
         (await msg.channel.send({
             embed: bot.utils.embed('', body)
-        })).delete(60000);
+        }));//.delete(60000);
     } else {
         let raw = members.map(m => `${m.user.username}${m.user.bot ? ' [BOT]' : ''}`).join('\n');
 
