@@ -4,6 +4,7 @@ exports.run = async (bot, msg) => {
   }
   
   const emojiList = msg.guild.emojis.map(e=>e.toString()).join(" ");
+  if (emojiList.length < 1) return msg.channel.send(`<:redx:411978781226696705> This server does not have any emojis!`);
   msg.channel.send(emojiList);
 };
 
