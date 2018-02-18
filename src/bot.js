@@ -254,7 +254,7 @@ bot.on('message', (msg) => {
 		if (msg.author.bot) return;
 	}
 	if (!bot.config.allowDMCmds) {
-		if (msg.channel.type == "dm") return;
+		if (msg.channel.type == "dm") return msg.channel.send(`<:redx:411978781226696705> This command can only be used in a server.`);
 	}
 	if (!bot.config[msg.guild.id]) {
 		if (msg.content == bot.config.prefix || msg.content == bot.config.prefix + " " || msg.content == " " + bot.config.prefix) return;
