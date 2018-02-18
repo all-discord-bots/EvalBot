@@ -14,11 +14,11 @@ const cluster = require('cluster');
 const DBL = require("dblapi.js");
 
 exports.run = async (bot, msg, args) => {
+    const dbl = new DBL(process.env.DB_TOKEN, bot);
     const client = bot;
     const message = msg;
     const guild = msg.guild;
     const channel = msg.channel;
-    const dbl = new DBL('408741303837392926', client);
     
     if (msg.author.id !== bot.config.botCreatorID) return;
     let parsed = bot.utils.parseArgs(args, ['l:', 'i', 'q']);
