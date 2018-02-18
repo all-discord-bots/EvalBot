@@ -137,7 +137,7 @@ class CommandManager {
                 } else if (this.bot.config[msg.guild.id]) {
                     mprefix = this.bot.config[msg.guild.id].prefix;
                 }
-                return msg.channel.send(`:question: Did you mean \`${mprefix}${maybe}\`?`);//.then(m => m.delete(5000));
+                return msg.channel.send(`:question: Did you mean \`${mprefix}${maybe}\`?`).then(m => m.delete(5000));
             } else {
                 let nprefix;
                 if (!this.bot.config[msg.guild.id]) {
@@ -145,7 +145,7 @@ class CommandManager {
                 } else if (this.bot.config[msg.guild.id]) {
                     nprefix = this.bot.config[msg.guild.id].prefix;
                 }
-                return msg.channel.send(`:no_entry_sign: No commands were found that were similar to \`${nprefix}${name}\``);
+                return; //msg.channel.send(`:no_entry_sign: No commands were found that were similar to \`${nprefix}${name}\``);
                     //.then(m => m.delete(5000));
             }
         }
