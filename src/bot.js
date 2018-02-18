@@ -10,7 +10,7 @@ const client = new Discord.Client({
 	internalSharding: true,
 });
 const DBL = require("dblapi.js");
-const dbl = new DBL('408741303837392926', client);
+const dbl = new DBL(process.env.DB_TOKEN, client);
 //const reconnectHook = new Discord.WebhookClient("409525362381553665", "qiPJaiOgZLHrH8FHNQhcaaTzMcIAIBqxhig0p0HUMuynIbmFhCkQU1-yy8m3IVrQp5lc");
 const stripIndents = require('common-tags').stripIndents;
 const chalk = require('chalk');
