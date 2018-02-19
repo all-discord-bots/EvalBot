@@ -121,7 +121,7 @@ bot.on('ready', () => {
 	
 	loaded = true;
 	setInterval(() => {
-		dbl.postStats(bot.guilds.size, bot.shards.Id, bot.shards.total);
+		dbl.postStats(client.guilds.size, client.shard.id, client.shard.count);
 	}, 1800000);
 });
 
