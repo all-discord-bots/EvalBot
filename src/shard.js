@@ -5,6 +5,8 @@
 
 const Discord = require('discord.js');
 const SpawnShards = require('../data/configs/config.json');
+const Webhook = require("webhook-discord");
+const Hook = new Webhook(process.env.WEBHOOK_SHARD_LOGGER);
 const Manager = new Discord.ShardingManager('./src/bot.js', {
     respawn: true,
     //token: SpawnShards.botToken,
@@ -83,6 +85,4 @@ function updateStats(guilds) {
 
 }
 */
-Manager.on('launch', shard => console.log(`Successfully launched shard ${shard.id}`));
-//const Manager = new Discord.ShardingManager('./src/bot.js');
-//Manager.spawn(3); // Current set will spawn 1 shard // This example will spawn 2 shards (5,000 guilds);
+Manager.on('launch', shard => Hook.success("Shard Launched!",`Successfully launched shard ${shard.id}`));// console.log(`Successfully launched shard ${shard.id}`));
