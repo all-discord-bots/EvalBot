@@ -49,7 +49,8 @@
     "events": "^2.0.0",
     "redis-cli": "^1.0.2",
     "cluster": "^0.7.7",
-    "dblapi.js": "^1.1.0"
+    "dblapi.js": "^1.1.0",
+    "webhook-discord": "^2.0.6"
   },
   "devDependencies": {
     "eslint": "^4.18.0",
