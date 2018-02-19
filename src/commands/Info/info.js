@@ -75,8 +75,8 @@ exports.run = async (bot, msg) => {
 };
 
 exports.info = {
-    name: 'info',
-    aliases: ['botinfo','bot-info'],
-    usage: 'info',
+    name: 'botinfo',
+    aliases: ['bot-info'],
+    usage: 'botinfo',
     description: 'Shows you stats about the bot'
 };
