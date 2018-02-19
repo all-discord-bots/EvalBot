@@ -14,7 +14,7 @@ exports.run = async (bot, msg) => {
 				color: 631398,
 				title: 'Ping Data',
 				description: `
-Discord Latency: \`${Math.round((msg.createdTimestamp-end)/2)}ms\`
+Roundtrip: \`${Math.round((end-msg.createdTimestamp)/2)}ms\`
 Discord Latency: \`${end-start}ms\`
 API Latency: \`${Math.round(bot.ping)}ms\`
 Heartbeat: \`${Math.floor(bpings)}ms\`
