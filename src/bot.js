@@ -13,6 +13,7 @@ const DBL = require("dblapi.js");
 const dbl = new DBL(process.env.DB_TOKEN, client);
 const Webhook = require("webhook-discord");
 const Hook = new Webhook(process.env.WEBHOOK_CONSOLE_LOGGER);
+const Hookdelmsg = new Webhook(process.env.WEBHOOK_MESSAGES_DELETED_LOGGER);
 const stripIndents = require('common-tags').stripIndents;
 const chalk = require('chalk');
 const Managers = require('./managers');
@@ -189,27 +190,13 @@ bot.on("guildDelete", (guild) => {
 bot.on("guildMemberAdd", (member) => {
 	let guild = member.guild;
 	if (guild.id !== bot.config.botMainServerID) return;
-	let avatarurl;
-	if (member.user.avatarURL !== null) {
-		avatarurl = member.user.avatarURL;
-	} else {
-		let gennumber = Math.floor(Math.random(0) * 5); // 0-4
-		/*
-		* 0 - Blue
-		* 1 - Grey
-		* 2 - Green
-		* 3 - Orange
-		* 4 - Red
-		*/
-		avatarurl = `https://cdn.discordapp.com/embed/avatars/${gennumber}.png?width=80&height=80`;
-	}
 	bot.channels.get("413371120234921987").send({embed: ({
 		color: 6732650,
 		timestamp: new Date(),
 		description: `<@${member.user.id}> \`[${member.user.tag}]\``,
 		author: {
 			name: 'User Joined!',
-			icon_url: `${avatarurl}`
+			icon_url: `${member.user.displayAvatarURL}`
 		},
 	})});
 });
@@ -217,27 +204,13 @@ bot.on("guildMemberAdd", (member) => {
 bot.on("guildMemberRemove", (member) => {
 	let guild = member.guild;
 	if (guild.id !== bot.config.botMainServerID) return;
-	let avatarurl;
-	if (member.user.avatarURL !== null) {
-		avatarurl = member.user.avatarURL;
-	} else {
-		let gennumber = Math.floor(Math.random(0) * 5); // 0-4
-		/*
-		* 0 - Blue
-		* 1 - Grey
-		* 2 - Green
-		* 3 - Orange
-		* 4 - Red
-		*/
-		avatarurl = `https://cdn.discordapp.com/embed/avatars/${gennumber}.png?width=80&height=80`;
-	}
 	bot.channels.get("413371120234921987").send({embed: ({
 		color: 15684432,
 		timestamp: new Date(),
 		description: `<@${member.user.id}> \`[${member.user.tag}]\``,
 		author: {
 			name: 'User Left!',
-			icon_url: `${avatarurl}`
+			icon_url: `${member.user.displayAvatarURL}`
 		},
 	})});
 });
@@ -307,7 +280,7 @@ bot.on('message', (msg) => {
 });*/
 
 bot.on('messageDelete', (msg) => {
-	Hook.error("Message Deleted", `**User:** <@${msg.author.id}> \`[${msg.author.tag}]\`\n**Channel:** <#${msg.channel.id}> \`[#${msg.channel.name}]\`\n${msg.content}`);
+	Hookdelmsg.custom(bot.user.username, `**User:** <@${msg.author.id}> \`[${msg.author.tag}]\`\n**Channel:** <#${msg.channel.id}> \`[#${msg.channel.name}]\`\n${msg.content}`, "Message Delete", 15684432);
 	bot.deleted.set(msg.author.id, msg);
 });
 
@@ -318,12 +291,12 @@ process.on('exit', () => {
 
 //bot.on('error', console.error);
 bot.on('error', (e) => {
-	Hook.error("Error", e);
+	Hook.custom(bot.user.username, `${e}`, "Error", 15684432);
 	console.error;
 });
 //bot.on('warn', console.warn);
 bot.on('warn', (w) => {
-	Hook.warn("Warn", w);
+	Hook.custom(bot.user.username, `${w}`, "Warn", 12696890);
 	console.warn;
 });
 /*bot.on('disconnect', event => {
@@ -340,64 +313,63 @@ bot.on('warn', (w) => {
 */
 bot.on('disconnect', event => {
 	if (event.code === 0) {
-		Hook.warn("Warn", "[0] Gateway Error");
+		Hook.custom(bot.user.username, "[0] Gateway Error", "Warn", 12696890);
 		logger.warn("Gateway Error");
 	} else if (event.code === 1000) {
-		Hook.info("Info", "[1000] Disconnected from Discord cleanly");
-		logger.info("Disconnected from Discord cleanly");
+		Hook.custom(bot.user.username, "[1000] Disconnected from Discord cleanly", "Info", 5892826);
 	} else if (event.code === 4000) {
-		Hook.error("Error", "[4000] Unknown Error");
+		Hook.custom(bot.user.username, "[4000] Unknown Error", "Error", 15684432);
 		logger.severe('Unknown Error');
 		process.exit(666);
 	} else if (event.code === 4001) {
-		Hook.warn("Warn", "[4001] Unknown Opcode");
+		Hook.custom(bot.user.username, "[4001] Unknown Opcode", "Warn", 12696890);
 		logger.warn('Unknown Opcode');
 	} else if (event.code === 4002) {
-		Hook.warn("Warn", "[4002] Decode Error");
+		Hook.custom(bot.user.username, "[4002] Decode Error", "Warn", 12696890);
 		logger.warn('Decode Error');
 	} else if (event.code === 4003) {
-		Hook.error("Error", "[4003] Not Authenticated");
+		Hook.custom(bot.user.username, "[4003] Not Authenticated", "Error", 15684432);
 		logger.severe('Not Authenticated');
 		process.exit(666);
 	} else if (event.code === 4004) {
 		// Force the user to reconfigure if their token is invalid
-		Hook.error("Error", `[4004] Failed to authenticate with Discord. Please follow the instructions at ${chalk.green('https://discordapp.com/developers')} and re-enter your token by running ${chalk.green('yarn run config')}.`);
+		Hook.custom(bot.user.username, `[4004] Failed to authenticate with Discord. Please follow the instructions at ${chalk.green('https://discordapp.com/developers')} and re-enter your token by running ${chalk.green('yarn run config')}.`, "Error", 15684432);
 		logger.severe(`Failed to authenticate with Discord. Please follow the instructions at ${chalk.green('https://discordapp.com/developers')} and re-enter your token by running ${chalk.green('yarn run config')}.`);
 		process.exit(666);
 	} else if (event.code === 4005) {
-		Hook.info("Info", "[4005] Not Authenticated");
+		Hook.custom(bot.user.username, "[4005] Already Authenticated", "Info", 5892826);
 		logger.info('Already Authenticated');
 	} else if (event.code === 4006) {
-		Hook.error("Error", "[4006] Session Not Valid");
+		Hook.custom(bot.user.username, "[4006] Session Not Valid", "Error", 15684432);
 		logger.severe('Session Not Valid');
 		process.exit(666);
 	} else if (event.code === 4007) {
-		Hook.warn("Warn", "[4007] Invalid Sequence Number");
+		Hook.custom(bot.user.username, "[4007] Invalid Sequence Number", "Warn", 12696890);
 		logger.warn('Invalid Sequence Number');
 	} else if (event.code === 4008) {
-		Hook.info("Info", "[4008] Rate Limited");
+		Hook.custom(bot.user.username, "[4008] Rate Limited", "Info", 5892826);
 		logger.info('Rate Limited');
 	} else if (event.code === 4009) {
-		Hook.error("Error", "[4009] Session Timeout");
+		Hook.custom(bot.user.username, "[4009] Session Timeout", "Error", 15684432);
 		logger.severe('Session Timeout');
 		process.exit(666);
 	} else if (event.code === 4010) {
-		Hook.warn("Warn", "[4010] Invalid Shard");
+		Hook.custom(bot.user.username, "[4010] Invalid Shard", "Warn", 12696890);
 		logger.warn('Invalid Shard');
 	} else {
-		Hook.warn("Warn", `Disconnected from Discord with code ${event.code}`);
+		Hook.custom(bot.user.username, `Disconnected from Discord with code ${event.code}`, "Warn", 12696890);
 		logger.warn(`Disconnected from Discord with code ${event.code}`);
 	}
 });
 
 process.on('uncaughtException', (err) => {
 	let errorMsg = (err ? err.stack || err : '').toString().replace(new RegExp(`${__dirname}\/`, 'g'), './');
-	Hook.error("Uncaught Exception", errorMsg);
+	Hook.custom(bot.user.username, errorMsg, "Uncaught Exception", 15684432);
 	logger.severe(errorMsg);
 });
 
 process.on('unhandledRejection', err => {
-	Hook.error("Unhandled Rejection | Uncaught Promise error:", err.stack);
+	Hook.custom(bot.user.username, err.stack, "Unhandled Rejection | Uncaught Promise error:", 15684432);
 	logger.severe('Uncaught Promise error: \n' + err.stack);
 });
 
