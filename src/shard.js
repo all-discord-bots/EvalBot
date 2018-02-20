@@ -85,6 +85,6 @@ function updateStats(guilds) {
 }
 */
 Manager.on('launch', (shard) => {
-	Hook.success("CripsBot", `Successfully launched shard ${shard.id}`);
+	Hook.success("CripsBot", `Successfully launched shard \`${shard.id}\``);
 	console.log(`Successfully launched shard ${shard.id}`);
 });
