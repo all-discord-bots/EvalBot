@@ -1,6 +1,6 @@
 exports.run = async (bot, msg, args) => {
 	if (msg.author.id !== bot.config.botCreatorID) {
-		if (!msg.member.hasPermission('ADMINISTRATOR')) return msg.channel.send(`<:redx:411978781226696705> You are missing permission \`Administrator\`!`);
+		if (!msg.member.hasPermission('ADMINISTRATOR')) return msg.channel.send(`<:redx:411978781226696705> You are missing permissions \`Administrator\`!`);
 	}
 	if (args.length < 1) {
 		return msg.channel.send(`<:redx:411978781226696705> Invalid arguments!`);
