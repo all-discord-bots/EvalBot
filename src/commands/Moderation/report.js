@@ -1,12 +1,14 @@
 const Discord = require("discord.js");
 
 exports.run = async (bot, msg, args) => {
+    let gbot = msg.guild.members.get(bot.user.id);
+    if (!gbot.hasPermission(0x00000002)) return msg.channel.send(`<:redx:411978781226696705> I am missing \`Kick Members\`!`).catch(console.error);
     if (msg.author.id !== bot.config.botCreatorID) {
-      if (!msg.member.hasPermission('KICK_MEMBERS')) return msg.channel.send("You are missing permissions `Kick Members`!");
+      if (!msg.member.hasPermission('KICK_MEMBERS')) return msg.channel.send(`<:redx:411978781226696705> You are missing permissions \`Kick Members\`!`).catch(console.error);
     }
     let reportchannel = "mod_logs";
     let rUser = msg.guild.member(msg.mentions.users.first() || msg.guild.members.get(args[0]));
-    if(!rUser) return msg.channel.send("Couldn't find user.");
+    if(!rUser) return msg.channel.send(`<:redx:411978781226696705> Can't find that user.`).catch(console.error);
     let rreason = args.join(" ").slice(22);
 
     let reportEmbed = new Discord.RichEmbed()
@@ -19,7 +21,7 @@ exports.run = async (bot, msg, args) => {
     .addField("Reason", rreason);
 
     let reportschannel = msg.guild.channels.find(`name`, `${reportchannel}`);
-    if(!reportschannel) return msg.channel.send(`Couldn't find ${reportchannel} channel.`);
+    if(!reportschannel) return msg.channel.send(`Couldn't find ${reportchannel} channel.`).catch(console.error);
 
 
     msg.delete().catch(O_o=>{});
