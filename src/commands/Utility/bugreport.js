@@ -33,5 +33,5 @@ exports.info = {
 	name: 'bug-report',
 	aliases: ['bugreport','reportbug','sendbugreport','send-bug-report'],
 	usage: 'bug-report <explain your bug here>',
-	description: 'Report bugs using this command, which sends a bug report to me so I may fix them.'
+	description: 'Report bugs using this command, which sends a bug report to me so I may fix them. You may use markdown.'
 };
