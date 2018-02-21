@@ -66,8 +66,6 @@ let loaded = false;
 
 bot.utils = global.utils = require('./utils');
 
-const music = require('discord.js-music-v11');
-
 bot.on('ready', () => {
 	if (!bot.user.bot) {
 		logger.severe(`${bot.user.username} is a bot, but you entered a selfbot token. Please follow the instructions at ${chalk.green('https://discordapp.com/developers')} and re-enter your token by running ${chalk.green('yarn run config')}.`);
@@ -409,15 +407,5 @@ process.on('unhandledRejection', err => {
 	logger.severe('Uncaught Promise error: \n' + err.stack);
 });
 
-music(bot, {
-	// https://github.com/nexu-dev/discord.js-music/blob/master/README.md
-	prefix: bot.config.prefix, // The prefix to use for the commands.
-	global: false, // Wether to use a global queue instead of a server-specific queue.
-	maxQueueSize: 100, // Maximum queue size.
-	anyoneCanSkip: true, // Allow anybody to skip the song. If false then only admins and the user that requested the song can skip it.
-	volume: 100, // The default volume of the player.
-	clearInvoker: false // Clear the command message.
-	//channel: 'music' // Name of the channel to join, If omitted, will instead join user's voice channel.
-});
 //bot.config && bot.login(bot.config.botToken);
 bot.config && bot.login(process.env.BOT_TOKEN);
