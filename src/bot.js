@@ -152,7 +152,7 @@ bot.on("guildCreate", (guild) => {
 		title: 'Added',
 		timestamp: new Date(),
 		description: `${guild.name} (${guild.id})\n\`${gusers} members   -   ${gbots} bots  (${Math.floor(gbots/gdecimal)}%)\`\n\nOwner: <@${guild.owner.id}>  \`[${guild.owner.user.username}#${guild.owner.user.discriminator}]\``
-	})});
+	})}).catch(console.error);
 	var s;
 	if (bot.guilds.size === 1) {
 		s = "";
@@ -177,7 +177,7 @@ bot.on("guildDelete", (guild) => {
 		title: 'Removed',
 		timestamp: new Date(),
 		description: `${guild.name} (${guild.id})\n\`${gusers} members   -   ${gbots} bots  (${Math.floor(gbots/gdecimal)}%)\`\n\nOwner: <@${guild.owner.id}>  \`[${guild.owner.user.username}#${guild.owner.user.discriminator}]\``
-	})});
+	})}).catch(console.error);
 	var s;
 	if (bot.guilds.size == 1) {
 		s = "";
@@ -198,7 +198,7 @@ bot.on("guildMemberAdd", (member) => {
 			name: 'User Joined!',
 			icon_url: `${member.user.displayAvatarURL}`
 		},
-	})});
+	})}).catch(console.error);
 });
 
 bot.on("guildMemberRemove", (member) => {
@@ -212,7 +212,7 @@ bot.on("guildMemberRemove", (member) => {
 			name: 'User Left!',
 			icon_url: `${member.user.displayAvatarURL}`
 		},
-	})});
+	})}).catch(console.error);
 });
 	
 //var con = mysql.createConnection({
@@ -235,6 +235,12 @@ bot.on('message', (msg) => {
 	if (!bot.config.allowDMCmds) {
 		if (msg.channel.type == "dm") return msg.channel.send(`<:redx:411978781226696705> This command can only be used in a server.`);
 	}
+	// >eval let a = msg.guild.members.get("408741303837392926"); a.hasPermission(0x00000002);
+	let gbot = msg.guild.members.get(bot.user.id);
+	if (!gbot.hasPermission(0x00000020)) return msg.channel.send(`<:redx:411978781226696705> I am missing \`Manage Guild\`!`);
+	if (!gbot.hasPermission(0x00040000)) return msg.channel.send(`<:redx:411978781226696705> I am missing \`Use External Emojis\`!`);
+	if (!gbot.hasPermission(0x00004000)) return msg.channel.send(`<:redx:411978781226696705> I am missing \`Embed Links\``);
+	
 	if (!bot.config[msg.guild.id]) {
 		if (msg.content == bot.config.prefix || msg.content == bot.config.prefix + " " || msg.content == " " + bot.config.prefix) return;
 	} else if (bot.config[msg.guild.id]) {
