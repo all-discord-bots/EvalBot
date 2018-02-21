@@ -12,26 +12,28 @@ exports.run = async (bot, msg, args) => {
     }
     if(!msg.guild.member(bUser).bannable) return msg.channel.send(`<:redx:411978781226696705> I may need my role moved higher!`).catch(console.error);
 //    if(bUser.hasPermission("MANAGE_MESSAGES")) return message.channel.send("That person can't be kicked!");
-  
-    let banEmbed = new Discord.RichEmbed()
-    .setDescription("~Ban~")
-    .setColor("#bc0000")
-    .addField("Banned User", `${bUser} with ID ${bUser.id}`)
-    .addField("Banned By", `<@${msg.author.id}> with ID ${msg.author.id}`)
-    .addField("Banned In", msg.channel)
-    .addField("Time", msg.createdAt)
-    .addField("Reason", bReason);
 
     let incidentchannel = msg.guild.channels.find(`name`, `${modlogs}`);
-    if(!incidentchannel) return msg.channel.send(`Can't find ${modlogs} channel.`).catch(console.error);
+//    if(!incidentchannel) return msg.channel.send(`Can't find ${modlogs} channel.`).catch(console.error);
 
-    msg.guild.member(bUser).ban(bReason).catch(err => msg.channel.send(`I could not ban this user due to the error: ${err}`));
-    incidentchannel.send(banEmbed).catch(console.error);
+    msg.guild.member(bUser).ban(bReason).catch(err => msg.channel.send(`<:redx:411978781226696705> I could not ban this user due to the error: ${err}`));
+    if (incidentchannel) {
+        let banEmbed = new Discord.RichEmbed()
+        .setDescription("~Ban~")
+        .setColor("#bc0000")
+        .addField("Banned User", `${bUser} with ID ${bUser.id}`)
+        .addField("Banned By", `<@${msg.author.id}> with ID ${msg.author.id}`)
+        .addField("Banned In", msg.channel)
+        .addField("Time", msg.createdAt)
+        .addField("Reason", bReason);
+        incidentchannel.send(banEmbed).catch(console.error);
+    }
     msg.channel.send(`<:check:411976443522711552> Successfully banned <@${bUser.id}>`).catch(console.error);
 }
 
 exports.info = {
   name: 'ban',
+  aliases: ['bean'],
   usage: 'ban <member> <reason>',
-  description: 'Bans users from your guild.'
+  description: 'Bans users from your guild. If you would like to let the bot keep logs of moderations create a text channel named `mod_logs`'
 }
