@@ -1,15 +1,21 @@
 const Discord = require('discord.js');
 
 exports.run = (bot, msg, args) => {
-  if (msg.author.id !== bot.config.botCreatorID) {
-    if (!msg.member.hasPermission('KICK_MEMBERS')) {
-      return msg.channel.send('You must have the `Kick Members` permission!');
-    }
-  }
   let reason = args.slice(1).join(' ');
   let member = msg.mentions.members.first();
   let modlog = msg.guild.channels.find('name', 'mod_logs');
   let muteRole = msg.guild.roles.find('name', 'Muted');
+  let gbot = msg.guild.members.get(bot.user.id);
+  if (!gbot.hasPermission(0x00000002)) return msg.channel.send(`<:redx:411978781226696705> I am missing \`Kick Members\`!`).catch(console.error);
+  if (!gbot.hasPermission(0x10000000)) return msg.channel.send(`<:redx:411978781226696705> I am missing \`Manage Roles\`!`).catch(console.error);
+  if (msg.author.id !== bot.config.botCreatorID) {
+    if (!msg.member.hasPermission('KICK_MEMBERS')) {
+      return msg.channel.send(`<:redx:411978781226696705> You are missing the permissions \`Kick Members\`!`).catch(console.error);
+    } else if (msg.member.hasPermission('MANAGE_ROLES')) {
+      return msg.channel.send(`<:redx:411978781226696705> You are missing the permissions \`Manage Roles\`!`).catch(console.error);
+    }
+     if(!msg.guild.member(member).kickable) return msg.channel.send(`<:redx:411978781226696705> I may need my role moved higher!`).catch(console.error);
+  }
   if (!modlog) return msg.channel.send('Please create a channel named `mod_logs` first!').catch(console.error);
   if (!muteRole) return msg.channel.send('Please create a role named `Muted` first!').catch(console.error);
   if (reason.length < 1) return msg.channel.send('You must supply a reason for the mute.').catch(console.error);
@@ -18,8 +24,6 @@ exports.run = (bot, msg, args) => {
     .setColor(0x00AE86)
     .setTimestamp()
     .setDescription(`**Action:** Un/mute\n**Target:** ${member.user.tag}\n**Moderator:** ${msg.author.tag}\n**Reason:** ${reason}`);
-
-  if (!msg.member.hasPermission('MANAGE_ROLES')) return msg.channel.send('I must have `Manage Roles` permission.').catch(console.error);
 
   if (member.roles.has(muteRole.id)) {
     member.removeRole(muteRole).then(() => {
