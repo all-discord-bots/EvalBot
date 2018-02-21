@@ -1,6 +1,8 @@
 const got = require('got');
 
 exports.run = async (bot, msg) => {
+    let gbot = msg.guild.members.get(bot.user.id);
+    if (!gbot.hasPermission(0x00008000)) return msg.channel.send(`<:redx:411978781226696705> I am missing \`Upload Files\`!`);
 //    (await msg.channel.send("Loading message...").then((msg)=>{
 //        msg.edit(':arrows_counterclockwise:');
 //    }));
