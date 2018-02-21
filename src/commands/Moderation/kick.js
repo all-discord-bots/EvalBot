@@ -3,18 +3,18 @@ const Discord = require("discord.js");
 exports.run = async (bot, message, args) => {
     let modlogs = "mod_logs"; // mod_logs channel
     let kUser = msg.guild.member(msg.mentions.users.first() || msg.guild.members.get(args[0]));
-    if(!kUser) return msg.channel.send("Can't find user!");
+    if(!kUser) return msg.channel.send(`<:redx:411978781226696705> Can't find that user!`).catch(console.error);
     let kReason = args.join(" ").slice(22);
     let gbot = msg.guild.members.get(bot.user.id);
-    if (!gbot.hasPermission(0x00000002)) return msg.channel.send(`<:redx:411978781226696705> I am missing \`Kick Members\`!`);
+    if (!gbot.hasPermission(0x00000002)) return msg.channel.send(`<:redx:411978781226696705> I am missing \`Kick Members\`!`).catch(console.error);
     if (msg.author.id !== bot.config.botCreatorID) {
-        if(!msg.member.hasPermission("KICK_MEMBERS")) return msg.channel.send("You are missing the permissions `Kick Members`!");
+        if(!msg.member.hasPermission("KICK_MEMBERS")) return msg.channel.send(`<:redx:411978781226696705> You are missing the permissions \`Kick Members\`!`).catch(console.error);
     }
-    if(!msg.guild.member(kUser).kickable) return msg.channel.send(`<:redx:411978781226696705> I may need my role moved higher!`);
+    if(!msg.guild.member(kUser).kickable) return msg.channel.send(`<:redx:411978781226696705> I may need my role moved higher!`).catch(console.error);
     
    
     if (msg.author.id !== bot.config.botCreatorID) {
-      if(!msg.member.hasPermission("BAN_MEMBERS")) return msg.channel.send(`<:redx:411978781226696705> You are missing the permissions \`Ban Members\`!`);
+      if(!msg.member.hasPermission("BAN_MEMBERS")) return msg.channel.send(`<:redx:411978781226696705> You are missing the permissions \`Ban Members\`!`).catch(console.error);
     }
     
 //    if(kUser.hasPermission("MANAGE_MESSAGES")) return msg.channel.send("That person can't be kicked!");
@@ -29,10 +29,11 @@ exports.run = async (bot, message, args) => {
     .addField("Reason", kReason);
 
     let kickChannel = msg.guild.channels.find(`name`, `${modlogs}`);
-    if(!kickChannel) return msg.channel.send(`Can't find ${modlogs} channel.`);
+    if(!kickChannel) return msg.channel.send(`Can't find ${modlogs} channel.`).catch(console.error);
 
     msg.guild.member(kUser).kick(kReason).catch(err => msg.channel.send(`I could not kick this user due to the error: ${err}`));
-    kickChannel.send(kickEmbed);
+    kickChannel.send(kickEmbed).catch(console.error);
+    msg.channel.send(`<:check:411976443522711552> Successfully kicked <@${kUser.id}>`).catch(console.error);
 }
 
 exports.info = {
