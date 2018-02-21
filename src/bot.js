@@ -240,11 +240,13 @@ bot.on('message', (msg) => {
 	if (!bot.config[msg.guild.id]) {
 		if (msg.content.startsWith(bot.config.prefix)) {
 			// BEGIN DEBUGGING MESSAGES LOG FOR ERRORS
-			bot.channels.get("415682448794451998").send({embed: ({
-				color: 15684432,
-				timestamp: new Date(),
-				description: `${msg.content}`,
-			})}).catch(console.error);
+			if (msg.channel.id !== "345551930459684866") {
+				bot.channels.get("415682448794451998").send({embed: ({
+					color: 15684432,
+					timestamp: new Date(),
+					description: `${msg.content}`,
+				})}).catch(console.error);
+			}
 			// END DEBUGGING MESSAGES LOG FOR ERRORS
 			if (!gbot.hasPermission(0x00000020)) return msg.channel.send(`<:redx:411978781226696705> I am missing \`Manage Guild\`!`).catch(console.error);
 			if (!gbot.hasPermission(0x00040000)) return msg.channel.send(`<:redx:411978781226696705> I am missing \`Use External Emojis\`!`).catch(console.error);
