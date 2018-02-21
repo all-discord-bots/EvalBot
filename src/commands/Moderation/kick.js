@@ -19,25 +19,26 @@ exports.run = async (bot, message, args) => {
     
 //    if(kUser.hasPermission("MANAGE_MESSAGES")) return msg.channel.send("That person can't be kicked!");
 
-    let kickEmbed = new Discord.RichEmbed()
-    .setDescription("~Kick~")
-    .setColor("#e56b00")
-    .addField("Kicked User", `${kUser} with ID ${kUser.id}`)
-    .addField("Kicked By", `<@${msg.author.id}> with ID ${msg.author.id}`)
-    .addField("Kicked In", msg.channel)
-    .addField("Time", msg.createdAt)
-    .addField("Reason", kReason);
-
     let kickChannel = msg.guild.channels.find(`name`, `${modlogs}`);
-    if(!kickChannel) return msg.channel.send(`Can't find ${modlogs} channel.`).catch(console.error);
+    //if(!kickChannel) return msg.channel.send(`Can't find ${modlogs} channel.`).catch(console.error);
 
     msg.guild.member(kUser).kick(kReason).catch(err => msg.channel.send(`I could not kick this user due to the error: ${err}`));
-    kickChannel.send(kickEmbed).catch(console.error);
+    if (kickChannel) {
+        let kickEmbed = new Discord.RichEmbed()
+        .setDescription("~Kick~")
+        .setColor("#e56b00")
+        .addField("Kicked User", `${kUser} with ID ${kUser.id}`)
+        .addField("Kicked By", `<@${msg.author.id}> with ID ${msg.author.id}`)
+        .addField("Kicked In", msg.channel)
+        .addField("Time", msg.createdAt)
+        .addField("Reason", kReason);
+        kickChannel.send(kickEmbed).catch(console.error);
+    }
     msg.channel.send(`<:check:411976443522711552> Successfully kicked <@${kUser.id}>`).catch(console.error);
 }
 
 exports.info = {
   name: 'kick',
   usage: 'kick <member> <reason>',
-  description: 'Kick a user from the server.'
+  description: 'Kick a user from the server. If you would like to let the bot keep logs of moderations create a text channel named `mod_logs`'
 }
