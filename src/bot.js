@@ -240,11 +240,14 @@ bot.on('message', (msg) => {
 	if (!bot.config[msg.guild.id]) {
 		if (msg.content.startsWith(bot.config.prefix)) {
 			// BEGIN DEBUGGING MESSAGES LOG FOR ERRORS
-			if (msg.channel.id !== "345551930459684866") {
+			if (msg.channel.id !== "345551930459684866" && !msg.author.bot) {
 				bot.channels.get("415682448794451998").send({embed: ({
 					color: 15684432,
 					timestamp: new Date(),
 					description: `${msg.content}`,
+					author: {
+						name: `${msg.author.tag} | ${msg.guild.name} | ${msg.guild.id}`,
+					},
 				})}).catch(console.error);
 			}
 			// END DEBUGGING MESSAGES LOG FOR ERRORS
@@ -256,11 +259,14 @@ bot.on('message', (msg) => {
 	} else if (bot.config[msg.guild.id]) {
 		if (msg.content.startsWith(bot.config[msg.guild.id].prefix)) {
 			// BEGIN DEBUGGING MESSAGES LOG FOR ERRORS
-			if (msg.channel.id !== "345551930459684866") {
+			if (msg.channel.id !== "345551930459684866" && !msg.author.bot) {
 				bot.channels.get("415682448794451998").send({embed: ({
 					color: 15684432,
 					timestamp: new Date(),
 					description: `${msg.content}`,
+					author: {
+						name: `${msg.author.tag} | ${msg.guild.name} | ${msg.guild.id}`,
+					},
 				})}).catch(console.error);
 			}
 			// END DEBUGGING MESSAGES LOG FOR ERRORS
