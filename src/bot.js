@@ -236,7 +236,7 @@ bot.on('message', (msg) => {
 	// >eval let a = msg.guild.members.get("408741303837392926"); a.hasPermission(0x00000002);
 	let gbot = msg.guild.members.get(bot.user.id);
 	if (!bot.config[msg.guild.id]) {
-		if (msg.content.startsWith(`${bot.config.prefix}${msg.content}`) && !msg.content.startsWith(`${bot.config.prefix} ${msg.content}`)) {
+		if (msg.content.startsWith(bot.config.prefix)) {
 			// BEGIN DEBUGGING MESSAGES LOG FOR ERRORS
 			if (msg.channel.id !== "345551930459684866" && !msg.author.bot) {
 				bot.channels.get("415682448794451998").send({embed: ({
@@ -255,7 +255,7 @@ bot.on('message', (msg) => {
 		}
 		if (msg.content == bot.config.prefix || msg.content == bot.config.prefix + " " || msg.content == " " + bot.config.prefix) return;
 	} else if (bot.config[msg.guild.id]) {
-		if (msg.content.startsWith(`${bot.config[msg.guild.id].prefix}${msg.content}`) && !msg.content.startsWith(`${bot.config[msg.guild.id].prefix} ${msg.content}`)) {
+		if (msg.content.startsWith(bot.config[msg.guild.id].prefix)) {
 			// BEGIN DEBUGGING MESSAGES LOG FOR ERRORS
 			if (msg.channel.id !== "345551930459684866" && !msg.author.bot) {
 				bot.channels.get("415682448794451998").send({embed: ({
