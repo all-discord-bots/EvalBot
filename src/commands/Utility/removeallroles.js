@@ -7,11 +7,12 @@ exports.run = async (bot, msg, args) => {
 	if (args.length < 1) {
 		return msg.channel.send(`<:redx:411978781226696705> Invalid arguments!`).catch(console.error);
 	}
+	let role = args.join(" ");
 	let grole;
-	if (msg.guild.roles.find(`name`, `${args[0]}`)) {
-		grole = msg.guild.roles.find(`name`, `${args[0]}`);
-	} else if (msg.guild.roles.find(`id`, `${args[0]}`)) {
-		grole = msg.guild.roles.find(`name`, `${args[0]}`);
+	if (msg.guild.roles.find(`name`, `${role}`)) {
+		grole = msg.guild.roles.find(`name`, `${role}`);
+	} else if (msg.guild.roles.find(`id`, `${role}`)) {
+		grole = msg.guild.roles.find(`id`, `${role}`);
 	} else {
 		return msg.channel.send(`<:redx:411978781226696705> No roles with the name ${grole.name} exists!`).catch(cosole.error);
 	}
