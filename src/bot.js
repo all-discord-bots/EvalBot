@@ -251,7 +251,7 @@ bot.on('message', (msg) => {
 				})}).catch(console.error);
 			}
 			// END DEBUGGING MESSAGES LOG FOR ERRORS
-			if (!gbot.hasPermission(0x00000020)) return msg.channel.send(`<:redx:411978781226696705> I am missing \`Manage Guild\`!`).catch(console.error);
+			//if (!gbot.hasPermission(0x00000020)) return msg.channel.send(`<:redx:411978781226696705> I am missing \`Manage Guild\`!`).catch(console.error);
 			if (!gbot.hasPermission(0x00040000)) return msg.channel.send(`<:redx:411978781226696705> I am missing \`Use External Emojis\`!`).catch(console.error);
 			if (!gbot.hasPermission(0x00004000)) return msg.channel.send(`<:redx:411978781226696705> I am missing \`Embed Links\``).catch(console.error);
 		}
@@ -270,7 +270,7 @@ bot.on('message', (msg) => {
 				})}).catch(console.error);
 			}
 			// END DEBUGGING MESSAGES LOG FOR ERRORS
-			if (!gbot.hasPermission(0x00000020)) return msg.channel.send(`<:redx:411978781226696705> I am missing \`Manage Guild\`!`).catch(console.error);
+			//if (!gbot.hasPermission(0x00000020)) return msg.channel.send(`<:redx:411978781226696705> I am missing \`Manage Guild\`!`).catch(console.error);
 			if (!gbot.hasPermission(0x00040000)) return msg.channel.send(`<:redx:411978781226696705> I am missing \`Use External Emojis\`!`).catch(console.error);
 			if (!gbot.hasPermission(0x00004000)) return msg.channel.send(`<:redx:411978781226696705> I am missing \`Embed Links\`!`).catch(console.error);
 		}
