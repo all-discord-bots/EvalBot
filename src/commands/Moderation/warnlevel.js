@@ -7,7 +7,7 @@ exports.run = async (bot, msg, args) => {
 
 //  if(!msg.member.hasPermission("MANAGE_MESSAGES")) return msg.reply("You can't do that.");
   let wUser = msg.guild.member(msg.mentions.users.first()) || msg.guild.members.get(args[0])
-  if(!wUser) return msg.channel.send(`<:redx:411978781226696705> Can't find user!`);
+  if(!wUser) return msg.channel.send(`<:redx:411978781226696705> Can't find that user!`).catch(console.error);
   let warnlevel = warns[wUser.id].warns;
 
   msg.channel.send(`<@${wUser.id}> has ${warnlevel} warnings.`);
