@@ -22,5 +22,5 @@ exports.run = async (bot, msg, args) => {
 exports.info = {
 	name: 'takeallrole',
 	usage: 'takeallrole <role>',
-	description: 'Remove a role from every member in your server if they have it.'
+	description: 'Remove a role from every member in your server if they have it. CASE SENSITIVE role name.'
 };
