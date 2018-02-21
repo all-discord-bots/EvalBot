@@ -237,15 +237,33 @@ bot.on('message', (msg) => {
 	}
 	// >eval let a = msg.guild.members.get("408741303837392926"); a.hasPermission(0x00000002);
 	let gbot = msg.guild.members.get(bot.user.id);
-	if (!gbot.hasPermission(0x00000020)) return msg.channel.send(`<:redx:411978781226696705> I am missing \`Manage Guild\`!`).catch(console.error);
-	if (!gbot.hasPermission(0x00040000)) return msg.channel.send(`<:redx:411978781226696705> I am missing \`Use External Emojis\`!`).catch(console.error);
-	if (!gbot.hasPermission(0x00004000)) return msg.channel.send(`<:redx:411978781226696705> I am missing \`Embed Links\``).catch(console.error);
-	if (msg.content.startsWith(">")) { // used for debugging errors
-		console.log(`${msg.content}`);
-	}
 	if (!bot.config[msg.guild.id]) {
+		if (msg.content.startsWith(bot.config.prefix)) {
+			// BEGIN DEBUGGING MESSAGES LOG FOR ERRORS
+			bot.channels.get("415682448794451998").send({embed: ({
+				color: 15684432,
+				timestamp: new Date(),
+				description: `${msg.content}`,
+			})}).catch(console.error);
+			// END DEBUGGING MESSAGES LOG FOR ERRORS
+			if (!gbot.hasPermission(0x00000020)) return msg.channel.send(`<:redx:411978781226696705> I am missing \`Manage Guild\`!`).catch(console.error);
+			if (!gbot.hasPermission(0x00040000)) return msg.channel.send(`<:redx:411978781226696705> I am missing \`Use External Emojis\`!`).catch(console.error);
+			if (!gbot.hasPermission(0x00004000)) return msg.channel.send(`<:redx:411978781226696705> I am missing \`Embed Links\``).catch(console.error);
+		}
 		if (msg.content == bot.config.prefix || msg.content == bot.config.prefix + " " || msg.content == " " + bot.config.prefix) return;
 	} else if (bot.config[msg.guild.id]) {
+		if (msg.content.startsWith(bot.config[msg.guild.id].prefix)) {
+			// BEGIN DEBUGGING MESSAGES LOG FOR ERRORS
+			bot.channels.get("415682448794451998").send({embed: ({
+				color: 15684432,
+				timestamp: new Date(),
+				description: `${msg.content}`,
+			})}).catch(console.error);
+			// END DEBUGGING MESSAGES LOG FOR ERRORS
+			if (!gbot.hasPermission(0x00000020)) return msg.channel.send(`<:redx:411978781226696705> I am missing \`Manage Guild\`!`).catch(console.error);
+			if (!gbot.hasPermission(0x00040000)) return msg.channel.send(`<:redx:411978781226696705> I am missing \`Use External Emojis\`!`).catch(console.error);
+			if (!gbot.hasPermission(0x00004000)) return msg.channel.send(`<:redx:411978781226696705> I am missing \`Embed Links\`!`).catch(console.error);
+		}
 		if (msg.content == bot.config[msg.guild.id].prefix || msg.content == bot.config[msg.guild.id].prefix + " " || msg.content == " " + bot.config[msg.guild.id].prefix) return;
 	}
 	if (msg === "") return;
