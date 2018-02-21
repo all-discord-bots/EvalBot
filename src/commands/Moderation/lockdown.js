@@ -1,7 +1,9 @@
 const ms = require('ms');
 exports.run = async (bot, msg, args) => {
+  let gbot = msg.guild.members.get(bot.user.id);
+  if (!gbot.hasPermission(0x00000010)) return msg.channel.send(`<:redx:411978781226696705> I am missing \`Manage Channels\`!`).catch(console.error);
   if (msg.author.id !== bot.config.botCreatorID) {
-    if (!msg.member.hasPermission('MANAGE_CHANNELS')) return msg.channel.send(`<:redx:411978781226696705> You are missing the permissions \`Manage Channels\`!`);
+    if (!msg.member.hasPermission('MANAGE_CHANNELS')) return msg.channel.send(`<:redx:411978781226696705> You are missing the permissions \`Manage Channels\`!`).catch(console.error);
   }
   let gchannel;
   let cping = args[0];
@@ -20,7 +22,7 @@ exports.run = async (bot, msg, args) => {
   //let time = args.join(' ');
   let time = args[1];
   let validUnlocks = ['release', 'unlock'];
-  if (!time) return msg.channel.send(`<:redx:411978781226696705> You must set a duration for the lockdown in either hours, minutes or seconds`);
+  if (!time) return msg.channel.send(`<:redx:411978781226696705> You must set a duration for the lockdown in either hours, minutes or seconds`).catch(console.error);
   if (validUnlocks.includes(time)) {
     gchannel.overwritePermissions(msg.guild.id, {
       SEND_MESSAGES: null
@@ -54,6 +56,6 @@ exports.run = async (bot, msg, args) => {
 exports.info = {
   name: 'lock-down',
   aliases: ['channel-lock-down','lock-down-channel','lockdown'],
-  description: 'Lock down a channel, to prevent anyone sending messages. (Unless they have Administrator permission, or Send Messages is set to Allow in channel permissions for a role they have.) If no duration is provided, the channel is locked-down until the command is run again. Example 1s, 1m, 1h .etc you can use `unlock` or `release` to un-lockdown a channel.',
+  description: 'Lock down a channel, to prevent anyone sending messages. (Unless they have Administrator permission, or Send Messages is set to Allow in channel permissions for a role they have.). Example 1s, 1m, 1h .etc you can use `unlock` or `release` to un-lockdown a channel.',
   usage: 'lock-down [channel] [duration]'
 };
