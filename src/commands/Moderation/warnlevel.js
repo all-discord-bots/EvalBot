@@ -1,16 +1,26 @@
 const Discord = require("discord.js");
 const fs = require("fs");
 const ms = require("ms");
-let warns = JSON.parse(fs.readFileSync("./warnings.json", "utf8"));
+const warns = JSON.parse(fs.readFileSync("./warnings.json", "utf8"));
 
 exports.run = async (bot, msg, args) => {
 
 //  if(!msg.member.hasPermission("MANAGE_MESSAGES")) return msg.reply("You can't do that.");
-  let wUser = msg.guild.member(msg.mentions.users.first()) || msg.guild.members.get(args[0])
+  let wUser;
+  if (msg.guild.member(msg.mentions.user.first())) {
+      wUser = msg.guild.member(msg.mentions.users.first());
+  } else if (msg.guild.members.get(args[0])) {
+      wUser = msg.guild.members.get(args[0]);
+  }
   if(!wUser) return msg.channel.send(`<:redx:411978781226696705> Can't find that user!`).catch(console.error);
   let warnlevel = warns[wUser.id].warns;
-
-  msg.channel.send(`<@${wUser.id}> has ${warnlevel} warnings.`);
+  let s;
+  if (warnlevel === 1) {
+    s = '';
+  } else {
+    s = 's';
+  }
+  msg.channel.send(`<@${wUser.id}> has \`${warnlevel}\` warning${s}.`);
 
 };
 
