@@ -21,16 +21,19 @@ exports.run = async (bot, msg, args) => {
     .addField("Reason", rreason);
 
     let reportschannel = msg.guild.channels.find(`name`, `${reportchannel}`);
-    if(!reportschannel) return msg.channel.send(`Couldn't find ${reportchannel} channel.`).catch(console.error);
+    //if(!reportschannel) return msg.channel.send(`Couldn't find ${reportchannel} channel.`).catch(console.error);
 
 
     msg.delete().catch(O_o=>{});
-    reportschannel.send(reportEmbed);
+    if (reportchannel) {
+        reportschannel.send(reportEmbed);
+    }
 
 }
  
 exports.info = {
   name: 'report',
+  hidden: true,
   usage: 'report <user> <reason>',
-  description: 'Report a user and logs it in a mod_logs channel.'
+  description: 'Reports a user, same thing as warn but just logs a message in th mod_logs channel. If you would like to let the bot keep logs of moderations create a text channel named `mod_logs`'
 }
