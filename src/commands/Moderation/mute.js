@@ -16,7 +16,7 @@ exports.run = (bot, msg, args) => {
     }
      if(!msg.guild.member(member).kickable) return msg.channel.send(`<:redx:411978781226696705> I may need my role moved higher!`).catch(console.error);
   }
-  if (!modlog) return msg.channel.send('Please create a channel named `mod_logs` first!').catch(console.error);
+  //if (!modlog) return msg.channel.send('Please create a channel named `mod_logs` first!').catch(console.error);
   if (!muteRole) return msg.channel.send('Please create a role named `Muted` first!').catch(console.error);
   if (reason.length < 1) return msg.channel.send('You must supply a reason for the mute.').catch(console.error);
   if (msg.mentions.users.size < 1) return msg.channel.send('You must mention someone to mute them.').catch(console.error);
@@ -27,12 +27,16 @@ exports.run = (bot, msg, args) => {
 
   if (member.roles.has(muteRole.id)) {
     member.removeRole(muteRole).then(() => {
-      bot.channels.get(modlog.id).send({embed}).catch(console.error);
+      if (bot.channels.get(modlog.id)) {
+        bot.channels.get(modlog.id).send({embed}).catch(console.error);
+      }
     })
     .catch(e=>console.error("Cannot remove muted role: " + e));
   } else {
     member.addRole(muteRole).then(() => {
-      bot.channels.get(modlog.id).send({embed}).catch(console.error);
+      if (bot.channels.get(modlog.id)) {
+        bot.channels.get(modlog.id).send({embed}).catch(console.error);
+      }
     })
     .catch(e=>console.error("Cannot add muted role: " + e));
   }
@@ -42,6 +46,6 @@ exports.run = (bot, msg, args) => {
 exports.info = {
   name: 'mute',
   aliases: ['unmute'],
-  description: 'mutes or unmutes a mentioned user',
+  description: 'mutes or unmutes a mentioned user. If you would like to let the bot keep logs of moderations create a text channel named `mod_logs`',
   usage: 'mute <mention> [reason]'
 };
