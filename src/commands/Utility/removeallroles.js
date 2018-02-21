@@ -12,6 +12,8 @@ exports.run = async (bot, msg, args) => {
 		grole = msg.guild.roles.find(`name`, `${args[0]}`);
 	} else if (msg.guild.roles.find(`id`, `${args[0]}`)) {
 		grole = msg.guild.roles.find(`name`, `${args[0]}`);
+	} else {
+		return msg.channel.send(`<:redx:411978781226696705> No roles with the name ${grole.name} exists!`).catch(cosole.error);
 	}
 	msg.guild.members.filter(m => !m.user.bot).filter(m => m.roles.has(grole.id)).map(m => m.removeRole(grole).catch(console.error));
 	msg.channel.send(`<:check:411976443522711552> Successfully removed \`${grole.name}\` from all members.`);
