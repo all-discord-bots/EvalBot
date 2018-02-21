@@ -103,7 +103,7 @@ class CommandManager {
         let split = input.substr(prefix.length).trim().split(' ');
         let split1 = input.substr(prefix).trim().split(' ');
         let spli = split1[0].match(/>/gi).length;
-        if (spli > prefix.length) return; // do this if you input the prefix more than one time ex. >>help when the prefix is >help
+        if (spli > prefix.length || spli < prefix.length) return; // do this if you input the prefix more than one time ex. >>help when the prefix is >help
         let base = split[0].toLowerCase();
         let args = split.slice(1);
 
