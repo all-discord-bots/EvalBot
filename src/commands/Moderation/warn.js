@@ -39,9 +39,11 @@ exports.run = async (bot, msg, args) => {
   .addField("Reason", reason);
 
   let warnchannel = msg.guild.channels.find(`name`, `${modlogs}`);
-  if(!warnchannel) return msg.channel.send(`<:redx:411978781226696705> Couldn't find ${modlogs} channel!`).catch(console.error);
-
-  warnchannel.send(warnEmbed);
+ // if(!warnchannel) return msg.channel.send(`<:redx:411978781226696705> Couldn't find ${modlogs} channel!`).catch(console.error);
+  
+  if (warnchannel) {
+    warnchannel.send(warnEmbed);
+  }
 
   if (automute) {
     if(warns[wUser.id].warns === 2){
@@ -60,7 +62,7 @@ exports.run = async (bot, msg, args) => {
   }
   if (autoban) {
     if(warns[wUser.id].warns === 3) {
-      msg.guild.member(wUser).ban(reason).catch(err => msg.channel.send(`Could not ban ${wUser.username}: ${err}`));
+      msg.guild.member(wUser).ban(reason).catch(err => msg.channel.send(`<:redx:411978781226696705>  Could not ban ${wUser.username}: ${err}`));
       msg.reply(`<:check:411976443522711552> <@${wUser.id}> has been banned.`);
     }
   }
@@ -70,5 +72,5 @@ exports.run = async (bot, msg, args) => {
 exports.info = {
   name: 'warn',
   usage: 'warn <member> <reason>',
-  description: 'Gives member a warning, usually for breaking the rules.'
+  description: 'Gives member a warning, usually for breaking the rules. If you would like to let the bot keep logs of moderations create a text channel named `mod_logs`'
 }
