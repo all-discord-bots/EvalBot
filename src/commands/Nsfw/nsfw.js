@@ -3,6 +3,7 @@ const got = require('got');
 function makeCommand(type, url, transformer) {
     return {
         run: async (bot, msg, args) => {
+	    if (msg.author.id !== bot.config.botCreatorID) return;
             let gbot = msg.guild.members.get(bot.user.id);
             if (!gbot.hasPermission(0x00008000)) return msg.channel.send(`<:redx:411978781226696705> I am missing \`Attach Files\`!`).catch(console.error);
 	    if (!msg.member.hasPermission('ATTACH_FILES')) return msg.channel.send(`<:redx:411978781226696705> You are missing the permissions \`Attach Files\`!`).catch(console.error);
@@ -26,6 +27,7 @@ function makeCommand(type, url, transformer) {
         info: {
             name: type,
             usage: type,
+	    hidden: true,
             description: `Sends a random ${type} image`
         }
     };
