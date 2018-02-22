@@ -14,6 +14,7 @@ let mutedrole = "Muted"; // name of the 'muted' role
   let tomute = msg.guild.member(msg.mentions.users.first() || msg.guild.members.get(args[0]));
   if(!tomute) return msg.channel.send(`<:redx:411978781226696705> Can't find that user.`).catch(console.error);
   //if(tomute.hasPermission("MANAGE_MESSAGES")) return msg.channel.send(`<:redx:411978781226696705> Can't mute them!`);
+  if (tomute.user.id === msg.author.id) return msg.channel.send(`<:redx:411978781226696705> I cannot allow self-harm!`).catch(console.error);
   let muterole = msg.guild.roles.find(`name`, `${mutedrole}`);
   //start of create role
   if(!muterole){
