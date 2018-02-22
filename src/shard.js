@@ -86,8 +86,5 @@ function updateStats(guilds) {
 */
 Manager.on('launch', (shard) => {
 	Hook.success("CripsBot", `Successfully launched shard \`${shard.id}\``);
-	shard.fetchClientValue('guilds.size').then(count => {
-		console.log(`${count} guilds on shard number ${shard.id}`);
-	});
 	console.log(`Successfully launched shard ${shard.id}`);
 });
