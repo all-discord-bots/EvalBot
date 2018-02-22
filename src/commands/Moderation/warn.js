@@ -19,6 +19,7 @@ exports.run = async (bot, msg, args) => {
 //  if(wUser.hasPermission("MANAGE_MESSAGES")) return message.reply("They waaaay too kewl");
   let reason = args.join(" ").slice(22);
   if (!reason) return msg.channel.send(`<:redx:411978781226696705> Please provide a reason.`).catch(console.error);
+  if (wUser.user.id === msg.author.id) return msg.channel.send(`<:redx:411978781226696705> I cannot allow self-harm!`).catch(console.error);
   if(!warns[wUser.id]) warns[wUser.id] = {
     warns: 0
   };
