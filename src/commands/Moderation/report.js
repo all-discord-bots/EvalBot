@@ -10,7 +10,7 @@ exports.run = async (bot, msg, args) => {
     let rUser = msg.guild.member(msg.mentions.users.first() || msg.guild.members.get(args[0]));
     if(!rUser) return msg.channel.send(`<:redx:411978781226696705> Can't find that user.`).catch(console.error);
     let rreason = args.join(" ").slice(22);
-
+    if (rUser.user.id === msg.author.id) return msg.channel.send(`<:redx:411978781226696705> I cannot allow self-harm!`).catch(console.error);
     let reportEmbed = new Discord.RichEmbed()
     .setDescription("Reports")
     .setColor("#15f153")
