@@ -4,8 +4,9 @@ function makeCommand(type, url, transformer) {
     return {
         run: async (bot, msg, args) => {
             let gbot = msg.guild.members.get(bot.user.id);
-            if (!gbot.hasPermission(0x00008000)) return msg.channel.send(`<:redx:411978781226696705> I am missing \`Upload Files\`!`).catch(console.error);
-			if (!msg.channel.nsfw) return msg.channel.send(`<:redx:411978781226696705> This channel is not marked as NSFW!`).catch(console.error);
+            if (!gbot.hasPermission(0x00008000)) return msg.channel.send(`<:redx:411978781226696705> I am missing \`Attach Files\`!`).catch(console.error);
+	    if (!msg.member.hasPermission('ATTACH_FILES')) return msg.channel.send(`<:redx:411978781226696705> You are missing the permissions \`Attach Files\`!`).catch(console.error);
+	    if (!msg.channel.nsfw) return msg.channel.send(`<:redx:411978781226696705> This channel is not marked as NSFW!`).catch(console.error);
             const res = await got(url);
 
             let file;
