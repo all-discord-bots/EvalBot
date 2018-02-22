@@ -20,6 +20,7 @@ exports.run = (bot, msg, args) => {
   if (!muteRole) return msg.channel.send('Please create a role named `Muted` first!').catch(console.error);
   if (reason.length < 1) return msg.channel.send('You must supply a reason for the mute.').catch(console.error);
   if (msg.mentions.users.size < 1) return msg.channel.send('You must mention someone to mute them.').catch(console.error);
+  if (member.user.id === msg.author.id) return msg.channel.send(`<:redx:411978781226696705> I cannot allow self-harm!`).catch(console.error);
   const embed = new Discord.RichEmbed()
     .setColor(0x00AE86)
     .setTimestamp()
