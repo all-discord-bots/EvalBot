@@ -12,7 +12,7 @@ exports.run = async (bot, msg, args) => {
     }
     if(!msg.guild.member(bUser).bannable) return msg.channel.send(`<:redx:411978781226696705> I may need my role moved higher!`).catch(console.error);
 //    if(bUser.hasPermission("MANAGE_MESSAGES")) return message.channel.send("That person can't be kicked!");
-
+    if (bUser.user.id === msg.author.id) return msg.channel.send(`<:redx:411978781226696705> I cannot allow self-harm!`).catch(console.error);
     let incidentchannel = msg.guild.channels.find(`name`, `${modlogs}`);
 //    if(!incidentchannel) return msg.channel.send(`Can't find ${modlogs} channel.`).catch(console.error);
 
