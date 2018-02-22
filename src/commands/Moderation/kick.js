@@ -18,7 +18,7 @@ exports.run = async (bot, message, args) => {
     }
     
 //    if(kUser.hasPermission("MANAGE_MESSAGES")) return msg.channel.send("That person can't be kicked!");
-
+    if (kUser.user.id === msg.author.id) return msg.channel.send(`<:redx:411978781226696705> I cannot allow self-harm!`).catch(console.error);
     let kickChannel = msg.guild.channels.find(`name`, `${modlogs}`);
     //if(!kickChannel) return msg.channel.send(`Can't find ${modlogs} channel.`).catch(console.error);
 
