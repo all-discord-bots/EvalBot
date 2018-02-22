@@ -11,7 +11,7 @@ function makeCommand(type, url, transformer) {
 
             let file;
             try {
-                file = transformer(res.body);
+                file = `http://media.obutts.ru/${transformer(res.body)}`;
             } catch (ignore) {
                 return msg.error('Failed to transform image URL!');
             }
@@ -32,6 +32,6 @@ function makeCommand(type, url, transformer) {
 }
 
 module.exports = [
-    makeCommand('ass', 'http://api.obutts.ru/butts/0/1/random', body => `http://media.obutts.ru/${JSON.parse(body).preview}`),
-    makeCommand('boobs', 'http://api.oboobs.ru/boobs/0/1/random', body => `http://media.obutts.ru/${JSON.parse(body).preview}`)
+    makeCommand('ass', 'http://api.obutts.ru/butts/0/1/random', body => JSON.parse(body).preview),
+    makeCommand('boobs', 'http://api.oboobs.ru/boobs/0/1/random', body => JSON.parse(body).preview)
 ];
