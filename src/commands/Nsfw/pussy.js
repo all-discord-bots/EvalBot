@@ -1,4 +1,4 @@
-const Pornhub = require("pornhub-api")
+const Pornhub = require("pornhub-api");
 
 exports.run = async (bot, msg, args) => {
 if (msg.author.id !== bot.config.botCreatorID) return;
