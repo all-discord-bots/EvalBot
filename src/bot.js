@@ -7,7 +7,7 @@ const Discord = require('discord.js');
 //const client = new Discord.Client();
 const client = new Discord.Client({
 	autoReconnect: true,
-	internalSharding: true,
+	internalSharding: false,
 });
 const DBL = require("dblapi.js");
 const dbl = new DBL(process.env.DB_TOKEN, client);
