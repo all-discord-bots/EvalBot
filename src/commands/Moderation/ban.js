@@ -33,7 +33,7 @@ exports.run = async (bot, msg, args) => {
 
 exports.info = {
   name: 'ban',
-  aliases: ['bean'],
+  aliases: ['bean','deport'],
   usage: 'ban <member> <reason>',
   description: 'Bans users from your guild. If you would like to let the bot keep logs of moderations create a text channel named `mod_logs`'
 }
