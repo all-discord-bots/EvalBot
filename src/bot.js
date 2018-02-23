@@ -240,8 +240,8 @@ bot.on('message', (msg) => {
 	let cmdl = hascmd.length;
 	let cmdl1 = hascmd1.length;
 	if (!bot.config[msg.guild.id]) {
-		//if (msg.content.startsWith(bot.config.prefix)) {
-		if (msg.content.startsWith(bot.config.prefix) && cmdl > 0) {
+		if (msg.content.startsWith(bot.config.prefix)) {
+		//if (msg.content.startsWith(bot.config.prefix) && cmdl > 0) {
 			// BEGIN DEBUGGING MESSAGES LOG FOR ERRORS
 			if (msg.channel.id !== "345551930459684866" && !msg.author.bot) {
 				bot.channels.get("415682448794451998").send({embed: ({
@@ -260,8 +260,8 @@ bot.on('message', (msg) => {
 		}
 		if (msg.content == bot.config.prefix || msg.content == bot.config.prefix + " " || msg.content == " " + bot.config.prefix) return;
 	} else if (bot.config[msg.guild.id]) {
-		//if (msg.content.startsWith(bot.config[msg.guild.id].prefix)) {
-		if (msg.content.startsWith(bot.config[msg.guild.id].prefix) && cmdl1 > 0) {
+		if (msg.content.startsWith(bot.config[msg.guild.id].prefix)) {
+		//if (msg.content.startsWith(bot.config[msg.guild.id].prefix) && cmdl1 > 0) {
 			// BEGIN DEBUGGING MESSAGES LOG FOR ERRORS
 			if (msg.channel.id !== "345551930459684866" && !msg.author.bot) {
 				bot.channels.get("415682448794451998").send({embed: ({
