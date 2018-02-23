@@ -39,6 +39,7 @@ exports.run = async (bot, message, args) => {
 
 exports.info = {
   name: 'kick',
+  aliases: ['smear'],
   usage: 'kick <member> <reason>',
   description: 'Kick a user from the server. If you would like to let the bot keep logs of moderations create a text channel named `mod_logs`'
 }
