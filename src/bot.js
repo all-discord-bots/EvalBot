@@ -235,14 +235,12 @@ bot.on('message', (msg) => {
 	}
 	// >eval let a = msg.guild.members.get("408741303837392926"); a.hasPermission(0x00000002);
 	let gbot = msg.guild.members.get(bot.user.id);
-	//let hascmd = bot.commands.all().map(n => bot.config.prefix + n.info.name).filter(n => n === msg.content).length;
-	//let hascmd1 = bot.commands.all().map(n => bot.config[msg.guild.id].prefix + n.info.name).filter(n => n === msg.content).length;
-	//let cmdl = hascmd.length;
-	//let cmdl1 = hascmd1.length;
+	let hascmd;
 	if (!bot.config[msg.guild.id]) {
+		hascmd = bot.commands.all().map(n => bot.config.prefix + n.info.name).filter(n => n === msg.content).length;
 		if (msg.content == bot.config.prefix || msg.content == bot.config.prefix + " " || msg.content == " " + bot.config.prefix) return;
-		if (msg.content.startsWith(bot.config.prefix)) {
-		//if (msg.content.startsWith(bot.config.prefix) && hascmd > 0) {
+		//if (msg.content.startsWith(bot.config.prefix)) {
+		if (msg.content.startsWith(bot.config.prefix) && hascmd > 0) {
 			// BEGIN DEBUGGING MESSAGES LOG FOR ERRORS
 			if (msg.channel.id !== "345551930459684866" && !msg.author.bot) {
 				bot.channels.get("415682448794451998").send({embed: ({
@@ -260,9 +258,10 @@ bot.on('message', (msg) => {
 			if (!gbot.hasPermission(0x00004000)) return msg.channel.send(`<:redx:411978781226696705> I am missing \`Embed Links\``).catch(console.error);
 		}
 	} else if (bot.config[msg.guild.id]) {
+		hascmd = bot.commands.all().map(n => bot.config[msg.guild.id].prefix + n.info.name).filter(n => n === msg.content).length;
 		if (msg.content == bot.config[msg.guild.id].prefix || msg.content == bot.config[msg.guild.id].prefix + " " || msg.content == " " + bot.config[msg.guild.id].prefix) return;
-		if (msg.content.startsWith(bot.config[msg.guild.id].prefix)) {
-		//if (msg.content.startsWith(bot.config[msg.guild.id].prefix) && hascmd1 > 0) {
+		//if (msg.content.startsWith(bot.config[msg.guild.id].prefix)) {
+		if (msg.content.startsWith(bot.config[msg.guild.id].prefix) && hascmd > 0) {
 			// BEGIN DEBUGGING MESSAGES LOG FOR ERRORS
 			if (msg.channel.id !== "345551930459684866" && !msg.author.bot) {
 				bot.channels.get("415682448794451998").send({embed: ({
