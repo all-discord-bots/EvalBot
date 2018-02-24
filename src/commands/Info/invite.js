@@ -7,7 +7,10 @@ exports.run = async (bot, msg) => {
                     value: `[Invite](https://discordapp.com/oauth2/authorize?client_id=${bot.user.id}&scope=bot&permissions=8)`,
             }, {
                 name: '**Support Server**:',
-                value: '[Join](https://discord.gg/AY6z42D)',
+                value: `[Join](https://discord.gg/AY6z42D)`,
+            }, {
+                name: '**Upvote Bot**:',
+                value: `[Upvote](https://discordbots.org/bot/${bot.user.id}/vote)`,
             }
         ], { inline: true })
     });
