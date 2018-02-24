@@ -234,9 +234,9 @@ bot.on('message', (msg) => {
 		if (msg.channel.type == "dm") return msg.channel.send(`<:redx:411978781226696705> This command can only be used in a server.`).catch(console.error);
 	}
 	if (msg.guild.id === bot.config.botMainServerID &&  msg.content.toLowerCase().startsWith('xd')) {
-		(await msg.delete().then(msg => {
+		msg.delete().then(msg => {
 			msg.channel.send(`<:blobDerp:413114089225846785>`);
-		})).catch(console.error);
+		}).catch(console.error);
 	}
 	let gbot = msg.guild.members.get(bot.user.id);
 	let hascmd;
