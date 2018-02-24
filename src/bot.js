@@ -231,15 +231,18 @@ bot.on('message', (msg) => {
 		if (msg.author.bot) return;
 	}
 	if (!bot.config.allowDMCmds) {
-		if (msg.channel.type == "dm") return msg.channel.send(`<:redx:411978781226696705> This command can only be used in a server.`);
+		if (msg.channel.type == "dm") return msg.channel.send(`<:redx:411978781226696705> This command can only be used in a server.`).catch(console.error);
 	}
-	// >eval let a = msg.guild.members.get("408741303837392926"); a.hasPermission(0x00000002);
+	if (msg.guild.id === bot.config.botMainServerID &&  msg.content.toLowerCase().startsWith('xd')) {
+		(await msg.delete().then(msg => {
+			msg.channel.send(`<:blobDerp:413114089225846785>`);
+		})).catch(console.error);
+	}
 	let gbot = msg.guild.members.get(bot.user.id);
 	let hascmd;
 	if (!bot.config[msg.guild.id]) {
 		hascmd = bot.commands.all().map(n => bot.config.prefix + n.info.name).filter(n => n === msg.content).length;
 		if (msg.content == bot.config.prefix || msg.content == bot.config.prefix + " " || msg.content == " " + bot.config.prefix) return;
-		//if (msg.content.startsWith(bot.config.prefix)) {
 		if (msg.content.startsWith(bot.config.prefix) && hascmd > 0) {
 			// BEGIN DEBUGGING MESSAGES LOG FOR ERRORS
 			if (msg.channel.id !== "345551930459684866" && !msg.author.bot) {
@@ -260,7 +263,6 @@ bot.on('message', (msg) => {
 	} else if (bot.config[msg.guild.id]) {
 		hascmd = bot.commands.all().map(n => bot.config[msg.guild.id].prefix + n.info.name).filter(n => n === msg.content).length;
 		if (msg.content == bot.config[msg.guild.id].prefix || msg.content == bot.config[msg.guild.id].prefix + " " || msg.content == " " + bot.config[msg.guild.id].prefix) return;
-		//if (msg.content.startsWith(bot.config[msg.guild.id].prefix)) {
 		if (msg.content.startsWith(bot.config[msg.guild.id].prefix) && hascmd > 0) {
 			// BEGIN DEBUGGING MESSAGES LOG FOR ERRORS
 			if (msg.channel.id !== "345551930459684866" && !msg.author.bot) {
