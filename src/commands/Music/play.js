@@ -6,5 +6,5 @@ exports.run = async (bot, msg, args) => {
 exports.info = {
 	name: 'play',
 	usage: 'play <search|url>',
-	description: 'Play audio from YouTube.'
+	description: 'Queue a song/playlist by URL or search for a song.'
 };
