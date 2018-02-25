@@ -5,5 +5,5 @@ exports.run = async (bot, msg) => {
 exports.info = {
 	name: 'leave',
 	usage: 'leave',
-	description: 'Clears the song queue and leaves the channel.'
+	description: 'Leave and clear the queue.'
 };
