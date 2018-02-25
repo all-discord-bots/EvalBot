@@ -434,15 +434,17 @@ const music = new Music(bot, {
 	enableQueueStat: true, // Whether to enable the queue status, old fix for an error that occurs for a few people.
 	anyoneCanAdjust: true, // Whether anyone can adjust volume.
 	ownerOverMember: false, // Whether the owner over-rides CanAdjust and CanSkip.
-	anyoneCanLeave: true, // Whether anyone can make the bot leave the currently connected channel.
+	anyoneCanLeave: false, // Whether anyone can make the bot leave the currently connected channel. // false because of a bug with permissions atm
 	//botOwner: '269247101697916939', // The ID of the Discord user to be seen as the owner. Required if using ownerOverMember.
 	logging: true, // Some extra none needed logging (such as caught errors that didn't crash the bot, etc).
 	requesterName: true, // Whether or not to display the username of the song requester.
-	//inlineEmbeds: true // Whether or not to make embed fields inline (help command and some fields are excluded).
+	inlineEmbeds: false, // Whether or not to make embed fields inline (help command and some fields are excluded).
 	disableHelp: true, // Disable the help command.
 	disableSet: true, // Disable the set command.
 	disableOwnerCmd: true, // Disable the owner command.
-	disableLeaveCmd: true // Disable the leave command. // Because this command is broken at the moment
+	//disableLeaveCmd: true // Disable the leave command. // Because this command is broken at the moment
+	searchCmd: 'searchsong'
+	// https://www.npmjs.com/package/discord.js-musicbot-addon
 });
 
 //bot.config && bot.login(bot.config.botToken);
