@@ -441,7 +441,8 @@ const music = new Music(bot, {
 	//inlineEmbeds: true // Whether or not to make embed fields inline (help command and some fields are excluded).
 	disableHelp: true, // Disable the help command.
 	disableSet: true, // Disable the set command.
-	disableOwnerCmd: true // Disable the owner command.
+	disableOwnerCmd: true, // Disable the owner command.
+	disableLeaveCmd: true // Disable the leave command. // Because this command is broken at the moment
 });
 
 //bot.config && bot.login(bot.config.botToken);
