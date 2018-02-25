@@ -443,7 +443,6 @@ const music = new Music(bot, {
 	disableSet: true, // Disable the set command.
 	disableOwnerCmd: true, // Disable the owner command.
 	//disableLeaveCmd: true // Disable the leave command. // Because this command is broken at the moment
-	searchCmd: 'searchsong'
 	// https://www.npmjs.com/package/discord.js-musicbot-addon
 });
 
