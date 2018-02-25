@@ -7,5 +7,5 @@ exports.info = {
 	name: 'owner',
 	usage: 'owner',
 	hidden: true,
-	description: 'Various owner commands/actions. (W.I.P)'
+	description: 'Owner commands and functions.'
 };
