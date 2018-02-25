@@ -93,16 +93,17 @@ class CommandManager {
 
     handleCommand(msg, input) {
         let prefix;
-        if (!this.bot.config[msg.guild.id]) {
-            prefix = this.bot.config.prefix;
-        } else if (this.bot.config[msg.guild.id]) {
-            prefix = this.bot.config[msg.guild.id].prefix;
+        if (!bot.config[msg.guild.id]) {
+            prefix = bot.config.prefix;
+        } else if (bot.config[msg.guild.id]) {
+            prefix = bot.config[msg.guild.id].prefix;
         }
         if (!input.startsWith(prefix)) return;
 
         let split = input.substr(prefix.length).trim().split(' ');
         let split1 = input.substr(prefix).trim().split(' ');
-        let spli = split1[0].match(/>/gi).length;
+        let spli = new RegExp(prefix, 'gi');
+        split1[0].match(spli).length;
         if (spli > prefix.length || spli < prefix.length) return; // do this if you input the prefix more than one time ex. >>help when the prefix is >help
         let base = split[0].toLowerCase();
         let args = split.slice(1);
