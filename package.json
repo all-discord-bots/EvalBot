@@ -51,7 +51,9 @@
     "webhook-discord": "^2.0.6",
     "snekfetch": "^3.6.4",
     "got": "^8.2.0",
-    "pornhub-api": "^0.0.1"
+    "pornhub-api": "^0.0.1",
+    "libsodium-wrappers": "^0.5.4",
+    "discord.js-musicbot-addon": "^1.10.2"
   },
   "devDependencies": {
     "npm": "^5.6.0",
