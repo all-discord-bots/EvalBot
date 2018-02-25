@@ -5,5 +5,5 @@ exports.run = async (bot, msg) => {
 exports.info = {
 	name: 'clearqueue',
 	usage: 'clearqueue',
-	description: 'Clears the song queue.'
+	description: 'Clears the current queue.'
 };
