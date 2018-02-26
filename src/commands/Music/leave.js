@@ -1,5 +1,6 @@
 exports.run = async (bot, msg) => {
-	console.log('Bot left voice channel.');
+	const voiceConnection = bot.voiceConnections.find(val => val.channel.guild.id == msg.guild.id);
+	if (voiceConnection !== null) return voiceConnection.disconnect();
 };
 
 exports.info = {
