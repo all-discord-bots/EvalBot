@@ -418,6 +418,7 @@ process.on('unhandledRejection', err => {
 	logger.severe('Uncaught Promise error: \n' + err.stack);
 });
 
+/*
 if (!global.msgo) {
 	let interval = setInterval(() => {
 		if (debug) {
@@ -468,6 +469,7 @@ if (!global.msgo) {
 		}
 	}, 2000);
 }
+*/
 
 //bot.config && bot.login(bot.config.botToken);
 bot.config && bot.login(process.env.BOT_TOKEN);
