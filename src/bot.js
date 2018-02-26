@@ -1,5 +1,7 @@
 'use strict';
 
+const debug = false;
+
 const https = require('https');
 const path = require('path');
 const fse = require('fs-extra');
@@ -101,9 +103,9 @@ bot.on('ready', () => {
         process.title = title;
         process.stdout.write(`\u001B]0;${title}\u0007`);
     })(`${bot.user.username}`);
-
+	//- User: ${bot.user.username}#${bot.user.discriminator} <ID: ${bot.user.id}>
     logger.info(stripIndents`Stats:
-        - User: ${bot.user.username}#${bot.user.discriminator} <ID: ${bot.user.id}>
+        - User: ${bot.user.tag} <ID: ${bot.user.id}>
         - Users: ${bot.users.filter(user => !user.bot).size}
         - Bots: ${bot.users.filter(user => user.bot).size}
         - Channels: ${bot.channels.size}
@@ -137,7 +139,6 @@ bot.on('ready', () => {
 //});
 
 //joined a server
-
 bot.on("guildCreate", (guild) => {
 	console.log("Joined a new guild: " + guild.name);
 	let gusers = guild.members.filter(user => !user.user.bot).size; // get only users and exclude bots
@@ -234,11 +235,8 @@ bot.on('message', (msg) => {
 	if (!bot.config.allowDMCmds) {
 		if (msg.channel.type == "dm") return msg.channel.send(`<:redx:411978781226696705> This command can only be used in a server.`).catch(console.error);
 	}
-	if (bot.config[msg.guild.id]) {
-		const gprefix = bot.config[msg.guild.id].prefix;
-	} else if (!bot.config[msg.guild.id]) {
-		const gprefix = bot.config.prefix;
-	}
+	let msgo;
+	global.msgo = msg.guild.id;
 	if (msg.guild.id === bot.config.botMainServerID &&  msg.content.toLowerCase().startsWith('xd')) {
 		msg.delete().then(msg => {
 			msg.channel.send(`<:blobDerp:413114089225846785>`);
@@ -420,31 +418,57 @@ process.on('unhandledRejection', err => {
 	logger.severe('Uncaught Promise error: \n' + err.stack);
 });
 
-const music = new Music(bot, {
-	youtubeKey: process.env.YOUTUBE_API_KEY, // A YouTube Data API3 key. Required to run.
-	prefix: global.gprefix, // The prefix of the bot. Defaults to "!".
-	thumbnailType: 'high', // Type of thumbnails to use for videos on embeds. Can equal: default, medium, high.
-	global: false, // Whether to use one global queue or server specific ones.
-	maxQueueSize: 100, // Max queue size allowed. Defaults 20.
-	defVolume: 200, // The default volume of music. 1 - 200, defaults 50.
-	anyoneCanSkip: true, // Whether or not anyone can skip.
-	clearInvoker: false, // Whether to delete command messages.
-	messageHelp: false, // Whether to message the user on help command usage. If it can't, it will send it in the channel like normal.
-	//botAdmins: [], // An array of Discord user ID's to be admins as the bot. They will ignore permissions for the bot, including the set command.
-	enableQueueStat: true, // Whether to enable the queue status, old fix for an error that occurs for a few people.
-	anyoneCanAdjust: true, // Whether anyone can adjust volume.
-	ownerOverMember: false, // Whether the owner over-rides CanAdjust and CanSkip.
-	anyoneCanLeave: false, // Whether anyone can make the bot leave the currently connected channel. // false because of a bug with permissions atm
-	//botOwner: '269247101697916939', // The ID of the Discord user to be seen as the owner. Required if using ownerOverMember.
-	logging: true, // Some extra none needed logging (such as caught errors that didn't crash the bot, etc).
-	requesterName: true, // Whether or not to display the username of the song requester.
-	inlineEmbeds: false, // Whether or not to make embed fields inline (help command and some fields are excluded).
-	disableHelp: true, // Disable the help command.
-	disableSet: true, // Disable the set command.
-	disableOwnerCmd: true, // Disable the owner command.
-	//disableLeaveCmd: true // Disable the leave command. // Because this command is broken at the moment
-	// https://www.npmjs.com/package/discord.js-musicbot-addon
-});
+if (!global.msgo) {
+	let interval = setInterval(() => {
+		if (debug) {
+			console.log('No guild id captured yet!');
+		}
+		if (global.msgo) {
+			music.destroy();
+			clearInterval(interval);
+			if (debug) {
+				console.log(global.msgo);
+			}
+			let gprefix;
+			if (!bot.config[global.msgo]) {
+				global.gprefix = bot.config.prefix;
+			} else if (bot.config[global.msgo]) {
+				global.gprefix = bot.config[global.msgo].prefix;
+			}
+			if (debug) {
+				console.log(global.gprefix);
+			}
+			const music = new Music(bot, {
+				youtubeKey: process.env.YOUTUBE_API_KEY, // A YouTube Data API3 key. Required to run.
+				prefix: global.gprefix, // The prefix of the bot. Defaults to "!".
+				thumbnailType: 'high', // Type of thumbnails to use for videos on embeds. Can equal: default, medium, high.
+				global: false, // Whether to use one global queue or server specific ones.
+				maxQueueSize: 100, // Max queue size allowed. Defaults 20.
+				defVolume: 200, // The default volume of music. 1 - 200, defaults 50.
+				anyoneCanSkip: true, // Whether or not anyone can skip.
+				clearInvoker: false, // Whether to delete command messages.
+				messageHelp: false, // Whether to message the user on help command usage. If it can't, it will send it in the channel like normal.
+				//botAdmins: [], // An array of Discord user ID's to be admins as the bot. They will ignore permissions for the bot, including the set command.
+				enableQueueStat: true, // Whether to enable the queue status, old fix for an error that occurs for a few people.
+				anyoneCanAdjust: true, // Whether anyone can adjust volume.
+				ownerOverMember: false, // Whether the owner over-rides CanAdjust and CanSkip.
+				anyoneCanLeave: false, // Whether anyone can make the bot leave the currently connected channel. // false because of a bug with permissions atm
+				//botOwner: '269247101697916939', // The ID of the Discord user to be seen as the owner. Required if using ownerOverMember.
+				logging: true, // Some extra none needed logging (such as caught errors that didn't crash the bot, etc).
+				requesterName: true, // Whether or not to display the username of the song requester.
+				inlineEmbeds: false, // Whether or not to make embed fields inline (help command and some fields are excluded).
+				disableHelp: true, // Disable the help command.
+				disableSet: true, // Disable the set command.
+				disableOwnerCmd: true, // Disable the owner command.
+				//disableLeaveCmd: true // Disable the leave command. // Because this command is broken at the moment
+				// https://www.npmjs.com/package/discord.js-musicbot-addon
+			});
+			if (debug) {
+				console.log('Music Loaded');
+			}
+		}
+	}, 2000);
+}
 
 //bot.config && bot.login(bot.config.botToken);
 bot.config && bot.login(process.env.BOT_TOKEN);
