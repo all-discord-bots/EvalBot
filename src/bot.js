@@ -247,7 +247,7 @@ bot.on('message', (msg) => {
 	if (!bot.config[msg.guild.id]) {
 		let splitmsg = msg.content.split(' ');
 		let joinmsg = splitmsg.join(' ');
-		hascmd = bot.commands.all().map(n => bot.config.prefix + n.info.name).filter(n => n === msg.content).length;
+		hascmd = bot.commands.all().map(n => bot.config.prefix + n.info.name).filter(n => n === splitmsg[0]).length;
 		if (msg.content == bot.config.prefix || msg.content == bot.config.prefix + " " || msg.content == " " + bot.config.prefix) return;
 		if (msg.content.startsWith(bot.config.prefix) && hascmd > 0) {
 			// BEGIN DEBUGGING MESSAGES LOG FOR ERRORS
@@ -267,7 +267,7 @@ bot.on('message', (msg) => {
 			if (!gbot.hasPermission(0x00004000)) return msg.channel.send(`<:redx:411978781226696705> I am missing \`Embed Links\``).catch(console.error);
 		}
 	} else if (bot.config[msg.guild.id]) {
-		hascmd = bot.commands.all().map(n => bot.config[msg.guild.id].prefix + n.info.name).filter(n => n === msg.content).length;
+		hascmd = bot.commands.all().map(n => bot.config[msg.guild.id].prefix + n.info.name).filter(n => n === splitmsg[0]).length;
 		if (msg.content == bot.config[msg.guild.id].prefix || msg.content == bot.config[msg.guild.id].prefix + " " || msg.content == " " + bot.config[msg.guild.id].prefix) return;
 		if (msg.content.startsWith(bot.config[msg.guild.id].prefix) && hascmd > 0) {
 			// BEGIN DEBUGGING MESSAGES LOG FOR ERRORS
