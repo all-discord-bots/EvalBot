@@ -424,7 +424,6 @@ if (!global.msgo) {
 			console.log('No guild id captured yet!');
 		}
 		if (global.msgo) {
-			music.destroy();
 			clearInterval(interval);
 			if (debug) {
 				console.log(global.msgo);
