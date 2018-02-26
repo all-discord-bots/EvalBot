@@ -245,6 +245,8 @@ bot.on('message', (msg) => {
 	let gbot = msg.guild.members.get(bot.user.id);
 	let hascmd;
 	if (!bot.config[msg.guild.id]) {
+		let splitmsg = msg.content.split(' ');
+		let joinmsg = splitmsg.join(' ');
 		hascmd = bot.commands.all().map(n => bot.config.prefix + n.info.name).filter(n => n === msg.content).length;
 		if (msg.content == bot.config.prefix || msg.content == bot.config.prefix + " " || msg.content == " " + bot.config.prefix) return;
 		if (msg.content.startsWith(bot.config.prefix) && hascmd > 0) {
@@ -253,9 +255,9 @@ bot.on('message', (msg) => {
 				bot.channels.get("415682448794451998").send({embed: ({
 					color: 15684432,
 					timestamp: new Date(),
-					description: `${msg.content}`,
+					description: `${joinmsg}`,
 					author: {
-						name: `${msg.author.tag} | ${msg.guild.name} | ${msg.guild.id}`,
+						name: `${msg.author.tag} - ${msg.author.id} | ${msg.guild.name} - ${msg.guild.id}`,
 					},
 				})}).catch(console.error);
 			}
@@ -273,9 +275,9 @@ bot.on('message', (msg) => {
 				bot.channels.get("415682448794451998").send({embed: ({
 					color: 15684432,
 					timestamp: new Date(),
-					description: `${msg.content}`,
+					description: `${joinmsg}`,
 					author: {
-						name: `${msg.author.tag} | ${msg.guild.name} | ${msg.guild.id}`,
+						name: `${msg.author.tag} - ${msg.author.id} | ${msg.guild.name} - ${msg.guild.id}`,
 					},
 				})}).catch(console.error);
 			}
