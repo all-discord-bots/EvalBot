@@ -1,4 +1,5 @@
 exports.run = async (bot, msg, args) => {
+	if (msg.author.id !== bot.config.botCreatorID) return;
 	let skipped;
 	let s;
 	if (!args[0]) {
@@ -12,6 +13,7 @@ exports.run = async (bot, msg, args) => {
 };
 
 exports.info = {
+	hidden: true,
 	name: 'skip',
 	usage: 'skip [number]',
 	description: 'Skip a song or multi songs.'
