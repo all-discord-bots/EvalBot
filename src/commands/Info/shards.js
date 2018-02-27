@@ -6,7 +6,21 @@ exports.run = async (bot, msg) => {
 	let botping = parseInt(Math.floor(bot.ping));
 	let spaces;
 	let ss = " "; // ss stands for 'single spaced'
+	let a = 0;
 	while(i < parseInt(bot.shard.count)) { // search 'i' until it equals the current guilds shard id for numbers 0-9
+	let time = setInterval(function() {
+		if (a == 3) {
+			clearInterval(time);
+		}
+		bot.shard.broadcastEval('bot.guilds.size').then(results => {
+			let sguildsone = results[i];
+			bot.managers.config.set(`Shard ${i}`, {mcount: sguildsone});
+			
+		}).catch(console.error);
+		a++;
+	}, 500);
+		let title = `Shard ${i}`;
+		let sguilds = bot.config[title].mcount;
 		// begin the shard id specifier / mapper
 		if (i < 10) {
 			if (i === parseInt(bot.shard.id)) {
@@ -30,9 +44,6 @@ exports.run = async (bot, msg) => {
 		// end the shard id specifier / mapper
 		// begin guild count per shard
 		//let sguilds;
-		bot.shard.broadcastEval('bot.guilds.size').then(results => {
-			const sguilds = global.sguilds = results[i];
-		}).catch(console.error);
 		let gcount;
 		if (sguilds < 10) {
 			gcount = `${ss}${ss}${ss}${ss}${ss}${ss}${ss}${ss}${sguilds}`;
