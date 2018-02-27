@@ -31,7 +31,7 @@ exports.run = async (bot, msg) => {
 		// begin guild count per shard
 		//let sguilds;
 		bot.shard.broadcastEval('bot.guilds.size').then(results => {
-			let sguilds = results[i];
+			const sguilds = global.sguilds = results[i];
 		}).catch(console.error);
 		let gcount;
 		if (sguilds < 10) {
