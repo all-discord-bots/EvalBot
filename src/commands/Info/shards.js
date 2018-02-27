@@ -6,8 +6,9 @@ exports.run = async (bot, msg) => {
 	let botping = parseInt(Math.floor(bot.ping));
 	let spaces;
 	let ss = " "; // ss stands for 'single spaced'
-	//while(i < parseInt(bot.shard.count)+1) { // search 'i' until it equals the current guilds shard id for numbers 0-9
+	let guilds;
 	while(i < parseInt(bot.shard.count)) { // search 'i' until it equals the current guilds shard id for numbers 0-9
+		// begin the shard id specifier / mapper
 		if (i < 10) {
 			if (i === parseInt(bot.shard.id)) {
 				spaces = "#  ";
@@ -27,8 +28,31 @@ exports.run = async (bot, msg) => {
 				spaces = " ";
 			}
 		}
-		//shardids += "\n" + spaces + i;
-		shardids += "\n" + spaces + i + ss + ss + ss + ss + ss + ss + "110ms" + ss + ss + ss + ss + ss + ss + "947" + ss + ss + ss + ss + ss + ss + "55,011" + ss + ss + ss + "281mb" + ss + ss + ss + ss + ss + ss + ss + "1 day";
+		// end the shard id specifier / mapper
+		// begin guild count per shard
+		bot.shard.broadcastEval('bot.guilds.size').then(results => {
+			guilds = results[i];
+		}).catch(console.error);
+		let gcount;
+		if (guilds < 10) {
+			gcount = `${ss}${ss}${ss}${ss}${ss}${ss}${ss}${ss}${guilds}`;
+		} else if (guilds > 9 && guilds < 100) {
+			gcount = `${ss}${ss}${ss}${ss}${ss}${ss}${ss}${guilds}`;
+		} else if (guilds > 99 && guilds < 1000) {
+			gcount = `${ss}${ss}${ss}${ss}${ss}${ss}${guilds}`;
+		} else if (guilds > 999 && guilds < 10000) {
+			gcount = `${ss}${ss}${ss}${ss}${ss}${guilds}`;
+		} else if (guilds > 9999 && guilds < 100000) {
+			gcount = `${ss}${ss}${ss}${ss}${guilds}`;
+		} else if (guilds > 99999 && guilds < 1000000) {
+			gcount = `${ss}${ss}${ss}${guilds}`;
+		} else if (guilds > 999999 && guilds < 10000000) {
+			gcount = `${ss}${ss}${guilds}`;
+		} else if (guilds > 9999999 && guilds < 100000000) {
+			gcount = `${ss}${guilds}`;
+		}
+		// end guild count per shard
+		shardids += "\n" + spaces + i + ss + ss + ss + ss + ss + ss + "110ms" + gcount + ss + ss + ss + ss + ss + ss + "55,011" + ss + ss + ss + "281mb" + ss + ss + ss + ss + ss + ss + ss + "1 day";
 		i++;
 	}
 	/*
@@ -40,65 +64,65 @@ exports.run = async (bot, msg) => {
 	* Shard Uptime - 1 day
 	*/
 	
-	let bspace;
-		if (botping < 10) {
-			bspace = `${ss}${ss}${ss}${ss}${ss}${botping}ms`; // 1
-		} else if (botping > 9 && botping < 100) {
-			bspace = `${ss}${ss}${ss}${ss}${botping}ms`;
-		} else if (botping > 999 && botping < 1000) {
-			bspace = `${ss}${ss}${ss}${botping}ms`;
-		} else if (botping > 9999 && botping < 10000) {
-			bspace = `${ss}${ss}${botping}ms`;
-		} else if (botping > 99999 && botping < 100000) {
-			bspace = `${ss}${botping}ms`;
-		}
-		let gspace;
-		if (numguilds < 10) {
-			gspace = `${ss}${ss}${ss}${ss}${ss}${ss}${ss}${ss}${numguilds}`; // 1
-		} else if (numguilds > 9 && numguilds < 100) {
-			gspace = `${ss}${ss}${ss}${ss}${ss}${ss}${ss}${numguilds}`;
-		} else if (numguilds > 99 && numguilds < 1000) {
-			gspace = `${ss}${ss}${ss}${ss}${ss}${ss}${numguilds}`;
-		} else if (numguilds > 999 && numguilds < 10000) {
-			gspace = `${ss}${ss}${ss}${ss}${ss}${numguilds}`;
-		} else if (numguilds > 9999 && numguilds < 100000) {
-			gspace = `${ss}${ss}${ss}${ss}${numguilds}`;
-		} else if (numguilds > 99999 && numguilds < 1000000) {
-			gspace = `${ss}${ss}${ss}${numguilds}`;
-		} else if (numguilds > 999999 && numguilds < 10000000) {
-			gspace = `${ss}${ss}${numguilds}`;
-		} else if (numguilds > 9999999 && numguilds < 100000000) {
-			gspace = `${ss}${numguilds}`;
-		}
-		let uspace;
-		if (usersize < 10) {
-			uspace = `${ss}${ss}${ss}${ss}${ss}${ss}${ss}${ss}${ss}${ss}${ss}${usersize}`;
-		} else if (usersize > 9 && usersize < 100) {
-			uspace = `${ss}${ss}${ss}${ss}${ss}${ss}${ss}${ss}${ss}${ss}${usersize}`;
-		} else if (usersize > 99 && usersize < 1000) {
-			uspace = `${ss}${ss}${ss}${ss}${ss}${ss}${ss}${ss}${ss}${usersize}`;
-		} else if (usersize > 999 && usersize < 10000) {
-			uspace = `${ss}${ss}${ss}${ss}${ss}${ss}${ss}${ss}${usersize}`;
-		} else if (usersize > 9999 && usersize < 100000) {
-			uspace = `${ss}${ss}${ss}${ss}${ss}${ss}${ss}${usersize}`;
-		} else if (usersize > 99999 && usersize < 1000000) {
-			uspace = `${ss}${ss}${ss}${ss}${ss}${ss}${usersize}`;
-		} else if (usersize > 999999 && usersize < 10000000) {
-			uspace = `${ss}${ss}${ss}${ss}${ss}${usersize}`;
-		} else if (usersize > 9999999 && usersize < 100000000) {
-			uspace = `${ss}${ss}${ss}${ss}${usersize}`;
-		} else if (usersize > 99999999 && usersize < 1000000000) {
-			uspace = `${ss}${ss}${ss}${usersize}`;
-		} else if (usersize > 999999999 && usersize < 10000000000) {
-			uspace = `${ss}${ss}${usersize}`;
-		} else if (usersize > 9999999999 && usersize < 100000000000) {
-			uspace = `${ss}${usersize}`;
-		}
+	let tping;
+	if (botping < 10) {
+		tping = `${ss}${ss}${ss}${ss}${ss}${botping}ms`; // 1
+	} else if (botping > 9 && botping < 100) {
+		tping = `${ss}${ss}${ss}${ss}${botping}ms`;
+	} else if (botping > 99 && botping < 1000) {
+		tping = `${ss}${ss}${ss}${botping}ms`;
+	} else if (botping > 999 && botping < 10000) {
+		tping = `${ss}${ss}${botping}ms`;
+	} else if (botping > 9999 && botping < 100000) {
+		tping = `${ss}${botping}ms`;
+	}
+	let tguilds;
+	if (numguilds < 10) {
+		tguilds = `${ss}${ss}${ss}${ss}${ss}${ss}${ss}${ss}${numguilds}`; // 1
+	} else if (numguilds > 9 && numguilds < 100) {
+		tguilds = `${ss}${ss}${ss}${ss}${ss}${ss}${ss}${numguilds}`;
+	} else if (numguilds > 99 && numguilds < 1000) {
+		tguilds = `${ss}${ss}${ss}${ss}${ss}${ss}${numguilds}`;
+	} else if (numguilds > 999 && numguilds < 10000) {
+		tguilds = `${ss}${ss}${ss}${ss}${ss}${numguilds}`;
+	} else if (numguilds > 9999 && numguilds < 100000) {
+		tguilds = `${ss}${ss}${ss}${ss}${numguilds}`;
+	} else if (numguilds > 99999 && numguilds < 1000000) {
+		tguilds = `${ss}${ss}${ss}${numguilds}`;
+	} else if (numguilds > 999999 && numguilds < 10000000) {
+		tguilds = `${ss}${ss}${numguilds}`;
+	} else if (numguilds > 9999999 && numguilds < 100000000) {
+		tguilds = `${ss}${numguilds}`;
+	}
+	let tusers;
+	if (usersize < 10) {
+		tusers = `${ss}${ss}${ss}${ss}${ss}${ss}${ss}${ss}${ss}${ss}${ss}${usersize}`;
+	} else if (usersize > 9 && usersize < 100) {
+		tusers = `${ss}${ss}${ss}${ss}${ss}${ss}${ss}${ss}${ss}${ss}${usersize}`;
+	} else if (usersize > 99 && usersize < 1000) {
+		tusers = `${ss}${ss}${ss}${ss}${ss}${ss}${ss}${ss}${ss}${usersize}`;
+	} else if (usersize > 999 && usersize < 10000) {
+		tusers = `${ss}${ss}${ss}${ss}${ss}${ss}${ss}${ss}${usersize}`;
+	} else if (usersize > 9999 && usersize < 100000) {
+		tusers = `${ss}${ss}${ss}${ss}${ss}${ss}${ss}${usersize}`;
+	} else if (usersize > 99999 && usersize < 1000000) {
+		tusers = `${ss}${ss}${ss}${ss}${ss}${ss}${usersize}`;
+	} else if (usersize > 999999 && usersize < 10000000) {
+		tusers = `${ss}${ss}${ss}${ss}${ss}${usersize}`;
+	} else if (usersize > 9999999 && usersize < 100000000) {
+		tusers = `${ss}${ss}${ss}${ss}${usersize}`;
+	} else if (usersize > 99999999 && usersize < 1000000000) {
+		tusers = `${ss}${ss}${ss}${usersize}`;
+	} else if (usersize > 999999999 && usersize < 10000000000) {
+		tusers = `${ss}${ss}${usersize}`;
+	} else if (usersize > 9999999999 && usersize < 100000000000) {
+		tusers = `${ss}${usersize}`;
+	}
 
 msg.channel.send(`\`\`\`md
  shard${ss}|${ss}${ss}ping${ss}${ss}|${ss}${ss}guilds${ss}${ss}|${ss}${ss}users${ss}${ss}|${ss}memory${ss}|${ss}${ss}uptime${shardids}
  
- total:${bspace}${gspace}${uspace}${ss}${ss}9723mb${ss}${ss}${ss}${ss}${ss}${ss}${ss}1 day
+ total:${tping}${tguilds}${tusers}${ss}${ss}9723mb${ss}${ss}${ss}${ss}${ss}${ss}${ss}1 day
 \`\`\``);
 };
 
