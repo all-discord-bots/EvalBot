@@ -6,7 +6,6 @@ exports.run = async (bot, msg) => {
 	let botping = parseInt(Math.floor(bot.ping));
 	let spaces;
 	let ss = " "; // ss stands for 'single spaced'
-	let guilds;
 	while(i < parseInt(bot.shard.count)) { // search 'i' until it equals the current guilds shard id for numbers 0-9
 		// begin the shard id specifier / mapper
 		if (i < 10) {
@@ -30,26 +29,27 @@ exports.run = async (bot, msg) => {
 		}
 		// end the shard id specifier / mapper
 		// begin guild count per shard
+		let sguilds;
 		bot.shard.broadcastEval('bot.guilds.size').then(results => {
-			guilds = results[i];
+			sguilds = results[i];
 		}).catch(console.error);
 		let gcount;
-		if (guilds < 10) {
-			gcount = `${ss}${ss}${ss}${ss}${ss}${ss}${ss}${ss}${guilds}`;
-		} else if (guilds > 9 && guilds < 100) {
-			gcount = `${ss}${ss}${ss}${ss}${ss}${ss}${ss}${guilds}`;
-		} else if (guilds > 99 && guilds < 1000) {
-			gcount = `${ss}${ss}${ss}${ss}${ss}${ss}${guilds}`;
-		} else if (guilds > 999 && guilds < 10000) {
-			gcount = `${ss}${ss}${ss}${ss}${ss}${guilds}`;
-		} else if (guilds > 9999 && guilds < 100000) {
-			gcount = `${ss}${ss}${ss}${ss}${guilds}`;
-		} else if (guilds > 99999 && guilds < 1000000) {
-			gcount = `${ss}${ss}${ss}${guilds}`;
-		} else if (guilds > 999999 && guilds < 10000000) {
-			gcount = `${ss}${ss}${guilds}`;
-		} else if (guilds > 9999999 && guilds < 100000000) {
-			gcount = `${ss}${guilds}`;
+		if (sguilds < 10) {
+			gcount = `${ss}${ss}${ss}${ss}${ss}${ss}${ss}${ss}${sguilds}`;
+		} else if (sguilds > 9 && sguilds < 100) {
+			gcount = `${ss}${ss}${ss}${ss}${ss}${ss}${ss}${sguilds}`;
+		} else if (sguilds > 99 && sguilds < 1000) {
+			gcount = `${ss}${ss}${ss}${ss}${ss}${ss}${sguilds}`;
+		} else if (sguilds > 999 && sguilds < 10000) {
+			gcount = `${ss}${ss}${ss}${ss}${ss}${sguilds}`;
+		} else if (sguilds > 9999 && sguilds < 100000) {
+			gcount = `${ss}${ss}${ss}${ss}${sguilds}`;
+		} else if (sguilds > 99999 && sguilds < 1000000) {
+			gcount = `${ss}${ss}${ss}${sguilds}`;
+		} else if (sguilds > 999999 && sguilds < 10000000) {
+			gcount = `${ss}${ss}${sguilds}`;
+		} else if (sguilds > 9999999 && sguilds < 100000000) {
+			gcount = `${ss}${sguilds}`;
 		}
 		// end guild count per shard
 		shardids += "\n" + spaces + i + ss + ss + ss + ss + ss + ss + "110ms" + gcount + ss + ss + ss + ss + ss + ss + "55,011" + ss + ss + ss + "281mb" + ss + ss + ss + ss + ss + ss + ss + "1 day";
