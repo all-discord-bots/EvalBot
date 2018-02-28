@@ -53,7 +53,8 @@
     "got": "^8.2.0",
     "pornhub-api": "^0.0.1",
     "libsodium-wrappers": "^0.5.4",
-    "discord.js-musicbot-addon": "^1.10.2"
+    "discord.js-musicbot-addon": "^1.10.2",
+    "table-layout": "0.4.2"
   },
   "devDependencies": {
     "npm": "^5.6.0",
