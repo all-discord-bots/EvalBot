@@ -1,4 +1,4 @@
-//const musiccfg = require('../../../conf/musicconfig');
+//const musiccfg = require('../../../src/conf/musicconfig');
 // TODO: Setup FS functions to write to /conf/musicconfig.json
 exports.run = async (bot, msg) => {
 	if (msg.author.id !== bot.config.botCreatorID) return;
