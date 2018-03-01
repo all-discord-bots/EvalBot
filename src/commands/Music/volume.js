@@ -9,11 +9,13 @@ exports.run = async (bot, msg, args) => {
 	} else {
 		nvol = parseInt(args[0]);
 	}
-	dispatcher.setVolume((nvol / 100)).catch(console.error);
+	dispatcher.setVolume((nvol / 100));
+	msg.channel.send(`<:check:411976443522711552> Volume set to ${nvol}`);
 };
 
 exports.info = {
 	name: 'volume',
+	aliases: ['vol'],
 	usage: 'volume <number>',
 	description: 'Adjusts the volume of the bot.'
 };
