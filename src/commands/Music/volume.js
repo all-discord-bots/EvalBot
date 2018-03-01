@@ -1,16 +1,18 @@
 exports.run = async (bot, msg, args) => {
-	if (msg.author.id !== bot.config.botCreatorID) return;
-	let newvolume;
-	if (!args[0] || args[0] < 1) {
-		newvolume = '0';
-	} else if (args[0]) {
-		newvolume = args[0];
+	const voiceConnection = bot.voiceConnections.find(val => val.channel.guild.id == msg.guild.id);
+	if (voiceConnection === null) return msg.channel.send(`<:redx:411978781226696705> No music is being played.`).catch(console.error);
+	const dispatcher = voiceConnection.player.dispatcher;
+	if (args[0] < 0 || args[0] > 200) return msg.channel.send(`<:redx:411978781226696705> Volume must be \`0-100\`!`).catch(console.error);
+	let nvol;
+	if (!args.length < 1 || isNaN(args[0])) {
+		nvol = parseInt('0');
+	} else {
+		nvol = parseInt(args[0]);
 	}
-	console.log(`Changed volume to ${newvolume}.`);
+	dispatcher.setVolume((nvol / 100)).catch(console.error);
 };
 
 exports.info = {
-	hidden: true,
 	name: 'volume',
 	usage: 'volume <number>',
 	description: 'Adjusts the volume of the bot.'
