@@ -1,10 +1,15 @@
 exports.run = async (bot, msg) => {
-	if (msg.author.id !== bot.config.botCreatorID) return;
-	console.log('Resumed song.');
+	const voiceConnection = client.voiceConnections.find(val => val.channel.guild.id == msg.guild.id);
+	if (voiceConnection === null) return msg.channel.send(`<:redx:411978781226696705> No music is being played`).catch(console.error);
+	const dispatcher = voiceConnection.player.dispatcher;
+	if (!dispatcher.paused) return msg.channel.send(`<:redx:411978781226696705> Playback is not paused!`).catch(console.error);
+	if (dispatcher.paused) {
+		dispatcher.resume();
+		msg.channel.send(`<:check:411976443522711552> Playback resumed.`);
+	}
 };
 
 exports.info = {
-	hidden: true,
 	name: 'resume',
 	usage: 'resume',
 	description: 'Resume music playback.'
