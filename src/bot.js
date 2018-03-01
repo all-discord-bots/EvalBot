@@ -141,7 +141,8 @@ bot.on('ready', () => {
 	
 	loaded = true;
 	setInterval(() => {
-		dbl.postStats(client.guilds.size, client.shard.id, client.shard.count);
+		dbl.postStats(bot.guilds.size, bot.shard.id, bot.shard.count);
+		console.log('Uploaded Bot Stats');
 	}, 1800000);
 });
 
