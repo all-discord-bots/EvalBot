@@ -12,6 +12,7 @@ const child_process = require('child_process');
 const events = require('events');
 const cluster = require('cluster');
 const DBL = require("dblapi.js");
+const { Client } = require('pg');
 
 exports.run = async (bot, msg, args) => {
     const dbl = new DBL(process.env.DB_TOKEN, bot);
