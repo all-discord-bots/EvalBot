@@ -1,12 +1,12 @@
 'use strict';
 
 const debug = false;
-
+const { Pool, Client } = require('pg'); // database
+const parse = require('pg-connection-string').parse; // database
 const https = require('https');
 const path = require('path');
 const fse = require('fs-extra');
 const Discord = require('discord.js');
-//const client = new Discord.Client();
 const client = new Discord.Client({
 	autoReconnect: true,
 	internalSharding: false,
@@ -24,6 +24,28 @@ const mysql = require('mysql');
 const fs = require('fs');
 const bot = global.bot = exports.client = new Discord.Client();
 const Music = require('discord.js-musicbot-addon');
+// Begin Database
+const connectionString = `${process.env.POSTGRESQL_URL}`;
+
+const pool = new Pool({
+	connectionString: connectionString,
+});
+
+pool.query('SELECT NOW()', (err, res) => {
+	console.log(err, res);
+	pool.end();
+});
+
+const clientdb = new Client({
+	connectionString: connectionString,
+});
+clientdb.connect();
+
+clientdb.query('SELECT NOW()', (err, res) => {
+	console.log(err, res);
+	clientdb.end();
+});
+// End Database
 
 let guildArray = bot.guilds.array();
 
