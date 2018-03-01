@@ -4,7 +4,7 @@ exports.run = async (bot, msg, args) => {
 	const dispatcher = voiceConnection.player.dispatcher;
 	if (args[0] < 0 || args[0] > 200) return msg.channel.send(`<:redx:411978781226696705> Volume must be \`0-100\`!`).catch(console.error);
 	let nvol;
-	if (!args.length < 1 || isNaN(args[0])) {
+	if (args.length < 1 || isNaN(args[0])) {
 		nvol = parseInt('0');
 	} else {
 		nvol = parseInt(args[0]);
