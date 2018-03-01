@@ -49,12 +49,12 @@
     "cluster": "^0.7.7",
     "dblapi.js": "^1.1.0",
     "webhook-discord": "^2.0.6",
-    "snekfetch": "^4.0.0-rc.0",
+    "snekfetch": "^4.0.0-beta.0",
     "got": "^8.2.0",
     "pornhub-api": "^0.0.1",
     "libsodium-wrappers": "^0.5.4",
     "discord.js-musicbot-addon": "^1.10.2",
-    "table-layout": "0.4.2"
+    "table-layout": "^0.4.2"
   },
   "devDependencies": {
     "npm": "^5.6.0",
