@@ -1,4 +1,4 @@
-const stream = require('youtube-audio-stream')
+const stream = require('youtube-audio-stream');
 const ytdl = require('ytdl-core');
 const { YTSearcher } = require('ytsearcher');
 const ypi = require('youtube-playlist-info');
@@ -29,7 +29,7 @@ exports.run = async (bot, msg, args) => {
 	  enableQueueStat: true, // Whether to enable the queue status, old fix for an error that occurs for a few people.
 	  anyoneCanAdjust: true, // Whether anyone can adjust volume.
 	  ownerOverMember: false, // Whether the owner over-rides CanAdjust and CanSkip.
-	  anyoneCanLeave: false, // Whether anyone can make the bot leave the currently connected channel. // false because of a bug with permissions atm
+	  anyoneCanLeave: true, // Whether anyone can make the bot leave the currently connected channel. // false because of a bug with permissions atm
 	  //botOwner: '269247101697916939', // The ID of the Discord user to be seen as the owner. Required if using ownerOverMember.
 	  logging: true, // Some extra none needed logging (such as caught errors that didn't crash the bot, etc).
 	  requesterName: true, // Whether or not to display the username of the song requester.
@@ -52,9 +52,10 @@ exports.run = async (bot, msg, args) => {
     }
 
     new Promise((resolve, reject) => {
-      // Join the voice channel if not already in one.
-      const voiceConnection = bot.voiceConnections.find(val => val.channel.guild.id == msg.guild.id);
-      if (voiceConnection === null) {
+		// Join the voice channel if not already in one.
+		const voiceConnection = bot.voiceConnections.find(val => val.channel.guild.id == msg.guild.id);
+		if (!msg.member.voiceChannel) return msg.channel.send(`<:redx:411978781226696705> You must be in a voice channel!`).catch(console.error);
+		if (voiceConnection === null) { // might need fixing later
         // Check if the user is in a voice channel.
         if (msg.member.voiceChannel && msg.member.voiceChannel.joinable) {
           msg.member.voiceChannel.join().then(connection => {
