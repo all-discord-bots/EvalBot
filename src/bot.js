@@ -24,22 +24,22 @@ const bot = global.bot = exports.client = new Discord.Client();
 const Music = require('discord.js-musicbot-addon');
 
 // begin database
-const { Client } = require('pg');
+//const { Client } = require('pg');
 
-const clientdb = new Client({
-	connectionString: process.env.DATABASE_URL,
-	ssl: true,
-});
+//const clientdb = new Client({
+//	connectionString: process.env.DATABASE_URL,
+//	ssl: true,
+//});
 
-clientdb.connect();
+//clientdb.connect();
 
-clientdb.query('SELECT table_schema,table_name FROM information_schema.tables;', (err, res) => {
-	if (err) throw err;
-	for (let row of res.rows) {
-		console.log(JSON.stringify(row));
-	}
-	clientdb.end();
-});
+//clientdb.query('SELECT table_schema,table_name FROM information_schema.tables;', (err, res) => {
+//	if (err) throw err;
+//	for (let row of res.rows) {
+//		console.log(JSON.stringify(row));
+//	}
+//	clientdb.end();
+//});
 // end database
 
 let guildArray = bot.guilds.array();
@@ -491,5 +491,4 @@ if (!global.msgo) {
 }
 */
 
-//bot.config && bot.login(bot.config.botToken);
-bot.config && bot.login(process.env.BOT_TOKEN);
+bot.config && bot.login(process.env.BOT_TOKEN).catch(console.error);
