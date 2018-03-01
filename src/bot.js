@@ -1,8 +1,6 @@
 'use strict';
 
 const debug = false;
-const { Pool, Client } = require('pg'); // database
-const parse = require('pg-connection-string').parse; // database
 const https = require('https');
 const path = require('path');
 const fse = require('fs-extra');
@@ -24,28 +22,25 @@ const mysql = require('mysql');
 const fs = require('fs');
 const bot = global.bot = exports.client = new Discord.Client();
 const Music = require('discord.js-musicbot-addon');
-// Begin Database
-const connectionString = `${process.env.POSTGRESQL_URL}`;
 
-const pool = new Pool({
-	connectionString: connectionString,
-});
-
-pool.query('SELECT NOW()', (err, res) => {
-	console.log(err, res);
-	pool.end();
-});
+// begin database
+const { Client } = require('pg');
 
 const clientdb = new Client({
-	connectionString: connectionString,
+	connectionString: process.env.DATABASE_URL,
+	ssl: true,
 });
+
 clientdb.connect();
 
-clientdb.query('SELECT NOW()', (err, res) => {
-	console.log(err, res);
+clientdb.query('SELECT table_schema,table_name FROM information_schema.tables;', (err, res) => {
+	if (err) throw err;
+	for (let row of res.rows) {
+		console.log(JSON.stringify(row));
+	}
 	clientdb.end();
 });
-// End Database
+// end database
 
 let guildArray = bot.guilds.array();
 
