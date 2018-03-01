@@ -10,7 +10,7 @@
     "debug": "node src/scripts/debug.js",
     "dev": "gulp --dev"
   },
-  "author": "",
+  "author": "BannerBomb",
   "license": "MIT",
   "dependencies": {
     "chalk": "^2.3.1",
@@ -55,8 +55,7 @@
     "libsodium-wrappers": "^0.5.4",
     "discord.js-musicbot-addon": "^1.10.2",
     "table-layout": "^0.4.2",
-    "pg": "^7.4.1",
-    "pg-connection-string": "^2.0.0"
+    "pg": "^7.4.1"
   },
   "devDependencies": {
     "npm": "^5.6.0",
