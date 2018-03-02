@@ -1,7 +1,7 @@
 const Discord = require("discord.js");
 
 exports.run = async (bot, msg, args) => {
-    let modlogs = "mod_logs";
+    let modlogs = "mod-logs";
     let bUser = msg.guild.member(msg.mentions.users.first() || msg.guild.members.get(args[0]));
     if(!bUser) return msg.channel.send(`Can't find that user!`).catch(console.error);
     let bReason = args.join(" ").slice(22);
@@ -35,5 +35,5 @@ exports.info = {
   name: 'ban',
   aliases: ['bean','deport'],
   usage: 'ban <member> <reason>',
-  description: 'Bans users from your guild. If you would like to let the bot keep logs of moderations create a text channel named `mod_logs`'
+  description: 'Bans users from your guild. If you would like to let the bot keep logs of moderations create a text channel named `mod-logs`'
 }
