@@ -6,7 +6,7 @@ exports.run = async (bot, msg, args) => {
     if (msg.author.id !== bot.config.botCreatorID) {
       if (!msg.member.hasPermission('KICK_MEMBERS')) return msg.channel.send(`<:redx:411978781226696705> You are missing permissions \`Kick Members\`!`).catch(console.error);
     }
-    let reportchannel = "mod_logs";
+    let reportchannel = "mod-logs";
     let rUser = msg.guild.member(msg.mentions.users.first() || msg.guild.members.get(args[0]));
     if(!rUser) return msg.channel.send(`<:redx:411978781226696705> Can't find that user.`).catch(console.error);
     let rreason = args.join(" ").slice(22);
@@ -35,5 +35,5 @@ exports.info = {
   name: 'report',
   hidden: true,
   usage: 'report <user> <reason>',
-  description: 'Reports a user, same thing as warn but just logs a message in th mod_logs channel. If you would like to let the bot keep logs of moderations create a text channel named `mod_logs`'
+  description: 'Reports a user, same thing as warn but just logs a message in the mod-logs channel. If you would like to let the bot keep logs of moderations create a text channel named `mod-logs`'
 }
