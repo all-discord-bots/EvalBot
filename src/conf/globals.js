@@ -1,0 +1,1 @@
+const musicqueue = global.musicqueue = {};
