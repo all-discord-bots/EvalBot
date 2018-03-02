@@ -5,16 +5,31 @@ const ypi = require('youtube-playlist-info');
 const Discord = require('discord.js');
 
 exports.run = async (bot, msg, args) => {
-  let gprefix;
-  if (bot.config[msg.guild.id]) {
-	  gprefix = bot.config[msg.guild.id].prefix;
-  } else if (!bot.config[msg.guild.id]) {
-	  gprefix = bot.config.prefix;
-  }
-  let arg = args.join(' ');
-  let queue = [];
-  queue[queue.length] = arg;
-  
+	let gprefix;
+	if (bot.config[msg.guild.id]) {
+		gprefix = bot.config[msg.guild.id].prefix;
+	} else if (!bot.config[msg.guild.id]) {
+		gprefix = bot.config.prefix;
+	}
+	let arg = args.join(' ');
+	let queue = [];
+	const search = new YTSearcher({
+		key: process.env.YOUTUBE_API_KEY,
+		revealkey: true
+	});
+	search.search(arg, { type: 'video' }).then(searchResult => {
+		let result = searchResult.first;
+		//msg.channel.send(`https://www.youtube.com/watch?v=${result.id}`);
+		queue[queue.length] = result.url; // result.id = video id // result.channelID = channel id // result.url = full video url // result.title = video name // result.description = video description
+		if (result.url) { // message information about the video on playing the video
+			msg.channel.send({embed: ({
+				title: `${result.title}`,
+				url: `${result.url}`,
+				description: `${result.description}`,
+				timestamp: new Date()
+			});
+		}
+	}).catch(console.error);
   var musicbot = {
 	  youtubeKey: process.env.YOUTUBE_API_KEY, // A YouTube Data API3 key. Required to run.
 	  prefix: gprefix, // The prefix of the bot. Defaults to "!".
@@ -103,6 +118,6 @@ exports.run = async (bot, msg, args) => {
 
 exports.info = {
 	name: 'play',
-	usage: 'play <url>',
+	usage: 'play <url|search>',
 	description: 'Play audio from YouTube.'
 };
