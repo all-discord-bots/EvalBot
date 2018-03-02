@@ -27,7 +27,7 @@ exports.run = async (bot, msg, args) => {
 				url: `${result.url}`,
 				description: `${result.description}`,
 				timestamp: new Date()
-			});
+			})});
 		}
 	}).catch(console.error);
   var musicbot = {
