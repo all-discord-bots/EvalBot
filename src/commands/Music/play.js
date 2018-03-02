@@ -17,6 +17,7 @@ exports.run = async (bot, msg, args) => {
 	}
 	let arg = args.join(' ');
 	if (arg.length < 1) return msg.channel.send(`<:redx:411978781226696705> You must provide a url or search string!`).catch(console.error);
+	if (!msg.member.voiceChannel) return msg.channel.send(`<:redx:411978781226696705> You must be in a voice channel!`).catch(console.error);
 	//let getQueue;
 //	getQueue = (server) => {
 //		// Return the queue.
