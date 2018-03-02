@@ -15,7 +15,7 @@ exports.run = async (bot, msg, args) => {
 	let arg = args.join(' ');
 	//let makequeue;
 	//let musicqueue = global.makequeue = [];
-	let getQueue;
+	//let getQueue;
 //	getQueue = (server) => {
 //		// Return the queue.
 //		if (!musicqueue[server]) musicqueue[server] = [];
@@ -93,7 +93,7 @@ function executeQueue(queue) {
             console.log(error);
           });
         } else if (!msg.member.voiceChannel.joinable) {
-          msg.channel.send(musicbot.note(`I do not have permission to join your voice channel!`);
+          msg.channel.send(`I do not have permission to join your voice channel!`);
           reject();
         } else {
           // Otherwise, clear the queue and do nothing.
@@ -153,10 +153,10 @@ function executeQueue(queue) {
         console.log(error);
       }
     }).catch((error) => {
-      console.log(error);
+	    console.log(error);
     });
-  };
-
+}
+};
 exports.info = {
 	name: 'play',
 	usage: 'play <url|search>',
