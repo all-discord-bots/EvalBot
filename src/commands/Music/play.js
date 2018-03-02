@@ -12,7 +12,8 @@ exports.run = async (bot, msg, args) => {
 		gprefix = bot.config.prefix;
 	}
 	let arg = args.join(' ');
-	let queue = [];
+	let makequeue;
+	let musicqueue = global.makequeue = [];
 	const search = new YTSearcher({
 		key: process.env.YOUTUBE_API_KEY,
 		revealkey: true
@@ -20,7 +21,7 @@ exports.run = async (bot, msg, args) => {
 	search.search(arg, { type: 'video' }).then(searchResult => {
 		let result = searchResult.first;
 		//msg.channel.send(`https://www.youtube.com/watch?v=${result.id}`);
-		queue[queue.length] = result.url; // result.id = video id // result.channelID = channel id // result.url = full video url // result.title = video name // result.description = video description
+		global.musicqueue.push(result.url); // result.id = video id // result.channelID = channel id // result.url = full video url // result.title = video name // result.description = video description
 		if (result.url) { // message information about the video on playing the video
 			msg.channel.send({embed: ({
 				title: `${result.title}`,
@@ -30,6 +31,7 @@ exports.run = async (bot, msg, args) => {
 			})});
 		}
 	}).catch(console.error);
+	const queue = global.musicqueue;
   var musicbot = {
 	  youtubeKey: process.env.YOUTUBE_API_KEY, // A YouTube Data API3 key. Required to run.
 	  prefix: gprefix, // The prefix of the bot. Defaults to "!".
