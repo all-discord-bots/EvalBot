@@ -3,7 +3,7 @@ const Discord = require('discord.js');
 exports.run = (bot, msg, args) => {
   let reason = args.slice(1).join(' ');
   let member = msg.mentions.members.first();
-  let modlog = msg.guild.channels.find('name', 'mod_logs');
+  let modlog = msg.guild.channels.find('name', 'mod-logs');
   let muteRole = msg.guild.roles.find('name', 'Muted');
   let gbot = msg.guild.members.get(bot.user.id);
   if (!gbot.hasPermission(0x00000002)) return msg.channel.send(`<:redx:411978781226696705> I am missing \`Kick Members\`!`).catch(console.error);
@@ -47,6 +47,6 @@ exports.run = (bot, msg, args) => {
 exports.info = {
   name: 'mute',
   aliases: ['unmute'],
-  description: 'mutes or unmutes a mentioned user. If you would like to let the bot keep logs of moderations create a text channel named `mod_logs`',
+  description: 'mutes or unmutes a mentioned user. If you would like to let the bot keep logs of moderations create a text channel named `mod-logs`',
   usage: 'mute <mention> [reason]'
 };
