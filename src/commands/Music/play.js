@@ -12,8 +12,8 @@ exports.run = async (bot, msg, args) => {
 		gprefix = bot.config.prefix;
 	}
 	let arg = args.join(' ');
-	let makequeue;
-	let musicqueue = global.makequeue = [];
+	//let makequeue;
+	//let musicqueue = global.makequeue = [];
 	const search = new YTSearcher({
 		key: process.env.YOUTUBE_API_KEY,
 		revealkey: true
@@ -21,7 +21,9 @@ exports.run = async (bot, msg, args) => {
 	search.search(arg, { type: 'video' }).then(searchResult => {
 		let result = searchResult.first;
 		//msg.channel.send(`https://www.youtube.com/watch?v=${result.id}`);
-		global.musicqueue.push(`${result.url}`); // result.id = video id // result.channelID = channel id // result.url = full video url // result.title = video name // result.description = video description
+		let musicqueue = global.musicqueue = [];
+		//global.musicqueue.push(`${result.url}`); // result.id = video id // result.channelID = channel id // result.url = full video url // result.title = video name // result.description = video description
+		musicqueue.push(`${result.url}`);
 		if (result.url) { // message information about the video on playing the video
 			msg.channel.send({embed: ({
 				title: `${result.title}`,
