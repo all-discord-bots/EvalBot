@@ -13,7 +13,7 @@ exports.run = async (bot, msg, args) => {
 	}
 	let arg = args.join(' ');
 	let makequeue;
-	const musicqueue = global.makequeue = [];
+	let musicqueue = global.makequeue = [];
 	const search = new YTSearcher({
 		key: process.env.YOUTUBE_API_KEY,
 		revealkey: true
@@ -21,7 +21,7 @@ exports.run = async (bot, msg, args) => {
 	search.search(arg, { type: 'video' }).then(searchResult => {
 		let result = searchResult.first;
 		//msg.channel.send(`https://www.youtube.com/watch?v=${result.id}`);
-		global.musicqueue.push(result.url); // result.id = video id // result.channelID = channel id // result.url = full video url // result.title = video name // result.description = video description
+		global.musicqueue.push(`${result.url}`); // result.id = video id // result.channelID = channel id // result.url = full video url // result.title = video name // result.description = video description
 		if (result.url) { // message information about the video on playing the video
 			msg.channel.send({embed: ({
 				title: `${result.title}`,
@@ -31,7 +31,7 @@ exports.run = async (bot, msg, args) => {
 			})});
 		}
 	}).catch(console.error);
-	const queue = global.musicqueue;
+	console.log(`${global.musicqueue}`);
   var musicbot = {
 	  youtubeKey: process.env.YOUTUBE_API_KEY, // A YouTube Data API3 key. Required to run.
 	  prefix: gprefix, // The prefix of the bot. Defaults to "!".
@@ -60,7 +60,7 @@ exports.run = async (bot, msg, args) => {
   };
 	
     // If the queue is empty, finish.
-    if (queue.length === 0) {
+    if (global.musicqueue.length === 0) {
       msg.channel.send('Playback finished.');
 
       // Leave the voice channel.
@@ -85,7 +85,7 @@ exports.run = async (bot, msg, args) => {
           reject();
         } else {
           // Otherwise, clear the queue and do nothing.
-          queue.splice(0, queue.length);
+          global.musicqueue.splice(0, global.musicqueue.length);
           reject();
         }
       } else {
@@ -93,7 +93,7 @@ exports.run = async (bot, msg, args) => {
       }
     }).then(connection => {
       // Get the first item in the queue.
-      const video = queue[0];
+      const video = global.musicqueue[0];
 
       // Play the video.
       try {
@@ -102,13 +102,13 @@ exports.run = async (bot, msg, args) => {
         connection.on('error', (error) => {
           // Skip to the next song.
           console.log(error);
-          queue.shift();
+          global.musicqueue.shift();
         });
 
         dispatcher.on('error', (error) => {
           // Skip to the next song.
           console.log(error);
-          queue.shift();
+          global.musicqueue.shift();
         });
       } catch (error) {
         console.log(error);
