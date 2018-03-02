@@ -1,6 +1,8 @@
+require('../../../src/commands/Music/play.js');
 exports.run = async (bot, msg) => {
-	if (msg.author.id !== bot.config.botCreatorID) return;
-	console.log('Executed queue commands.');
+	let i = 0;
+	let queue = musicqueue.map(a => a.toString());
+	 msg.channel.send(`\`\`\`${i++} - ${queue}\n\`\`\``);
 };
 
 exports.info = {
