@@ -6,6 +6,9 @@ const Discord = require('discord.js');
 require('../../conf/globals.js');
 
 exports.run = async (bot, msg, args) => {
+	let gbot = msg.guild.members.get(bot.user.id);
+	if (!gbot.hasPermission(0x00100000)) return msg.channel.send(`<:redx:411978781226696705> I am missing \`Connect\` permissions!`).catch(console.error);
+	if (!gbot.hasPermission(0x00200000)) return msg.channel.send(`<:redx:411978781226696705> I am missing \`Speak\` permissions!`).catch(console.error);
 	let gprefix;
 	if (bot.config[msg.guild.id]) {
 		gprefix = bot.config[msg.guild.id].prefix;
@@ -13,8 +16,7 @@ exports.run = async (bot, msg, args) => {
 		gprefix = bot.config.prefix;
 	}
 	let arg = args.join(' ');
-	//let makequeue;
-	//let musicqueue = global.makequeue = [];
+	if (arg.length < 1) return msg.channel.send(`<:redx:411978781226696705> You must provide a url or search string!`).catch(console.error);
 	//let getQueue;
 //	getQueue = (server) => {
 //		// Return the queue.
@@ -28,19 +30,40 @@ exports.run = async (bot, msg, args) => {
 	});
 	search.search(arg, { type: 'video' }).then(searchResult => {
 		let result = searchResult.first;
-		if (!result) return msg.channel.send(`redx Could not find video.`);
-		//let musicqueue = global.musicqueue = [];
+		if (!result) return msg.channel.send(`<:redx:411978781226696705> Could not find this video.`).catch(console.error);
 		//global.musicqueue.push(`${result.url}`); // result.id = video id // result.channelID = channel id // result.url = full video url // result.title = video name // result.description = video description
 		if (!musicqueue[msg.guild.id]) musicqueue[msg.guild.id] = [];
 		musicqueue[msg.guild.id].push(`${result.url}`);
 		if (musicqueue[msg.guild.id].length === 1 || !bot.voiceConnections.find(val => val.channel.guild.id == msg.guild.id)) executeQueue(musicqueue[msg.guild.id]);
 		if (result.url) { // message information about the video on playing the video
 			msg.channel.send({embed: ({
+				color: 3447003,
 				title: `${result.title}`,
 				url: `${result.url}`,
 				description: `${result.description}`,
 				timestamp: new Date()
 			})});
+			/*
+			msg.channel.send({embed: ({
+				color: 3447003,
+				title: `${result.title}`,
+				fields: [
+				{
+					name: `**__Title__**`,
+					value: `${result.title}`,
+				}, {
+					name: `**__ID__**`,
+					value: `${result.id}`,
+				}, {
+					name: `**__Channel__**`,
+				}
+					]
+				url: `${result.url}`,
+				description: `${result.description}`,
+				timestamp: new Date()
+			})});
+		}
+		*/
 		}
 	}).catch(console.error);
 	console.log(`${musicqueue[msg.guild.id]}`);
@@ -74,7 +97,7 @@ exports.run = async (bot, msg, args) => {
 function executeQueue(queue) {
     // If the queue is empty, finish.
     if (queue.length === 0) {
-      msg.channel.send(`Playback finished.`);
+      msg.channel.send(`<:check:411976443522711552> Playback finished.`);
 
       // Leave the voice channel.
       const voiceConnection = bot.voiceConnections.find(val => val.channel.guild.id == msg.guild.id);
@@ -84,6 +107,7 @@ function executeQueue(queue) {
     new Promise((resolve, reject) => {
       // Join the voice channel if not already in one.
       const voiceConnection = bot.voiceConnections.find(val => val.channel.guild.id == msg.guild.id);
+	    if (!msg.member.voiceChannel) return msg.channel.send(`<:redx:411978781226696705> You must be in a voice channel!`).catch(console.error);
       if (voiceConnection === null) {
         // Check if the user is in a voice channel.
         if (msg.member.voiceChannel && msg.member.voiceChannel.joinable) {
@@ -93,7 +117,7 @@ function executeQueue(queue) {
             console.log(error);
           });
         } else if (!msg.member.voiceChannel.joinable) {
-          msg.channel.send(`I do not have permission to join your voice channel!`);
+          msg.channel.send(`<:redx:411978781226696705> I do not have permission to join your voice channel!`);
           reject();
         } else {
           // Otherwise, clear the queue and do nothing.
@@ -119,7 +143,7 @@ function executeQueue(queue) {
         connection.on('error', (error) => {
           // Skip to the next song.
           console.log(`Dispatcher/connection: ${error}`);
-          if (msg && msg.channel) msg.channel.send(`Dispatcher error!\n\`${error}\``);
+          if (msg && msg.channel) msg.channel.send(`<:redx:411978781226696705> Dispatcher error!\n\`${error}\``);
           queue.shift();
           executeQueue(musicqueue[msg.guild.id]);
         });
@@ -128,7 +152,7 @@ function executeQueue(queue) {
           // Skip to the next song.
           console.log(error);
           console.log(`Dispatcher: ${error}`);
-          if (msg && msg.channel) msg.channel.send(musicbot.note('fail', `Dispatcher error!\n\`${error}\``));
+          if (msg && msg.channel) msg.channel.send(`<:redx:411978781226696705> Dispatcher error!\n\`${error}\``);
           queue.shift();
           executeQueue(musicqueue[msg.guild.id]);
         });
@@ -153,7 +177,7 @@ function executeQueue(queue) {
         console.log(error);
       }
     }).catch((error) => {
-	    console.log(error);
+	console.log(error);
     });
 }
 };
