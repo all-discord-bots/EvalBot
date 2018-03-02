@@ -13,7 +13,7 @@ exports.run = async (bot, msg, args) => {
 	}
 	let arg = args.join(' ');
 	let makequeue;
-	let musicqueue = global.makequeue = [];
+	const musicqueue = global.makequeue = [];
 	const search = new YTSearcher({
 		key: process.env.YOUTUBE_API_KEY,
 		revealkey: true
