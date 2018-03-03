@@ -17,7 +17,7 @@ exports.run = async (bot, msg, args) => {
 	} else if (args[0]) {
 		gsearch = gvid;
 	}
-	search.search(gsearch.toString(), { type: 'video' }).then(searchResult => {
+	search.search(gsearch, { type: 'video' }).then(searchResult => {
 		let result = searchResult.first;
 		if (!result) return msg.channel.send(`<:redx:411978781226696705> Could not get the video.`).catch(console.error);
 		//global.musicqueue.push(`${result.url}`); // result.id = video id // result.channelID = channel id // result.url = full video url // result.title = video name // result.description = video description
@@ -69,7 +69,7 @@ exports.run = async (bot, msg, args) => {
 			})});
 			// https://developers.google.com/youtube/v3/docs/activities
 		}
-	}}).catch(console.error);
+	}).catch(console.error);
 };
 
 exports.info = {
