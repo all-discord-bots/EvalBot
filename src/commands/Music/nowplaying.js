@@ -53,7 +53,7 @@ exports.run = async (bot, msg, args) => {
 						value: `[${result.title}](${result.url}) \`${result.id}\``
 					}, {
 						name: `**__Channel__**`,
-						value: `[result.channelTitle](https://www.youtube.com/channel/${result.channelId}) \`${result.channelId}\``
+						value: `[${result.channelTitle}](https://www.youtube.com/channel/${result.channelId}) \`${result.channelId}\``
 					}, {
 						name: `**__Thumbnails__**`,
 						value: `${dthumbnail}${mthumbnail}${hthumbnail}`
