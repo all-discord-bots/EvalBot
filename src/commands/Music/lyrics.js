@@ -10,6 +10,7 @@ exports.run = async (bot, msg, args) => {
 	}
 	if (!song.includes('-')) return msg.channel.send(`<:redx:411978781226696705> Please seperate the Artist name from the Song Name using \`-\`.\nExample: \`${prefix}lyrics Slipknot - Dead Memories\``).catch(console.error);
 	let gsong = song.split('-');
+	if (gsong.length !== 2) return msg.channel.send(`<:redx:411978781226696705> You must provide an artist and song name!`).catch(console.error);
 	let artist = `${gsong[0]}`;
 	let song_name = `${gsong[1]}`;
 	lyricsFetcher.fetch(`${artist.toString()}`, `${song_name.toString()}`, function (err, lyrics) {
@@ -20,13 +21,13 @@ exports.run = async (bot, msg, args) => {
 		if (lyrics && lyrics.length > 2048) return msg.channel.send(`<:redx:411978781226696705> Lyrics exceeded the maximum length. Lyrics were \`${lyrics.length}/2048\` characters.`).catch(console.error);
 		msg.channel.send({embed: ({
 			color: 3447003,
-			title: `${song_name.toString()}`,
+			title: `${song_name.toString() || 'N/A'}`,
 			author: {
-				name: `${artist.toString()}`
+				name: `${artist.toString() || 'N/A'}`
 			}, footer: {
-				name: `${artist.toString()} - ${song_name.toString()}`
+				name: `${artist.toString() || 'N/A'} - ${song_name.toString() || 'N/A'}`
 			},
-			description: `${lyrics}`,
+			description: `${lyrics || 'N/A'}`,
 			timestamp: new Date()
 		})});
 	});
