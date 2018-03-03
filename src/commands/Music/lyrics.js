@@ -18,20 +18,35 @@ exports.run = async (bot, msg, args) => {
 		if (lyrics) {
 			console.log(`Lyrics are ${lyrics.length}/2048 characters.`);
 		}
-		if (lyrics && lyrics.length > 2048) return msg.channel.send(`<:redx:411978781226696705> Lyrics exceeded the maximum length. Lyrics were \`${lyrics.length}/2048\` characters.`).catch(console.error);
+		const MESSAGE_CHAR_LIMIT = 2000;
+		const splitString = (string, prepend = '', append = '') => {
+			if (string.length <= MESSAGE_CHAR_LIMIT) {
+				return [string];
+			}
+			const splitIndex = string.lastIndexOf('\n', MESSAGE_CHAR_LIMIT - prepend.length - append.length);
+			const sliceEnd = splitIndex > 0 ? splitIndex : MESSAGE_CHAR_LIMIT - prepend.length - append.length;
+			const rest = splitString(string.slice(sliceEnd), prepend, append);
+			return [`${string.slice(0, sliceEnd)}${append}`, `${prepend}${rest[0]}`, ...rest.slice(1)];
+		};
+		let lyric = splitString(`${lyrics}`);
+		//if (lyrics && lyrics.length > 2048) return msg.channel.send(`<:redx:411978781226696705> Lyrics exceeded the maximum length. Lyrics were \`${lyrics.length}/2048\` characters.`).catch(console.error);
 		if (artist && artist.toString().length > 2048) return msg.channel.send(`<:redx:411978781226696705> Artist name exceeded the maximum length. Artist name was \`${artist.toString().length}/2048\` characters.`).catch(console.error);
 		if (song_name && song_name.toString().length > 2048) return msg.channel.send(`<:redx:411978781226696705> Song name exceeded the maximum length. Song name was \`${song_name.toString().length}/2048\` characters.`).catch(console.error);
-		msg.channel.send({embed: ({
-			color: 3447003,
-			title: `${song_name.toString() || 'N/A'}`,
-			author: {
-				name: `${artist.toString() || 'N/A'}`
-			}, footer: {
-				name: `${artist.toString() || 'N/A'} - ${song_name.toString() || 'N/A'}`
-			},
-			description: `${lyrics || 'N/A'}`,
-			timestamp: new Date()
-		})});
+		let pagenum = 1;
+		lyric.forEach(glyrics => {
+			msg.channel.send({embed: ({
+				color: 3447003,
+				title: `${song_name.toString() || 'N/A'}`,
+				author: {
+					name: `${artist.toString() || 'N/A'}`
+				}, footer: {
+					//text: `${artist.toString() || 'N/A'} - ${song_name.toString() || 'N/A'}`
+					text: `Page: ${pagenum++ || 'N/A'}`
+				},
+				description: `${glyrics.toString() || 'N/A'}`,
+				timestamp: new Date()
+			})});
+		});
 	});
 };
 
