@@ -22,6 +22,14 @@ exports.run = async (bot, msg, args) => {
 		if (!result) return msg.channel.send(`<:redx:411978781226696705> Could not get the video.`).catch(console.error);
 		//global.musicqueue.push(`${result.url}`); // result.id = video id // result.channelID = channel id // result.url = full video url // result.title = video name // result.description = video description
 		if (result.url) { // message information about the video on playing the video
+			let thumbnail;
+			if (result.thumbnails.default.url && !result.thumbnails.medium.url && !result.thumbnails.high.url) {
+				thumbnail = `${result.thumbnails.default.url}`;
+			} else if (result.thumbnails.default.url && result.thumbnails.medium.url && !result.thumbnails.high.url) {
+				thumbnail = `${result.thumbnails.medium.url}`;
+			} else if (result.thumbnails.default.url && result.thumbnails.medium.url && result.thumbnails.high.url) {
+				thumbnail = `${result.thumbnails.high.url}`;
+			}
 			let udate = new Date(result.publishedAt).getTime();
 			let dthumbnail;
 			if (result.thumbnails.default.url) {
@@ -46,7 +54,7 @@ exports.run = async (bot, msg, args) => {
 				title: `${result.title}`,
 				url: `${result.url}`,
 				"thumbnail": {
-					url: `${result.thumbnails.default.url}`
+					url: `${thumbnail}`
 				}, fields: [
 					{
 						name: `**__Video__**`,
