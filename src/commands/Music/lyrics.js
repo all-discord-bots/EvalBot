@@ -13,12 +13,14 @@ exports.run = async (bot, msg, args) => {
 	if (gsong.length !== 2) return msg.channel.send(`<:redx:411978781226696705> You must provide an artist and song name!`).catch(console.error);
 	let artist = `${gsong[0]}`;
 	let song_name = `${gsong[1]}`;
-	lyricsFetcher.fetch(`${artist.toString()}`, `${song_name.toString()}`, function (err, lyrics) {
+	lyricsFetcher.fetch(`${artist.toString() || 'THIS IS HERE TO FORCE A FAKE ARTIST NAME'}`, `${song_name.toString() || 'THIS IS HERE TO FORCE A FAKE SONG NAME'}`, function (err, lyrics) {
 		if (err) return msg.channel.send(`<:redx:411978781226696705> ${err}`).catch(console.error);
 		if (lyrics) {
 			console.log(`Lyrics are ${lyrics.length}/2048 characters.`);
 		}
 		if (lyrics && lyrics.length > 2048) return msg.channel.send(`<:redx:411978781226696705> Lyrics exceeded the maximum length. Lyrics were \`${lyrics.length}/2048\` characters.`).catch(console.error);
+		if (artist && artist.toString().length > 2048) return msg.channel.send(`<:redx:411978781226696705> Artist name exceeded the maximum length. Artist name was \`${artist.toString().length}/2048\` characters.`).catch(console.error);
+		if (song_name && song_name.toString().length > 2048) return msg.channel.send(`<:redx:411978781226696705> Song name exceeded the maximum length. Song name was \`${song_name.toString().length}/2048\` characters.`).catch(console.error);
 		msg.channel.send({embed: ({
 			color: 3447003,
 			title: `${song_name.toString() || 'N/A'}`,
