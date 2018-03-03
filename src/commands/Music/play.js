@@ -37,38 +37,28 @@ exports.run = async (bot, msg, args) => {
 		musicqueue[msg.guild.id].push(`${result.url}`);
 		if (musicqueue[msg.guild.id].length === 1 || !bot.voiceConnections.find(val => val.channel.guild.id == msg.guild.id)) executeQueue(musicqueue[msg.guild.id]);
 		if (result.url) { // message information about the video on playing the video
+			let thumbnail;
+			if (result.thumbnails.default.url && !result.thumbnails.medium.url && !result.thumbnails.high.url) {
+				thumbnail = `${result.thumbnails.default.url}`;
+			} else if (result.thumbnails.default.url && result.thumbnails.medium.url && !result.thumbnails.high.url) {
+				thumbnail = `${result.thumbnails.medium.url}`;
+			} else if (result.thumbnails.default.url && result.thumbnails.medium.url && result.thumbnails.high.url) {
+				thumbnail = `${result.thumbnails.high.url}`;
+			}
 			msg.channel.send({embed: ({
 				color: 3447003,
-				title: `${result.title}`,
+				title: `${result.title} by ${result.channelTitle}`,
 				url: `${result.url}`,
 				description: `${result.description}`,
+				"thumbnail": {
+					url: `${thumbnail}`
+				},
 				timestamp: new Date()
 			})});
-			/*
-			msg.channel.send({embed: ({
-				color: 3447003,
-				title: `${result.title}`,
-				fields: [
-				{
-					name: `**__Title__**`,
-					value: `${result.title}`,
-				}, {
-					name: `**__ID__**`,
-					value: `${result.id}`,
-				}, {
-					name: `**__Channel__**`,
-				}
-					]
-				url: `${result.url}`,
-				description: `${result.description}`,
-				timestamp: new Date()
-			})});
-		}
-		*/
 		}
 	}).catch(console.error);
 	console.log(`${musicqueue[msg.guild.id]}`);
-  var musicbot = {
+	var musicbot = {
 	  youtubeKey: process.env.YOUTUBE_API_KEY, // A YouTube Data API3 key. Required to run.
 	  prefix: gprefix, // The prefix of the bot. Defaults to "!".
 	  thumbnailType: 'high', // Type of thumbnails to use for videos on embeds. Can equal: default, medium, high.
@@ -93,7 +83,7 @@ exports.run = async (bot, msg, args) => {
 	  streamMode: 0
 	  //disableLeaveCmd: true // Disable the leave command. // Because this command is broken at the moment
 	  // https://www.npmjs.com/package/discord.js-musicbot-addon
-  };
+	};
 	
 function executeQueue(queue) {
     // If the queue is empty, finish.
