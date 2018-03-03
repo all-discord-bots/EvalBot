@@ -1,14 +1,14 @@
-let lyricsFetcher = require("lyrics-fetcher");
+const lyricsFetcher = require("lyrics-fetcher");
 exports.run = async (bot, msg, args) => {
-	if (!args) return msg.channel.send(`<:redx:411978781226696705> You must provide an artist and song name!`).catch(console.error);
+	if (args.length < 1) return msg.channel.send(`<:redx:411978781226696705> You must provide an artist and song name!`).catch(console.error);
 	let song = args.join(' ');
-	if (!song.includes('-')) return msg.channel.send(`<:redx:411978781226696705> Please seperate the Artist name from the Song Name using \`-\`.\nExample: \`${prefix}lyrics Slipknot - Dead Memories\``).catch(console.error);
 	let prefix;
 	if (bot.config[msg.guild.id]) {
 		prefix = bot.config[msg.guild.id].prefix;
 	} else if (!bot.config[msg.guild.id]) {
 		prefix = bot.config.prefix;
 	}
+	if (!song.includes('-')) return msg.channel.send(`<:redx:411978781226696705> Please seperate the Artist name from the Song Name using \`-\`.\nExample: \`${prefix}lyrics Slipknot - Dead Memories\``).catch(console.error);
 	let gsong = song.split('-');
 	let artist = `${gsong[0]}`;
 	let song_name = `${gsong[1]}`;
