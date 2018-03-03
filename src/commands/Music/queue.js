@@ -8,7 +8,7 @@ exports.run = async (bot, msg) => {
 		if (i == 0){
 			hashtag = '# ';
 		} else {
-			hashtag = '';
+			hashtag = '  ';
 		}
 		msg.channel.send(`\`\`\`md\n${hashtag}${i} - ${list.toString()}\n\`\`\``);
 		i++;
