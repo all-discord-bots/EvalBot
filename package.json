@@ -47,7 +47,7 @@
     "events": "^2.0.0",
     "redis-cli": "^1.0.2",
     "cluster": "^0.7.7",
-    "dblapi.js": "^1.1.0",
+    "dblapi.js": "^1.1.1",
     "webhook-discord": "^2.0.6",
     "snekfetch": "^4.0.0-beta.0",
     "got": "^8.2.0",
