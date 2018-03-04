@@ -104,7 +104,8 @@ bot.on('ready', () => {
     } else {
         s = "s";
     }
-    bot.user.setPresence({ game: { name: `${bot.guilds.size} server${s}`, type: 3 } });
+    //bot.user.setPresence({ game: { name: `${bot.guilds.size} server${s}`, type: 3 } });
+	bot.user.setPresence({ status: "online", activity: { name: `${bot.guilds.size} server${s}`, type: 3, } });
     /*
     0 - Playing
     1 - Streaming // Defaults to "Playing" if not streaming
