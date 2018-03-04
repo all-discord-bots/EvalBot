@@ -136,28 +136,28 @@ bot.on('ready', () => {
 	console.info(`Connected user ${bot.user.username}`)
 	logger.info('Bot loaded');
 	loaded = true;
+	setInterval(() => {
+		dbl.postStats(bot.guilds.size, bot.shard.id, bot.shard.count);
+		console.log('Uploaded Bot Stats');
+	}, 1800000);
 	//setInterval(() => {
-	//	dbl.postStats(bot.guilds.size, bot.shard.id, bot.shard.count);
-	//	console.log('Uploaded Bot Stats');
+	//	snekfetch.post(`https://discordbots.org/api/bots/${bot.user.id}/stats`)
+	//		.set('Authorization', process.env.DB_TOKEN)
+	//		.send({ server_count: bot.guilds.size })
+	//		.send({ shards: bot.shard.id })
+	//		.send({ shard_count: bot.shard.count })
+	//		.then(() => console.log('Updated discordbots.org stats.'))
+	//		.catch(err => console.error(`Whoops something went wrong with updating DBL stats: ${err}`));
 	//}, 1800000);
-	setInterval(() => {
-		snekfetch.post(`https://discordbots.org/api/bots/${bot.user.id}/stats`)
-			.set('Authorization', process.env.DB_TOKEN)
-			.send({ server_count: bot.guilds.size })
-			.send({ shards: bot.shard.id })
-			.send({ shard_count: bot.shard.count })
-			.then(() => console.log('Updated discordbots.org stats.'))
-			.catch(err => console.error(`Whoops something went wrong with updating DBL stats: ${err}`));
-	}, 1800000);
-	setInterval(() => {
-		snekfetch.post(`https://ls.terminal.ink/api/v1/bots/${bot.user.id}`)
-			.set('Authorization', process.env.TERMINAL_TOKEN)
-			.send({ server_count: bot.guilds.size })
-			.send({ shards: bot.shard.id })
-			.send({ shard_count: bot.shard.count })
-			.then(() => console.log('Updated Terminal stats.'))
-			.catch(err => console.error(`Whoops something went wrong with updating Terminal stats: ${err}`)); 
-	}, 1800000);
+	//setInterval(() => {
+	//	snekfetch.post(`https://ls.terminal.ink/api/v1/bots/${bot.user.id}`)
+	//		.set('Authorization', process.env.TERMINAL_TOKEN)
+	//		.send({ server_count: bot.guilds.size })
+	//		.send({ shards: bot.shard.id })
+	//		.send({ shard_count: bot.shard.count })
+	//		.then(() => console.log('Updated Terminal stats.'))
+	//		.catch(err => console.error(`Whoops something went wrong with updating Terminal stats: ${err}`)); 
+	//}, 1800000);
 });
 
 //bot.on("reconnecting", () => {
