@@ -162,7 +162,7 @@ bot.on('ready', () => {
 			.send({ shard_count: bot.shard.count })
 			.then(() => console.log('Updated Terminal stats.'))
 			.catch(err => console.error(`Whoops something went wrong with updating Terminal stats: ${err}`)); 
-	}, 60000);
+	}, 1800000);
 });
 
 //bot.on("reconnecting", () => {
