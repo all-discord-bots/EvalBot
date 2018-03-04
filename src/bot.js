@@ -152,7 +152,7 @@ bot.on('ready', () => {
 			.send({ shards: bot.shard.id })
 			.send({ shard_count: bot.shard.count })
 			.then(() => console.log('Updated discordbots.org stats.'))
-			.catch(err => console.error(`Whoops something went wrong with updating DBL stats:: ${err.body}`));
+			.catch(err => console.error(`Whoops something went wrong with updating DBL stats: ${err}`));
 	}, 1800000);
 	setInterval(() => {
 		snekfetch.post(`https://ls.terminal.ink/api/v1/bots/${bot.user.id}`)
@@ -161,7 +161,7 @@ bot.on('ready', () => {
 			.send({ shards: bot.shard.id })
 			.send({ shard_count: bot.shard.count })
 			.then(() => console.log('Updated Terminal stats.'))
-			.catch(err => console.error(`Whoops something went wrong with updating Terminal stats: ${err.body}`)); 
+			.catch(err => console.error(`Whoops something went wrong with updating Terminal stats: ${err}`)); 
 	}, 60000);
 });
 
