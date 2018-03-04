@@ -52,7 +52,7 @@
     "snekfetch": "^4.0.0-beta.0",
     "got": "^8.2.0",
     "pornhub-api": "^0.0.1",
-    "libsodium-wrappers": "^0.5.4",
+    "libsodium-wrappers": "^0.7.3",
     "discord.js-musicbot-addon": "^1.10.2",
     "table-layout": "^0.4.2",
     "pg": "^7.4.1",
