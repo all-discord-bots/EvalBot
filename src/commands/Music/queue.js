@@ -7,22 +7,24 @@ exports.run = async (bot, msg) => {
 		revealkey: true
 	});
 	i = 0;
-	search.search(musicqueue[msg.guild.id][i], { type: 'video' }).then(searchResult => {
-		let result = searchResult.first;
-		let gqueue = "";
-		while (parseInt(i) < musicqueue[msg.guild.id].length) {
+	let gqueue = musicqueue[msg.guild.id];
+	gqueue.map(list => {
+		search.search(list.toString(), { type: 'video' }).then(searchResult => {
+			let result = searchResult.first;
 			let hashtag;
 			if (parseInt(i) == 0) {
 				hashtag = '# ';
 			} else {
 				hashtag = '  ';
 			}
-			//gqueue += `${hashtag}${i} - ${musicqueue[msg.guild.id][i]}\n`;
-			gqueue += `${hashtag}[${i}](${result.title})\n`;
+			msg.channel.send(`\`\`\`md\n${hashtag}[${i}](${result.title})\`\`\``);
 			i++;
-		}
-		msg.channel.send(`\`\`\`md\n${gqueue.toString()}\n\n  [${musicqueue[msg.guild.id].length}](Items in the queue)\`\`\``);
-	});
+			if (i == musicqueue[msg.guild.id].length) {
+				msg.channel.send(`\`\`\`md\n  [${musicqueue[msg.guild.id].length}](Items in the queue)\`\`\``);
+			}
+		});
+	})
+	//}
 };
 
 /*	msg.channel.send(`${count}`);
@@ -46,3 +48,42 @@ exports.info = {
 	usage: 'queue',
 	description: 'Shows the current queue.'
 };
+
+
+
+
+
+/*const { YTSearcher } = require('ytsearcher');
+require('../../conf/globals.js');
+exports.run = async (bot, msg) => {
+	if (!musicqueue[msg.guild.id] || musicqueue[msg.guild.id].length < 1) return msg.channel.send(`<:redx:411978781226696705> Queue is empty.`).catch(console.error);
+	const search = new YTSearcher({
+		key: process.env.YOUTUBE_API_KEY,
+		revealkey: true
+	});
+	i = 0;
+	while (parseInt(i) < musicqueue[msg.guild.id].length) {
+		search.search(musicqueue[msg.guild.id][i], { type: 'video' }).then(searchResult => {
+			let result = searchResult.first;
+			let gqueue = "";
+			let hashtag;
+			if (parseInt(i) == 0) {
+				hashtag = '# ';
+			} else {
+				hashtag = '  ';
+			}
+			//gqueue += `${hashtag}${i} - ${musicqueue[msg.guild.id][i]}\n`;
+			gqueue += `${hashtag}[${i}](${result.title})\n`;
+			i++;
+		});
+	}
+		msg.channel.send(`\`\`\`md\n${gqueue.toString()}\n\n  [${musicqueue[msg.guild.id].length}](Items in the queue)\`\`\``);
+};
+
+exports.info = {
+	name: 'queue',
+	aliases: ['getqueue','musicqueue','songqueue','queuelist','listqueue','queued'],
+	usage: 'queue',
+	description: 'Shows the current queue.'
+};
+*/
