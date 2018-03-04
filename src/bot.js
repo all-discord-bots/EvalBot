@@ -22,6 +22,7 @@ const mysql = require('mysql');
 const fs = require('fs');
 const bot = global.bot = exports.client = new Discord.Client();
 const Music = require('discord.js-musicbot-addon');
+const snekfetch = require('snekfetch');
 
 // begin database
 //const { Client } = require('pg');
@@ -104,8 +105,7 @@ bot.on('ready', () => {
     } else {
         s = "s";
     }
-    //bot.user.setPresence({ game: { name: `${bot.guilds.size} server${s}`, type: 3 } });
-	bot.user.setPresence({ status: "online", activity: { name: `${bot.guilds.size} server${s}`, type: 3, } });
+	bot.user.setPresence({ game: { name: `${bot.guilds.size} server${s}`, type: 3 } });
     /*
     0 - Playing
     1 - Streaming // Defaults to "Playing" if not streaming
@@ -141,10 +141,28 @@ bot.on('ready', () => {
 	//bot.shards.forEach(s => logger.info(`Loaded shard ${s.id}`))
 	
 	loaded = true;
+	//setInterval(() => {
+	//	dbl.postStats(bot.guilds.size, bot.shard.id, bot.shard.count);
+	//	console.log('Uploaded Bot Stats');
+	//}, 1800000);
 	setInterval(() => {
-		dbl.postStats(bot.guilds.size, bot.shard.id, bot.shard.count);
-		console.log('Uploaded Bot Stats');
+		snekfetch.post(`https://discordbots.org/api/bots/${bot.user.id}/stats`)
+			.set('Authorization', process.env.DB_TOKEN)
+			.send({ server_count: bot.guilds.size })
+			.send({ shards: bot.shard.id })
+			.send({ shard_count: bot.shard.count })
+			.then(() => console.log('Updated discordbots.org stats.'))
+			.catch(err => console.error(`Whoops something went wrong with updating DBL stats:: ${err.body}`));
 	}, 1800000);
+	setInterval(() => {
+		snekfetch.post(`https://ls.terminal.ink/api/v1/bots/${bot.user.id}`)
+			.set('Authorization', process.env.TERMINAL_TOKEN)
+			.send({ server_count: bot.guilds.size })
+			.send({ shards: bot.shard.id })
+			.send({ shard_count: bot.shard.count })
+			.then(() => console.log('Updated Terminal stats.'))
+			.catch(err => console.error(`Whoops something went wrong with updating Terminal stats: ${err.body}`)); 
+	}, 60000);
 });
 
 //bot.on("reconnecting", () => {
