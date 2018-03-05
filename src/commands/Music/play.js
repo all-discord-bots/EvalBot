@@ -40,39 +40,42 @@ exports.run = async (bot, msg, args) => {
 		}
 	}
 	
-	if (get_video_id(arg)) {
-		search.search(arg, { type: 'video' }).then(searchResult => {
-			let result = searchResult.first;
-			if (!result) return msg.channel.send(`<:redx:411978781226696705> Could not find this video.`).catch(console.error);
-			//global.musicqueue.push(`${result.url}`); // result.id = video id // result.channelID = channel id // result.url = full video url // result.title = video name // result.description = video description
-			if (!musicqueue[msg.guild.id]) musicqueue[msg.guild.id] = [];
+	search.search(arg, { type: 'video' }).then(searchResult => {
+		let result = searchResult.first;
+		//if (!result) return msg.channel.send(`<:redx:411978781226696705> Could not find this video.`).catch(console.error);
+		// result.id = video id // result.channelID = channel id // result.url = full video url // result.title = video name // result.description = video description
+		if (!musicqueue[msg.guild.id]) musicqueue[msg.guild.id] = [];
+		if (!result) { // if not YouTube video, treat as radio station
+			musicqueue[msg.guild.id].push(`${arg}`);
+		} else if (result) { // if YouTube video, treat as YouTube video
 			musicqueue[msg.guild.id].push(`${result.url}`);
-			if (musicqueue[msg.guild.id].length === 1 || !bot.voiceConnections.find(val => val.channel.guild.id == msg.guild.id)) executeQueue(musicqueue[msg.guild.id]);
-			if (result.url) { // message information about the video on playing the video
-				let thumbnail;
-				if (result.thumbnails.default.url && !result.thumbnails.medium.url && !result.thumbnails.high.url) {
-					thumbnail = `${result.thumbnails.default.url}`;
-				} else if (result.thumbnails.default.url && result.thumbnails.medium.url && !result.thumbnails.high.url) {
-					thumbnail = `${result.thumbnails.medium.url}`;
-				} else if (result.thumbnails.default.url && result.thumbnails.medium.url && result.thumbnails.high.url) {
-					thumbnail = `${result.thumbnails.high.url}`;
-				}
-				msg.channel.send({embed: ({
-					color: 3447003,
-					title: `${result.title} by ${result.channelTitle}`,
-					url: `${result.url}`,
-					description: `${result.description}`,
-					"thumbnail": {
-						url: `${thumbnail}`
-					},
-					timestamp: new Date()
-				})});
+		}
+		if (musicqueue[msg.guild.id].length === 1 || !bot.voiceConnections.find(val => val.channel.guild.id == msg.guild.id)) executeQueue(musicqueue[msg.guild.id]);
+		if (result.url) { // message information about the video on playing the video
+			let thumbnail;
+			if (result.thumbnails.default.url && !result.thumbnails.medium.url && !result.thumbnails.high.url) {
+				thumbnail = `${result.thumbnails.default.url}`;
+			} else if (result.thumbnails.default.url && result.thumbnails.medium.url && !result.thumbnails.high.url) {
+				thumbnail = `${result.thumbnails.medium.url}`;
+			} else if (result.thumbnails.default.url && result.thumbnails.medium.url && result.thumbnails.high.url) {
+				thumbnail = `${result.thumbnails.high.url}`;
 			}
-		}).catch(console.error);
-	} else if  (!get_video_id(arg)) {
-		console.log('error');
-	}
+			msg.channel.send({embed: ({
+				color: 3447003,
+				title: `${result.title} by ${result.channelTitle}`,
+				url: `${result.url}`,
+				description: `${result.description}`,
+				"thumbnail": {
+					url: `${thumbnail}`
+				},
+				timestamp: new Date()
+			})});
+		} else if (!result.url) {
+			msg.channel.send(`<:check:411976443522711552> Streaming \`${arg}\`.`);
+		}
+	}).catch(console.error);
 	console.log(`${musicqueue[msg.guild.id]}`);
+	
 	var musicbot = {
 	  youtubeKey: process.env.YOUTUBE_API_KEY, // A YouTube Data API3 key. Required to run.
 	  prefix: gprefix, // The prefix of the bot. Defaults to "!".
@@ -144,8 +147,15 @@ function executeQueue(queue) {
         //  musicbot.setLast(msg.guild.id, video);
         //  if (lvid !== video) musicbot.np(msg);
         //};
-        let dispatcher = musicbot.streamMode == 0 ? connection.playStream(ytdl(video.toString(), {filter: 'audioonly'}), { volume: (musicbot.defVolume / 100) }) : connection.playStream(stream(video.toString()), { volume: (musicbot.defVolume / 100) });
-
+	let dispatcher;
+	if(get_video_id(video.toString())) { // if YouTube video treat as YouTube video
+		isStreaming = false;
+		dispatcher = musicbot.streamMode == 0 ? connection.playStream(ytdl(video.toString(), {filter: 'audioonly'}), { volume: (musicbot.defVolume / 100) }) : connection.playStream(stream(video.toString()), { volume: (musicbot.defVolume / 100) }); // YouTube, and Streams stream (1) is broken
+	} else if (!get_video_id(video.toString())) { // if not YouTube video treat as radio station
+		isStreaming = true;
+		dispatcher = connection.playStrean(video.toString(), {filter: 'audioonly'}, { volume: (musicbot.defVolume / 100) }); // Radio
+	}
+	
         connection.on('error', (error) => {
           // Skip to the next song.
           console.log(`Dispatcher/connection: ${error}`);
