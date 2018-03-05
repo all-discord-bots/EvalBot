@@ -1,4 +1,4 @@
-require('../../src/conf/globals.js');
+require('../../conf/globals.js');
 exports.run = async (bot, msg) => {
 	const voiceConnection = bot.voiceConnections.find(val => val.channel.guild.id == msg.guild.id);
 	if (voiceConnection === null) return msg.channel.send(`No music is being played.`).catch(console.error);
