@@ -57,7 +57,7 @@ const { YTSearcher } = require('ytsearcher');
 require('../../conf/globals.js');
 exports.run = async (bot, msg) => {
 	let i = 0;
-	let gqueue = musicqueue[msg.guild.id];
+	let gqueue = musicqueue[msg.guild.id]['music'];
 	gqueue.map(list => {
 		let hashtag;
 		if (i == 0){
