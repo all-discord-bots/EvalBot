@@ -64,7 +64,7 @@ exports.run = async (bot, msg, args) => {
 	  thumbnailType: 'high', // Type of thumbnails to use for videos on embeds. Can equal: default, medium, high.
 	  global: false, // Whether to use one global queue or server specific ones.
 	  maxQueueSize: 100, // Max queue size allowed. Defaults 20.
-	  defVolume: 200, // The default volume of music. 1 - 200, defaults 50.
+	  defVolume: 100, // The default volume of music. 1 - 200, defaults 50.
 	  anyoneCanSkip: true, // Whether or not anyone can skip.
 	  clearInvoker: false, // Whether to delete command messages.
 	  messageHelp: false, // Whether to message the user on help command usage. If it can't, it will send it in the channel like normal.
