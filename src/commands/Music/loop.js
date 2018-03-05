@@ -1,48 +1,20 @@
-//const musiccfg = require('../../../src/conf/musicconfig');
-// TODO: Setup FS functions to write to /conf/musicconfig.json
+require('../../src/conf/globals.js');
 exports.run = async (bot, msg) => {
-	if (msg.author.id !== bot.config.botCreatorID) return;
-	/*
-	musicbot.loopState = (server) => {
-    if (musicbot.global) return false;
-    if (!musicbot.loops[server]) {
-      musicbot.loops[server] = {
-        looping: false,
-        last: null
-      };
-    };
-    if (musicbot.loops[server].looping) return true;
-    else if (!musicbot.loops[server].looping) return false;
-  };
-  
-  musicbot.setLoopState = (server, state) => {
-    if (state && typeof state !== 'boolean') return console.log(`[loopingSet] ${new Error(`state wasnt a boolean`)}`);
-    if (!musicbot.loops[server]) {
-      musicbot.loops[server] = {
-        looping: false,
-        last: null
-      };
-    };
-    if (!state) return musicbot.loops[server].looping = false;
-    if (state) return musicbot.loops[server].looping = true;
-  };
-	*/
-/*	const voiceConnection = client.voiceConnections.find(val => val.channel.guild.id == msg.guild.id);
+	const voiceConnection = bot.voiceConnections.find(val => val.channel.guild.id == msg.guild.id);
 	if (voiceConnection === null) return msg.channel.send(`No music is being played.`).catch(console.error);
-	const looping = musiccfg.loopState[msg.guild.id];
-	if (looping) {
-		musiccfg.setLoopState(msg.guild.id, false);
-		return msg.channel.send(`Looping disabled! :arrow_forward:`);
-	} else if (!looping) {
-		musiccfg.setLoopState(msg.guild.id, true);
+	const looping = musicqueue[msg.guild.id]['looped'];
+	if (!musicqueue[msg.guild.id]['looped']) {
+		musicqueue[msg.guild.id]['looped'] = true;
 		return msg.channel.send(`Looping enabled! :repeat_one:`);
-	};
-*/
+	} else if (musicqueue[msg.guild.id]['looped']) {
+		musicqueue[msg.guild.id]['looped'] = false;
+		return msg.channel.send(`Looping disabled! :arrow_forward:`);
+	}
 };
 
 exports.info = {
-	hidden: true,
 	name: 'loop',
+	aliases: ['loopqueue'],
 	usage: 'loop',
 	description: 'Changes the loop state.'
 };
