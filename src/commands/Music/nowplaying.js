@@ -12,8 +12,8 @@ exports.run = async (bot, msg, args) => {
 	let gvid = args.join(' ');
 	let gsearch;
 	if (!args[0]) {
-		if (musicqueue[msg.guild.id].length < 1) return msg.channel.send(`<:redx:411978781226696705> There are no videos queued!`).catch(console.error);
-		gsearch = musicqueue[msg.guild.id][0];
+		if (musicqueue[msg.guild.id]['music'].length < 1) return msg.channel.send(`<:redx:411978781226696705> There are no videos queued!`).catch(console.error);
+		gsearch = musicqueue[msg.guild.id]['music'][0];
 	} else if (args[0]) {
 		gsearch = gvid;
 	}
