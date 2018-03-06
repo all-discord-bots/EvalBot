@@ -47,9 +47,9 @@ exports.run = async (bot, msg, args) => {
 		let result = searchResult.first;
 		//if (!result) return msg.channel.send(`<:redx:411978781226696705> Could not find this video.`).catch(console.error);
 		// result.id = video id // result.channelID = channel id // result.url = full video url // result.title = video name // result.description = video description
-		if (!result) { // if not YouTube video, treat as radio station
+		if (!get_video_id(arg) || !result) { // if not YouTube video, treat as radio station
 			musicqueue[msg.guild.id]['music'].push(`${arg}`);
-		} else if (result) { // if YouTube video, treat as YouTube video
+		} else if (get_video_id(arg) || result) { // if YouTube video, treat as YouTube video
 			musicqueue[msg.guild.id]['music'].push(`${result.url}`);
 		}
 		if (musicqueue[msg.guild.id]['music'].length === 1 || !bot.voiceConnections.find(val => val.channel.guild.id == msg.guild.id)) executeQueue(musicqueue[msg.guild.id]['music']);
@@ -201,6 +201,6 @@ function executeQueue(queue) {
 };
 exports.info = {
 	name: 'play',
-	usage: 'play <url|search>',
-	description: 'Play audio from YouTube.'
+	usage: 'play [<url|search>|<radio stream>]',
+	description: 'Play audio from YouTube/Stream Radio.'
 };
