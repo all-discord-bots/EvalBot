@@ -181,5 +181,5 @@ function executeQueue(queue) {
 exports.info = {
 	name: 'play',
 	usage: 'play [<url|search>|<radio stream>]',
-	description: 'Play audio from YouTube/Stream Radio.'
+	description: 'Play audio from YouTube.'
 };
