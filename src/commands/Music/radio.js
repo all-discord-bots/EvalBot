@@ -31,7 +31,7 @@ exports.run = async (bot, msg, args) => {
 			return false;
 		}
 	}
-  if (get_video_id(arg.toString)) return msg.channel.send(`Cannot play youtube urls. Please specify a radio station url.`).catch(console.error);
+  if (get_video_id(arg.toString())) return msg.channel.send(`Cannot play youtube urls. Please specify a radio station url.`).catch(console.error);
 	if (!musicqueue[msg.guild.id]) musicqueue[msg.guild.id] = [];
 	if (!musicqueue[msg.guild.id]['streaming']) musicqueue[msg.guild.id]['streaming'] = false;
 	if (!musicqueue[msg.guild.id]['looped']) musicqueue[msg.guild.id]['looped'] = false;
