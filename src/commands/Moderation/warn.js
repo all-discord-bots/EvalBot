@@ -7,7 +7,7 @@ exports.run = async (bot, msg, args) => {
   let autoban = false;
   let automute = false;
   let mutedrole = "muted";
-  let modlogs = "mod-logs";
+  let modlogs = "mod_logs";
   //!warn @daeshan <reason>
   let gbot = msg.guild.members.get(bot.user.id);
   if (!gbot.hasPermission(0x00000002)) return msg.channel.send(`<:redx:411978781226696705> I am missing \`Kick Members\`!`).catch(console.error);
@@ -73,5 +73,5 @@ exports.run = async (bot, msg, args) => {
 exports.info = {
   name: 'warn',
   usage: 'warn <member> <reason>',
-  description: 'Gives member a warning, usually for breaking the rules. If you would like to let the bot keep logs of moderations create a text channel named `mod-logs`'
+  description: 'Gives member a warning, usually for breaking the rules. If you would like to let the bot keep logs of moderations create a text channel named `mod_logs`'
 }
