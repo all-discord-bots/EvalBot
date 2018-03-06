@@ -43,15 +43,12 @@ exports.run = async (bot, msg, args) => {
 	if (!musicqueue[msg.guild.id]['streaming']) musicqueue[msg.guild.id]['streaming'] = false;
 	if (!musicqueue[msg.guild.id]['looped']) musicqueue[msg.guild.id]['looped'] = false;
 	if (!musicqueue[msg.guild.id]['music']) musicqueue[msg.guild.id]['music'] = [];
-	search.search(arg, { type: 'video' }).then(searchResult => {
+	if (get_video_id(arg.toString())) {
+	    search.search(arg, { type: 'video' }).then(searchResult => {
 		let result = searchResult.first;
 		//if (!result) return msg.channel.send(`<:redx:411978781226696705> Could not find this video.`).catch(console.error);
 		// result.id = video id // result.channelID = channel id // result.url = full video url // result.title = video name // result.description = video description
-		if (!get_video_id(arg) || !result) { // if not YouTube video, treat as radio station
-			musicqueue[msg.guild.id]['music'].push(`${arg}`);
-		} else if (get_video_id(arg) || result) { // if YouTube video, treat as YouTube video
-			musicqueue[msg.guild.id]['music'].push(`${result.url}`);
-		}
+		musicqueue[msg.guild.id]['music'].push(`${result.url}`);
 		if (musicqueue[msg.guild.id]['music'].length === 1 || !bot.voiceConnections.find(val => val.channel.guild.id == msg.guild.id)) executeQueue(musicqueue[msg.guild.id]['music']);
 		if (result.url) { // message information about the video on playing the video
 			let thumbnail;
@@ -72,10 +69,12 @@ exports.run = async (bot, msg, args) => {
 				},
 				timestamp: new Date()
 			})});
-		} else if (!result.url) {
-			msg.channel.send(`<:check:411976443522711552> Streaming \`${arg}\`.`);
 		}
-	}).catch(console.error);
+	    }).catch(console.error);
+	} else if (!get_video_id(arg.toString())) {
+		musicqueue[msg.guild.id]['music'].push(`${arg.toString()}`);
+		msg.channel.send(`<:check:411976443522711552> Streaming \`${arg.toString()}\`.`);
+	}
 	console.log(`${musicqueue[msg.guild.id]['music']}`);
 	
 	var musicbot = {
