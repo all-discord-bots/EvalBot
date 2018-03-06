@@ -1,7 +1,7 @@
 const Discord = require("discord.js");
 
 exports.run = async (bot, msg, args) => {
-    let modlogs = "mod-logs";
+    let modlogs = "mod_logs";
     let bUser = msg.guild.member(msg.mentions.users.first() || msg.guild.members.get(args[0]));
     if(!bUser) return msg.channel.send(`Can't find that user!`).catch(console.error);
     let bReason = args.join(" ").slice(22);
