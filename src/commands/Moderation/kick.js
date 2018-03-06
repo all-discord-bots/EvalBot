@@ -1,7 +1,7 @@
 const Discord = require("discord.js");
 
 exports.run = async (bot, message, args) => {
-    let modlogs = "mod-logs"; // mod_logs channel
+    let modlogs = "mod_logs"; // mod_logs channel
     let kUser = msg.guild.member(msg.mentions.users.first() || msg.guild.members.get(args[0]));
     if(!kUser) return msg.channel.send(`<:redx:411978781226696705> Can't find that user!`).catch(console.error);
     let kReason = args.join(" ").slice(22);
@@ -41,5 +41,5 @@ exports.info = {
   name: 'kick',
   aliases: ['smear'],
   usage: 'kick <member> <reason>',
-  description: 'Kick a user from the server. If you would like to let the bot keep logs of moderations create a text channel named `mod-logs`'
+  description: 'Kick a user from the server. If you would like to let the bot keep logs of moderations create a text channel named `mod_logs`'
 }
