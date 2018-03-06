@@ -1,6 +1,6 @@
 exports.run = async (bot, msg, args) => {
   if (msg.author.id !== bot.config.botCreatorID) {
-    if (!msg.member.hasPermission('EXTERNAL_EMOJIS')) return msg.channel.send(`<:redx:411978781226696705> You are missing the permission \`External Emojis\`!`);
+    if (!msg.member.hasPermission('EXTERNAL_EMOJIS')) return msg.channel.send(`<:redx:411978781226696705> You are missing the permission \`External Emojis\`!`).catch(console.error);
   }
   if (args.length < 1) return msg.channel.send(`<:redx:411978781226696705> Please provide a emoji ID!`).catch(console.error);
   
