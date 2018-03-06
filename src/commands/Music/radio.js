@@ -58,7 +58,7 @@ exports.run = async (bot, msg, args) => {
 		queuethis = filteredbuiltinradio[0];
 	} else if (filteredbuiltinradio.length > 1) {
 		return msg.channel.send(`Too many results found, try to be a bit more specific with the radio name.\nIf you keep receiving this error please contact the developer!`);
-	} else {
+	} else { // else if (arg.startsWith('http') && !arg.includes('youtube')) {
 		queuethis = arg.toString();
 	}
 	musicqueue[msg.guild.id]['music'].push(`${queuethis.toString()}`);
