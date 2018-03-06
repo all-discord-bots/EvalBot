@@ -180,6 +180,6 @@ function executeQueue(queue) {
 };
 exports.info = {
 	name: 'play',
-	usage: 'play [<url|search>|<radio stream>]',
+	usage: 'play <url|search>',
 	description: 'Play audio from YouTube.'
 };
