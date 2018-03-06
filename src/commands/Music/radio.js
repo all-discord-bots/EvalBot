@@ -114,7 +114,7 @@ function executeQueue(queue) {
         //  if (lvid !== video) musicbot.np(msg);
         //};
 		musicqueue[msg.guild.id]['streaming'] = true;
-		let dispatcher = connection.playStrean(video.toString(), {filter: 'audioonly'}, { volume: (musicbot.defVolume / 100) }); // Radio
+		let dispatcher = connection.playStream(video.toString(), {filter: 'audioonly'}, { volume: (musicbot.defVolume / 100) }); // Radio
 	
         connection.on('error', (error) => {
           // Skip to the next song.
