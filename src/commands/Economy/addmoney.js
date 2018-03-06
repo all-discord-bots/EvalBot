@@ -3,8 +3,9 @@ const economy = require('discord-eco');
 
 exports.run = async (bot, msg, args) => {
   if (msg.author.id !== bot.config.botCreatorID) {
-    let botCommanderRole = bot.config.botCommanderRole;
-    if (!msg.member.roles.has(botCommanderRole) || !msg.member.hasPermission('MANAGE_SERVER')) return msg.channel.send(`<:redx:411978781226696705> You are missing the permissions \`Manage Server\` or the ${botCommanderRole} role`);
+    //let botCommanderRole = bot.config.botCommanderRole;
+//    if (!msg.member.hasPermission('MANAGE_SERVER') || !msg.member.roles.has(botCommanderRole)) return msg.channel.send(`<:redx:411978781226696705> You are missing the permissions \`Manage Server\` or the \`${botCommanderRole}\` role!`);
+    if (!msg.member.hasPermission('MANAGE_SERVER')) return msg.channel.send(`<:redx:411978781226696705> You are missing the permissions \`Manage Server\`!`);
     //msg.channel.send('**You need the role `' + botCommanderRole + '` to use this command...**');
   }
   // Check if they defined a user
