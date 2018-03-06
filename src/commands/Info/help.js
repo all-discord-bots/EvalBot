@@ -56,24 +56,17 @@ exports.run = async (bot, msg, args) => {
 				gargs = args[0];
 			}
             let command = bot.commands.get(gargs);
-            if (!command) {
-                throw `The command '${args[0]}' does not exist!`;
-            }
-
+            if (!command) return msg.channel.send(`<:redx:411978781226696705> The command '${args[0]}' does not exist!`).catch(console.error);
             commands = [command];
             title = `Help for \`${command.info.name.toLowerCase()}\``;
         } else if (/^command|cmd$/i.test(args[0]) && args.length > 1) {
 			let command = bot.commands.get(args[1]);
-			if (!command) {
-				throw `The command '${args[1]}' does not exist!`;
-			}
+			if (!command) return msg.channel.send(`<:redx:411978781226696705> The command '${args[1]}' does not exist!`).catch(console.error);
 			commands = [command];
 			title = `Help for \`${command.info.name.toLowerCase()}\``;
 		} else {
 			let command = bot.commands.get(args[0]);
-			if (!command) {
-				throw `The command '${args[0]}' does not exist!`;
-			}
+			if (!command) return msg.channel.send(`<:redx:411978781226696705> The command '${args[0]}' does not exist!`).catch(console.error);
 			commands = [command];
 			title = `Help for \`${command.info.name.toLowerCase()}\``;
 		}
