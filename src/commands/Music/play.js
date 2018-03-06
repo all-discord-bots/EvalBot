@@ -30,20 +30,10 @@ exports.run = async (bot, msg, args) => {
 		revealkey: true
 	});
 	
-	function get_video_id(string) {
-		var regex = /(?:\?v=|&v=|youtu\.be\/)(.*?)(?:\?|&|$)/;
-		var matches = string.match(regex);
-		if(matches) {
-			return true;
-		} else {
-			return false;
-		}
-	}
 	if (!musicqueue[msg.guild.id]) musicqueue[msg.guild.id] = [];
 	if (!musicqueue[msg.guild.id]['streaming']) musicqueue[msg.guild.id]['streaming'] = false;
 	if (!musicqueue[msg.guild.id]['looped']) musicqueue[msg.guild.id]['looped'] = false;
 	if (!musicqueue[msg.guild.id]['music']) musicqueue[msg.guild.id]['music'] = [];
-	if (get_video_id(arg.toString())) {
 	    search.search(arg, { type: 'video' }).then(searchResult => {
 		let result = searchResult.first;
 		//if (!result) return msg.channel.send(`<:redx:411978781226696705> Could not find this video.`).catch(console.error);
@@ -71,10 +61,6 @@ exports.run = async (bot, msg, args) => {
 			})});
 		}
 	    }).catch(console.error);
-	} else if (!get_video_id(arg.toString())) {
-		musicqueue[msg.guild.id]['music'].push(`${arg.toString()}`);
-		msg.channel.send(`<:check:411976443522711552> Streaming \`${arg.toString()}\`.`);
-	}
 	console.log(`${musicqueue[msg.guild.id]['music']}`);
 	
 	var musicbot = {
@@ -148,14 +134,8 @@ function executeQueue(queue) {
         //  musicbot.setLast(msg.guild.id, video);
         //  if (lvid !== video) musicbot.np(msg);
         //};
-	let dispatcher;
-	if(get_video_id(video.toString())) { // if YouTube video treat as YouTube video
 		musicqueue[msg.guild.id]['streaming'] = false;
-		dispatcher = musicbot.streamMode == 0 ? connection.playStream(ytdl(video.toString(), {filter: 'audioonly'}), { volume: (musicbot.defVolume / 100) }) : connection.playStream(stream(video.toString()), { volume: (musicbot.defVolume / 100) }); // YouTube, and Streams stream (1) is broken
-	} else if (!get_video_id(video.toString())) { // if not YouTube video treat as radio station
-		musicqueue[msg.guild.id]['streaming'] = true;
-		dispatcher = connection.playStrean(video.toString(), {filter: 'audioonly'}, { volume: (musicbot.defVolume / 100) }); // Radio
-	}
+		let dispatcher = musicbot.streamMode == 0 ? connection.playStream(ytdl(video.toString(), {filter: 'audioonly'}), { volume: (musicbot.defVolume / 100) }) : connection.playStream(stream(video.toString()), { volume: (musicbot.defVolume / 100) }); // YouTube, and Streams stream (1) is broken
 	
         connection.on('error', (error) => {
           // Skip to the next song.
