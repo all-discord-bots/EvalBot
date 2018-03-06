@@ -12,16 +12,22 @@ exports.run = async (bot, msg, args) => {
 		gprefix = bot.config.prefix;
 	}
 	let arg = args.join(' ');
-	if (arg.length < 1) return msg.channel.send(`<:redx:411978781226696705> You must provide a radio stream url!`).catch(console.error);
-/*	if (arg.length < 1) {
+	let radiostationsqueue = [
+		'Fun Radio',
+		'1.FM Absolute Top 40'
+	];
+	//if (arg.length < 1) return msg.channel.send(`<:redx:411978781226696705> You must provide a radio stream url!`).catch(console.error);
+	if (arg.length < 1) {
+		let getradio = radiostationsqueue.toString();
+		let radiostations = getradio.replace(/,/gi, '\n-');
 		msg.channel.send({embed: ({
 			color: 3447003,
-			title: `Radio Stations`,
-			description: `${builtinradio}`,
+			title: `__**Radio Stations**__`,
+			description: `${radiostations.toString()}`,
 			timestamp: new Date()
 		})});
 
-	}*/
+	}
 	if (!msg.member.voiceChannel) return msg.channel.send(`<:redx:411978781226696705> You must be in a voice channel!`).catch(console.error);
 	//let getQueue;
 //	getQueue = (server) => {
@@ -40,15 +46,25 @@ exports.run = async (bot, msg, args) => {
 			return false;
 		}
 	}
-  if (get_video_id(arg.toString())) return msg.channel.send(`Cannot play youtube urls. Please specify a radio station url.`).catch(console.error);
+	if (get_video_id(arg.toString())) return msg.channel.send(`<:redx:411978781226696705> You can play YouTube videos using the \`play\` command. Please specify a radio station url.`).catch(console.error);
 	if (!musicqueue[msg.guild.id]) musicqueue[msg.guild.id] = [];
 	if (!musicqueue[msg.guild.id]['streaming']) musicqueue[msg.guild.id]['streaming'] = false;
 	if (!musicqueue[msg.guild.id]['looped']) musicqueue[msg.guild.id]['looped'] = false;
 	if (!musicqueue[msg.guild.id]['music']) musicqueue[msg.guild.id]['music'] = [];
-  musicqueue[msg.guild.id]['music'].push(`${arg.toString()}`);
-  if (musicqueue[msg.guild.id]['music'].length === 1 || !bot.voiceConnections.find(val => val.channel.guild.id == msg.guild.id)) executeQueue(musicqueue[msg.guild.id]['music']);
-  msg.channel.send(`<:check:411976443522711552> Streaming \`${arg.toString()}\`.`);
-  console.log(`${musicqueue[msg.guild.id]['music']}`);
+	let getarg = arg.toLowerCase().toString();
+	let filteredbuiltinradio = radiostationsqueue.map(list => list.toString()).filter(list => list.startsWith(arg.toString()));
+	let queuethis;
+	if (filteredbuiltinradio.length == 1) {
+		queuethis = filteredbuiltinradio[0];
+	} else if (filteredbuiltinradio.length > 1) {
+		return msg.channel.send(`Too many results found, try to be a bit more specific with the radio name.\nIf you keep receiving this error please contact the developer!`);
+	} else {
+		queuethis = arg.toString();
+	}
+	musicqueue[msg.guild.id]['music'].push(`${queuethis.toString()}`);
+	if (musicqueue[msg.guild.id]['music'].length === 1 || !bot.voiceConnections.find(val => val.channel.guild.id == msg.guild.id)) executeQueue(musicqueue[msg.guild.id]['music']);
+	msg.channel.send(`<:check:411976443522711552> Streaming \`${arg.toString()}\`.`);
+	console.log(`${musicqueue[msg.guild.id]['music']}`);
 	
 	var musicbot = {
 	  prefix: gprefix, // The prefix of the bot. Defaults to "!".
