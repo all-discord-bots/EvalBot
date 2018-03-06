@@ -2,9 +2,7 @@ exports.run = async (bot, msg, args) => {
 
     const parsedArgs = bot.utils.parseArgs(args, ['d:', 's:']);
 
-    if (parsedArgs.leftover.length < 1) {
-        throw 'Please provide a secret message';
-    }
+    if (parsedArgs.leftover.length < 1) return msg.channel.send(`<:redx:411978781226696705> Please provide a secret message`).catch(console.error);
 
     let message = parsedArgs.leftover.join(' ');
     let delay = isNaN(parsedArgs.options.d) ? 5000 : parseInt(parsedArgs.options.d);
