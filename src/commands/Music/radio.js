@@ -19,8 +19,8 @@ exports.run = async (bot, msg, args) => {
 	//if (arg.length < 1) return msg.channel.send(`<:redx:411978781226696705> You must provide a radio stream url!`).catch(console.error);
 	if (arg.length < 1) {
 		let getradio = radiostationsqueue.toString();
-		let radiostations = getradio.replace(/,/gi, '\n-');
-		msg.channel.send({embed: ({
+		let radiostations = getradio.replace(/,/gi, '\n');
+		return msg.channel.send({embed: ({
 			color: 3447003,
 			title: `__**Radio Stations**__`,
 			description: `${radiostations.toString()}`,
@@ -51,19 +51,31 @@ exports.run = async (bot, msg, args) => {
 	if (!musicqueue[msg.guild.id]['streaming']) musicqueue[msg.guild.id]['streaming'] = false;
 	if (!musicqueue[msg.guild.id]['looped']) musicqueue[msg.guild.id]['looped'] = false;
 	if (!musicqueue[msg.guild.id]['music']) musicqueue[msg.guild.id]['music'] = [];
-	let getarg = arg.toString();
-	let filteredbuiltinradio = radiostationsqueue.map(list => list.toString()).filter(list => list.startsWith(arg.toString()));
+	let getarg = arg.toLowerCase().toString();
+	if (getarg.length < 4) return msg.channel.send(`You must provide a valid stream`);
+	let filteredbuiltinradio = radiostationsqueue.map(list => list.toLowerCase().toString()).filter(list => list.toLowerCase().startsWith(getarg.toString()));
 	let queuethis;
-	if (filteredbuiltinradio.length == 1) {
-		queuethis = filteredbuiltinradio[0];
+	let playingbuiltinstations = false;
+	if (filteredbuiltinradio.length > 0 && filteredbuiltinradio.length < 2) {
+		playingbuiltinstations = true;
+		queuethis = builtinradio[filteredbuiltinradio[0].toLowerCase()];
 	} else if (filteredbuiltinradio.length > 1) {
 		return msg.channel.send(`<:redx:411978781226696705> Too many results found, try to be a bit more specific with the radio name.\nIf you keep receiving this error please contact the developer!`).catch(console.error);
-	} else { // else if (arg.startsWith('http') && !arg.includes('youtube')) {
-		queuethis = arg.toString();
+	} else if (getarg.includes('.') || getarg.startsWith('http')) {
+		playingbuiltinstations = false;
+		queuethis = getarg.toString();
+	} else {
+		return msg.channel.send(`<:redx:411978781226696705> Please provide a valid stream url to play or built-in radio station name!`);
 	}
 	musicqueue[msg.guild.id]['music'].push(`${queuethis.toString()}`);
 	if (musicqueue[msg.guild.id]['music'].length === 1 || !bot.voiceConnections.find(val => val.channel.guild.id == msg.guild.id)) executeQueue(musicqueue[msg.guild.id]['music']);
-	msg.channel.send(`<:check:411976443522711552> Streaming \`${arg.toString()}\`.`);
+	let streamingmsg;
+	if (playingbuiltinstations) {
+		streamingmsg = filteredbuiltinradio[0];
+	} else if (!playingbuiltinstations) {
+		streamingmsg = arg.toString();
+	}
+	msg.channel.send(`<:check:411976443522711552> Streaming \`${streamingmsg.toString()}\`.`);
 	console.log(`${musicqueue[msg.guild.id]['music']}`);
 	
 	var musicbot = {
