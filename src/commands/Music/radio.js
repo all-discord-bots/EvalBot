@@ -51,13 +51,13 @@ exports.run = async (bot, msg, args) => {
 	if (!musicqueue[msg.guild.id]['streaming']) musicqueue[msg.guild.id]['streaming'] = false;
 	if (!musicqueue[msg.guild.id]['looped']) musicqueue[msg.guild.id]['looped'] = false;
 	if (!musicqueue[msg.guild.id]['music']) musicqueue[msg.guild.id]['music'] = [];
-	let getarg = arg.toLowerCase().toString();
+	let getarg = arg.toString();
 	let filteredbuiltinradio = radiostationsqueue.map(list => list.toString()).filter(list => list.startsWith(arg.toString()));
 	let queuethis;
 	if (filteredbuiltinradio.length == 1) {
 		queuethis = filteredbuiltinradio[0];
 	} else if (filteredbuiltinradio.length > 1) {
-		return msg.channel.send(`Too many results found, try to be a bit more specific with the radio name.\nIf you keep receiving this error please contact the developer!`);
+		return msg.channel.send(`<:redx:411978781226696705> Too many results found, try to be a bit more specific with the radio name.\nIf you keep receiving this error please contact the developer!`).catch(console.error);
 	} else { // else if (arg.startsWith('http') && !arg.includes('youtube')) {
 		queuethis = arg.toString();
 	}
