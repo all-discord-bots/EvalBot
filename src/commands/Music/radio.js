@@ -52,7 +52,7 @@ exports.run = async (bot, msg, args) => {
 	if (!musicqueue[msg.guild.id]['looped']) musicqueue[msg.guild.id]['looped'] = false;
 	if (!musicqueue[msg.guild.id]['music']) musicqueue[msg.guild.id]['music'] = [];
 	let getarg = arg.toLowerCase().toString();
-	if (getarg.length < 4) return msg.channel.send(`You must provide a valid stream`);
+	if (getarg.length < 4) return msg.channel.send(`<:redx:411978781226696705> You must provide a valid stream`);
 	let filteredbuiltinradio = radiostationsqueue.map(list => list.toLowerCase().toString()).filter(list => list.toLowerCase().startsWith(getarg.toString()));
 	let queuethis;
 	let playingbuiltinstations = false;
