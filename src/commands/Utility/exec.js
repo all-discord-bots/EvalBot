@@ -9,14 +9,10 @@ exports.run = (bot, msg, args) => {
     if (msg.author.id !== bot.config.botCreatorID) return;
     let parsed = bot.utils.parseArgs(args, 's', 'l:');
 
-    if (parsed.length < 1) {
-        throw 'You must provide a command to run!';
-    }
+    if (parsed.length < 1) return msg.channel.send(`<:redx:411978781226696705> You must provide a command to run!`).catch(console.error);
 
     let ps = exec(parsed.leftover.join(' '));
-    if (!ps) {
-        throw 'Failed to start process!';
-    }
+    if (!ps) return msg.channel.send(`<:redx:411978781226696705> Failed to start process!`).catch(console.error);
 
     if (parsed.options.s) {
         return;
