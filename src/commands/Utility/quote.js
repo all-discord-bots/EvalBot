@@ -1,28 +1,20 @@
 exports.run = async (bot, msg, args) => {
     let channel = msg.channel;
 
-    if (args.length < 1) {
-        throw 'You must provide a message ID';
-    }
+    if (args.length < 1) return msg.channel.send(`<:redx:411978781226696705> You must provide a message ID`).catch(console.error);
 
-    if (!/^\d{18}$/.test(args[0])) {
-        throw 'You must provide a valid message ID.';
-    }
+    if (!/^\d{18}$/.test(args[0])) return msg.channel.send(`<:redx:411978781226696705> You must provide a valid message ID.`).catch(console.error);
 
     if (args[1] && /^<#\d{18}>$|^\d{18}$/.test(args[1])) {
         channel = bot.channels.get(args[1].replace(/[<#>]/g, ''));
     }
 
-    if (!channel) {
-        throw 'That channel could not be found!';
-    }
+    if (!channel) return msg.channel.send(`<:redx:411978781226696705> That channel could not be found!`).catch(console.error);
 
     const messages = await channel.fetchMessages({ around: args[0], limit: 1 });
 
-    if (!messages || messages.size < 1) {
-        throw 'That message could not be found!';
-    }
-
+    if (!messages || messages.size < 1) return msg.channel.send(`<:redx:411978781226696705> That message could not be found!`).catch(console.error);
+    
     let message = messages.first();
 
     let options = {
