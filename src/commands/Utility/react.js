@@ -1,3 +1,4 @@
+// Need to add a reached limit check
 const discordEmoji = require('discord-emoji');
 const emoji = {};
 
@@ -102,7 +103,6 @@ function react(message, remaining, allowedMappings) {
 
 exports.run = (bot, msg, args) => {
     if (args.length < 1) return msg.channel.send(`<:redx:411978781226696705> You must provide some text to react with.`).catch(console.error);
-    }
 
     const fetchOptions = { limit: 1 };
     if (args[1]) {
@@ -114,9 +114,8 @@ exports.run = (bot, msg, args) => {
     }
 
     msg.channel.fetchMessages(fetchOptions).then(messages => {
-        if (messages.length < 1) return msg.channel.send(`<:redx:411978781226696705> Failed to find the message.`);
+        if (messages.length < 1) return msg.channel.send(`<:redx:411978781226696705> Failed to find the message.`).catch(console.error);
             //return msg.error('Failed to find the message.');
-        }
 
         const target = messages.first();
         const allowedMappings = clone(mappings);
