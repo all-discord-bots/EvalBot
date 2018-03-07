@@ -101,15 +101,12 @@ function react(message, remaining, allowedMappings) {
 }
 
 exports.run = (bot, msg, args) => {
-    if (args.length < 1) {
-        throw 'You must provide some text to react with.';
+    if (args.length < 1) return msg.channel.send(`<:redx:411978781226696705> You must provide some text to react with.`).catch(console.error);
     }
 
     const fetchOptions = { limit: 1 };
     if (args[1]) {
-        if (!/\d{18}/.test(args[1])) {
-            throw `${args[1]} is not a valid message ID!`;
-        }
+        if (!/\d{18}/.test(args[1])) return msg.channel.send(`<:redx:411978781226696705> ${args[1]} is not a valid message ID!`).catch(console.error);
 
         fetchOptions.around = args[1];
     } else {
