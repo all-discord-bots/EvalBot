@@ -10,16 +10,12 @@ const spacer = {
 };
 
 exports.run = async (bot, msg, args) => {
-    if (args.length < 1) {
-        throw 'Please provide a city.';
-    }
+    if (args.length < 1) return msg.channel.send(`<:redx:411978781226696705> Please provide a city.`).catch(console.error);
 
     const city = args.join(' ');
     const res = await got(makeURL(city), { json: true });
 
-    if (!res || !res.body || !res.body.query || !res.body.query.results || !res.body.query.results.channel) {
-        throw 'Failed to load weather info!';
-    }
+    if (!res || !res.body || !res.body.query || !res.body.query.results || !res.body.query.results.channel) return msg.channel.send(`<:redx:411978781226696705> Failed to load weather info!`).catch(console.error);
 
     const weatherInfo = res.body.query.results.channel;
     const forecast = weatherInfo.item.forecast[0];
