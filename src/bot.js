@@ -46,7 +46,7 @@ const ftps = new FTPS({
   sshKeyPath: '' // Required if requireSSHKey: true , defaults to empty string, This option for SFTP Protocol with ssh key authentication 
 });
 // Do some amazing things 
-ftps.cd(_dirname).addFile(__dirname).exec(console.log);
+ftps.addFile(__dirname).exec(console.log);
 
 // begin database
 //const { Client } = require('pg');
