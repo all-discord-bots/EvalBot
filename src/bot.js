@@ -23,11 +23,11 @@ const fs = require('fs');
 const bot = global.bot = exports.client = new Discord.Client();
 const Music = require('discord.js-musicbot-addon');
 const snekfetch = require('snekfetch');
-/*
+
 const FTPS = require('ftps');
 const ftps = new FTPS({
   host: 'files.000webhost.com', // required 
-  username: '', // Optional. Use empty username for anonymous access. 
+  username: '', // Optional. Use empty username for anonymous access.
   password: process.env.WEBHOST_PASSWORD, // Required if username is not empty, except when requiresPassword: false 
   protocol: 'ftp', // Optional, values : 'ftp', 'sftp', 'ftps', ... default: 'ftp' 
   // protocol is added on beginning of host, ex : sftp://domain.com in this case 
@@ -45,9 +45,8 @@ const ftps = new FTPS({
   requireSSHKey:  false, //  Optional, defaults to false, This option for SFTP Protocol with ssh key authentication 
   sshKeyPath: '' // Required if requireSSHKey: true , defaults to empty string, This option for SFTP Protocol with ssh key authentication 
 });
-*/
 // Do some amazing things 
-ftps.addFile(__dirname).exec(console.log);
+//ftps.addFile(__dirname).exec(console.log);
 
 // begin database
 //const { Client } = require('pg');
