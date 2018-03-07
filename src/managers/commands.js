@@ -163,7 +163,8 @@ class CommandManager {
                 if (command) {
                     return this.execute(msg, command, args);
                 } else {
-                    return msg.channel.send(`:no_entry_sign: The shortcut \`${shortcut.name}\` is improperly set up!`);
+                    return msg.channel.send(`<:redx:411978781226696705> The shortcut \`${shortcut.name}\` is improperly set up!`);
+                    //return msg.channel.send(`:no_entry_sign: The shortcut \`${shortcut.name}\` is improperly set up!`);
                         //.then(m => m.delete(2000));
                 }
             })
@@ -181,7 +182,7 @@ class CommandManager {
 
             this.bot.logger.severe(message);
 
-            const discordOutput = `:x: ${displayMessage || 'Something failed!'}`;
+            const discordOutput = `<:redx:411978781226696705> ${displayMessage || 'Something failed!'}`;
 
             msg.channel.send(discordOutput)
                 .then(m => m.delete(delay || 2000))
