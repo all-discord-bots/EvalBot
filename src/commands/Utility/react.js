@@ -114,8 +114,8 @@ exports.run = (bot, msg, args) => {
     }
 
     msg.channel.fetchMessages(fetchOptions).then(messages => {
-        if (messages.length < 1) {
-            return msg.error('Failed to find the message.');
+        if (messages.length < 1) return msg.channel.send(`<:redx:411978781226696705> Failed to find the message.`);
+            //return msg.error('Failed to find the message.');
         }
 
         const target = messages.first();
