@@ -10,11 +10,8 @@ exports.run = async (bot, msg, args) => {
 		gprefix = bot.config[msg.guild.id].prefix;
 	} else if (!bot.config[msg.guild.id]) {
 		gprefix = bot.config.prefix;
-	}	'977 hits': 'http://19353.live.streamtheworld.com/977_HITS_SC',
-	'absolute radio': 'http://icy-e-bab-09-boh.sharp-stream.com/absoluteradio.mp3',
-	'heart': 'http://media-ice.musicradio.com/HeartSouthWalesMP3',
-	'monstercat': 'https://www.youtube.com/watch?v=ueupsBPNkSc'
-
+	}
+	
 	let arg = args.join(' ');
 	let radiostationsqueue = [
 		'Fun Radio',
