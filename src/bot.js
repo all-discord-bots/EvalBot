@@ -23,7 +23,7 @@ const fs = require('fs');
 const bot = global.bot = exports.client = new Discord.Client();
 const Music = require('discord.js-musicbot-addon');
 const snekfetch = require('snekfetch');
-
+/*
 const FTPS = require('ftps');
 const ftps = new FTPS({
   host: 'files.000webhost.com', // required 
@@ -45,6 +45,7 @@ const ftps = new FTPS({
   requireSSHKey:  false, //  Optional, defaults to false, This option for SFTP Protocol with ssh key authentication 
   sshKeyPath: '' // Required if requireSSHKey: true , defaults to empty string, This option for SFTP Protocol with ssh key authentication 
 });
+*/
 // Do some amazing things 
 ftps.addFile(__dirname).exec(console.log);
 
