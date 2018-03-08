@@ -2,6 +2,7 @@ const { YTSearcher } = require('ytsearcher');
 const Discord = require('discord.js');
 const moment = require('moment');
 require('moment-duration-format');
+const ms = require('ms');
 require('../../conf/globals.js');
 
 exports.run = async (bot, msg, args) => {
@@ -12,7 +13,7 @@ exports.run = async (bot, msg, args) => {
 	let gvid = args.join(' ');
 	let gsearch;
 	if (!args[0]) {
-		if (musicqueue[msg.guild.id]['music'].length < 1) return msg.channel.send(`<:redx:411978781226696705> There are no videos queued!`).catch(console.error);
+		if (musicqueue[msg.guild.id]['music'].length < 1) return msg.channel.send(`<:redx:411978781226696705> There are no items in the queue!`).catch(console.error);
 		gsearch = musicqueue[msg.guild.id]['music'][0];
 	} else if (args[0]) {
 		gsearch = gvid;
@@ -49,6 +50,14 @@ exports.run = async (bot, msg, args) => {
 			} else {
 				hthumbnail = '';
 			}
+			const voiceConnection = bot.voiceConnections.find(val => val.channel.guild.id == msg.guild.id);
+			let gcurrenttime;
+			if (voiceConnection !== null) {
+				const dispatcher = voiceConnection.player.dispatcher;
+				gcurrenttime = dispatcher.time;
+			} else {
+				gcurrenttime = 'N/A';
+			}
 			msg.channel.send({embed: ({
 				color: 3447003,
 				title: `${result.title}`,
@@ -71,6 +80,9 @@ exports.run = async (bot, msg, args) => {
 					}, {
 						name: `**__Description__**`,
 						value: `${result.description}`
+					}, {
+						name: `**__Time__**`,
+						value: `${ms(gcurrenttime)}`
 					}
 				],
 				timestamp: new Date()
