@@ -51,11 +51,11 @@ exports.run = async (bot, msg, args) => {
 				hthumbnail = '';
 			}
 			const voiceConnection = bot.voiceConnections.find(val => val.channel.guild.id == msg.guild.id);
+			const dispatcher = voiceConnection.player.dispatcher;
 			let gcurrenttime;
-			if (voiceConnection !== null) {
-				const dispatcher = voiceConnection.player.dispatcher;
+			if (dispatcher && voiceConnection !== null) {
 				gcurrenttime = dispatcher.time;
-			} else {
+			} else if (!dispatcher && voiceConnection === null) {
 				gcurrenttime = 'N/A';
 			}
 			msg.channel.send({embed: ({
@@ -82,7 +82,7 @@ exports.run = async (bot, msg, args) => {
 						value: `${result.description}`
 					}, {
 						name: `**__Time__**`,
-						value: `${ms(gcurrenttime)}`
+						value: `${gcurrenttime}`
 					}
 				],
 				timestamp: new Date()
