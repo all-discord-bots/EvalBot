@@ -1,5 +1,6 @@
 require('../../conf/globals.js');
 exports.run = async (bot, msg, args) => {
+	if (!musicqueue[msg.guild.id] || musicqueue[msg.guild.id]['music'].length < 1) return msg.channel.send(`<:redx:411978781226696705> The queue is empty.`).catch(console.error);
 	if (args.length !== 2) return msg.channel.send(`<:redx:411978781226696705> Invalid arguments provided.`).catch(console.error);
 	if (musicqueue[msg.guild.id]['music'].length < 1) return msg.channel.send(`<:redx:411978781226696705> There are no songs in the queue!`).catch(console.error);
 	if (args[0] == 0) return msg.channel.send(`<:redx:411978781226696705> You can't move the current playing video!`).catch(console.error);
