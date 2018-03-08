@@ -75,7 +75,7 @@ exports.run = async (bot, msg, args) => {
 						value: `${result.description}`
 					}, {
 						name: `**__Play Time__**`,
-						value: `${voiceConnection.player.dispatcher.time || 'N/A'}`
+						value: `${ms(parseInt(voiceConnection.player.dispatcher.time)) || 'N/A'}`
 					}
 				],
 				timestamp: new Date()
