@@ -51,6 +51,11 @@ exports.run = async (bot, msg, args) => {
 				hthumbnail = '';
 			}
 			const voiceConnection = bot.voiceConnections.find(val => val.channel.guild.id == msg.guild.id);
+			let currenttime;
+			if (voiceConnection.player) {
+				currenttime = ms(parseInt(voiceConnection.player.dispatcher.time));
+			} else {
+				currenttime = '`N/A`';
 			msg.channel.send({embed: ({
 				color: 3447003,
 				title: `${result.title}`,
@@ -75,7 +80,7 @@ exports.run = async (bot, msg, args) => {
 						value: `${result.description}`
 					}, {
 						name: `**__Play Time__**`,
-						value: `${ms(parseInt(voiceConnection.player.dispatcher.time)) || 'N/A'}`
+						value: `${currenttime.toString()}`
 					}
 				],
 				timestamp: new Date()
