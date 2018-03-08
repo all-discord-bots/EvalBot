@@ -9,9 +9,8 @@ exports.run = async (bot, msg) => {
 		if (!msg.member.hasPermission('MANAGE_SERVER')) return msg.channel.send(`<:redx:411978781226696705> You are missing permissions \`Manage Server\``).catch(console.error);
 	}
 	
-	//var globalPrefOld = bot.config.[msg.guild.id].prefix;
-	bot.managers.config.set(msg.guild.id, {prefix: newPrefix})
-	msg.channel.send(`<:check:411976443522711552> Prefix changed to ${newPrefix}`);
+	bot.managers.config.set(msg.guild.id, {prefix: newPrefix});
+	msg.channel.send(`<:check:411976443522711552> Prefix changed to \`${newPrefix}\`.`);
 };
 
 exports.info = {
