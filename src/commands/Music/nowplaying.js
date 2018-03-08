@@ -81,7 +81,7 @@ exports.run = async (bot, msg, args) => {
 						name: `**__Description__**`,
 						value: `${result.description}`
 					}, {
-						name: `**__Time__**`,
+						name: `**__Play Time__**`,
 						value: `${gcurrenttime}`
 					}
 				],
