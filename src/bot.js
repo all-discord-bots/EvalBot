@@ -280,9 +280,9 @@ bot.on('message', (msg) => {
 	}
 	let gbot = msg.guild.members.get(bot.user.id);
 	let hascmd;
+	let splitmsg = msg.content.split(' ');
+	let joinmsg = splitmsg.join(' ');
 	if (!bot.config[msg.guild.id]) {
-		let splitmsg = msg.content.split(' ');
-		let joinmsg = splitmsg.join(' ');
 		hascmd = bot.commands.all().map(n => bot.config.prefix + n.info.name).filter(n => n === splitmsg[0]).length;
 		if (msg.content == bot.config.prefix || msg.content == bot.config.prefix + " " || msg.content == " " + bot.config.prefix) return;
 		if (msg.content.startsWith(bot.config.prefix) && hascmd > 0) {
