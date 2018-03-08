@@ -56,6 +56,7 @@ exports.run = async (bot, msg, args) => {
 				currenttime = ms(parseInt(voiceConnection.player.dispatcher.time));
 			} else {
 				currenttime = '`N/A`';
+			}
 			msg.channel.send({embed: ({
 				color: 3447003,
 				title: `${result.title}`,
