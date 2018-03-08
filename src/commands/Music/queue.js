@@ -57,7 +57,7 @@ const { YTSearcher } = require('ytsearcher');
 require('../../conf/globals.js');
 exports.run = async (bot, msg) => {
 	let i = 0;
-	if (!musicqueue[msg.guild.id] || !musicqueue[msg.guild.id]['music'].length < 1) return msg.channel.send(`<:redx:411978781226696705> The queue is empty.`).catch(console.error);
+	if (!musicqueue[msg.guild.id] || musicqueue[msg.guild.id]['music'].length < 1) return msg.channel.send(`<:redx:411978781226696705> The queue is empty.`).catch(console.error);
 	let gqueue = musicqueue[msg.guild.id]['music'];
 	gqueue.map(list => {
 		let hashtag;
