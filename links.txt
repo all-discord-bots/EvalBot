@@ -1,1 +1,2 @@
 https://discord.js.org/?_sm_au_=iWHQQs4PM21f30HQ#/docs/main/11.3.2/class/VoiceConnection?scrollTo=playStream
+https://discord.js.org/?_sm_au_=iWHQQs4PM21f30HQ#/docs/main/11.3.2/class/StreamDispatcher
