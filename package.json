@@ -36,7 +36,7 @@
     "ffmpeg-binaries": "^3.2.2-3",
     "node-opus": "^0.2.7",
     "opusscript": "^0.0.6",
-    "meta-musicdata": "^0.9.8",
+    "music-metadata": "^0.9.8",
     "discord-eco": "^0.0.10",
     "enmap": "^0.6.1",
     "enmap-level": "^1.0.1",
