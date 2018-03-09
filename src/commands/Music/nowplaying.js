@@ -22,7 +22,7 @@ exports.run = async (bot, msg, args) => {
 		let result = searchResult.first;
 		if (!result || !musicqueue[msg.guild.id] && !musicqueue[msg.guild.id]['streaming']) return msg.channel.send(`<:redx:411978781226696705> Could not get the video.`).catch(console.error);
 		//global.musicqueue.push(`${result.url}`); // result.id = video id // result.channelID = channel id // result.url = full video url // result.title = video name // result.description = video description
-		if (result.url || musicqueue[msg.guild.id] && !musicqueue[msg.guild.id]['streaming']) { // message information about the video on playing the video
+		if (result.url || !musicqueue[msg.guild.id] || musicqueue[msg.guild.id] && !musicqueue[msg.guild.id]['streaming']) { // message information about the video on playing the video
 			let thumbnail;
 			if (result.thumbnails.default.url && !result.thumbnails.medium.url && !result.thumbnails.high.url) {
 				thumbnail = `${result.thumbnails.default.url}`;
