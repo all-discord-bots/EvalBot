@@ -35,6 +35,7 @@ exports.run = async (bot, msg, args) => {
 	if (!musicqueue[msg.guild.id]['streaming']) musicqueue[msg.guild.id]['streaming'] = false;
 	if (!musicqueue[msg.guild.id]['looped']) musicqueue[msg.guild.id]['looped'] = false;
 	if (!musicqueue[msg.guild.id]['loopone']) musicqueue[msg.guild.id]['loopone'] = false;
+	if (!musicqueue[msg.guild.id]['shuffle']) musicqueue[msg.guild.id]['shuffle'] = false;
 	if (!musicqueue[msg.guild.id]['music']) musicqueue[msg.guild.id]['music'] = [];
 	    search.search(arg, { type: 'video' }).then(searchResult => {
 		let result = searchResult.first;
