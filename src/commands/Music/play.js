@@ -31,6 +31,7 @@ exports.run = async (bot, msg, args) => {
 	});
 	
 	if (!musicqueue[msg.guild.id]) musicqueue[msg.guild.id] = [];
+	if (!songqueue[msg.guild.id]) songqueue[msg.guild.id] = [];
 	if (!musicqueue[msg.guild.id]['streaming']) musicqueue[msg.guild.id]['streaming'] = false;
 	if (!musicqueue[msg.guild.id]['looped']) musicqueue[msg.guild.id]['looped'] = false;
 	if (!musicqueue[msg.guild.id]['loopone']) musicqueue[msg.guild.id]['loopone'] = false;
@@ -161,7 +162,8 @@ function executeQueue(queue) {
             if (musicqueue[msg.guild.id]['looped'] && !musicqueue[msg.guild.id]['loopone']) {
 		    executeQueue(musicqueue[msg.guild.id]['music']);
             } else if (musicqueue[msg.guild.id]['loopone'] && !musicqueue[msg.guild.id]['looped']) {
-		    executeQueue(musicqueue[msg.guild.id]['music'][0]);
+		    songqueue[msg.guild.id].push(musicqueue[msg.guild.id]['music'][0]);
+		    executeQueue(songqueue[msg.guild.id]);
 	    } else if (!musicqueue[msg.guild.id]['looped'] && !musicqueue[msg.guild.id]['loopone']) {
               if (queue.length > 0) {
                 // Remove the song from the queue.
