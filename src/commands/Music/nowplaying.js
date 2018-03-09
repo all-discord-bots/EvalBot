@@ -87,7 +87,7 @@ exports.run = async (bot, msg, args) => {
 				timestamp: new Date()
 			})});
 			// https://developers.google.com/youtube/v3/docs/activities
-		} else if (!result && musicqueue[msg.guild.id] && musicqueue[msg.guild.id]['streaming']) {
+		} else if (result.url || musicqueue[msg.guild.id] && musicqueue[msg.guild.id]['streaming']) {
 			const voiceConnection = bot.voiceConnections.find(val => val.channel.guild.id == msg.guild.id);
 			let currenttime;
 			if (voiceConnection) {
