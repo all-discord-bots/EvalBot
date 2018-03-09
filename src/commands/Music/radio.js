@@ -55,6 +55,7 @@ exports.run = async (bot, msg, args) => {
 	if (!musicqueue[msg.guild.id]) musicqueue[msg.guild.id] = [];
 	if (!musicqueue[msg.guild.id]['streaming']) musicqueue[msg.guild.id]['streaming'] = false;
 	if (!musicqueue[msg.guild.id]['looped']) musicqueue[msg.guild.id]['looped'] = false;
+	if (!musicqueue[msg.guild.id]['loopone']) musicqueue[msg.guild.id]['loopone'] = false;
 	if (!musicqueue[msg.guild.id]['music']) musicqueue[msg.guild.id]['music'] = [];
 	let getarg = arg.toLowerCase().toString();
 	if (getarg.length < 4) return msg.channel.send(`<:redx:411978781226696705> You must provide a valid stream`);
@@ -113,6 +114,7 @@ function executeQueue(queue) {
     // If the queue is empty, finish.
     if (queue.length === 0) {
       musicqueue[msg.guild.id]['looped'] = false;
+      musicqueue[msg.guild.id]['loopone'] = false;
       musicqueue[msg.guild.id]['streaming'] = false;
       msg.channel.send(`<:check:411976443522711552> Playback finished.`);
 
@@ -176,19 +178,27 @@ function executeQueue(queue) {
         });
 
         dispatcher.on('end', () => {
-          var isLooping = false; //musicbot.loopState(msg.guild.id)
           // Wait a second.
           setTimeout(() => {
-            if (musicqueue[msg.guild.id]['looped']) {
+            if (musicqueue[msg.guild.id]['looped'] && !musicqueue[msg.guild.id]['loopone']) {
 		    executeQueue(musicqueue[msg.guild.id]['music']);
-            } else {
+            } else if (musicqueue[msg.guild.id]['loopone'] && !musicqueue[msg.guild.id]['looped']) {
+		    executeQueue(musicqueue[msg.guild.id]['music'][0]);
+	    } else if (!musicqueue[msg.guild.id]['looped'] && !musicqueue[msg.guild.id]['loopone']) {
               if (queue.length > 0) {
                 // Remove the song from the queue.
                 queue.shift();
                 // Play the next song in the queue.
                 executeQueue(musicqueue[msg.guild.id]['music']);
               }
-            }
+            } else {
+		    if (queue.length > 0) {
+			    // Remove the song from the queue.
+			    queue.shift();
+			    // Play the next song in the queue.
+			    executeQueue(musicqueue[msg.guild.id]['music']);
+		    }
+	    }
           }, 1000);
         });
       } catch (error) {
