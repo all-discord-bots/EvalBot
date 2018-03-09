@@ -33,6 +33,7 @@ exports.run = async (bot, msg, args) => {
 	if (!musicqueue[msg.guild.id]) musicqueue[msg.guild.id] = [];
 	if (!musicqueue[msg.guild.id]['streaming']) musicqueue[msg.guild.id]['streaming'] = false;
 	if (!musicqueue[msg.guild.id]['looped']) musicqueue[msg.guild.id]['looped'] = false;
+	if (!musicqueue[msg.guild.id]['loopone']) musicqueue[msg.guild.id]['loopone'] = false;
 	if (!musicqueue[msg.guild.id]['music']) musicqueue[msg.guild.id]['music'] = [];
 	    search.search(arg, { type: 'video' }).then(searchResult => {
 		let result = searchResult.first;
@@ -155,12 +156,13 @@ function executeQueue(queue) {
         });
 
         dispatcher.on('end', () => {
-          var isLooping = false; //musicbot.loopState(msg.guild.id)
           // Wait a second.
           setTimeout(() => {
-            if (musicqueue[msg.guild.id]['looped']) {
+            if (musicqueue[msg.guild.id]['looped'] && !musicqueue[msg.guild.id]['loopone']) {
 		    executeQueue(musicqueue[msg.guild.id]['music']);
-            } else {
+            } else if (musicqueue[msg.guild.id]['loopone'] && !musicqueue[msg.guild.id]['looped']) {
+		    executeQueue(musicqueue[msg.guild.id]['music'][0]);
+	    } else {
               if (queue.length > 0) {
                 // Remove the song from the queue.
                 queue.shift();
