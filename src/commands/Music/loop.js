@@ -4,11 +4,11 @@ exports.run = async (bot, msg, args) => {
 	if (voiceConnection === null) return msg.channel.send(`<:redx:411978781226696705> There is no audio being played.`).catch(console.error);
 	let arg = args.join(' ');
 	if (arg === 'song' || arg === 'current' || arg === 'this' || arg === 'one' || arg === 'repeat') {
-		if (musicqueue['msg.guild.id'] && !musicqueue['msg.guild.id']['loopone']) {
+		if (musicqueue[msg.guild.id] && !musicqueue[msg.guild.id]['loopone']) {
 			musicqueue[msg.guild.id]['loopone'] = true;
 			musicqueue[msg.guild.id]['looped'] = false;
 			return msg.channnel.send(`Song Looping enabled! :repeat_one:`);
-		} else if (musicqueue[msg.guild.id] && musicqueue['msg.guild.id']['loopone']) {
+		} else if (musicqueue[msg.guild.id] && musicqueue[msg.guild.id]['loopone']) {
 			musicqueue['msg.guild.id']['loopone'] = false;
 			musicqueue['msg.guild.id']['looped'] = false;
 			return msg.channnel.send(`Song Looping disabled! :arrow_forward:`);
