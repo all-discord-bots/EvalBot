@@ -22,7 +22,7 @@ exports.run = async (bot, msg, args) => {
 		let result = searchResult.first;
 		if (!result) return msg.channel.send(`<:redx:411978781226696705> Could not get the video.`).catch(console.error);
 		//global.musicqueue.push(`${result.url}`); // result.id = video id // result.channelID = channel id // result.url = full video url // result.title = video name // result.description = video description
-		if (result.url) { // message information about the video on playing the video
+		if (result.url || musicqueue[msg.guild.id] && !musicqueue[msg.guild.id]['streaming']) { // message information about the video on playing the video
 			let thumbnail;
 			if (result.thumbnails.default.url && !result.thumbnails.medium.url && !result.thumbnails.high.url) {
 				thumbnail = `${result.thumbnails.default.url}`;
@@ -87,6 +87,21 @@ exports.run = async (bot, msg, args) => {
 				timestamp: new Date()
 			})});
 			// https://developers.google.com/youtube/v3/docs/activities
+		} else if (!result && musicqueue[msg.guild.id] && musicqueue[msg.guild.id]['streaming']) {
+			const voiceConnection = bot.voiceConnections.find(val => val.channel.guild.id == msg.guild.id);
+			let currenttime;
+			if (voiceConnection) {
+				currenttime = ms(parseInt(voiceConnection.player.dispatcher.time));
+			} else if (!voiceConnection) {
+				currenttime = `N/A`;
+			}
+			msg.channel.send({embed: ({
+				color: 3447003,
+				title: `Streaming`,
+				url: `${musicqueue[msg.guild.id]['music'][0]}`,
+				description: `Streaming [${musicqueue[msg.guild.id]['music'][0]}](${musicqueue[msg.guild.id]['music'][0]}) for ${currenttime}`,
+				timestamp: new Date()
+			})});
 		}
 	}).catch(console.error);
 };
