@@ -162,14 +162,21 @@ function executeQueue(queue) {
 		    executeQueue(musicqueue[msg.guild.id]['music']);
             } else if (musicqueue[msg.guild.id]['loopone'] && !musicqueue[msg.guild.id]['looped']) {
 		    executeQueue(musicqueue[msg.guild.id]['music'][0]);
-	    } else {
+	    } else if (!musicqueue[msg.guild.id]['looped'] && !musicqueue[msg.guild.id]['loopone']) {
               if (queue.length > 0) {
                 // Remove the song from the queue.
                 queue.shift();
                 // Play the next song in the queue.
                 executeQueue(musicqueue[msg.guild.id]['music']);
               }
-            }
+            } else {
+		    if (queue.length > 0) {
+			    // Remove the song from the queue.
+			    queue.shift();
+			    // Play the next song in the queue.
+			    executeQueue(musicqueue[msg.guild.id]['music']);
+		    }
+	    }
           }, 1000);
         });
       } catch (error) {
