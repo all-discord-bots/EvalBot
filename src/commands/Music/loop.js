@@ -9,8 +9,8 @@ exports.run = async (bot, msg, args) => {
 			musicqueue[msg.guild.id]['looped'] = false;
 			return msg.channel.send(`Song Looping enabled! :repeat_one:`);
 		} else if (musicqueue[msg.guild.id] && musicqueue[msg.guild.id]['loopone']) {
-			musicqueue['msg.guild.id']['loopone'] = false;
-			musicqueue['msg.guild.id']['looped'] = false;
+			musicqueue[msg.guild.id]['loopone'] = false;
+			musicqueue[msg.guild.id]['looped'] = false;
 			return msg.channel.send(`Song Looping disabled! :arrow_forward:`);
 		}
 	} else if (arg === 'queue' || arg === 'loopqueue' || arg === 'fullqueue' || arg === 'all' || arg.length < 1) {
