@@ -52,10 +52,10 @@ exports.run = async (bot, msg, args) => {
 			}
 			const voiceConnection = bot.voiceConnections.find(val => val.channel.guild.id == msg.guild.id);
 			let currenttime;
-			if (voiceConnection.player) {
+			if (voiceConnection) {
 				currenttime = ms(parseInt(voiceConnection.player.dispatcher.time));
-			} else {
-				currenttime = '`N/A`';
+			} else if (!voiceConnection) {
+				currenttime = `N/A`;
 			}
 			msg.channel.send({embed: ({
 				color: 3447003,
@@ -81,7 +81,7 @@ exports.run = async (bot, msg, args) => {
 						value: `${result.description}`
 					}, {
 						name: `**__Play Time__**`,
-						value: `${currenttime.toString()}`
+						value: `\`${currenttime.toString()}\``
 					}
 				],
 				timestamp: new Date()
