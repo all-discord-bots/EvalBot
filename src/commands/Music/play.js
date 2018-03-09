@@ -162,7 +162,12 @@ function executeQueue(queue) {
             if (musicqueue[msg.guild.id]['looped'] && !musicqueue[msg.guild.id]['loopone']) {
 		    executeQueue(musicqueue[msg.guild.id]['music']);
             } else if (musicqueue[msg.guild.id]['loopone'] && !musicqueue[msg.guild.id]['looped']) {
-		    songqueue[msg.guild.id].push(musicqueue[msg.guild.id]['music'][0]);
+		    if (songqueue[msg.guild.id].length < 1) {
+			    songqueue[msg.guild.id].push(musicqueue[msg.guild.id]['music'][0]);
+		    } else if (songqueue[msg.guild.id].length > 0) {
+			    songqueue[msg.guild.id].splice(0, songqueue[msg.guild.id].length);
+			    songqueue[msg.guild.id].push(musicqueue[msg.guild.id]['music'][0]);
+		    }
 		    executeQueue(songqueue[msg.guild.id]);
 	    } else if (!musicqueue[msg.guild.id]['looped'] && !musicqueue[msg.guild.id]['loopone']) {
               if (queue.length > 0) {
