@@ -99,7 +99,7 @@ exports.run = async (bot, msg, args) => {
 				color: 3447003,
 				title: `Streaming`,
 				url: `${musicqueue[msg.guild.id]['music'][0]}`,
-				description: `Streaming [${musicqueue[msg.guild.id]['music'][0]}](${musicqueue[msg.guild.id]['music'][0]}) for ${currenttime}`,
+				description: `Streaming [${musicqueue[msg.guild.id]['music'][0]}](${musicqueue[msg.guild.id]['music'][0]}) for \`${currenttime}\``,
 				timestamp: new Date()
 			})});
 		}
