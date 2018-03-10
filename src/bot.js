@@ -378,6 +378,12 @@ bot.on('warn', (w) => {
 	console.warn;
 });
 
+bot.on("debug", (d) => {
+	//console.info(e);
+	Hook.custom(bot.user.username, `${d}`, "Debug", "#3498DB");
+	console.debug;
+});
+
 bot.on('disconnect', event => {
 	if (event.code === 0) {
 		Hook.custom(bot.user.username, "[0] Gateway Error", "Warn", "#C1BD3A");
