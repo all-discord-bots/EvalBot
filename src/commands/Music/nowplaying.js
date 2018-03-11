@@ -22,7 +22,7 @@ exports.run = async (bot, msg, args) => {
 	}
 	search.search(gsearch, { type: 'video' }).then(searchResult => {
 		let result = searchResult.first;
-		if (!result || !musicqueue[msg.guild.id] || !musicqueue[msg.guild.id]['streaming']) return msg.channel.send(`<:redx:411978781226696705> Could not get the video.`).catch(console.error);
+		if (!result || !musicqueue[msg.guild.id]) return msg.channel.send(`<:redx:411978781226696705> Could not get the video.`).catch(console.error);
 		//global.musicqueue.push(`${result.url}`); // result.id = video id // result.channelID = channel id // result.url = full video url // result.title = video name // result.description = video description
 		if (result.url || !musicqueue[msg.guild.id] || musicqueue[msg.guild.id] && !musicqueue[msg.guild.id]['streaming']) { // message information about the video on playing the video
 			fetchVideoInfo(`${result.id}`, function (err, videoInfo) {
@@ -56,6 +56,39 @@ exports.run = async (bot, msg, args) => {
 				done = Math.floor(hone / 24);
 				hone = hone % 24;
 				/*Format Playtime*/
+				// Begin adding leading zeros
+				let seczero, minzero, hourzero, seconezero, minonezero, houronezero;
+				if (s < 10) {
+					seczero = '0';
+				} else if (s > 9) {
+					seczero = '';
+				}
+				if (m < 10) {
+					minzero = '0';
+				} else if (m > 9) {
+					minzero = '';
+				}
+				if (h < 10) {
+					hourzero = '0';
+				} else if (h > 9) {
+					hourzero = '';
+				}
+				if (sone < 10) {
+					seconezero = '0';
+				} else if (sone > 9) {
+					seconezero = '';
+				}
+				if (mone < 10) {
+					minonezero = '0';
+				} else if (mone > 9) {
+					minonezero = '';
+				}
+				if (hone < 10) {
+					houronezero = '0';
+				} else if (hone > 9) {
+					houronezero = '';
+				}
+				// End add leading zero
 				let thumbnail;
 				if (result.thumbnails.default.url && !result.thumbnails.medium.url && !result.thumbnails.high.url) {
 					thumbnail = `${result.thumbnails.default.url}`;
@@ -108,7 +141,7 @@ exports.run = async (bot, msg, args) => {
 							value: `${result.description}`
 						}, {
 							name: `**__Duration__**`,
-							value: `\`${hone}:${mone}:${sone}/${h}:${m}:${s}\``
+							value: `\`${houronezero}${hone}:${minonezero}${mone}:${seconezero}${sone}/${hourzero}${h}:${minzero}${m}:${seczero}${s}\``
 						}, {
 							name: `**__Genre__**`,
 							value: `\`${videoInfo.genre}\``,
@@ -164,12 +197,27 @@ exports.run = async (bot, msg, args) => {
 			m = m % 60; // -1 here
 			d = Math.floor(h / 24);
 			h = h % 24;
-			
+			let seczero, minzero, hourzero;
+			if (s < 10) {
+				seczero = '0';
+			} else if (s > 9) {
+				seczero = '';
+			}
+			if (m < 10) {
+				minzero = '0';
+			} else if (m > 9) {
+				minzero = '';
+			}
+			if (h < 10) {
+				hourzero = '0';
+			} else if (h > 9) {
+				hourzero = '';
+			}
 			msg.channel.send({embed: ({
 				color: 3447003,
 				title: `Streaming`,
 				url: `${musicqueue[msg.guild.id]['music'][0]}`,
-				description: `Streaming [${musicqueue[msg.guild.id]['music'][0]}](${musicqueue[msg.guild.id]['music'][0]}) for \`${h}:${m}:${s}\``,
+				description: `Streaming [${musicqueue[msg.guild.id]['music'][0]}](${musicqueue[msg.guild.id]['music'][0]}) for \`${hourzero}${h}:${minzero}${m}:${seczero}${s}\``,
 				timestamp: new Date()
 			})});
 		}
