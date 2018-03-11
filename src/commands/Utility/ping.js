@@ -8,6 +8,12 @@ exports.run = async (bot, msg) => {
 		} else {
 			bpings = bot.pings[0];
 		}
+		const voiceConnection = bot.voiceConnections.find(val => val.channel.guild.id == msg.guild.id);
+		let bitrate;
+		if (voiceConnection) {
+			bitrate = `Bitrate: \`${voiceConnection.player.opusEncoder.bitrate}ms\``;
+		} else if (!voiceConnection) {
+			bitrate = '';
 		msg.edit("Collecting message edit latency...").then((msg) => {
 			let edited = msg.editedTimestamp;
 			msg.edit({ embed: ({
@@ -19,6 +25,7 @@ Discord Latency: \`${end-start}ms\`
 API Latency: \`${Math.round(bot.ping)}ms\`
 Heartbeat: \`${Math.floor(bpings)}ms\`
 Message Edit: \`${edited-start}ms\`
+${bitrate}
 `
 			})});
 		});
