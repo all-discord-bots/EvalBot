@@ -378,12 +378,12 @@ bot.on('warn', (w) => {
 	console.warn;
 });
 
-bot.on("debug", (d) => {
-	//console.debug(d);
-	console.info(d);
-	//Hook.custom(bot.user.username, `${d}`, "Debug", "#3498DB");
-	//console.debug;
-});
+if (debug) {
+	bot.on('debug', (d) => {
+		//console.debug(d);
+		console.info(d);
+	});
+}
 
 bot.on('disconnect', event => {
 	if (event.code === 0) {
@@ -437,12 +437,12 @@ bot.on('disconnect', event => {
 
 process.on('uncaughtException', (err) => {
 	let errorMsg = (err ? err.stack || err : '').toString().replace(new RegExp(`${__dirname}\/`, 'g'), './');
-	Hook.custom(bot.user.username, errorMsg, "Uncaught Exception", "#EF5350");
+	Hook.custom(bot.user.username, `${errorMsg}`, "Uncaught Exception", "#EF5350");
 	logger.severe(errorMsg);
 });
 
 process.on('unhandledRejection', err => {
-	Hook.custom(bot.user.username, err.stack, "Unhandled Rejection | Uncaught Promise error:", "#EF5350");
+	Hook.custom(bot.user.username, `${err.stack}`, "Unhandled Rejection | Uncaught Promise error:", "#EF5350");
 	logger.severe('Uncaught Promise error: \n' + err.stack);
 });
 bot.config && bot.login(process.env.BOT_TOKEN).catch(console.error);
