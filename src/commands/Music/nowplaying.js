@@ -116,11 +116,11 @@ exports.run = async (bot, msg, args) => {
 				} else {
 					hthumbnail = '';
 				}
-				let GetRegionsAllowed = videoInfo.regionsAllowed.toString();
-				let regionsstr = "," + GetRegionsAllowed.toString() + ",";
-				let replacecomma = regionsstr.replace(/,/g, "` `");
-				let replacecomma1 = replacecomma.replace("` ","") + "remove-this-string";
-				let ListRegionsAllowed = replacecomma1.replace(" `remove-this-string","");
+				//let GetRegionsAllowed = videoInfo.regionsAllowed.toString();
+				//let regionsstr = "," + GetRegionsAllowed.toString() + ",";
+				//let replacecomma = regionsstr.replace(/,/g, "` `");
+				//let replacecomma1 = replacecomma.replace("` ","") + "remove-this-string";
+				//let ListRegionsAllowed = replacecomma1.replace(" `remove-this-string","");
 				// current time function was here
 				msg.channel.send({embed: ({
 					color: 3447003,
@@ -173,7 +173,7 @@ exports.run = async (bot, msg, args) => {
 							inline: true
 						}, {
 							name: `**__Regions Allowed__**`,
-							value: `${ListRegionsAllowed}`,
+							value: `${videoInfo.regionsAllowed.toString()}`,
 							inline: true
 						}, {
 							name: `**__Likes/Dislikes__**`,
