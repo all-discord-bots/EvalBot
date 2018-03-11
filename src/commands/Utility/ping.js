@@ -14,6 +14,7 @@ exports.run = async (bot, msg) => {
 			bitrate = `Bitrate: \`${voiceConnection.player.opusEncoder.bitrate}ms\``;
 		} else if (!voiceConnection) {
 			bitrate = '';
+		}
 		msg.edit("Collecting message edit latency...").then((msg) => {
 			let edited = msg.editedTimestamp;
 			msg.edit({ embed: ({
