@@ -23,6 +23,7 @@ const fs = require('fs');
 const bot = global.bot = exports.client = new Discord.Client();
 const Music = require('discord.js-musicbot-addon');
 const snekfetch = require('snekfetch');
+require('conf/globals.js'); // load global variables file
 
 // begin database
 //const { Client } = require('pg');
@@ -91,6 +92,16 @@ Managers.Migrator.migrate(bot, __dirname);
 let loaded = false;
 
 bot.utils = global.utils = require('./utils');
+
+// Load the music queue items
+if (!musicqueue[msg.guild.id]) musicqueue[msg.guild.id] = [];
+if (!songqueue[msg.guild.id]) songqueue[msg.guild.id] = [];
+if (!musicqueue[msg.guild.id]['streaming']) musicqueue[msg.guild.id]['streaming'] = false;
+if (!musicqueue[msg.guild.id]['looped']) musicqueue[msg.guild.id]['looped'] = false;
+if (!musicqueue[msg.guild.id]['loopone']) musicqueue[msg.guild.id]['loopone'] = false;
+if (!musicqueue[msg.guild.id]['shuffle']) musicqueue[msg.guild.id]['shuffle'] = false;
+if (!musicqueue[msg.guild.id]['music']) musicqueue[msg.guild.id]['music'] = [];
+// End loading the music queue items
 
 bot.once('ready', () => {
 	if (!bot.user.bot) {
