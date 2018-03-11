@@ -379,9 +379,9 @@ bot.on('warn', (w) => {
 });
 
 bot.on("debug", (d) => {
-	//console.info(e);
-	Hook.custom(bot.user.username, `${d}`, "Debug", "#3498DB");
-	console.debug;
+	console.debug(d); // console.info(d);
+	//Hook.custom(bot.user.username, `${d}`, "Debug", "#3498DB");
+	//console.debug;
 });
 
 bot.on('disconnect', event => {
