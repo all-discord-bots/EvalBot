@@ -379,7 +379,8 @@ bot.on('warn', (w) => {
 });
 
 bot.on("debug", (d) => {
-	console.debug(d); // console.info(d);
+	//console.debug(d);
+	console.info(d);
 	//Hook.custom(bot.user.username, `${d}`, "Debug", "#3498DB");
 	//console.debug;
 });
