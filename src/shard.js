@@ -5,7 +5,6 @@
 
 const Discord = require('discord.js');
 const SpawnShards = require('../data/configs/config.json');
-const Webhook = require("webhook-discord");
 const Manager = new Discord.ShardingManager('./src/bot.js', {
     respawn: true,
     //token: SpawnShards.botToken,
@@ -17,7 +16,6 @@ let guilds = 0;
 let users = 0;
 
 Manager.spawn(this.totalShards, 15000);
-const Hook = new Webhook(process.env.WEBHOOK_SHARD_LOGGER);
 /*
 Manager.spawn(this.totalShards, 15000).then(shards => {
     TFS();
@@ -85,6 +83,8 @@ function updateStats(guilds) {
 }
 */
 Manager.on('launch', (shard) => {
-	Hook.success("CripsBot", `Successfully launched shard \`${shard.id}\``);
+	const Webhook = require("webhook-discord");
+	const Hook = new Webhook(process.env.WEBHOOK_SHARD_LOGGER);
+	Hook.success('CripsBot', `Successfully launched shard \`${shard.id}\``);
 	console.log(`Successfully launched shard ${shard.id}`);
 });
