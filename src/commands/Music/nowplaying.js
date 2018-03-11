@@ -3,6 +3,8 @@ const Discord = require('discord.js');
 const moment = require('moment');
 require('moment-duration-format');
 const ms = require('ms');
+const fetchVideoInfo = require('youtube-info');
+const duration = require('go-duration');
 require('../../conf/globals.js');
 
 exports.run = async (bot, msg, args) => {
@@ -23,69 +25,126 @@ exports.run = async (bot, msg, args) => {
 		if (!result || !musicqueue[msg.guild.id] && !musicqueue[msg.guild.id]['streaming']) return msg.channel.send(`<:redx:411978781226696705> Could not get the video.`).catch(console.error);
 		//global.musicqueue.push(`${result.url}`); // result.id = video id // result.channelID = channel id // result.url = full video url // result.title = video name // result.description = video description
 		if (result.url || !musicqueue[msg.guild.id] || musicqueue[msg.guild.id] && !musicqueue[msg.guild.id]['streaming']) { // message information about the video on playing the video
-			let thumbnail;
-			if (result.thumbnails.default.url && !result.thumbnails.medium.url && !result.thumbnails.high.url) {
-				thumbnail = `${result.thumbnails.default.url}`;
-			} else if (result.thumbnails.default.url && result.thumbnails.medium.url && !result.thumbnails.high.url) {
-				thumbnail = `${result.thumbnails.medium.url}`;
-			} else if (result.thumbnails.default.url && result.thumbnails.medium.url && result.thumbnails.high.url) {
-				thumbnail = `${result.thumbnails.high.url}`;
-			}
-			let udate = new Date(result.publishedAt).getTime();
-			let dthumbnail;
-			if (result.thumbnails.default.url) {
-				dthumbnail = `- [Default](${result.thumbnails.default.url}) \`${result.thumbnails.default.width}×${result.thumbnails.default.height}\`\n`;
-			} else {
-				dthumbnail = '';
-			}
-			let mthumbnail;
-			if (result.thumbnails.medium.url) {
-				mthumbnail = `- [Medium](${result.thumbnails.medium.url}) \`${result.thumbnails.medium.width}×${result.thumbnails.medium.height}\`\n`;
-			} else {
-				mthumbnail = '';
-			}
-			let hthumbnail;
-			if (result.thumbnails.high.url) {
-				hthumbnail = `- [High](${result.thumbnails.high.url}) \`${result.thumbnails.high.width}×${result.thumbnails.high.height}\``;
-			} else {
-				hthumbnail = '';
-			}
-			const voiceConnection = bot.voiceConnections.find(val => val.channel.guild.id == msg.guild.id);
-			let currenttime;
-			if (voiceConnection) {
-				currenttime = ms(parseInt(voiceConnection.player.dispatcher.time));
-			} else if (!voiceConnection) {
-				currenttime = `N/A`;
-			}
-			msg.channel.send({embed: ({
-				color: 3447003,
-				title: `${result.title}`,
-				url: `${result.url}`,
-				"thumbnail": {
-					url: `${thumbnail}`
-				}, fields: [
-					{
-						name: `**__Video__**`,
-						value: `[${result.title}](${result.url}) \`${result.id}\``
-					}, {
-						name: `**__Channel__**`,
-						value: `[${result.channelTitle}](https://www.youtube.com/channel/${result.channelId}) \`${result.channelId}\``
-					}, {
-						name: `**__Thumbnails__**`,
-						value: `${dthumbnail}${mthumbnail}${hthumbnail}`
-					}, {
-						name: `**__Uploaded__**`,
-						value: `${moment.utc(udate).format("LLLL")} \`${result.publishedAt}\``
-					}, {
-						name: `**__Description__**`,
-						value: `${result.description}`
-					}, {
-						name: `**__Play Time__**`,
-						value: `\`${currenttime.toString()}\``
-					}
-				],
-				timestamp: new Date()
-			})});
+			fetchVideoInfo(`${result.id}`, function (err, videoInfo) {
+				if (err) throw new Error(err);
+				let videoDuration = duration(`${videoInfo.duration}s`); // seconds --> miliseconds
+				/*Format Duration*/
+				let d, h, m, s; // days, hours, minutes, seconds
+				s = Math.floor(videoDuration / 1000);
+				m = Math.floor(s / 60);
+				s = s % 60;
+				h = Math.floor(m / 60);
+				m = m % 60; // -1 here
+				d = Math.floor(h / 24);
+				h = h % 24;
+				/*Format Duration*/
+				/*Format Playtime*/
+				const voiceConnection = bot.voiceConnections.find(val => val.channel.guild.id == msg.guild.id);
+				let currenttime;
+				if (voiceConnection) {
+					currenttime = ms(parseInt(voiceConnection.player.dispatcher.time));
+				} else if (!voiceConnection) {
+					currenttime = `0s`;
+				}
+				let currentDuration = duration(`${currenttime.toString()}`);
+				let done, hone, mone, sone; // days, hours, minutes, seconds
+				sone = Math.floor(currentDuration / 1000);
+				mone = Math.floor(sone / 60);
+				sone = sone % 60;
+				hone = Math.floor(mone / 60);
+				mone = mone % 60; // -1 here
+				done = Math.floor(hone / 24);
+				hone = hone % 24;
+				/*Format Playtime*/
+				let thumbnail;
+				if (result.thumbnails.default.url && !result.thumbnails.medium.url && !result.thumbnails.high.url) {
+					thumbnail = `${result.thumbnails.default.url}`;
+				} else if (result.thumbnails.default.url && result.thumbnails.medium.url && !result.thumbnails.high.url) {
+					thumbnail = `${result.thumbnails.medium.url}`;
+				} else if (result.thumbnails.default.url && result.thumbnails.medium.url && result.thumbnails.high.url) {
+					thumbnail = `${result.thumbnails.high.url}`;
+				}
+				let udate = new Date(result.publishedAt).getTime();
+				let dthumbnail;
+				if (result.thumbnails.default.url) {
+					dthumbnail = `- [Default](${result.thumbnails.default.url}) \`${result.thumbnails.default.width}×${result.thumbnails.default.height}\`\n`;
+				} else {
+					dthumbnail = '';
+				}
+				let mthumbnail;
+				if (result.thumbnails.medium.url) {
+					mthumbnail = `- [Medium](${result.thumbnails.medium.url}) \`${result.thumbnails.medium.width}×${result.thumbnails.medium.height}\`\n`;
+				} else {
+					mthumbnail = '';
+				}
+				let hthumbnail;
+				if (result.thumbnails.high.url) {
+					hthumbnail = `- [High](${result.thumbnails.high.url}) \`${result.thumbnails.high.width}×${result.thumbnails.high.height}\``;
+				} else {
+					hthumbnail = '';
+				}
+				// current time function was here
+				msg.channel.send({embed: ({
+					color: 3447003,
+					title: `${result.title}`,
+					url: `${result.url}`,
+					"thumbnail": {
+						url: `${thumbnail}`
+					}, fields: [
+						{
+							name: `**__Video__**`,
+							value: `[${result.title}](${result.url}) \`${result.id}\``
+						}, {
+							name: `**__Channel__**`,
+							value: `[${result.channelTitle}](https://www.youtube.com/channel/${result.channelId}) \`${result.channelId}\``
+						}, {
+							name: `**__Thumbnails__**`,
+							value: `${dthumbnail}${mthumbnail}${hthumbnail}`
+						}, {
+							name: `**__Uploaded__**`,
+							value: `${moment.utc(udate).format("LLLL")} \`${result.publishedAt}\``
+						}, {
+							name: `**__Description__**`,
+							value: `${result.description}`
+						}, {
+							name: `**__Duration__**`,
+							value: `\`${hone}:${mone}:${sone}/${h}:${m}:${s}\``
+						}, {
+							name: `**__Genre__**`,
+							value: `${videoInfo.genre}`
+						}, {
+							name: `**__Paid__**`,
+							value: `${videoInfo.paid}`,
+							inline: true
+						}, {
+							name: `**__Unlisted__**`,
+							value: `${videoInfo.unlisted}`,
+							inline: true
+						}, {
+							name: `**__Family Friendly__**`,
+							value: `${videoInfo.isFamilyFriendly}`,
+							inline: true
+						}, {
+							name: `**__Views__**`,
+							value: `${videoInfo.views}`,
+							inline: true
+						}, {
+							name: `**__Comments__**`,
+							value: `${videoInfo.commentCount}`,
+							inline: true
+						}, {
+							name: `**__Regions Allowed__**`,
+							value: `${videoInfo.regionsAllowed.toString()}`,
+							inline: true
+						}, {
+							name: `**__Likes/Dislikes__**`,
+							value: `:thumbsup:${videoInfo.likeCount}\n:thumbsdown:${videoInfo.dislikeCount}`,
+							inline: true
+						}
+					],
+					timestamp: new Date()
+				})});
+			});
 			// https://developers.google.com/youtube/v3/docs/activities
 		} else if (result.url || musicqueue[msg.guild.id] && musicqueue[msg.guild.id]['streaming']) {
 			const voiceConnection = bot.voiceConnections.find(val => val.channel.guild.id == msg.guild.id);
@@ -93,13 +152,23 @@ exports.run = async (bot, msg, args) => {
 			if (voiceConnection) {
 				currenttime = ms(parseInt(voiceConnection.player.dispatcher.time));
 			} else if (!voiceConnection) {
-				currenttime = `N/A`;
+				currenttime = `0s`;
 			}
+			let currentDuration = duration(`${currenttime.toString()}`);
+			let d, h, m, s; // days, hours, minutes, seconds
+			s = Math.floor(currentDuration / 1000);
+			m = Math.floor(s / 60);
+			s = s % 60;
+			h = Math.floor(m / 60);
+			m = m % 60; // -1 here
+			d = Math.floor(h / 24);
+			h = h % 24;
+			
 			msg.channel.send({embed: ({
 				color: 3447003,
 				title: `Streaming`,
 				url: `${musicqueue[msg.guild.id]['music'][0]}`,
-				description: `Streaming [${musicqueue[msg.guild.id]['music'][0]}](${musicqueue[msg.guild.id]['music'][0]}) for \`${currenttime}\``,
+				description: `Streaming [${musicqueue[msg.guild.id]['music'][0]}](${musicqueue[msg.guild.id]['music'][0]}) for \`${h}:${m}:${s}\``,
 				timestamp: new Date()
 			})});
 		}
