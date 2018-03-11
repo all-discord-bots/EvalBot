@@ -18,9 +18,9 @@ exports.run = async (bot, msg, args) => {
 		if (!musicqueue[msg.guild.id] || musicqueue[msg.guild.id]['music'].length < 1) return msg.channel.send(`<:redx:411978781226696705> There are no items in the queue!`).catch(console.error);
 		gsearch = musicqueue[msg.guild.id]['music'][0];
 	} else if (gvid.length > 0) {
-		gsearch = gvid.toString();
+		gsearch = gvid;
 	}
-	search.search(`${gsearch.toString()}`, { type: 'video' }).then(searchResult => {
+	search.search(gsearch, { type: 'video' }).then(searchResult => {
 		let result = searchResult.first;
 		if (!result/* || !musicqueue[msg.guild.id]*/) return msg.channel.send(`<:redx:411978781226696705> Could not get the video.`).catch(console.error);
 		//global.musicqueue.push(`${result.url}`); // result.id = video id // result.channelID = channel id // result.url = full video url // result.title = video name // result.description = video description
