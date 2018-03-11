@@ -111,26 +111,27 @@ exports.run = async (bot, msg, args) => {
 							value: `\`${hone}:${mone}:${sone}/${h}:${m}:${s}\``
 						}, {
 							name: `**__Genre__**`,
-							value: `${videoInfo.genre}`
+							value: `\`${videoInfo.genre}\``,
+							inline: true
 						}, {
 							name: `**__Paid__**`,
-							value: `${videoInfo.paid}`,
+							value: `\`${videoInfo.paid}\``,
 							inline: true
 						}, {
 							name: `**__Unlisted__**`,
-							value: `${videoInfo.unlisted}`,
+							value: `\`${videoInfo.unlisted}\``,
 							inline: true
 						}, {
 							name: `**__Family Friendly__**`,
-							value: `${videoInfo.isFamilyFriendly}`,
+							value: `\`${videoInfo.isFamilyFriendly}\``,
 							inline: true
 						}, {
 							name: `**__Views__**`,
-							value: `${videoInfo.views}`,
+							value: `\`${videoInfo.views}\``,
 							inline: true
 						}, {
 							name: `**__Comments__**`,
-							value: `${videoInfo.commentCount}`,
+							value: `\`${videoInfo.commentCount}\``,
 							inline: true
 						}, {
 							name: `**__Regions Allowed__**`,
@@ -138,7 +139,7 @@ exports.run = async (bot, msg, args) => {
 							inline: true
 						}, {
 							name: `**__Likes/Dislikes__**`,
-							value: `:thumbsup:${videoInfo.likeCount}\n:thumbsdown:${videoInfo.dislikeCount}`,
+							value: `:thumbsup:\`${videoInfo.likeCount}\`\n:thumbsdown:\`${videoInfo.dislikeCount}\``,
 							inline: true
 						}
 					],
