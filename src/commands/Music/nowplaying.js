@@ -20,7 +20,7 @@ exports.run = async (bot, msg, args) => {
 	} else if (gvid.length > 0) {
 		gsearch = gvid.toString();
 	}
-	search.search(`${gsearch.toString}`, { type: 'video' }).then(searchResult => {
+	search.search(`${gsearch.toString()}`, { type: 'video' }).then(searchResult => {
 		let result = searchResult.first;
 		if (!result/* || !musicqueue[msg.guild.id]*/) return msg.channel.send(`<:redx:411978781226696705> Could not get the video.`).catch(console.error);
 		//global.musicqueue.push(`${result.url}`); // result.id = video id // result.channelID = channel id // result.url = full video url // result.title = video name // result.description = video description
@@ -116,6 +116,11 @@ exports.run = async (bot, msg, args) => {
 				} else {
 					hthumbnail = '';
 				}
+				let GetRegionsAllowed = videoInfo.regionsAllowed;
+				let regionsstr = "," + GetRegionsAllowed.toString() + ",";
+				let replacecomma = regionsstr.replace(/,/g, "` `");
+				let replacecomma1 = replacecomma.replace("` ","") + "remove-this-string";
+				let ListRegionsAllowed = replacecomma1.replace(" `remove-this-string","");
 				// current time function was here
 				msg.channel.send({embed: ({
 					color: 3447003,
@@ -148,15 +153,15 @@ exports.run = async (bot, msg, args) => {
 							inline: true
 						}, {
 							name: `**__Paid__**`,
-							value: `\`${videoInfo.paid || 'N/A'}\``,
+							value: `\`${videoInfo.paid || false}\``,
 							inline: true
 						}, {
 							name: `**__Unlisted__**`,
-							value: `\`${videoInfo.unlisted || 'N/A'}\``,
+							value: `\`${videoInfo.unlisted || false}\``,
 							inline: true
 						}, {
 							name: `**__Family Friendly__**`,
-							value: `\`${videoInfo.isFamilyFriendly || 'N/A'}\``,
+							value: `\`${videoInfo.isFamilyFriendly || false}\``,
 							inline: true
 						}, {
 							name: `**__Views__**`,
@@ -168,7 +173,7 @@ exports.run = async (bot, msg, args) => {
 							inline: true
 						}, {
 							name: `**__Regions Allowed__**`,
-							value: `${videoInfo.regionsAllowed.toString() || 'N/A'}`,
+							value: `${ListRegionsAllowed || '`N/A`'}`,
 							inline: true
 						}, {
 							name: `**__Likes/Dislikes__**`,
