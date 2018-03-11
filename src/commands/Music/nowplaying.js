@@ -18,11 +18,11 @@ exports.run = async (bot, msg, args) => {
 		if (!musicqueue[msg.guild.id] || musicqueue[msg.guild.id]['music'].length < 1) return msg.channel.send(`<:redx:411978781226696705> There are no items in the queue!`).catch(console.error);
 		gsearch = musicqueue[msg.guild.id]['music'][0];
 	} else if (gvid.length > 0) {
-		gsearch = gvid;
+		gsearch = gvid.toString();
 	}
-	search.search(gsearch, { type: 'video' }).then(searchResult => {
+	search.search(`${gsearch.toString}`, { type: 'video' }).then(searchResult => {
 		let result = searchResult.first;
-		if (!result || !musicqueue[msg.guild.id]) return msg.channel.send(`<:redx:411978781226696705> Could not get the video.`).catch(console.error);
+		if (!result/* || !musicqueue[msg.guild.id]*/) return msg.channel.send(`<:redx:411978781226696705> Could not get the video.`).catch(console.error);
 		//global.musicqueue.push(`${result.url}`); // result.id = video id // result.channelID = channel id // result.url = full video url // result.title = video name // result.description = video description
 		if (result.url || !musicqueue[msg.guild.id] || musicqueue[msg.guild.id] && !musicqueue[msg.guild.id]['streaming']) { // message information about the video on playing the video
 			fetchVideoInfo(`${result.id}`, function (err, videoInfo) {
@@ -144,35 +144,35 @@ exports.run = async (bot, msg, args) => {
 							value: `\`${houronezero}${hone}:${minonezero}${mone}:${seconezero}${sone}/${hourzero}${h}:${minzero}${m}:${seczero}${s}\``
 						}, {
 							name: `**__Genre__**`,
-							value: `\`${videoInfo.genre}\``,
+							value: `\`${videoInfo.genre || 'N/A'}\``,
 							inline: true
 						}, {
 							name: `**__Paid__**`,
-							value: `\`${videoInfo.paid}\``,
+							value: `\`${videoInfo.paid || 'N/A'}\``,
 							inline: true
 						}, {
 							name: `**__Unlisted__**`,
-							value: `\`${videoInfo.unlisted}\``,
+							value: `\`${videoInfo.unlisted || 'N/A'}\``,
 							inline: true
 						}, {
 							name: `**__Family Friendly__**`,
-							value: `\`${videoInfo.isFamilyFriendly}\``,
+							value: `\`${videoInfo.isFamilyFriendly || 'N/A'}\``,
 							inline: true
 						}, {
 							name: `**__Views__**`,
-							value: `\`${videoInfo.views}\``,
+							value: `\`${videoInfo.views || '0'}\``,
 							inline: true
 						}, {
 							name: `**__Comments__**`,
-							value: `\`${videoInfo.commentCount}\``,
+							value: `\`${videoInfo.commentCount || '0'}\``,
 							inline: true
 						}, {
 							name: `**__Regions Allowed__**`,
-							value: `${videoInfo.regionsAllowed.toString()}`,
+							value: `${videoInfo.regionsAllowed.toString() || 'N/A'}`,
 							inline: true
 						}, {
 							name: `**__Likes/Dislikes__**`,
-							value: `:thumbsup:\`${videoInfo.likeCount}\`\n:thumbsdown:\`${videoInfo.dislikeCount}\``,
+							value: `:thumbsup:\`${videoInfo.likeCount || '0'}\`\n:thumbsdown:\`${videoInfo.dislikeCount || '0'}\``,
 							inline: true
 						}
 					],
