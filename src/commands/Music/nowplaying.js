@@ -22,10 +22,10 @@ exports.run = async (bot, msg, args) => {
 	}
 	search.search(gsearch, { type: 'video' }).then(searchResult => {
 		let result = searchResult.first;
-		if (!result/* || !musicqueue[msg.guild.id]*/) return msg.channel.send(`<:redx:411978781226696705> Could not get the video.`).catch(console.error);
+		if (!result.url/* || !musicqueue[msg.guild.id]*/) return msg.channel.send(`<:redx:411978781226696705> Could not get the video.`).catch(console.error);
 		//global.musicqueue.push(`${result.url}`); // result.id = video id // result.channelID = channel id // result.url = full video url // result.title = video name // result.description = video description
 		if (result.url || !musicqueue[msg.guild.id] || musicqueue[msg.guild.id] && !musicqueue[msg.guild.id]['streaming']) { // message information about the video on playing the video
-			fetchVideoInfo(`${result.id}`, function (err, videoInfo) {
+			fetchVideoInfo(result.id, function (err, videoInfo) {
 				if (err) throw new Error(err);
 				let videoDuration = duration(`${videoInfo.duration}s`); // seconds --> miliseconds
 				/*Format Duration*/
@@ -116,11 +116,11 @@ exports.run = async (bot, msg, args) => {
 				} else {
 					hthumbnail = '';
 				}
-				let GetRegionsAllowed = videoInfo.regionsAllowed.toString();
-				let regionsstr = "," + GetRegionsAllowed.toString() + ",";
-				let replacecomma = regionsstr.replace(/,/g, "` `");
-				let replacecomma1 = replacecomma.replace("` ","") + "remove-this-string";
-				let ListRegionsAllowed = replacecomma1.replace(" `remove-this-string","");
+				//let GetRegionsAllowed = videoInfo.regionsAllowed.toString();
+				//let regionsstr = "," + GetRegionsAllowed.toString() + ",";
+				//let replacecomma = regionsstr.replace(/,/g, "` `");
+				//let replacecomma1 = replacecomma.replace("` ","") + "remove-this-string";
+				//let ListRegionsAllowed = replacecomma1.replace(" `remove-this-string","");
 				// current time function was here
 				msg.channel.send({embed: ({
 					color: 3447003,
@@ -173,7 +173,7 @@ exports.run = async (bot, msg, args) => {
 							inline: true
 						}, {
 							name: `**__Regions Allowed__**`,
-							value: `${ListRegionsAllowed.toString() || '`N/A`'}`,
+							value: `${videoInfo.regionsAllowed.toString()}`,
 							inline: true
 						}, {
 							name: `**__Likes/Dislikes__**`,
@@ -183,6 +183,7 @@ exports.run = async (bot, msg, args) => {
 					],
 					timestamp: new Date()
 				})});
+				// ${ListRegionsAllowed.toString() || '`N/A`'}`,
 			});
 			// https://developers.google.com/youtube/v3/docs/activities
 		} else if (result.url || musicqueue[msg.guild.id] && musicqueue[msg.guild.id]['streaming']) {
