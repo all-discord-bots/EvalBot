@@ -73,6 +73,11 @@ bot.setInterval(() => {
 	bot.deleted.clear();
 }, 7200000);
 
+bot.setInterval(() => {
+	dbl.postStats(bot.guilds.size, bot.shard.id, bot.shard.count);
+	console.log('Uploaded Bot Stats!');
+}, 1800000);
+
 const settings = global.settings = {
 	dataFolder: path.resolve(__dirname, '..', 'data'),
 	configsFolder: path.resolve(__dirname, '..', 'data', 'configs')
@@ -87,7 +92,7 @@ let loaded = false;
 
 bot.utils = global.utils = require('./utils');
 
-bot.on('ready', () => {
+bot.once('ready', () => {
 	if (!bot.user.bot) {
 		logger.severe(`${bot.user.username} is a bot, but you entered a selfbot token. Please follow the instructions at ${chalk.green('https://discordapp.com/developers')} and re-enter your token by running ${chalk.green('yarn run config')}.`);
 		process.exit(666);
@@ -98,7 +103,7 @@ bot.on('ready', () => {
 	// === use the //status command to make the bot invis. ===
 	// =======================================================
 	// bot.user.setStatus('invisible');
-	var s;
+	let s;
 	if (bot.guilds.size === 1) {
 		s = '';
 	} else {
@@ -138,10 +143,6 @@ bot.on('ready', () => {
 	logger.info('Bot loaded');
 	loaded = true;
 	
-	setInterval(() => {
-		dbl.postStats(bot.guilds.size, bot.shard.id, bot.shard.count);
-		console.log('Uploaded Bot Stats');
-	}, 1800000);
 	//setInterval(() => {
 	//	snekfetch.post(`https://discordbots.org/api/bots/${bot.user.id}/stats`)
 	//		.set('Authorization', process.env.DB_TOKEN)
