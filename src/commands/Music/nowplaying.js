@@ -116,7 +116,7 @@ exports.run = async (bot, msg, args) => {
 				} else {
 					hthumbnail = '';
 				}
-				let GetRegionsAllowed = videoInfo.regionsAllowed;
+				let GetRegionsAllowed = videoInfo.regionsAllowed.toString();
 				let regionsstr = "," + GetRegionsAllowed.toString() + ",";
 				let replacecomma = regionsstr.replace(/,/g, "` `");
 				let replacecomma1 = replacecomma.replace("` ","") + "remove-this-string";
@@ -153,15 +153,15 @@ exports.run = async (bot, msg, args) => {
 							inline: true
 						}, {
 							name: `**__Paid__**`,
-							value: `\`${videoInfo.paid || false}\``,
+							value: `\`${videoInfo.paid}\``,
 							inline: true
 						}, {
 							name: `**__Unlisted__**`,
-							value: `\`${videoInfo.unlisted || false}\``,
+							value: `\`${videoInfo.unlisted}\``,
 							inline: true
 						}, {
 							name: `**__Family Friendly__**`,
-							value: `\`${videoInfo.isFamilyFriendly || false}\``,
+							value: `\`${videoInfo.isFamilyFriendly}\``,
 							inline: true
 						}, {
 							name: `**__Views__**`,
@@ -173,7 +173,7 @@ exports.run = async (bot, msg, args) => {
 							inline: true
 						}, {
 							name: `**__Regions Allowed__**`,
-							value: `${ListRegionsAllowed || '`N/A`'}`,
+							value: `${ListRegionsAllowed.toString() || '`N/A`'}`,
 							inline: true
 						}, {
 							name: `**__Likes/Dislikes__**`,
