@@ -18,9 +18,9 @@ exports.run = async (bot, msg, args) => {
 		'1.FM Absolute Top 40',
 		'977 Hits',
 		'Absolute Radio',
-		'Heart',
-		'Monstercat'
+		'Heart'
 	];
+	//'Monstercat'
 	//if (arg.length < 1) return msg.channel.send(`<:redx:411978781226696705> You must provide a radio stream url!`).catch(console.error);
 	if (arg.length < 1) {
 		let getradio = radiostationsqueue.toString();
