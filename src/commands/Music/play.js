@@ -58,7 +58,7 @@ exports.run = async (bot, msg, args) => {
       })});
     }
   }).catch(console.error);
-  console.log(`${musicqueue[msg.guild.id].music}`);
+  console.log(`${musicqueue[msg.guild.id]['music']}`);
   
   let musicbot = {
     youtubeKey: process.env.YOUTUBE_API_KEY, // A YouTube Data API3 key. Required to run.
@@ -129,14 +129,14 @@ exports.run = async (bot, msg, args) => {
         //  musicbot.setLast(msg.guild.id, video);
         //  if (lvid !== video) musicbot.np(msg);
         //};
-        musicqueue[msg.guild.id].streaming = false;
+        musicqueue[msg.guild.id]['streaming'] = false;
         let dispatcher = musicbot.streamMode == 0 ? connection.playStream(ytdl(video.toString(), {filter: 'audioonly'}), { volume: (musicbot.defVolume / 100) }) : connection.playStream(stream(video.toString()), { volume: (musicbot.defVolume / 100) }); // YouTube, and Streams stream (1) is broken
         connection.on('error', (error) => {
           // Skip to the next song.
           console.log(`Dispatcher/connection: ${error}`);
           if (msg && msg.channel) msg.channel.send(`<:redx:411978781226696705> Dispatcher error!\n\`${error}\``);
           queue.shift();
-          executeQueue(musicqueue[msg.guild.id].music);
+          executeQueue(musicqueue[msg.guild.id]['music']);
         });
         
         dispatcher.on('error', (error) => {
@@ -145,7 +145,7 @@ exports.run = async (bot, msg, args) => {
           console.log(`Dispatcher: ${error}`);
           if (msg && msg.channel) msg.channel.send(`<:redx:411978781226696705> Dispatcher error!\n\`${error}\``);
           queue.shift();
-          executeQueue(musicqueue[msg.guild.id].music);
+          executeQueue(musicqueue[msg.guild.id]['music']);
         });
         
         dispatcher.on('end', () => {
@@ -164,19 +164,19 @@ exports.run = async (bot, msg, args) => {
                 songqueue[msg.guild.id].push(musicqueue[msg.guild.id]['music'][0]);
               }
               executeQueue(songqueue[msg.guild.id]);
-            } else if (!musicqueue[msg.guild.id].looped && !musicqueue[msg.guild.id].loopone) {
+            } else if (!musicqueue[msg.guild.id]['looped'] && !musicqueue[msg.guild.id]['loopone']) {
               if (queue.length > 0) {
                 // Remove the song from the queue.
                 queue.shift();
                 // Play the next song in the queue.
-                executeQueue(musicqueue[msg.guild.id].music);
+                executeQueue(musicqueue[msg.guild.id]['music']);
               }
             } else {
               if (queue.length > 0) {
                 // Remove the song from the queue.
                 queue.shift();
                 // Play the next song in the queue.
-                executeQueue(musicqueue[msg.guild.id].music);
+                executeQueue(musicqueue[msg.guild.id]['music']);
               }
             }
           }, 1000);
