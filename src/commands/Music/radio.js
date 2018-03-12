@@ -216,6 +216,7 @@ function executeQueue(queue) {
 };
 exports.info = {
 	name: 'radio',
-	usage: 'radio <radio stream url>',
-	description: 'Play audio from Stream Radio urls.'
+	aliases: ['station','radio-station'],
+	usage: 'radio [station name|stream url]',
+	description: 'Stream a radio station to a voice channel. You can use a station name or a stream url to play the station. Use this command without arguments to view a list of the current stations.'
 };
