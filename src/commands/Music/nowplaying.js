@@ -31,11 +31,11 @@ exports.run = async (bot, msg, args) => {
 				let videoDuration = duration(`${videoInfo.duration}s`); // seconds --> miliseconds
 				/*Format Duration*/
 				let d, h, m, s; // days, hours, minutes, seconds
-				s = Math.floor(videoDuration / 1000);
+				s = Math.floor(parseInt(videoDuration - 1) / 1000); // - 1 is used to round the video to get the proper second count
 				m = Math.floor(s / 60);
 				s = s % 60;
 				h = Math.floor(m / 60);
-				m = m % 60; // -1 here
+				m = m % 60;
 				d = Math.floor(h / 24);
 				h = h % 24;
 				/*Format Duration*/
