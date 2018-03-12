@@ -57,11 +57,11 @@ exports.run = async (bot, msg, args) => {
 		}
 	}
 	if (get_video_id(arg.toString())) return msg.channel.send(`<:redx:411978781226696705> You can play YouTube videos using the \`play\` command. Please specify a radio station url.`).catch(console.error);
-	if (!musicqueue[msg.guild.id]) musicqueue[msg.guild.id] = [];
-	if (!musicqueue[msg.guild.id]['streaming']) musicqueue[msg.guild.id]['streaming'] = false;
-	if (!musicqueue[msg.guild.id]['looped']) musicqueue[msg.guild.id]['looped'] = false;
-	if (!musicqueue[msg.guild.id]['loopone']) musicqueue[msg.guild.id]['loopone'] = false;
-	if (!musicqueue[msg.guild.id]['music']) musicqueue[msg.guild.id]['music'] = [];
+	//if (!musicqueue[msg.guild.id]) musicqueue[msg.guild.id] = [];
+	//if (!musicqueue[msg.guild.id]['streaming']) musicqueue[msg.guild.id]['streaming'] = false;
+	//if (!musicqueue[msg.guild.id]['looped']) musicqueue[msg.guild.id]['looped'] = false;
+	//if (!musicqueue[msg.guild.id]['loopone']) musicqueue[msg.guild.id]['loopone'] = false;
+	//if (!musicqueue[msg.guild.id]['music']) musicqueue[msg.guild.id]['music'] = [];
 	let getarg = arg.toLowerCase().toString();
 	if (getarg.length < 4) return msg.channel.send(`<:redx:411978781226696705> You must provide a valid stream`);
 	let filteredbuiltinradio = radiostationsqueue.map(list => list.toLowerCase().toString()).filter(list => list.toLowerCase().startsWith(getarg.toString()));
