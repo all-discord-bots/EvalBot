@@ -5,6 +5,7 @@ require('moment-duration-format');
 const ms = require('ms');
 const fetchVideoInfo = require('youtube-info');
 const duration = require('go-duration');
+const { mis, s, m, h, d } = require('time-convert');
 require('../../conf/globals.js');
 
 exports.run = async (bot, msg, args) => {
@@ -29,32 +30,40 @@ exports.run = async (bot, msg, args) => {
 				if (err) throw new Error(err);
 				let videoDuration = duration(`${videoInfo.duration}s`); // seconds --> miliseconds
 				/*Format Duration*/
-				let d, h, m, s; // days, hours, minutes, seconds
-				s = Math.floor(videoDuration / 1000);
-				m = Math.floor(s / 60);
-				s = s % 60;
-				h = Math.floor(m / 60);
-				m = m % 60; // -1 here
-				d = Math.floor(h / 24);
-				h = h % 24;
+				let videoduration = mis.to(h,m,s)(parseInt(videoDuration));
+				let s = videoduration[2]; // Seconds
+				let m = videoduration[1]; // Minutes
+				let h = videoduration[0]; // Hours
+				//let d, h, m, s; // days, hours, minutes, seconds
+				//s = Math.floor(videoDuration / 1000);
+				//m = Math.floor(s / 60);
+				//s = s % 60;
+				//h = Math.floor(m / 60);
+				//m = m % 60; // -1 here
+				//d = Math.floor(h / 24);
+				//h = h % 24;
 				/*Format Duration*/
 				/*Format Playtime*/
 				const voiceConnection = bot.voiceConnections.find(val => val.channel.guild.id == msg.guild.id);
 				let currenttime;
 				if (voiceConnection) {
-					currenttime = ms(parseInt(voiceConnection.player.dispatcher.time));
+					currenttime = parseInt(voiceConnection.player.dispatcher.time); //ms(parseInt(voiceConnection.player.dispatcher.time));
 				} else if (!voiceConnection) {
-					currenttime = `0s`;
+					currenttime = `0`;
 				}
-				let currentDuration = duration(`${currenttime.toString()}`);
-				let done, hone, mone, sone; // days, hours, minutes, seconds
-				sone = Math.floor(currentDuration / 1000);
-				mone = Math.floor(sone / 60);
-				sone = sone % 60;
-				hone = Math.floor(mone / 60);
-				mone = mone % 60; // -1 here
-				done = Math.floor(hone / 24);
-				hone = hone % 24;
+				//let currentDuration = duration(`${currenttime.toString()}s`);
+				//let done, hone, mone, sone; // days, hours, minutes, seconds
+				//sone = Math.floor(currentDuration / 1000);
+				//mone = Math.floor(sone / 60);
+				//sone = sone % 60;
+				//hone = Math.floor(mone / 60);
+				//mone = mone % 60; // -1 here
+				//done = Math.floor(hone / 24);
+				//hone = hone % 24;
+				let currenttimepos = mis.to(h,m,s)(parseInt(currenttime)); // currenttimepos[0] - Hours, currenttimepos[1] - Minutes, currenttimepos[2] - Seconds
+				let sone = currenttimepos[2]; // Seconds
+				let mone = currenttimepos[1]; // Minutes
+				let hone = currenttimepos[0]; // Hours
 				/*Format Playtime*/
 				// Begin adding leading zeros
 				let seczero, minzero, hourzero, seconezero, minonezero, houronezero;
@@ -190,19 +199,23 @@ exports.run = async (bot, msg, args) => {
 			const voiceConnection = bot.voiceConnections.find(val => val.channel.guild.id == msg.guild.id);
 			let currenttime;
 			if (voiceConnection) {
-				currenttime = ms(parseInt(voiceConnection.player.dispatcher.time));
+				currenttime = parseInt(voiceConnection.player.dispatcher.time); //ms(parseInt(voiceConnection.player.dispatcher.time));
 			} else if (!voiceConnection) {
-				currenttime = `0s`;
+				currenttime = `0`;
 			}
-			let currentDuration = duration(`${currenttime.toString()}`);
-			let d, h, m, s; // days, hours, minutes, seconds
-			s = Math.floor(currentDuration / 1000);
-			m = Math.floor(s / 60);
-			s = s % 60;
-			h = Math.floor(m / 60);
-			m = m % 60; // -1 here
-			d = Math.floor(h / 24);
-			h = h % 24;
+			//let currentDuration = duration(`${currenttime.toString()}`); // Seconds --> Miliseconds
+			//let d, h, m, s; // days, hours, minutes, seconds
+			//s = Math.floor(currentDuration / 1000);
+			//m = Math.floor(s / 60);
+			//s = s % 60;
+			//h = Math.floor(m / 60);
+			//m = m % 60; // -1 here
+			//d = Math.floor(h / 24);
+			//h = h % 24;
+			let currenttimepos = mis.to(h,m,s)(parseInt(currenttime));
+			let s = currenttimepos[2]; // Seconds
+			let m = currenttimepos[1]; // Minutes
+			let h = currenttimepos[0]; // Hours
 			let seczero, minzero, hourzero;
 			if (s < 10) {
 				seczero = '0';
