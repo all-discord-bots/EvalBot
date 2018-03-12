@@ -5,6 +5,7 @@ require('moment-duration-format');
 const ms = require('ms');
 const fetchVideoInfo = require('youtube-info');
 const duration = require('go-duration');
+const { milliseconds, seconds, minutes, hours, days } = require('time-convert');
 require('../../conf/globals.js');
 
 exports.run = async (bot, msg, args) => {
@@ -42,19 +43,20 @@ exports.run = async (bot, msg, args) => {
 				const voiceConnection = bot.voiceConnections.find(val => val.channel.guild.id == msg.guild.id);
 				let currenttime;
 				if (voiceConnection) {
-					currenttime = ms(parseInt(voiceConnection.player.dispatcher.time));
+					currenttime = voiceConnection.player.dispatcher.time; //ms(parseInt(voiceConnection.player.dispatcher.time));
 				} else if (!voiceConnection) {
-					currenttime = `0s`;
+					currenttime = `0`;
 				}
-				let currentDuration = duration(`${currenttime.toString()}`);
-				let done, hone, mone, sone; // days, hours, minutes, seconds
-				sone = Math.floor(currentDuration / 1000);
+				//let currentDuration = duration(`${currenttime.toString()}`);
+				//let done, hone, mone, sone; // days, hours, minutes, seconds
+				let currenttimepos = milliseconds.to(hours,minutes,seconds)(parseInt(currenttime));
+				/*sone = Math.floor(currentDuration / 1000);
 				mone = Math.floor(sone / 60);
 				sone = sone % 60;
 				hone = Math.floor(mone / 60);
 				mone = mone % 60; // -1 here
 				done = Math.floor(hone / 24);
-				hone = hone % 24;
+				hone = hone % 24;*/
 				/*Format Playtime*/
 				// Begin adding leading zeros
 				let seczero, minzero, hourzero, seconezero, minonezero, houronezero;
@@ -73,19 +75,19 @@ exports.run = async (bot, msg, args) => {
 				} else if (h > 9) {
 					hourzero = '';
 				}
-				if (sone < 10) {
+				if (currenttimepos[2] < 10) {
 					seconezero = '0';
-				} else if (sone > 9) {
+				} else if (currenttimepos[2] > 9) {
 					seconezero = '';
 				}
-				if (mone < 10) {
+				if (currenttimepos[1] < 10) {
 					minonezero = '0';
-				} else if (mone > 9) {
+				} else if (currenttimepos[1] > 9) {
 					minonezero = '';
 				}
-				if (hone < 10) {
+				if (currenttimepos[0] < 10) {
 					houronezero = '0';
-				} else if (hone > 9) {
+				} else if (currenttimepos[0] > 9) {
 					houronezero = '';
 				}
 				// End add leading zero
@@ -146,7 +148,7 @@ exports.run = async (bot, msg, args) => {
 							value: `${result.description}`
 						}, {
 							name: `**__Duration__**`,
-							value: `\`${houronezero}${hone}:${minonezero}${mone}:${seconezero}${sone}/${hourzero}${h}:${minzero}${m}:${seczero}${s}\``
+							value: `\`${houronezero}${currenttimepos[0]}:${minonezero}${currenttimepos[1]}:${seconezero}${currenttimepos[2]}/${hourzero}${h}:${minzero}${m}:${seczero}${s}\``
 						}, {
 							name: `**__Genre__**`,
 							value: `\`${videoInfo.genre || 'N/A'}\``,
@@ -190,11 +192,12 @@ exports.run = async (bot, msg, args) => {
 			const voiceConnection = bot.voiceConnections.find(val => val.channel.guild.id == msg.guild.id);
 			let currenttime;
 			if (voiceConnection) {
-				currenttime = ms(parseInt(voiceConnection.player.dispatcher.time));
+				currenttime = parseInt(voiceConnection.player.dispatcher.time); //ms(parseInt(voiceConnection.player.dispatcher.time));
 			} else if (!voiceConnection) {
-				currenttime = `0s`;
+				currenttime = `0`;
 			}
-			let currentDuration = duration(`${currenttime.toString()}`);
+			let streamingDuration = milliseconds.to(hours,minutes,seconds)(parseInt(currenttime));
+			/*let currentDuration = duration(`${currenttime.toString()}`);
 			let d, h, m, s; // days, hours, minutes, seconds
 			s = Math.floor(currentDuration / 1000);
 			m = Math.floor(s / 60);
@@ -203,27 +206,28 @@ exports.run = async (bot, msg, args) => {
 			m = m % 60; // -1 here
 			d = Math.floor(h / 24);
 			h = h % 24;
+			*/
 			let seczero, minzero, hourzero;
-			if (s < 10) {
+			if (streamingDuration[2] < 10) {
 				seczero = '0';
-			} else if (s > 9) {
+			} else if (streamingDuration[2] > 9) {
 				seczero = '';
 			}
-			if (m < 10) {
+			if (streamingDuration[1] < 10) {
 				minzero = '0';
-			} else if (m > 9) {
+			} else if (streamingDuration[1] > 9) {
 				minzero = '';
 			}
-			if (h < 10) {
+			if (streamingDuration[0] < 10) {
 				hourzero = '0';
-			} else if (h > 9) {
+			} else if (streamingDuration[0] > 9) {
 				hourzero = '';
 			}
 			msg.channel.send({embed: ({
 				color: 3447003,
 				title: `Streaming`,
 				url: `${musicqueue[msg.guild.id]['music'][0]}`,
-				description: `Streaming [${musicqueue[msg.guild.id]['music'][0]}](${musicqueue[msg.guild.id]['music'][0]}) for \`${hourzero}${h}:${minzero}${m}:${seczero}${s}\``,
+				description: `Streaming [${musicqueue[msg.guild.id]['music'][0]}](${musicqueue[msg.guild.id]['music'][0]}) for \`${hourzero}${streamingDuration[0]}:${minzero}${streamingDuration[1]}:${seczero}${streamingDuration[2]}\``,
 				timestamp: new Date()
 			})});
 		}
