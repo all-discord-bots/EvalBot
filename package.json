@@ -60,7 +60,7 @@
     "pg": "^7.4.1",
     "lyrics-fetcher": "^1.0.2",
     "pm2": "^2.10.1",
-    "express": "^4.16.2",
+    "express": "^4.16.3",
     "go-duration": "^1.0.0",
     "youtube-info": "^1.2.0",
     "time-convert": "^0.0.2"
