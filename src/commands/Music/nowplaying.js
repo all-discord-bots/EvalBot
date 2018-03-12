@@ -22,9 +22,9 @@ exports.run = async (bot, msg, args) => {
 	}
 	search.search(gsearch, { type: 'video' }).then(searchResult => {
 		let result = searchResult.first;
-		if (!result.url/* || !musicqueue[msg.guild.id]*/) return msg.channel.send(`<:redx:411978781226696705> Could not get the video.`).catch(console.error);
+		//if (!result/* || !musicqueue[msg.guild.id]*/) return msg.channel.send(`<:redx:411978781226696705> Could not get the video.`).catch(console.error);
 		//global.musicqueue.push(`${result.url}`); // result.id = video id // result.channelID = channel id // result.url = full video url // result.title = video name // result.description = video description
-		if (result.url || !musicqueue[msg.guild.id] || musicqueue[msg.guild.id] && !musicqueue[msg.guild.id]['streaming']) { // message information about the video on playing the video
+		if (result || !musicqueue[msg.guild.id] || musicqueue[msg.guild.id] && !musicqueue[msg.guild.id]['streaming']) { // message information about the video on playing the video
 			fetchVideoInfo(result.id, function (err, videoInfo) {
 				if (err) throw new Error(err);
 				let videoDuration = duration(`${videoInfo.duration}s`); // seconds --> miliseconds
