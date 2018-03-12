@@ -20,7 +20,8 @@ exports.run = async (bot, msg, args) => {
 		'Absolute Radio',
 		'Heart',
 		'Christian Music',
-		'Christian Teaching and Talk'
+		'Christian Teaching and Talk',
+		'Todays Christian Music'
 	];
 	//'Monstercat'
 	//if (arg.length < 1) return msg.channel.send(`<:redx:411978781226696705> You must provide a radio stream url!`).catch(console.error);
