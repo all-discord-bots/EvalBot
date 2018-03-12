@@ -2,10 +2,10 @@ const { YTSearcher } = require('ytsearcher');
 const Discord = require('discord.js');
 const moment = require('moment');
 require('moment-duration-format');
-const ms = require('ms');
+const mils = require('ms');
 const fetchVideoInfo = require('youtube-info');
 const duration = require('go-duration');
-const { mis, s, m, h, d } = require('time-convert');
+const { ms, s, m, h, d } = require('time-convert');
 require('../../conf/globals.js');
 
 exports.run = async (bot, msg, args) => {
@@ -30,7 +30,7 @@ exports.run = async (bot, msg, args) => {
 				if (err) throw new Error(err);
 				let videoDuration = duration(`${videoInfo.duration}s`); // seconds --> miliseconds
 				/*Format Duration*/
-				let videoduration = mis.to(h,m,s)(parseInt(videoDuration));
+				let videoduration = ms.to(h,m,s)(parseInt(videoDuration));
 				let s = videoduration[2]; // Seconds
 				let m = videoduration[1]; // Minutes
 				let h = videoduration[0]; // Hours
@@ -60,7 +60,7 @@ exports.run = async (bot, msg, args) => {
 				//mone = mone % 60; // -1 here
 				//done = Math.floor(hone / 24);
 				//hone = hone % 24;
-				let currenttimepos = mis.to(h,m,s)(parseInt(currenttime)); // currenttimepos[0] - Hours, currenttimepos[1] - Minutes, currenttimepos[2] - Seconds
+				let currenttimepos = ms.to(h,m,s)(parseInt(currenttime)); // currenttimepos[0] - Hours, currenttimepos[1] - Minutes, currenttimepos[2] - Seconds
 				let sone = currenttimepos[2]; // Seconds
 				let mone = currenttimepos[1]; // Minutes
 				let hone = currenttimepos[0]; // Hours
@@ -212,7 +212,7 @@ exports.run = async (bot, msg, args) => {
 			//m = m % 60; // -1 here
 			//d = Math.floor(h / 24);
 			//h = h % 24;
-			let currenttimepos = mis.to(h,m,s)(parseInt(currenttime));
+			let currenttimepos = ms.to(h,m,s)(parseInt(currenttime));
 			let s = currenttimepos[2]; // Seconds
 			let m = currenttimepos[1]; // Minutes
 			let h = currenttimepos[0]; // Hours
