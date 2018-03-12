@@ -62,7 +62,8 @@
     "pm2": "^2.10.1",
     "express": "^4.16.2",
     "go-duration": "^1.0.0",
-    "youtube-info": "^1.2.0"
+    "youtube-info": "^1.2.0",
+    "time-convert": "^0.0.2"
   },
   "engines": {
     "npm": "5.7.1"
