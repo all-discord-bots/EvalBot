@@ -19,29 +19,90 @@ exports.run = async (bot, msg, args) => {
 
     const weatherInfo = res.body.query.results.channel;
     const forecast = weatherInfo.item.forecast[0];
-
+    const forecasttmrw = weatherInfo.item.forecast[1];
+    const forecastdaytwo = weatherInfo.item.forecast[2];
+    const forecastdaythree = weatherInfo.item.forecast[3];
+    const forecastdayfour = weatherInfo.item.forecast[4];
+    const forecastdayfive = weatherInfo.item.forecast[5];
+    const forecastdaysix = weatherInfo.item.forecast[6];
+    const forecastdayseven = weatherInfo.item.forecast[7];
+    const forecastdayeight = weatherInfo.item.forecast[8];
+    const forecastdaynine = weatherInfo.item.forecast[9];
     const countryInfo = countries.find(country => country.name === weatherInfo.location.country);
     const countryEmoji = countryInfo ? countryInfo.emoji : ':grey_question:';
-
+    
     const description = `The current temperature in ${weatherInfo.location.city} is ${weatherInfo.item.condition.temp}°F/${celsius(weatherInfo.item.condition.temp)}°C`;
-
+// finish 6-9
     const embed = bot.utils.embed(`${countryEmoji} ${weatherInfo.item.title}`, description, [
         {
             name: 'Condition',
             value: weatherInfo.item.condition.text
-        },
-        {
+        }, {
             name: 'Humidity',
             value: weatherInfo.atmosphere.humidity + '%'
-        },
-        {
+        }, {
+            name: 'Pressure',
+            value: weatherInfo.atmosphere.pressure
+        }, {
+            name: 'Rising',
+            value: weatherInfo.atmosphere.rising
+        }, {
+            name: 'Visibility',
+            value: weatherInfo.atmosphere.visibility
+        }, {
             name: ':wind_blowing_face: Wind',
-            value: `*${weatherInfo.wind.speed}mph* ; direction: *${weatherInfo.wind.direction}°*`
-        },
-        {
+            value: `*${weatherInfo.wind.speed}mph* ; direction: *${weatherInfo.wind.direction}°* ; chill: *${weatherInfo.wind.chill}*`
+        }, {
             name: `Forecast for today is *${forecast.text}*`,
-            value: `Highest temp is ${forecast.high}°F/${celsius(forecast.high)}°C, lowest temp is ${forecast.low}°F/${celsius(forecast.low)}°C`,
+            value: `Highest temp is ${forecast.high}°F/${celsius(forecast.high)}°C, lowest temp is ${forecast.low}°F/${celsius(forecast.low)}°C ; Code: ${forecast.code}`,
         },
+        spacer,
+        spacer,
+        {
+            name: '9 Day Forecast',
+            value: `__Today:__\n
+                    Code: ${forecast.code}\n
+                    Date: ${forecast.date}\n
+                    Day: ${forecast.day}\n
+                    High: ${forecast.high}\n
+                    Low: ${forecast.low}\n
+                    Condition: ${forecast.text}\n\n
+                    __Tomorrow:__\n
+                    Code: ${forecasttmrw.code}\n
+                    Date: ${forecasttmrw.date}\n
+                    Day: ${forecasttmrw.day}\n
+                    High: ${forecasttmrw.high}\n
+                    Low: ${forecasttmrw.low}\n
+                    Condition: ${forecasttmrw.text}\n\n
+                    __${forecastdaytwo.day}:__\n
+                    Code: ${forecastdaytwo.code}\n
+                    Date: ${forecastdaytwo.date}\n
+                    Day: ${forecastdaytwo.day}\n
+                    High: ${forecastdaytwo.high}\n
+                    Low: ${forecastdaytwo.low}\n
+                    Condition: ${forecastdaytwo.text}\n\n
+                    __${forecastdaythree.day}:__\n
+                    Code: ${forecastdaythree.code}\n
+                    Date: ${forecastdaythree.date}\n
+                    Day: ${forecastdaythree.day}\n
+                    High: ${forecastdaythree.high}\n
+                    Low: ${forecastdaythree.low}\n
+                    Condition: ${forecastdaythree.text}\n\n
+                    __${forecastdayfour.day}:__\n
+                    Code: ${forecastdayfour.code}\n
+                    Date: ${forecastdayfour.date}\n
+                    Day: ${forecastdayfour.day}\n
+                    High: ${forecastdayfour.high}\n
+                    Low: ${forecastdayfour.low}\n
+                    Condition: ${forecastdayfour.text}\n\n
+                    __${forecastdayfive}:__\n
+                    Code: ${forecastdayfive.code}\n
+                    Date: ${forecastdayfive.date}\n
+                    Day: ${forecastdayfive.day}\n
+                    High: ${forecastdayfive.high}\n
+                    Low: ${forecastdayfive.low}\n
+                    Condition: ${forecastdayfive.text}\n\n
+                    `},
         spacer,
         spacer,
         spacer,
