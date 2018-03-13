@@ -95,13 +95,41 @@ exports.run = async (bot, msg, args) => {
                     High: ${forecastdayfour.high}\n
                     Low: ${forecastdayfour.low}\n
                     Condition: ${forecastdayfour.text}\n\n
-                    __${forecastdayfive}:__\n
+                    __${forecastdayfive.day}:__\n
                     Code: ${forecastdayfive.code}\n
                     Date: ${forecastdayfive.date}\n
                     Day: ${forecastdayfive.day}\n
                     High: ${forecastdayfive.high}\n
                     Low: ${forecastdayfive.low}\n
                     Condition: ${forecastdayfive.text}\n\n
+                    __${forecastdaysix.day}:__\n
+                    Code: ${forecastdaysix.code}\n
+                    Date: ${forecastdaysix.date}\n
+                    Day: ${forecastdaysix.day}\n
+                    High: ${forecastdaysix.high}\n
+                    Low: ${forecastdaysix.low}\n
+                    Condition: ${forecastdaysix.text}\n\n
+                    __${forecastdayseven.day}:__\n
+                    Code: ${forecastdayseven.code}\n
+                    Date: ${forecastdayseven.date}\n
+                    Day: ${forecastdayseven.day}\n
+                    High: ${forecastdayseven.high}\n
+                    Low: ${forecastdayseven.low}\n
+                    Condition: ${forecastdayseven.text}\n\n
+                    __${forecastdayeight.day}:__\n
+                    Code: ${forecastdayeight.code}\n
+                    Date: ${forecastdayeight.date}\n
+                    Day: ${forecastdayeight.day}\n
+                    High: ${forecastdayeight.high}\n
+                    Low: ${forecastdayeight.low}\n
+                    Condition: ${forecastdayeight.text}\n\n
+                    __${forecastdaynine.day}:__\n
+                    Code: ${forecastdaynine.code}\n
+                    Date: ${forecastdaynine.date}\n
+                    Day: ${forecastdaynine.day}\n
+                    High: ${forecastdaynine.high}\n
+                    Low: ${forecastdaynine.low}\n
+                    Condition: ${forecastdaynine.text}
                     `},
         spacer,
         spacer,
