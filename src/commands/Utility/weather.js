@@ -8,7 +8,7 @@ const spacer = {
     name: '\u200b',
     value: '\u200b',
 };
-
+// TODO: Collect weather emojis for use with  name: `Forecast for today is ${EMOJI HERE} *${forecast.text}*`,
 exports.run = async (bot, msg, args) => {
     if (args.length < 1) return msg.channel.send(`<:redx:411978781226696705> Please provide a city.`).catch(console.error);
 
@@ -18,29 +18,34 @@ exports.run = async (bot, msg, args) => {
     if (!res || !res.body || !res.body.query || !res.body.query.results || !res.body.query.results.channel) return msg.channel.send(`<:redx:411978781226696705> Failed to load weather info!`).catch(console.error);
 
     const weatherInfo = res.body.query.results.channel;
+    const unit = weatherInfo.units;
     const forecast = weatherInfo.item.forecast[0];
 
     const countryInfo = countries.find(country => country.name === weatherInfo.location.country);
     const countryEmoji = countryInfo ? countryInfo.emoji : ':grey_question:';
 
-    const description = `The current temperature in ${weatherInfo.location.city} is ${weatherInfo.item.condition.temp}°F/${celsius(weatherInfo.item.condition.temp)}°C`;
-
+    const description = `The current temperature in ${weatherInfo.location.city} is ${weatherInfo.item.condition.temp}°${unit.temperature}/${celsius(weatherInfo.item.condition.temp)}°C`;
+//item":{"title":"Conditions for Wilson, NC, US at 03:00 PM EDT","lat":"35.72171","long":"-77.916153"
     const embed = bot.utils.embed(`${countryEmoji} ${weatherInfo.item.title}`, description, [
         {
-            name: 'Condition',
-            value: weatherInfo.item.condition.text
+            name: 'Location',
+            value: `Latitude: ${weatherInfo.item.lat}\nLongitude: ${weatherInfo.item.long}`
         },
         {
-            name: 'Humidity',
-            value: weatherInfo.atmosphere.humidity + '%'
+            name: 'Condition',
+            value: `${weatherInfo.item.condition.text}`
+        },
+        {
+            name: 'Atmosphere',
+            value: `Humidity: ${weatherInfo.atmosphere.humidity}${unit.humidity}\nPressure: ${weatherInfo.atmosphere.pressure}${unit.pressure}\nRising: ${weatherInfo.atmosphere.rising}\nVisibility: ${weatherInfo.atmosphere.visibility}`
         },
         {
             name: ':wind_blowing_face: Wind',
-            value: `*${weatherInfo.wind.speed}mph* ; direction: *${weatherInfo.wind.direction}°*`
+            value: `*${weatherInfo.wind.speed}${unit.speed}* ; direction: *${weatherInfo.wind.direction}°* ; chill: *${weatherInfo.wind.chill}*`
         },
         {
             name: `Forecast for today is *${forecast.text}*`,
-            value: `Highest temp is ${forecast.high}°F/${celsius(forecast.high)}°C, lowest temp is ${forecast.low}°F/${celsius(forecast.low)}°C`,
+            value: `Highest temp is ${forecast.high}°${unit.temperature}/${celsius(forecast.high)}°C, lowest temp is ${forecast.low}°${unit.temperature}/${celsius(forecast.low)}°C`,
         },
         spacer,
         spacer,
