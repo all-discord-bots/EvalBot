@@ -39,7 +39,7 @@ exports.run = async (bot, msg, args) => {
         },
         {
             name: 'Atmosphere',
-            value: `Humidity: ${weatherInfo.atmosphere.humidity}${unit.humidity}\nPressure: ${weatherInfo.atmosphere.pressure}${unit.pressure}\nRising: ${weatherInfo.atmosphere.rising}\nVisibility: ${weatherInfo.atmosphere.visibility}`
+            value: `Humidity: ${weatherInfo.atmosphere.humidity}%\nPressure: ${weatherInfo.atmosphere.pressure}${unit.pressure}\nRising: ${weatherInfo.atmosphere.rising}\nVisibility: ${weatherInfo.atmosphere.visibility}`
         },
         {
             name: ':wind_blowing_face: Wind',
