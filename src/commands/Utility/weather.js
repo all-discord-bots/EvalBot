@@ -1,3 +1,5 @@
+// http://www.engageweb.co.uk/css-weather-display
+// https://www.webdesignerdepot.com/2012/12/how-to-harness-yahoos-weather-api/
 const got = require('got');
 const countries = require('country-data').countries.all;
 
