@@ -41,6 +41,6 @@ exports.run = async (bot, msg, args) => {
 exports.info = {
   name: 'add-money',
   aliases: ['remove-money','addmoney','removemoney'],
-  usage: 'add-money [user] <amount>',
+  usage: 'add-money <user> <amount>',
   description: 'add/subtract money from a users balance'
 };
