@@ -28,7 +28,7 @@ exports.run = async (bot, msg, args) => {
   }
   // Finally, run this.. REMEMBER IF you are doing the guild-unique method, make sure you add the guild ID to the end,
   economy.updateBalance(defineduser + msg.guild.id, parseInt(args[1])).then((i) => { // AND MAKE SURE YOU ALWAYS PARSE THE NUMBER YOU ARE ADDING AS AN INTEGER
-    msg.channel.send(`<:check:411976443522711552> **User defined had ${i} added/subtracted from their account.**`);
+    msg.channel.send(`<:check:411976443522711552> **User defined had ${args[1]} added/subtracted from their account.**`);
   });
 };
 
