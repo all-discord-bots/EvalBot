@@ -23,18 +23,18 @@ exports.run = async (bot, msg, args) => {
     return;
   }
   if (isNaN(args[1])) {
-    msg.channel.send(`<:redx:411978781226696705> **The amount has to be a number.`);
+    msg.channel.send(`<:redx:411978781226696705> The amount has to be a number.`);
     return; // Remember to return if you are sending an error message! So the rest of the code doesn't run.
   }
   // Finally, run this.. REMEMBER IF you are doing the guild-unique method, make sure you add the guild ID to the end,
   economy.updateBalance(defineduser + msg.guild.id, parseInt(args[1])).then((i) => { // AND MAKE SURE YOU ALWAYS PARSE THE NUMBER YOU ARE ADDING AS AN INTEGER
-    let addsub;
-    if (parseInt(args[1]).startsWith('-')) {
-      addsub = 'subtracted';
-    } else if (!parseInt(args[1]).startsWith('-')) {
-      addsub = 'added';
-    }
-    msg.channel.send(`<:check:411976443522711552> ${addsub} \`$${args[1]}\` to ${msg.guild.members.get(defineduser).user.username}'s account.`);
+    //let addsub;
+    //if (parseInt(args[1]).startsWith('-')) {
+    //  addsub = 'subtracted';
+    //} else if (!parseInt(args[1]).startsWith('-')) {
+    //  addsub = 'added';
+    //}
+    msg.channel.send(`<:check:411976443522711552> added/subtracted \`${args[1]}\` to/from ${msg.guild.members.get(defineduser).user.username}'s account.`);
   });
 };
 
