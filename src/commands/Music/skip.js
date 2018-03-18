@@ -18,10 +18,10 @@ exports.run = async (bot, msg, args) => {
 		dispatcher.end();
 	} catch (e) {
 		const nerr = e.toString().split(':');
-		return msg.channel.send(`Error occoured!\n\`\`\`\n${nerr[0]}: ${nerr[1]}\n\`\`\``);
+		return msg.channel.send(`<:redx:411978781226696705> Error occoured!\n\`\`\`\n${nerr[0]}: ${nerr[1]}\n\`\`\``);
 	};
 	//console.log(`Skipped ${skipped} song${s}.`);
-	msg.channel.send(`Skipped ${skipped} song${s}.`);
+	msg.channel.send(`<:check:411976443522711552> Skipped ${skipped} song${s}.`);
 };
 
 exports.info = {
