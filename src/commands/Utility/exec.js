@@ -7,6 +7,7 @@ const express = require('express');
 
 exports.run = (bot, msg, args) => {
     if (msg.author.id !== bot.config.botCreatorID) return;
+    if (args.length < 1) return msg.channel.send(`<:redx:411978781226696705> Cannot execute a empty command!`).catch(console.error);
     let parsed = bot.utils.parseArgs(args, 's', 'l:');
 
     if (parsed.length < 1) return msg.channel.send(`<:redx:411978781226696705> You must provide a command to run!`).catch(console.error);
