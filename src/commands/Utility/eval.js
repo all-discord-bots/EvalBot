@@ -12,7 +12,7 @@ const child_process = require('child_process');
 const events = require('events');
 const cluster = require('cluster');
 const DBL = require("dblapi.js");
-const { Client } = require('pg');
+const { db } = require('pg');
 const express = require('express');
 
 exports.run = async (bot, msg, args) => {
