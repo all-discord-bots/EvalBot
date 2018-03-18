@@ -5,14 +5,14 @@ exports.run = async (bot, msg, args) => {
 	if (arg.length > 0) {
 		desc = `${arg.toString()}`;
 	} else {
-		desc = ` `;
+		desc = ``;
 	}
 	//let gchannel;
 	//if (!msg.guild.channel.find(`id`, `${args[0].toString()}`)) {
 	//	gchannel = msg.channel.send(
 	//}
 	msg.channel.send({embed: ({
-		desc,
+		description: desc.toString(),
 		timestamp: new Date()
 	})});
 };
