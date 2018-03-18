@@ -171,7 +171,7 @@ bot.once('ready', () => {
 		color: 6732650,
 		title: 'Ready',
 		timestamp: new Date(),
-		description: `Ready in: \`${parseInt(startTime - readyTime)}ms\``
+		description: `Ready in: \`${parseInt(readyTime - startTime)}ms\``
 	})}).catch(console.error);
 });
 
