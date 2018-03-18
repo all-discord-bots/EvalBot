@@ -27,7 +27,7 @@ const snekfetch = require('snekfetch');
 require('./conf/globals.js'); // load global variables file
 
 // begin database
-//const { Client } = require('pg');
+const { Client } = require('pg');
 
 //const clientdb = new Client({
 //	connectionString: process.env.DATABASE_URL,
@@ -173,6 +173,19 @@ bot.once('ready', () => {
 		timestamp: new Date(),
 		description: `Ready in: \`${parseInt(readyTime - startTime)}ms\``
 	})}).catch(console.error);
+	// begin database connection
+	const dbclient = new Client({
+		connectionString: process.env.DATABASE_URL,
+		ssl: true,
+	});
+	dbclient.connect();
+	dbclient.query('SELECT table_schema,table_name FROM information_schema.tables;', (err, res) => {
+		if (err) throw err;
+		for (let row of res.rows) {
+			console.log(JSON.stringify(row));
+		}
+		dbclient.end();
+	});
 });
 
 //bot.on("reconnecting", () => {
