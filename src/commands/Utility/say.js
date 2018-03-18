@@ -1,7 +1,7 @@
 exports.run = async (bot, msg, args) => {
 	let desc;
 	//let argzero = args[0].join(' ');
-	let arg = args[0].join(' ');
+	let arg = args.join(' ');
 	if (arg.length > 0) {
 		desc = `${arg.toString()}`;
 	} else {
