@@ -12,11 +12,13 @@ const child_process = require('child_process');
 const events = require('events');
 const cluster = require('cluster');
 const DBL = require("dblapi.js");
-const { db } = require('pg');
+const { Pool, Client } = require('pg');
 const express = require('express');
 
 exports.run = async (bot, msg, args) => {
     const dbl = new DBL(process.env.DB_TOKEN, bot);
+    const pool = Pool;
+    const dbclient = Client;
     const client = bot;
     const message = msg;
     const guild = msg.guild;
