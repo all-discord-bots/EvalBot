@@ -1,4 +1,5 @@
 exports.run = async (bot, msg) => {
+	if (msg.author.id !== bot.config.botCreatorID) return;
 	let i = 0;
 	let shardids = "";
 	let usersize = parseInt(bot.users.size);
@@ -14,7 +15,7 @@ exports.run = async (bot, msg) => {
 		}
 		bot.shard.broadcastEval('bot.guilds.size').then(results => {
 			let sguildsone = results[i];
-			bot.managers.config.set(`Shard ${i}`, {mcount: sguildsone});
+			bot.managers.config.set(`Shard ${i}`, {'mcount': sguildsone});
 			
 		}).catch(console.error);
 		a++;
