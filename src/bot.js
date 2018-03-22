@@ -75,10 +75,13 @@ bot.setInterval(() => {
 	bot.deleted.clear();
 }, 7200000);
 
+// bot.shard.broadcastEval('bot.guilds.size').then(results => {
 bot.setInterval(() => {
-	dbl.postStats(bot.guilds.size, bot.shard.id, bot.shard.count);
+	dbl.postStats(bot.guilds.size, bot.shard.id, bot.shard.count); // Current shard data
+	//dbl.postStats(results.toString()); // Upload server count per shard
 	console.log('Uploaded Bot Stats!');
 }, 1800000);
+// });
 
 const settings = global.settings = {
 	dataFolder: path.resolve(__dirname, '..', 'data'),
