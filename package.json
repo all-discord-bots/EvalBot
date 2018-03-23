@@ -50,7 +50,7 @@
     "redis-cli": "^1.0.2",
     "cluster": "^0.7.7",
     "dblapi.js": "^1.2.1",
-    "webhook-discord": "^2.1.0",
+    "webhook-discord": "^2.0.6",
     "snekfetch": "^3.6.4",
     "got": "^8.3.0",
     "pornhub-api": "^0.0.1",
