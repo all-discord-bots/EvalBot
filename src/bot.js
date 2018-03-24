@@ -1,6 +1,6 @@
 'use strict';
 
-const debug = false;
+const debug = true;
 const https = require('https');
 const path = require('path');
 const fse = require('fs-extra');
