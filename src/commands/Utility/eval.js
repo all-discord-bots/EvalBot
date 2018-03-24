@@ -36,7 +36,7 @@ exports.run = async (bot, msg, args) => {
     } catch (err) {
         let messageone = err;
         if (err && err.response && err.response.body && err.response.body.message) {
-            messageone = "test";//err.response.body.message;
+            messageone = err.response.body.message;
         }
 
         return errorHandler(msg, bot, code, `${messageone}`);
