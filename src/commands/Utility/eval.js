@@ -12,13 +12,13 @@ const child_process = require('child_process');
 const events = require('events');
 const cluster = require('cluster');
 const DBL = require("dblapi.js");
-const { Pool, Client } = require('pg');
+//const { Pool, Client } = require('pg');
 const express = require('express');
 
 exports.run = async (bot, msg, args) => {
     const dbl = new DBL(process.env.DB_TOKEN, bot);
-    const pool = Pool;
-    const dbclient = Client;
+    //const pool = Pool;
+    //const dbclient = Client;
     const client = bot;
     const message = msg;
     const guild = msg.guild;
@@ -59,10 +59,7 @@ exports.run = async (bot, msg, args) => {
     output = clean(output).replace(new RegExp(bot.utils.quoteRegex(bot.token), 'g'), 'BOT_TOKEN');
 
     const { url } = await bot.utils.gistUpload(output);
-    //if (!url) return msg.channel.send(`<:redx:411978781226696705> Failed to upload!`).catch(console.error);
-    if (!url) {
-        return 'Failed to upload!';
-    }
+    if (!url) return msg.channel.send(`<:redx:411978781226696705> Failed to upload!`).catch(console.error);
 
     msg.channel.send({
         embed: bot.utils.embed('', stripIndents`
