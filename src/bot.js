@@ -28,22 +28,7 @@ require('./conf/globals.js'); // load global variables file
 
 // begin database
 const { Client } = require('pg');
-
-//const clientdb = new Client({
-//	connectionString: process.env.DATABASE_URL,
-//	ssl: true,
-//});
-
-//clientdb.connect();
-
-//clientdb.query('SELECT table_schema,table_name FROM information_schema.tables;', (err, res) => {
-//	if (err) throw err;
-//	for (let row of res.rows) {
-//		console.log(JSON.stringify(row));
-//	}
-//	clientdb.end();
-//});
-// end database
+// End database
 
 let guildArray = bot.guilds.array();
 
@@ -177,7 +162,7 @@ bot.once('ready', () => {
 		description: `Ready in: \`${parseInt(readyTime - startTime)}ms\``
 	})}).catch(console.error);
 	// begin database connection
-	const dbclient = new Client({
+	/*const dbclient = new Client({
 		connectionString: process.env.DATABASE_URL,
 		ssl: true,
 	});
@@ -188,7 +173,7 @@ bot.once('ready', () => {
 			console.log(JSON.stringify(row));
 		}
 		dbclient.end();
-	});
+	});*/
 });
 
 //bot.on("reconnecting", () => {
@@ -404,12 +389,24 @@ process.on('exit', () => {
 
 //bot.on('error', console.error);
 bot.on('error', (e) => {
-	Hook.custom(bot.user.username, `${e}`, "Error", "#EF5350");
+	//Hook.custom(bot.user.username, `${e}`, "Error", "#EF5350");
+	bot.channels.get("415265475895754752").send({embed: ({
+		color: 15684432,
+		timestamp: new Date(),
+		title: `Error`,
+		description: `${e}`
+	})}).catch(console.error);
 	console.error;
 });
 //bot.on('warn', console.warn);
 bot.on('warn', (w) => {
-	Hook.custom(bot.user.username, `${w}`, "Warn", "#C1BD3A");
+	//Hook.custom(bot.user.username, `${w}`, "Warn", "#C1BD3A");
+	bot.channels.get("415265475895754752").send({embed: ({
+		color: 12696890,
+		timestamp: new Date(),
+		title: `Warn`,
+		description: `${w}`
+	})}).catch(console.error);
 	console.warn;
 });
 
