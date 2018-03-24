@@ -59,7 +59,10 @@ exports.run = async (bot, msg, args) => {
     output = clean(output).replace(new RegExp(bot.utils.quoteRegex(bot.token), 'g'), 'BOT_TOKEN');
 
     const { url } = await bot.utils.gistUpload(output);
-    if (!url) return msg.channel.send(`<:redx:411978781226696705> Failed to upload!`).catch(console.error);
+    //if (!url) return msg.channel.send(`<:redx:411978781226696705> Failed to upload!`).catch(console.error);
+    if (!url) {
+        return 'Failed to upload!';
+    }
 
     msg.channel.send({
         embed: bot.utils.embed('', stripIndents`
