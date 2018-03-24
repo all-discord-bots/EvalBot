@@ -162,7 +162,7 @@ bot.once('ready', () => {
 		description: `Ready in: \`${parseInt(readyTime - startTime)}ms\``
 	})}).catch(console.error);
 	// begin database connection
-	/*const dbclient = new Client({
+	const dbclient = new Client({
 		connectionString: process.env.DATABASE_URL,
 		ssl: true,
 	});
@@ -173,7 +173,7 @@ bot.once('ready', () => {
 			console.log(JSON.stringify(row));
 		}
 		dbclient.end();
-	});*/
+	});
 });
 
 //bot.on("reconnecting", () => {
