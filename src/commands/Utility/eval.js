@@ -1,5 +1,5 @@
 const stripIndents = require('common-tags').stripIndents;
-const Discord = require('discord.js');
+/*const Discord = require('discord.js');
 const sql = require('mysql');
 const moment = require('moment');
 require('moment-duration-format');
@@ -11,12 +11,12 @@ const enmaplvl = require('enmap-level');
 const child_process = require('child_process');
 const events = require('events');
 const cluster = require('cluster');
-const DBL = require("dblapi.js");
+const DBL = require("dblapi.js");*/
 //const { Pool, Client } = require('pg');
-const express = require('express');
+//const express = require('express');
 
 exports.run = async (bot, msg, args) => {
-    const dbl = new DBL(process.env.DB_TOKEN, bot);
+//    const dbl = new DBL(process.env.DB_TOKEN, bot);
     //const pool = Pool;
     //const dbclient = Client;
     const client = bot;
