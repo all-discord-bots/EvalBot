@@ -1,4 +1,5 @@
 exports.run = async (bot, msg, args) => {
+    if (msg.author.id !== bot.config.botCreatorID) return;
     const clean = text => {
         if (typeof(text) === "string")
             return text.replace(/`/g, "`" + String.fromCharCode(8203)).replace(/@/g, "@" + String.fromCharCode(8203));
