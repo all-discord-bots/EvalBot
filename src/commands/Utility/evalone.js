@@ -107,9 +107,9 @@ var tokendetection = new RegExp(bot.token, 'gi')
 }
 
 exports.info = {
-    name: 'eval',
+    name: 'evalone',
     aliases: ['js'],
     hidden: true,
-    usage: 'eval <code>',
+    usage: 'evalone <code>',
     description: 'Evaluates arbitrary JavaScript'
 };
