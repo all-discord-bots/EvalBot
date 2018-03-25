@@ -395,7 +395,7 @@ bot.on('error', (e) => {
 		timestamp: new Date(),
 		title: `Error`,
 		description: `${e}`
-	})}).catch(console.error);
+	})});//.catch(console.error);
 	console.error;
 });
 //bot.on('warn', console.warn);
@@ -406,7 +406,7 @@ bot.on('warn', (w) => {
 		timestamp: new Date(),
 		title: `Warn`,
 		description: `${w}`
-	})}).catch(console.error);
+	})});//.catch(console.error);
 	console.warn;
 });
 
@@ -475,7 +475,7 @@ process.on('uncaughtException', (err) => {
 		timestamp: new Date(),
 		title: `Uncaught Exception`,
 		description: `${errorMsg}`
-	})}).catch(console.error);
+	})});//.catch(console.error);
 	logger.severe(errorMsg);
 });
 
@@ -486,8 +486,13 @@ process.on('unhandledRejection', (err) => {
 		timestamp: new Date(),
 		title: `Unhandled Rejection | Uncaught Promise error:`,
 		description: `${err.stack}`
-	})}).catch(console.error);
+	})});//.catch(console.error);
 	logger.severe('Uncaught Promise error: \n' + err.stack);
 });
 
-bot.config && bot.login(process.env.BOT_TOKEN).catch(console.error);
+//bot.config && bot.login(process.env.BOT_TOKEN).catch(console.error);
+bot.config &&& bot.login(process.env.BOT_TOKEN, (error, token) => {
+	// handle error and success
+	if (error) throw error;
+	if (token) console.log(token.toString());
+});
