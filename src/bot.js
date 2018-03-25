@@ -491,8 +491,8 @@ process.on('unhandledRejection', (err) => {
 });
 
 //bot.config && bot.login(process.env.BOT_TOKEN).catch(console.error);
-bot.config &&& bot.login(process.env.BOT_TOKEN, (error, token) => {
+bot.config && bot.login(process.env.BOT_TOKEN, (error, token) => {
 	// handle error and success
 	if (error) throw error;
-	if (token) console.log(token.toString());
+	if (token) console.log(token);
 });
