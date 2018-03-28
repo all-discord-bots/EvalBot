@@ -176,12 +176,10 @@ bot.once('ready', () => {
 	});
 });
 
-/*
 bot.on("guildUnavailable", (guild) => {
 	if (guild.id !== bot.config.botMainServerID) return;
 	bot.users.filter(user => user.id === bot.config.botCreatorID).forEach(user => user.sendMessage(`<@${bot.config.botCreatorID}> \`${guild.name} [${guild.id}]\` is currently unavailable!`));
 });
-*/
 
 //bot.on("reconnecting", () => {
 	//bot.user.setStatus('dnd');
