@@ -93,17 +93,17 @@ class CommandManager {
 
     handleCommand(msg, input) {
         let prefix;
-        if (!bot.config[msg.guild.id]) {
-            prefix = bot.config.prefix;
-        } else if (bot.config[msg.guild.id]) {
-            prefix = bot.config[msg.guild.id].prefix;
+        if (!this.bot.config[msg.guild.id]) {
+            prefix = this.bot.config.prefix; // || `<@{this.bot.id}>`;
+        } else if (this.bot.config[msg.guild.id]) {
+            prefix = this.bot.config[msg.guild.id].prefix; // || `<@${this.bot.id}>`;
         }
         if (!input.startsWith(prefix)) return; // || !input.startsWith(`<@${this.bot.id}>`)) return;
         let split = input.substr(prefix.length).trim().split(' ');
         let split1 = input.substr(prefix).trim().split(' ');
         let spli = new RegExp(prefix, 'gi');
         split1[0].match(spli).length;
-        if (spli > prefix.length || spli < prefix.length) return; // do this if you input the prefix more than one time ex. >>help when the prefix is >help
+        if (spli > prefix.length || spli < prefix.length) return; //|| spli > `<@${this.bot.id}>`.length || spli < `<@${this.bot.id}>`.length) return; // do this if you input the prefix more than one time ex. >>help when the prefix is >help
         let base = split[0].toLowerCase();
         let args = split.slice(1);
 
@@ -138,7 +138,6 @@ class CommandManager {
                 } else if (this.bot.config[msg.guild.id]) {
                     mprefix = this.bot.config[msg.guild.id].prefix;
                 }
-                let hidehidden = 
                 return msg.channel.send(`:question: Did you mean \`${mprefix}${maybe}\`?`).then(m => m.delete(5000));
             } else {
                 let nprefix;
