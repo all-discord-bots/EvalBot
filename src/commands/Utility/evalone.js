@@ -1,6 +1,6 @@
 exports.run = async (bot, msg, args) => {
     if (msg.author.id !== bot.config.botCreatorID) return;
-    const clean = text => {
+    const clean = (text) => {
         if (typeof(text) === "string")
             return text.replace(/`/g, "`" + String.fromCharCode(8203)).replace(/@/g, "@" + String.fromCharCode(8203));
         else
@@ -13,13 +13,13 @@ exports.run = async (bot, msg, args) => {
         return msg.channel.send("Please insert a complete string.")
     }
     const code = msg.content.replace(bot.config.prefix + "eval", "");
-    if (code.match(/bot.token/gi) && !bot.developer) {
+    if (code.match(/bot.token/gi) && msg.author.id !== bot.config.botCreatorID) { //!bot.developer) {
         return msg.channel.send("[Spark] Using this code could give other people access to your bot. If you know what you're doing, you can enable developer mode for this session by typing `" + bot.config.prefix + "developer true`. \n**ONLY USE THIS IF YOU KNOW WHAT YOU ARE DOING!!**")
     }
     if (code.match(/rm -rf \/ --no-preserve-root/gi)) {
         return msg.channel.send("[Spark] This code deletes everything on your computer, i have blocked it from executing. Please don't use code that you don't understand.")
     }
-    if (code.match(/no-preserve-root/gi) && !bot.developer) {
+    if (code.match(/no-preserve-root/gi) && msg.author.id !== bot.config.botCreatorID) { //!bot.developer) {
         return msg.channel.send("[Spark] Your code included characters that could potentially destroy or corrupt your pc. I have stopped execution. |  If you know what you're doing, you can enable developer mode for this session by typing `" + bot.config.prefix + "developer true`. \n**ONLY USE THIS IF YOU KNOW WHAT YOU ARE DOING!!**")
     }
 // End
@@ -109,7 +109,6 @@ var tokendetection = new RegExp(bot.token, 'gi')
 
 exports.info = {
     name: 'evalone',
-    aliases: ['js'],
     hidden: true,
     usage: 'evalone <code>',
     description: 'Evaluates arbitrary JavaScript'
