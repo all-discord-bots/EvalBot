@@ -98,8 +98,7 @@ class CommandManager {
         } else if (bot.config[msg.guild.id]) {
             prefix = bot.config[msg.guild.id].prefix;
         }
-        if (!input.startsWith(prefix)) return;
-
+        if (!input.startsWith(prefix)) return; // || !input.startsWith(`<@${this.bot.id}>`)) return;
         let split = input.substr(prefix.length).trim().split(' ');
         let split1 = input.substr(prefix).trim().split(' ');
         let spli = new RegExp(prefix, 'gi');
@@ -126,7 +125,8 @@ class CommandManager {
 
         if (!shortcut) {
             // If no shortcuts could be found either, try finding the closest command
-            const maybe = didYouMean(name, this.all().map(c => c.info.name), {
+            const maybe = didYouMean(name, this.all().filter(c => !c.info.hidden).map(c => c.info.name), { //didYouMean(name, this.all().map(c => c.info.name), {
+                // the filter should not suggest hidden commands
                 threshold: 5,
                 thresholdType: 'edit-distance'
             });
@@ -138,6 +138,7 @@ class CommandManager {
                 } else if (this.bot.config[msg.guild.id]) {
                     mprefix = this.bot.config[msg.guild.id].prefix;
                 }
+                let hidehidden = 
                 return msg.channel.send(`:question: Did you mean \`${mprefix}${maybe}\`?`).then(m => m.delete(5000));
             } else {
                 let nprefix;
