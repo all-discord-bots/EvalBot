@@ -1,6 +1,7 @@
 const sneckfetch = require('sneckfetch');
 exports.run = async (bot, msg) => {
-  snekfetch.post(`https://discordbots.org/api/bots/398690824721924107/stats`)
+  //snekfetch.get(`https://discordbots.org/api/bots/${bot.id}/stats`)
+  //.
 };
 
 exports.info = {
