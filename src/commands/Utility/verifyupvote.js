@@ -9,6 +9,7 @@ exports.run = async (bot, msg, args) => {
 			msg.channel.send({ embed: ({
 				color: 6732394,
 				title: `Successfully Verified ${msg.author.tag}!`,
+				timestamp: new Date(),
 				description: `<:check:411976443522711552> You have been successfully verified! <:pepoThumbUp:414910627786784768>`
 			})});
 		});
@@ -16,12 +17,14 @@ exports.run = async (bot, msg, args) => {
 		msg.channel.send({ embed: ({
 			color: 15684432,
 			title: `Error Verifying ${msg.author.tag}!`,
+			timestamp: new Date(),
 			description: `<:redx:411978781226696705> You must upvote the bot [here](https://discordbots.org/bot/408741303837392926) first!`
 		})});
 	} else if (dbl.hasVoted(msg.author.id) && msg.member.roles.has(upvoteRole.id)) {
 		msg.channel.send({ embed: ({
 			color: 15684432,
 			title: `Already Verified ${msg.author.tag}!`,
+			timestamp: new Date(),
 			description: `<:redx:411978781226696705> You have already been verified no need to do this again!`
 		})});
 	}
