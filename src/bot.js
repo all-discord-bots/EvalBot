@@ -472,6 +472,37 @@ bot.on('disconnect', event => {
 	}
 });
 
+/*
+function consoleLoggerMsg(type, name, message, stack) {
+	let col;
+	if (type === "Warning") {
+		col = '';
+	} else if (type === "error") {
+		col = 15684432;
+	}
+	bot.channels.get("415265475895754752").send({embed: ({
+		color: col,
+		timestamp: new Date(),
+		title: `${name}`,
+		description: `${stack}`,
+		author: {
+			name: `Console Logger`
+		}, fields: [
+			{
+				name: `__**Error Name**__`,
+				value: `${name.toString()}`
+			}, {
+				name: `__**Error Message**__`,
+				value: `${message.toString()}`
+			}, {
+				name: `__**Stack Trace**__`,
+				value: `${stack.toString()}`
+			}
+		],
+	})});
+}
+*/
+
 process.on('uncaughtException', (err) => {
 	let errorMsg = (err ? err.stack || err : '').toString().replace(new RegExp(`${__dirname}\/`, 'g'), './');
 	//Hook.custom(bot.user.username, `${errorMsg}`, "Uncaught Exception", "#EF5350");
@@ -484,15 +515,23 @@ process.on('uncaughtException', (err) => {
 	logger.severe(errorMsg);
 });
 
+/*
+process.on('warning', (warning) => {
+  console.warn(warning.name);    // Print the warning name
+  console.warn(warning.message); // Print the warning message
+  console.warn(warning.stack);   // Print the stack trace
+});
+*/
+
 process.on('unhandledRejection', (err) => {
 	//Hook.custom(bot.user.username, `${err.stack}`, "Unhandled Rejection | Uncaught Promise error:", "#EF5350");
 	bot.channels.get("415265475895754752").send({embed: ({
 		color: 15684432,
 		timestamp: new Date(),
-		title: `Unhandled Rejection | Uncaught Promise error:`,
+		title: `Unhandled Rejection | Uncaught Promise error:`, //`${err.name} - Unhandled Rejection`,
 		description: `${err.stack}`
 	})});//.catch(console.error);
-	logger.severe('Uncaught Promise error: \n' + err.stack);
+	logger.severe(`Uncaught Promise error:\n${err.stack}`);
 });
 
 //bot.config && bot.login(process.env.BOT_TOKEN).catch(console.error);
