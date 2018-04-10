@@ -472,19 +472,18 @@ bot.on('disconnect', event => {
 	}
 });
 
-/*
-function consoleLoggerMsg(type, name, message, stack) {
+function consoleLoggerMsg(type, title, name, message, stack) {
 	let col;
-	if (type === "Warning") {
-		col = '';
-	} else if (type === "error") {
+	if (type === "w") {
+		col = 12696890;
+	} else if (type === "e") {
 		col = 15684432;
 	}
+	// description: `{stack}`
 	bot.channels.get("415265475895754752").send({embed: ({
 		color: col,
 		timestamp: new Date(),
-		title: `${name}`,
-		description: `${stack}`,
+		title: `${title.toString()}`,
 		author: {
 			name: `Console Logger`
 		}, fields: [
@@ -500,8 +499,8 @@ function consoleLoggerMsg(type, name, message, stack) {
 			}
 		],
 	})});
+	console.log("Console log successfully sent!");
 }
-*/
 
 process.on('uncaughtException', (err) => {
 	let errorMsg = (err ? err.stack || err : '').toString().replace(new RegExp(`${__dirname}\/`, 'g'), './');
@@ -512,16 +511,15 @@ process.on('uncaughtException', (err) => {
 		title: `Uncaught Exception`,
 		description: `${errorMsg}`
 	})});//.catch(console.error);
-	logger.severe(errorMsg);
+	//logger.severe(errorMsg);
 });
 
-/*
 process.on('warning', (warning) => {
-  console.warn(warning.name);    // Print the warning name
-  console.warn(warning.message); // Print the warning message
-  console.warn(warning.stack);   // Print the stack trace
+	consoleLoggerMsg("w", "Warning",`{warning.name}`, `{warning.message}`, `{warning.stack}`);
+	//console.warn(warning.name);    // Print the warning name
+	//console.warn(warning.message); // Print the warning message
+	//console.warn(warning.stack);   // Print the stack trace
 });
-*/
 
 process.on('unhandledRejection', (err) => {
 	//Hook.custom(bot.user.username, `${err.stack}`, "Unhandled Rejection | Uncaught Promise error:", "#EF5350");
@@ -531,7 +529,7 @@ process.on('unhandledRejection', (err) => {
 		title: `Unhandled Rejection | Uncaught Promise error:`, //`${err.name} - Unhandled Rejection`,
 		description: `${err.stack}`
 	})});//.catch(console.error);
-	logger.severe(`Uncaught Promise error:\n${err.stack}`);
+	//logger.severe(`Uncaught Promise error:\n${err.stack}`);
 });
 
 //bot.config && bot.login(process.env.BOT_TOKEN).catch(console.error);
