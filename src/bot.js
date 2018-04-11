@@ -480,7 +480,7 @@ bot.on('disconnect', event => {
 	}
 });
 
-function consoleLoggerMsg(type, title, name, message, stack) {
+/*function consoleLoggerMsg(type, title, name, message, stack) {
 	let col;
 	if (type === "w") {
 		col = 12696890;
@@ -509,40 +509,41 @@ function consoleLoggerMsg(type, title, name, message, stack) {
 	})});
 	console.log("Console log successfully sent!");
 }
+*/
 
 process.on('uncaughtException', (err) => {
 	let errorMsg = (err ? err.stack || err : '').toString().replace(new RegExp(`${__dirname}\/`, 'g'), './');
-	consoleLoggerMsg("e","Uncaught Exception",`${err.name}`,`${err.message}`,`${errorMsg}`);
-	console.error(`Uncaught Exception:\n${errorMsg}`);
+//	consoleLoggerMsg("e","Uncaught Exception",`${err.name}`,`${err.message}`,`${errorMsg}`);
+	//console.error(`Uncaught Exception:\n${errorMsg}`);
 	//Hook.custom(bot.user.username, `${errorMsg}`, "Uncaught Exception", "#EF5350");
-	//bot.channels.get("415265475895754752").send({embed: ({
-	//	color: 15684432,
-	//	timestamp: new Date(),
-	//	title: `Uncaught Exception`,
-	//	description: `${errorMsg}`
-	//})});//.catch(console.error);
-	//logger.severe(errorMsg);
+	bot.channels.get("415265475895754752").send({embed: ({
+		color: 15684432,
+		timestamp: new Date(),
+		title: `Uncaught Exception`,
+		description: `${errorMsg}`
+	})});//.catch(console.error);
+	logger.severe(errorMsg);
 });
 
-process.on('warning', (wrn) => {
-	consoleLoggerMsg("w", "Warning",`${wrn.name}`, `${wrn.message}`, `${wrn.stack}`);
-	console.warn(`Warning:\n${wrn.stack}`);
+//process.on('warning', (wrn) => {
+	//consoleLoggerMsg("w", "Warning",`${wrn.name}`, `${wrn.message}`, `${wrn.stack}`);
+	//console.warn(`Warning:\n${wrn.stack}`);
 	//console.warn(warning.name);    // Print the warning name
 	//console.warn(warning.message); // Print the warning message
 	//console.warn(warning.stack);   // Print the stack trace
-});
+//});
 
 process.on('unhandledRejection', (err) => {
 	//Hook.custom(bot.user.username, `${err.stack}`, "Unhandled Rejection | Uncaught Promise error:", "#EF5350");
-	consoleLoggerMsg("e","Unhandled Rejection | Uncaught Promise error",`${err.name}`,`${err.message}`,`${err.stack}`);
-	//bot.channels.get("415265475895754752").send({embed: ({
-	//	color: 15684432,
-	//	timestamp: new Date(),
-	//	title: `Unhandled Rejection | Uncaught Promise error:`, //`${err.name} - Unhandled Rejection`,
-	//	description: `${err.stack}`
-	//})});//.catch(console.error);
-	console.error(`Uncaught Promise error:\n${err.stack}`);
-	//logger.severe(`Uncaught Promise error:\n${err.stack}`);
+	//consoleLoggerMsg("e","Unhandled Rejection | Uncaught Promise error",`${err.name}`,`${err.message}`,`${err.stack}`);
+	bot.channels.get("415265475895754752").send({embed: ({
+		color: 15684432,
+		timestamp: new Date(),
+		title: `Unhandled Rejection | Uncaught Promise error:`, //`${err.name} - Unhandled Rejection`,
+		description: `${err.stack}`
+	})});//.catch(console.error);
+	//console.error(`Uncaught Promise error:\n${err.stack}`);
+	logger.severe(`Uncaught Promise error:\n${err.stack}`);
 });
 
 //bot.config && bot.login(process.env.BOT_TOKEN).catch(console.error);
