@@ -9,12 +9,6 @@ exports.run = async (bot, msg, args) => {
 	let gbot = msg.guild.members.get(bot.user.id);
 	if (!gbot.hasPermission(0x00100000)) return msg.channel.send(`<:redx:411978781226696705> I am missing \`Connect\` permissions!`).catch(console.error);
 	if (!gbot.hasPermission(0x00200000)) return msg.channel.send(`<:redx:411978781226696705> I am missing \`Speak\` permissions!`).catch(console.error);
-	let gprefix;
-	if (bot.config[msg.guild.id]) {
-		gprefix = bot.config[msg.guild.id].prefix;
-	} else if (!bot.config[msg.guild.id]) {
-		gprefix = bot.config.prefix;
-	}
 	let arg = args.join(' ');
 	if (arg.length < 1) return msg.channel.send(`<:redx:411978781226696705> You must provide a url or search string!`).catch(console.error);
 	if (!msg.member.voiceChannel) return msg.channel.send(`<:redx:411978781226696705> You must be in a voice channel!`).catch(console.error);
@@ -68,7 +62,6 @@ exports.run = async (bot, msg, args) => {
 	
 	var musicbot = {
 	  youtubeKey: process.env.YOUTUBE_API_KEY, // A YouTube Data API3 key. Required to run.
-	  prefix: gprefix, // The prefix of the bot. Defaults to "!".
 	  thumbnailType: 'high', // Type of thumbnails to use for videos on embeds. Can equal: default, medium, high.
 	  global: false, // Whether to use one global queue or server specific ones.
 	  maxQueueSize: 100, // Max queue size allowed. Defaults 20.
