@@ -10,6 +10,12 @@ exports.run = async (bot, msg, args) => {
 		await machineId().then((id) => {
 			// ({original: true})
 			// send pastebin here
+			msg.author.send({embed:({
+				color: 6732394,
+				title: `Whitelist Information`,
+				timestamp: new Date(),
+				description: `HWID: \`${id}\``
+			})});
 		}).catch(err => console.error(err));
 		guser.addRole(whitelistedRole).then(() => {
 			msg.channel.send({ embed: ({
