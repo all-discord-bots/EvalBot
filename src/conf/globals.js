@@ -10,6 +10,7 @@ const builtinradio = global.builtinradio = {
 	'christian teaching and talk': 'http://17553.live.streamtheworld.com/WAVAFM_SC',
 	'todays christian music': 'http://14223.live.streamtheworld.com/TCMIR_SC',
 	'openfm 100% metallica': 'http://gr-relay-13.gaduradio.pl/62',
-	'north pole radio': 'http://85.25.217.22:8050/christmas'
+	'north pole radio': 'http://85.25.217.22:8050/christmas',
+	'metal rock fm': 'http://192.99.62.212:9408/stream'
 };
 // 'monstercat': 'https://www.youtube.com/watch?v=ueupsBPNkSc'
