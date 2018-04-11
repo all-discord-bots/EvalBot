@@ -1,10 +1,16 @@
+require('../../conf/globals.js');
 exports.run = async (bot, msg) => {
-	if (msg.author.id !== bot.config.botCreatorID) return;
-	console.log('Cleared queue.');
+	musicqueue[msg.guild.id]['loopqueue'] = false;
+	musicqueue[msg.guild.id]['loopsong'] = false;
+	if (musicqueue[msg.guild.id]['music'].length > 0) {
+		musicqueue[msg.guild.id]['music'].splice(0, musicqueue[msg.guild.id]['music'].length);
+		msg.channel.send(`<:check:411976443522711552> Queue has been cleared!`);
+	} else {
+		msg.channel.send(`<:redx:411978781226696705> Queue is already empty!`);
+	}
 };
 
 exports.info = {
-	hidden: true,
 	name: 'clearqueue',
 	usage: 'clearqueue',
 	description: 'Clears the current queue.'
