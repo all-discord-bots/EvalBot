@@ -308,9 +308,9 @@ bot.on('message', (msg) => {
 	//if (!musicqueue[msg.guild.id]['shuffle']) musicqueue[msg.guild.id]['shuffle'] = false;
 	if (musicqueue[msg.guild.id]['loopqueue'] === undefined) musicqueue[msg.guild.id]['loopqueue'] = false;
 	if (musicqueue[msg.guild.id]['loopsong'] === undefined) musicqueue[msg.guild.id]['loopsong'] = false;
-	if (songqueue[msg.guild.id] === undefined) songqueue[msg.guild.id] = [];
 	if (musicqueue[msg.guild.id]['streaming'] === undefined) musicqueue[msg.guild.id]['streaming'] = false;
 	if (musicqueue[msg.guild.id]['shuffle'] === undefined) musicqueue[msg.guild.id]['shuffle'] = false;
+	if (songqueue[msg.guild.id] === undefined) songqueue[msg.guild.id] = [];
 	// End loading the music queue items
 	let gmsg = msg.content.toLowerCase().split(' ');
 	if (msg.guild.id === bot.config.botMainServerID && gmsg.startsWith('xd') && gmsg.length === 1) {
