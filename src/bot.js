@@ -288,15 +288,23 @@ bot.on('message', (msg) => {
 		if (msg.channel.type == "dm") return msg.channel.send(`<:redx:411978781226696705> This command can only be used in a server.`).catch(console.error);
 	}
 	// Load the music queue items
-	if (!musicqueue[msg.guild.id]) musicqueue[msg.guild.id] = [];
-	if (!musicqueue[msg.guild.id]['music']) musicqueue[msg.guild.id]['music'] = [];
-	if (!musicqueue[msg.guild.id]['looped']) musicqueue[msg.guild.id]['looped'] = false;
-	if (!musicqueue[msg.guild.id]['loopone']) musicqueue[msg.guild.id]['loopone'] = false;
-	if (!songqueue[msg.guild.id]) songqueue[msg.guild.id] = [];
-	if (!musicqueue[msg.guild.id]['streaming']) musicqueue[msg.guild.id]['streaming'] = false;
-	if (!musicqueue[msg.guild.id]['shuffle']) musicqueue[msg.guild.id]['shuffle'] = false;
+	//if (!musicqueue[msg.guild.id]) musicqueue[msg.guild.id] = [];
+	if (musicqueue[msg.guild.id] === undefined) musicqueue[msg.guild.id] = [];
+	//if (!musicqueue[msg.guild.id]['music']) musicqueue[msg.guild.id]['music'] = [];
+	if (musicqueue[msg.guild.id]['music'] === undefined) musicqueue[msg.guild.id]['music'] = [];
+	//if (!musicqueue[msg.guild.id]['looped']) musicqueue[msg.guild.id]['looped'] = false;
+	//if (!musicqueue[msg.guild.id]['loopone']) musicqueue[msg.guild.id]['loopone'] = false;
+	//if (!songqueue[msg.guild.id]) songqueue[msg.guild.id] = [];
+	//if (!musicqueue[msg.guild.id]['streaming']) musicqueue[msg.guild.id]['streaming'] = false;
+	//if (!musicqueue[msg.guild.id]['shuffle']) musicqueue[msg.guild.id]['shuffle'] = false;
+	if (musicqueue[msg.guild.id]['looped'] === undefined) musicqueue[msg.guild.id]['looped'] = false;
+	if (musicqueue[msg.guild.id]['loopone'] === undefined) musicqueue[msg.guild.id]['loopone'] = false;
+	if (songqueue[msg.guild.id] === undefined) songqueue[msg.guild.id] = [];
+	if (musicqueue[msg.guild.id]['streaming'] === undefined) musicqueue[msg.guild.id]['streaming'] = false;
+	if (musicqueue[msg.guild.id]['shuffle'] === undefined) musicqueue[msg.guild.id]['shuffle'] = false;
 	// End loading the music queue items
-	if (msg.guild.id === bot.config.botMainServerID &&  msg.content.toLowerCase().startsWith('xd')) {
+	let gmsg = msg.content.toLowerCase().split(' ');
+	if (msg.guild.id === bot.config.botMainServerID && gmsg.startsWith('xd') && gmsg.length === 1) {
 		msg.delete().then(msg => {
 			msg.channel.send(`<:blobDerp:413114089225846785>`);
 		}).catch(console.error);
@@ -489,13 +497,13 @@ function consoleLoggerMsg(type, title, name, message, stack) {
 		}, fields: [
 			{
 				name: `__**Error Name**__`,
-				value: `${name.toString()}`
+				value: name.toString() || `\`N/A\``
 			}, {
 				name: `__**Error Message**__`,
-				value: `${message.toString()}`
+				value: message.toString() || `\`N/A\``
 			}, {
 				name: `__**Stack Trace**__`,
-				value: `${stack.toString()}`
+				value: stack.toString() || `\`N/A\``
 			}
 		],
 	})});
