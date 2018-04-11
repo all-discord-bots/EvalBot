@@ -158,7 +158,7 @@ exports.run = async (bot, msg, args) => {
 						if (musicqueue[msg.guild.id]['loopqueue'] && !musicqueue[msg.guild.id]['loopsong']) {
 							executeQueue(musicqueue[msg.guild.id]['music']);
 						} else if (!musicqueue[msg.guild.id]['loopqueue'] && musicqueue[msg.guild.id]['loopsong']) {
-							executeQueue(musicqueue[msg.guild.id]['music'][0]);
+							executeQueue(musicqueue[msg.guild.id]['music'][0]); // do this until I have it remove the current playing item
 						} else {
 							if (queue.length > 0) {
 								queue.shift(); // Remove the song from the queue
