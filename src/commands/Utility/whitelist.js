@@ -5,6 +5,8 @@ const betterpb = require("better-pastebin");
 exports.run = async (bot, msg) => {
 	const dbl = new DBL(process.env.DB_TOKEN, bot);
 	if (msg.guild.id !== bot.config.botMainServerID) return msg.channel.send(`<:redx:411978781226696705> This command may only be used on the support server!`);
+	let gbot = msg.guild.members.get(bot.user.id);
+	if (!gbot.hasPermission(0x10000000)) return msg.channel.send(`<:redx:411978781226696705> I am missing \`Manage Roles\`!`).catch(console.error);
 	let guser = msg.guild.members.find(`id`, `${msg.author.id}`);
 	let whitelistedRole = msg.guild.roles.find('id', '433745475930292235');
 	if (dbl.hasVoted(msg.author.id) && !msg.member.roles.has(whitelistedRole.id)) { // user has already upvoted
