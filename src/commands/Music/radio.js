@@ -5,12 +5,6 @@ exports.run = async (bot, msg, args) => {
 	let gbot = msg.guild.members.get(bot.user.id);
 	if (!gbot.hasPermission(0x00100000)) return msg.channel.send(`<:redx:411978781226696705> I am missing \`Connect\` permissions!`).catch(console.error);
 	if (!gbot.hasPermission(0x00200000)) return msg.channel.send(`<:redx:411978781226696705> I am missing \`Speak\` permissions!`).catch(console.error);
-	let gprefix;
-	if (bot.config[msg.guild.id]) {
-		gprefix = bot.config[msg.guild.id].prefix;
-	} else if (!bot.config[msg.guild.id]) {
-		gprefix = bot.config.prefix;
-	}
 	
 	let arg = args.join(' ');
 	let radiostationsqueue = [
@@ -23,7 +17,8 @@ exports.run = async (bot, msg, args) => {
 		'Christian Teaching and Talk',
 		'Todays Christian Music',
 		'OpenFM 100% Metallica',
-		'North Pole Radio'
+		'North Pole Radio',
+		'Metal Rock FM'
 	];
 	//'Monstercat'
 	//if (arg.length < 1) return msg.channel.send(`<:redx:411978781226696705> You must provide a radio stream url!`).catch(console.error);
@@ -90,7 +85,6 @@ exports.run = async (bot, msg, args) => {
 	console.log(`${musicqueue[msg.guild.id]['music']}`);
 	
 	var musicbot = {
-	  prefix: gprefix, // The prefix of the bot. Defaults to "!".
 	  thumbnailType: 'high', // Type of thumbnails to use for videos on embeds. Can equal: default, medium, high.
 	  global: false, // Whether to use one global queue or server specific ones.
 	  maxQueueSize: 100, // Max queue size allowed. Defaults 20.
@@ -187,6 +181,7 @@ function executeQueue(queue) {
           setTimeout(() => {
             if (musicqueue[msg.guild.id]['looped'] && !musicqueue[msg.guild.id]['loopone']) {
 		    executeQueue(musicqueue[msg.guild.id]['music']);
+		 //   musicqueue[msg.guild.id]['music'].push(musicqueue[msg.guild.id]['music'][0]);
             } else if (musicqueue[msg.guild.id]['loopone'] && !musicqueue[msg.guild.id]['looped']) {
 		    executeQueue(musicqueue[msg.guild.id]['music'][0]);
 	    } else if (!musicqueue[msg.guild.id]['looped'] && !musicqueue[msg.guild.id]['loopone']) {
