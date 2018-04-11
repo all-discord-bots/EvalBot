@@ -65,7 +65,8 @@
     "youtube-info": "^1.2.0",
     "time-convert": "^0.0.2",
     "datadog-metrics": "^0.8.1",
-    "node-machine-id": "^1.1.10"
+    "node-machine-id": "^1.1.10",
+    "better-pastebin": "^0.4.1"
   },
   "engines": {
     "npm": "5.8.0"
