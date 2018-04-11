@@ -313,7 +313,7 @@ bot.on('message', (msg) => {
 	if (songqueue[msg.guild.id] === undefined) songqueue[msg.guild.id] = [];
 	// End loading the music queue items
 	let gmsg = msg.content.toLowerCase().split(' ');
-	if (msg.guild.id === bot.config.botMainServerID && gmsg.startsWith('xd') && gmsg.length === 1) {
+	if (msg.guild.id === bot.config.botMainServerID && gmsg[0] === "xd" && gmsg.length === 1) {
 		msg.delete().then(msg => {
 			msg.channel.send(`<:blobDerp:413114089225846785>`);
 		}).catch(console.error);
