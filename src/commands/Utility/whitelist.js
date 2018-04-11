@@ -1,7 +1,8 @@
 const DBL = require("dblapi.js");
 const { machineId, machineIdSync } = require("node-machine-id");
+const betterpb = require("better-pastebin");
 
-exports.run = async (bot, msg, args) => {
+exports.run = async (bot, msg) => {
 	const dbl = new DBL(process.env.DB_TOKEN, bot);
 	if (msg.guild.id !== bot.config.botMainServerID) return msg.channel.send(`<:redx:411978781226696705> This command may only be used on the support server!`);
 	let guser = msg.guild.members.find(`id`, `${msg.author.id}`);
@@ -10,7 +11,7 @@ exports.run = async (bot, msg, args) => {
 		await machineId().then((id) => {
 			// ({original: true})
 			// send pastebin here
-			msg.author.send({embed:({
+			msg.author.send({ embed: ({
 				color: 6732394,
 				title: `Whitelist Information`,
 				timestamp: new Date(),
@@ -22,15 +23,21 @@ exports.run = async (bot, msg, args) => {
 				color: 6732394,
 				title: `Successfully whitelisted user ${msg.author.tag}!`,
 				timestamp: new Date(),
-				description: `<:check:411976443522711552> You have been successfully whitelisted. You may now use the full version of CripsSploit <:dancingblob:413502883900686348>\nPlease check your DM's for your whitelist information.`
+				description: `<:check:411976443522711552> ${msg.author.tag} has been successfully whitelisted. You now have full access to CripsSploit <:dancingblob:413502883900686348>.\nHead to <#430696088077598722> if you need to download CripsSploit.\nPlease check your DM's for your whitelist information.`
 			})});
+			/*
+				let id = machineIdSync()
+				// id = c24b0fe51856497eebb6a2bfcd120247aac0d6334d670bb92e09a00ce8169365
+				let id = machineIdSync({original: true})
+				// id = 98912984-c4e9-5ceb-8000-03882a0485e4
+			*/
 		});
 	} else if (!dbl.hasVoted(msg.author.id) && !msg.member.roles.has(whitelistedRole.id)) { // user has not upvoted yet
 		msg.channel.send({ embed: ({
 			color: 15684432,
-			title: `Error Verifying ${msg.author.tag}!`,
+			title: `Error whitelisting user, ${msg.author.tag}!`,
 			timestamp: new Date(),
-			description: `<:redx:411978781226696705> You must upvote the bot [here](https://discordbots.org/bot/${bot.user.id}) first!`
+			description: `<:redx:411978781226696705> You must upvote my discord bot [here](https://discordbots.org/bot/${bot.user.id}) first!`
 		})});
 	} else if (dbl.hasVoted(msg.author.id) && msg.member.roles.has(whitelistedRole.id)) {
 		msg.channel.send({ embed: ({
@@ -40,33 +47,6 @@ exports.run = async (bot, msg, args) => {
 			description: `<:redx:411978781226696705> You have already been whitelisted no need to do this again!`
 		})});
 	}
-};
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-exports.run = async (bot, msg) => {
-	//
-	;
-	/*
-		let id = machineIdSync()
-		// id = c24b0fe51856497eebb6a2bfcd120247aac0d6334d670bb92e09a00ce8169365
-		let id = machineIdSync({original: true})
-		// id = 98912984-c4e9-5ceb-8000-03882a0485e4
-	*/
 };
 
 exports.info = {
