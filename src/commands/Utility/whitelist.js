@@ -1,16 +1,22 @@
 const DBL = require("dblapi.js");
+const { machineId, machineIdSync } = require("node-machine-id");
+
 exports.run = async (bot, msg, args) => {
 	const dbl = new DBL(process.env.DB_TOKEN, bot);
 	if (msg.guild.id !== bot.config.botMainServerID) return msg.channel.send(`<:redx:411978781226696705> This command may only be used on the support server!`);
 	let guser = msg.guild.members.find(`id`, `${msg.author.id}`);
-	let whitelistedRole = msg.guild.roles.find('id', '414897780553941002');
+	let whitelistedRole = msg.guild.roles.find('id', '433745475930292235');
 	if (dbl.hasVoted(msg.author.id) && !msg.member.roles.has(whitelistedRole.id)) { // user has already upvoted
+		await machineId().then((id) => {
+			// ({original: true})
+			// send pastebin here
+		}).catch(err => console.error(err));
 		guser.addRole(whitelistedRole).then(() => {
 			msg.channel.send({ embed: ({
 				color: 6732394,
 				title: `Successfully whitelisted user ${msg.author.tag}!`,
 				timestamp: new Date(),
-				description: `<:check:411976443522711552> You have been successfully whitelisted. You may now use the full version of CripsSploit <:dancingblob:413502883900686348>`
+				description: `<:check:411976443522711552> You have been successfully whitelisted. You may now use the full version of CripsSploit <:dancingblob:413502883900686348>\nPlease check your DM's for your whitelist information.`
 			})});
 		});
 	} else if (!dbl.hasVoted(msg.author.id) && !msg.member.roles.has(whitelistedRole.id)) { // user has not upvoted yet
@@ -23,7 +29,7 @@ exports.run = async (bot, msg, args) => {
 	} else if (dbl.hasVoted(msg.author.id) && msg.member.roles.has(whitelistedRole.id)) {
 		msg.channel.send({ embed: ({
 			color: 15684432,
-			title: `Already Verified ${msg.author.tag}!`,
+			title: `User ${msg.author.tag}, has already been whitelisted!`,
 			timestamp: new Date(),
 			description: `<:redx:411978781226696705> You have already been whitelisted no need to do this again!`
 		})});
@@ -45,14 +51,10 @@ exports.run = async (bot, msg, args) => {
 
 
 
-const { machineId, machineIdSync } = require("node-machine-id");
 
 exports.run = async (bot, msg) => {
 	//
-	await machineId().then((id) => {
-		// ({original: true})
-		//
-	}).catch(err => console.log(err));
+	;
 	/*
 		let id = machineIdSync()
 		// id = c24b0fe51856497eebb6a2bfcd120247aac0d6334d670bb92e09a00ce8169365
