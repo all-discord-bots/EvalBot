@@ -2,6 +2,8 @@ const DBL = require("dblapi.js");
 exports.run = async (bot, msg, args) => {
 	const dbl = new DBL(process.env.DB_TOKEN, bot);
 	if (msg.guild.id !== bot.config.botMainServerID) return msg.channel.send(`<:redx:411978781226696705> This command may only be used on the support server!`);
+	let gbot = msg.guild.members.get(bot.user.id);
+	if (!gbot.hasPermission(0x10000000)) return msg.channel.send(`<:redx:411978781226696705> I am missing \`Manage Roles\`!`).catch(console.error);
 	let guser = msg.guild.members.find(`id`, `${msg.author.id}`);
 	let upvoteRole = msg.guild.roles.find('id', '414897780553941002');
 	if (dbl.hasVoted(msg.author.id) && !msg.member.roles.has(upvoteRole.id)) { // user has already upvoted
