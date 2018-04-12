@@ -294,7 +294,8 @@ bot.on('message', (msg) => {
 		if (msg.author.bot) return;
 	}
 	if (!bot.config.allowDMCmds) {
-		if (msg.channel.type == "dm") return msg.channel.send(`<:redx:411978781226696705> This command can only be used in a server.`).catch(console.error);
+		let mg = msg.content.toLowerCase().split(' ');
+		if (mg.length > bot.config.prefix.length && mg[0].toString() !== `${bot.config.prefix}whitelist` && msg.channel.type == "dm") return msg.channel.send(`<:redx:411978781226696705> This command can only be used in a server.`).catch(console.error);
 	}
 	// Load the music queue items
 	//if (!musicqueue[msg.guild.id]) musicqueue[msg.guild.id] = [];
