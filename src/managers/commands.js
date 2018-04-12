@@ -97,7 +97,10 @@ class CommandManager {
             prefix = this.bot.config.prefix; // || `<@{this.bot.id}>`;
         } else if (this.bot.config[msg.guild.id]) {
             prefix = this.bot.config[msg.guild.id].prefix; // || `<@${this.bot.id}>`;
+        } else {
+            prefix = this.bot.config.prefix;
         }
+        
         if (!input.startsWith(prefix)) return; // || !input.startsWith(`<@${this.bot.id}>`)) return;
         let split = input.substr(prefix.length).trim().split(' ');
         let split1 = input.substr(prefix).trim().split(' ');
