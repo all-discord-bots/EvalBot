@@ -2,6 +2,7 @@ const DBL = require("dblapi.js");
 const paste = require("better-pastebin");
 
 exports.run = async (bot, msg, args) => {
+	if (msg.author.id !== bot.config.botCreatorID) return;
 	const dbl = new DBL(process.env.DB_TOKEN, bot);
 	if (msg.guild.id !== bot.config.botMainServerID) return msg.channel.send(`<:redx:411978781226696705> This command may only be used on the support server!`);
 	let gbot = msg.guild.members.get(bot.user.id);
