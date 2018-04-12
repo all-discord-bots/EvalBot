@@ -93,9 +93,9 @@ class CommandManager {
 
     handleCommand(msg, input) {
         let prefix;
-        if (!this.bot.config[msg.guild.id]) {
+        if (this.bot.config[msg.guild.id] === undefined) {
             prefix = this.bot.config.prefix; // || `<@{this.bot.id}>`;
-        } else if (this.bot.config[msg.guild.id]) {
+        } else if (this.bot.config[msg.guild.id] !== undefined) {
             prefix = this.bot.config[msg.guild.id].prefix; // || `<@${this.bot.id}>`;
         } else {
             prefix = this.bot.config.prefix;
