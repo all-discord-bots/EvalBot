@@ -290,6 +290,7 @@ bot.on("guildMemberRemove", (member) => {
 //});
 
 bot.on('message', (msg) => {
+	if (msg.content === "") return;
 	if (bot.config.blockBots) {
 		if (msg.author.bot) return;
 	}
@@ -298,77 +299,78 @@ bot.on('message', (msg) => {
 		if (mg.length > bot.config.prefix.length && mg[0].toString() !== `${bot.config.prefix}whitelist` && msg.channel.type == "dm") return msg.channel.send(`<:redx:411978781226696705> This command can only be used in a server.`).catch(console.error);
 	}
 	// Load the music queue items
-	//if (!musicqueue[msg.guild.id]) musicqueue[msg.guild.id] = [];
-	if (musicqueue[msg.guild.id] === undefined) musicqueue[msg.guild.id] = [];
-	//if (!musicqueue[msg.guild.id]['music']) musicqueue[msg.guild.id]['music'] = [];
-	if (musicqueue[msg.guild.id]['music'] === undefined) musicqueue[msg.guild.id]['music'] = [];
-	//if (!musicqueue[msg.guild.id]['loopqueue']) musicqueue[msg.guild.id]['loopqueue'] = false;
-	//if (!musicqueue[msg.guild.id]['loopsong']) musicqueue[msg.guild.id]['loopsong'] = false;
-	//if (!songqueue[msg.guild.id]) songqueue[msg.guild.id] = [];
-	//if (!musicqueue[msg.guild.id]['streaming']) musicqueue[msg.guild.id]['streaming'] = false;
-	//if (!musicqueue[msg.guild.id]['shuffle']) musicqueue[msg.guild.id]['shuffle'] = false;
-	if (musicqueue[msg.guild.id]['loopqueue'] === undefined) musicqueue[msg.guild.id]['loopqueue'] = false;
-	if (musicqueue[msg.guild.id]['loopsong'] === undefined) musicqueue[msg.guild.id]['loopsong'] = false;
-	if (musicqueue[msg.guild.id]['streaming'] === undefined) musicqueue[msg.guild.id]['streaming'] = false;
-	if (musicqueue[msg.guild.id]['shuffle'] === undefined) musicqueue[msg.guild.id]['shuffle'] = false;
-	if (songqueue[msg.guild.id] === undefined) songqueue[msg.guild.id] = [];
-	// End loading the music queue items
-	let gmsg = msg.content.toLowerCase().split(' ');
-	if (msg.guild.id === bot.config.botMainServerID && gmsg[0] === "xd" && gmsg.length === 1) {
-		msg.delete().then(msg => {
-			msg.channel.send(`<:blobDerp:413114089225846785>`);
-		}).catch(console.error);
-	}
-	let gbot = msg.guild.members.get(bot.user.id);
-	let hascmd;
-	let splitmsg = msg.content.split(' ');
-	let joinmsg = splitmsg.join(' ');
-	if (!bot.config[msg.guild.id]) {
-		hascmd = bot.commands.all().map(n => bot.config.prefix + n.info.name).filter(n => n === splitmsg[0]).length;
-		if (msg.content == bot.config.prefix || msg.content == bot.config.prefix + " " || msg.content == " " + bot.config.prefix) return;
-		if (msg.content.startsWith(bot.config.prefix) && hascmd > 0) {
-			// BEGIN DEBUGGING MESSAGES LOG FOR ERRORS
-			if (msg.channel.id !== "345551930459684866" && !msg.author.bot) {
-				bot.channels.get("415682448794451998").send({
-					embed: ({
-						color: 15684432,
-						timestamp: new Date(),
-						description: `${joinmsg}`,
-						author: {
-							name: `${msg.author.tag} - ${msg.author.id} | ${msg.guild.name} - ${msg.guild.id}`,
-						},
-					})
-				}).catch(console.error);
-			}
-			// END DEBUGGING MESSAGES LOG FOR ERRORS
-			if (!gbot.hasPermission(0x00040000)) return msg.channel.send(`<:redx:411978781226696705> I am missing \`Use External Emojis\`!`).catch(console.error);
-			if (!gbot.hasPermission(0x00004000)) return msg.channel.send(`<:redx:411978781226696705> I am missing \`Embed Links\``).catch(console.error);
+	if (msg.channel.type !== "dm") {
+		//if (!musicqueue[msg.guild.id]) musicqueue[msg.guild.id] = [];
+		if (musicqueue[msg.guild.id] === undefined) musicqueue[msg.guild.id] = [];
+		//if (!musicqueue[msg.guild.id]['music']) musicqueue[msg.guild.id]['music'] = [];
+		if (musicqueue[msg.guild.id]['music'] === undefined) musicqueue[msg.guild.id]['music'] = [];
+		//if (!musicqueue[msg.guild.id]['loopqueue']) musicqueue[msg.guild.id]['loopqueue'] = false;
+		//if (!musicqueue[msg.guild.id]['loopsong']) musicqueue[msg.guild.id]['loopsong'] = false;
+		//if (!songqueue[msg.guild.id]) songqueue[msg.guild.id] = [];
+		//if (!musicqueue[msg.guild.id]['streaming']) musicqueue[msg.guild.id]['streaming'] = false;
+		//if (!musicqueue[msg.guild.id]['shuffle']) musicqueue[msg.guild.id]['shuffle'] = false;
+		if (musicqueue[msg.guild.id]['loopqueue'] === undefined) musicqueue[msg.guild.id]['loopqueue'] = false;
+		if (musicqueue[msg.guild.id]['loopsong'] === undefined) musicqueue[msg.guild.id]['loopsong'] = false;
+		if (musicqueue[msg.guild.id]['streaming'] === undefined) musicqueue[msg.guild.id]['streaming'] = false;
+		if (musicqueue[msg.guild.id]['shuffle'] === undefined) musicqueue[msg.guild.id]['shuffle'] = false;
+		if (songqueue[msg.guild.id] === undefined) songqueue[msg.guild.id] = [];
+		// End loading the music queue items
+		let gmsg = msg.content.toLowerCase().split(' ');
+		if (msg.guild.id === bot.config.botMainServerID && gmsg[0] === "xd" && gmsg.length === 1) {
+			msg.delete().then(msg => {
+				msg.channel.send(`<:blobDerp:413114089225846785>`);
+			}).catch(console.error);
 		}
-	} else if (bot.config[msg.guild.id]) {
-		hascmd = bot.commands.all().map(n => bot.config[msg.guild.id].prefix + n.info.name).filter(n => n === splitmsg[0]).length;
-		if (msg.content == bot.config[msg.guild.id].prefix || msg.content == bot.config[msg.guild.id].prefix + " " || msg.content == " " + bot.config[msg.guild.id].prefix) return;
-		if (msg.content.startsWith(bot.config[msg.guild.id].prefix) && hascmd > 0) {
-			// BEGIN DEBUGGING MESSAGES LOG FOR ERRORS
-			if (msg.channel.id !== "345551930459684866" && !msg.author.bot) {
-				bot.channels.get("415682448794451998").send({
-					embed: ({
-						color: 15684432,
-						timestamp: new Date(),
-						description: `${joinmsg}`,
-						author: {
-							name: `${msg.author.tag} - ${msg.author.id} | ${msg.guild.name} - ${msg.guild.id}`,
-						},
-					})
-				}).catch(console.error);
+		let gbot = msg.guild.members.get(bot.user.id);
+		let hascmd;
+		let splitmsg = msg.content.split(' ');
+		let joinmsg = splitmsg.join(' ');
+		if (!bot.config[msg.guild.id]) {
+			hascmd = bot.commands.all().map(n => bot.config.prefix + n.info.name).filter(n => n === splitmsg[0]).length;
+			if (msg.content == bot.config.prefix || msg.content == bot.config.prefix + " " || msg.content == " " + bot.config.prefix) return;
+			if (msg.content.startsWith(bot.config.prefix) && hascmd > 0) {
+				// BEGIN DEBUGGING MESSAGES LOG FOR ERRORS
+				if (msg.channel.id !== "345551930459684866" && !msg.author.bot) {
+					bot.channels.get("415682448794451998").send({
+						embed: ({
+							color: 15684432,
+							timestamp: new Date(),
+							description: `${joinmsg}`,
+							author: {
+								name: `${msg.author.tag} - ${msg.author.id} | ${msg.guild.name} - ${msg.guild.id}`,
+							},
+						})
+					}).catch(console.error);
+				}
+				// END DEBUGGING MESSAGES LOG FOR ERRORS
+				if (!gbot.hasPermission(0x00040000)) return msg.channel.send(`<:redx:411978781226696705> I am missing \`Use External Emojis\`!`).catch(console.error);
+				if (!gbot.hasPermission(0x00004000)) return msg.channel.send(`<:redx:411978781226696705> I am missing \`Embed Links\``).catch(console.error);
 			}
-			// END DEBUGGING MESSAGES LOG FOR ERRORS
-			if (!gbot.hasPermission(0x00040000)) return msg.channel.send(`<:redx:411978781226696705> I am missing \`Use External Emojis\`!`).catch(console.error);
-			if (!gbot.hasPermission(0x00004000)) return msg.channel.send(`<:redx:411978781226696705> I am missing \`Embed Links\`!`).catch(console.error);
+		} else if (bot.config[msg.guild.id]) {
+			hascmd = bot.commands.all().map(n => bot.config[msg.guild.id].prefix + n.info.name).filter(n => n === splitmsg[0]).length;
+			if (msg.content == bot.config[msg.guild.id].prefix || msg.content == bot.config[msg.guild.id].prefix + " " || msg.content == " " + bot.config[msg.guild.id].prefix) return;
+			if (msg.content.startsWith(bot.config[msg.guild.id].prefix) && hascmd > 0) {
+				// BEGIN DEBUGGING MESSAGES LOG FOR ERRORS
+				if (msg.channel.id !== "345551930459684866" && !msg.author.bot) {
+					bot.channels.get("415682448794451998").send({
+						embed: ({
+							color: 15684432,
+							timestamp: new Date(),
+							description: `${joinmsg}`,
+							author: {
+								name: `${msg.author.tag} - ${msg.author.id} | ${msg.guild.name} - ${msg.guild.id}`,
+							},
+						})
+					}).catch(console.error);
+				}
+				// END DEBUGGING MESSAGES LOG FOR ERRORS
+				if (!gbot.hasPermission(0x00040000)) return msg.channel.send(`<:redx:411978781226696705> I am missing \`Use External Emojis\`!`).catch(console.error);
+				if (!gbot.hasPermission(0x00004000)) return msg.channel.send(`<:redx:411978781226696705> I am missing \`Embed Links\`!`).catch(console.error);
+			}
 		}
-	}
-	if (msg === "") return;
-	if (msg.guild && bot.config.blacklistedServers && bot.config.blacklistedServers.indexOf(msg.guild.id.toString()) > -1) {
-		return;
+		if (msg.guild && bot.config.blacklistedServers && bot.config.blacklistedServers.indexOf(msg.guild.id.toString()) > -1) {
+			return;
+		}
 	}
 	return bot.commands.handleCommand(msg, msg.content); // run the commands
 });
