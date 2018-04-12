@@ -3,7 +3,7 @@ const paste = require("better-pastebin");
 
 exports.run = async (bot, msg, args) => {
 	// if (msg.author.id !== bot.config.botCreatorID) return;
-	if (msg.guild.id !== bot.config.botMainServerID) return;
+	//if (msg.guild.id !== bot.config.botMainServerID) return;
 	if (msg.channel.type !== "dm") return msg.channel.send(`<:redx:411978781226696705> This command may only be used in ${bot.user.username}'s DM's`).catch(console.error);
 	let gbot = msg.guild.members.get(bot.user.id);
 	if (!gbot.hasPermission(0x10000000)) return msg.channel.send(`<:redx:411978781226696705> I am missing \`Manage Roles\`!`).catch(console.error);
