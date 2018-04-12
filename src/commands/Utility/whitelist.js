@@ -3,7 +3,7 @@ const paste = require("better-pastebin");
 
 exports.run = async (bot, msg, args) => {
 	let pastebinID = "xd2bt7z9";
-	if (msg.author.id !== bot.config.botCreatorID) return;
+	// if (msg.author.id !== bot.config.botCreatorID) return;
 	const dbl = new DBL(process.env.DB_TOKEN, bot);
 	if (msg.guild.id !== bot.config.botMainServerID) return;
 	if (msg.channel.type !== "dm") return msg.channel.send(`<:redx:411978781226696705> This command may only be used in ${bot.user.username}'s DM's`).catch(console.error);
