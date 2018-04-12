@@ -1,11 +1,32 @@
 const DBL = require("dblapi.js");
-const betterpb = require("better-pastebin");
+const paste = require("better-pastebin");
 
 exports.run = async (bot, msg, args) => {
 	const dbl = new DBL(process.env.DB_TOKEN, bot);
 	if (msg.guild.id !== bot.config.botMainServerID) return msg.channel.send(`<:redx:411978781226696705> This command may only be used on the support server!`);
 	let gbot = msg.guild.members.get(bot.user.id);
 	if (!gbot.hasPermission(0x10000000)) return msg.channel.send(`<:redx:411978781226696705> I am missing \`Manage Roles\`!`).catch(console.error);
+	paste.setDevKey(process.env.PASTEBIN_KEY);
+	//paste.get("CZiT7m3E", function(success, data) {
+	//	//data contains the contents of the paste
+	//	if (success) {
+	//		let append = data;
+	//	}
+	//});
+	paste.login(process.env.username, process.env.pw, function(success, data) {
+		if (!success) {
+			console.log("Failed (" + data + ")");
+			return false;
+		}
+		paste.edit("CZiT7m3E", {
+			contents: `${args[0]}\n`,
+		}, function(success, data) {
+			if (!success) {
+				console.log("Failed (" + data + ")");
+				return false;
+			}
+		});
+	});
 	let guser = msg.guild.members.find(`id`, `${msg.author.id}`);
 	let whitelistedRole = msg.guild.roles.find('id', '433745475930292235');
 	(await msg.channel.send({ embed: ({ author: { name: 'Validating request...', icon_url: 'http://4.bp.blogspot.com/-JF6M1HaI9rQ/VD_eCkLpG7I/AAAAAAAAAXk/0f1ym7hBXYs/s1600/Loading-Circle.gif', } }) }).then((msg) => {
