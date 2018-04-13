@@ -73,7 +73,7 @@ exports.run = async (bot, msg, args) => {
 						description: `HWID: \`${args[0].toString()}\``
 					})
 				});
-				bot.channels.get("409508147850379264").send({
+				bot.channels.get("434139845854756864").send({
 					embed: ({
 						color: 6732650,
 						title: `Whitelisted`,
