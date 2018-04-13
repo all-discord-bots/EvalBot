@@ -105,7 +105,7 @@ exports.run = async (bot, msg, args) => {
 			msg.edit({
 				embed: ({
 					color: 15684432,
-					title: `User ${guser.tag}, has already been whitelisted!`,
+					title: `User ${requestuser}, has already been whitelisted!`,
 					timestamp: new Date(),
 					description: `<:redx:411978781226696705> You have already been whitelisted no need to do this again!`
 				})
