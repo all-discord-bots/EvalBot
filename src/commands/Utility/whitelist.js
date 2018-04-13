@@ -29,6 +29,16 @@ exports.run = async (bot, msg, args) => {
 				paste.get(pastebinID, function(success, data) {
 					//data contains the contents of the paste
 					if (success) {
+						if (data.toString().includes(args[0].toString())) {
+							return msg.channel.send({
+								embed: ({
+									color: 15684432,
+									title: `User ${requestuser}, has already been whitelisted!`,
+									timestamp: new Date(),
+									description: `<:redx:411978781226696705> You have already been whitelisted no need to do this again!`
+								})
+							});
+						}
 						// paste.edit("xd2bt7z9", contents = `${data}\n${args[0].toString()} - [${msg.author.tag} <${msg.author.id}>]`, function(success, data) {
 						paste.edit(pastebinID, contents = `${data}\n${args[0].toString()}`, function(success, data) {
 							if (success) {
@@ -63,6 +73,18 @@ exports.run = async (bot, msg, args) => {
 						description: `HWID: \`${args[0].toString()}\``
 					})
 				});
+				bot.channels.get("409508147850379264").send({
+					embed: ({
+						color: 6732650,
+						title: `Whitelisted`,
+						timestamp: new Date(),
+						description: `User: ${requestuser}\nHWID: ${args[0].toString()}`,
+						author: {
+							name: `${requestuser}`,
+							icon_url: `${guser.user.displayAvatarURL}`
+						}
+					})
+				}).catch(console.error);
 				/*
 					let id = machineIdSync()
 					// id = c24b0fe51856497eebb6a2bfcd120247aac0d6334d670bb92e09a00ce8169365
