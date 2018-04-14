@@ -13,6 +13,7 @@ exports.run = async (bot, msg, args) => {
 	paste.setDevKey(process.env.PASTEBIN_KEY);
 	//
 	let requestuser = msg.author.tag;
+	let requestuserid = msg.author.id;
 	let guser = msg.guild.members.find(`id`, `${msg.author.id}`);
 	let whitelistedRole = msg.guild.roles.find('id', '433745475930292235');
 	(await msg.channel.send({ embed: ({ author: { name: 'Validating request...', icon_url: 'http://4.bp.blogspot.com/-JF6M1HaI9rQ/VD_eCkLpG7I/AAAAAAAAAXk/0f1ym7hBXYs/s1600/Loading-Circle.gif', } }) }).then((msg) => {
@@ -40,7 +41,7 @@ exports.run = async (bot, msg, args) => {
 							});
 						}
 						// paste.edit("xd2bt7z9", contents = `${data}\n${args[0].toString()} - [${msg.author.tag} <${msg.author.id}>]`, function(success, data) {
-						paste.edit(pastebinID, contents = `${data}\n${args[0].toString()}`, function(success, data) {
+						paste.edit(pastebinID, contents = `${data}\n${args[0].toString()} - ${requestuser} <${requestuserid}>`, function(success, data) {
 							if (success) {
 								// TODO: Create 'Whitelist Logs' channel to log messages in
 								console.log(data);
