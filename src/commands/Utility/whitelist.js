@@ -7,7 +7,9 @@ exports.run = async (bot, msg, args) => {
 	//if (msg.channel.type !== "dm") return msg.channel.send(`<:redx:411978781226696705> This command may only be used in ${bot.user.username}'s DM's`).catch(console.error);
 	let gbot = msg.guild.members.get(bot.user.id);
 	if (!gbot.hasPermission(0x10000000)) return msg.channel.send(`<:redx:411978781226696705> I am missing \`Manage Roles\`!`).catch(console.error);
-	if (!args[0] || args[0].length < 6) return msg.channel.send(`<:redx:411978781226696705> Invalid HWID provided please provide a valid ID to whitelist.`).catch(console.error);
+	if (!args[0]) return msg.channel.send(`<:redx:411978781226696705> Invalid HWID provided please provide a valid ID to whitelist.`).catch(console.error);
+	let whitelistkey = args[0].replace(/[^A-Za-z0-9]/g,'');
+	if (whitelistkey.length < 6) return msg.channel.send(`<:redx:411978781226696705> Invalid HWID provided please provide a valid ID to whitelist.`).catch(console.error);
 	let pastebinID = "xd2bt7z9";
 	const dbl = new DBL(process.env.DB_TOKEN, bot);
 	paste.setDevKey(process.env.PASTEBIN_KEY);
@@ -30,7 +32,7 @@ exports.run = async (bot, msg, args) => {
 				paste.get(pastebinID, function(success, data) {
 					//data contains the contents of the paste
 					if (success) {
-						if (data.toString().includes(args[0].toString())) {
+						if (data.toString().includes(whitelistkey.toString())) {
 							return msg.channel.send({
 								embed: ({
 									color: 15684432,
@@ -41,7 +43,7 @@ exports.run = async (bot, msg, args) => {
 							});
 						}
 						// paste.edit("xd2bt7z9", contents = `${data}\n${args[0].toString()} - [${msg.author.tag} <${msg.author.id}>]`, function(success, data) {
-						paste.edit(pastebinID, contents = `${data}\n${args[0].toString()} - ${requestuser} <${requestuserid}>`, function(success, data) {
+						paste.edit(pastebinID, contents = `${data}\n${whitelistkey.toString()} - ${requestuser} <${requestuserid}>`, function(success, data) {
 							if (success) {
 								// TODO: Create 'Whitelist Logs' channel to log messages in
 								console.log(data);
@@ -71,7 +73,7 @@ exports.run = async (bot, msg, args) => {
 						color: 6732394,
 						title: `Your Whitelist Information`,
 						timestamp: new Date(),
-						description: `HWID: \`${args[0].toString()}\``
+						description: `HWID: \`${whitelistkey.toString()}\``
 					})
 				});
 				bot.channels.get("434139845854756864").send({
@@ -79,7 +81,7 @@ exports.run = async (bot, msg, args) => {
 						color: 6732650,
 						title: `Whitelisted`,
 						timestamp: new Date(),
-						description: `User: ${requestuser}\nHWID: ${args[0].toString()}`,
+						description: `User: ${requestuser}\nHWID: ${whitelistkey.toString()}`,
 						author: {
 							name: `${requestuser}`,
 							icon_url: `${guser.user.displayAvatarURL}`
