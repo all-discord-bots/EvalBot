@@ -18,8 +18,9 @@ exports.run = async (bot, msg, args) => {
 	let requestuserid = msg.author.id;
 	let guser = msg.guild.members.find(`id`, `${msg.author.id}`);
 	let whitelistedRole = msg.guild.roles.find('id', '433745475930292235');
+	let upvotedRole = msg.guild.roles.find('id', '414897780553941002');
 	(await msg.channel.send({ embed: ({ author: { name: 'Validating request...', icon_url: 'http://4.bp.blogspot.com/-JF6M1HaI9rQ/VD_eCkLpG7I/AAAAAAAAAXk/0f1ym7hBXYs/s1600/Loading-Circle.gif', } }) }).then((msg) => {
-		if (dbl.hasVoted(msg.author.id) && !msg.member.roles.has(whitelistedRole.id)) { // user has already upvoted
+		if (dbl.hasVoted(msg.author.id) && msg.member.roles.has(upvotedRole.id) && !msg.member.roles.has(whitelistedRole.id)) { // user has already upvoted
 			// ({original: true})
 			// send pastebin here
 			paste.login(process.env.username, process.env.pw, function(success, data) {
@@ -95,7 +96,7 @@ exports.run = async (bot, msg, args) => {
 					// id = 98912984-c4e9-5ceb-8000-03882a0485e4
 				*/
 			});
-		} else if (!dbl.hasVoted(msg.author.id) && !msg.member.roles.has(whitelistedRole.id)) { // user has not upvoted yet
+		} else if (!dbl.hasVoted(msg.author.id) && !msg.member.roles.has(upvotedRole.id) && !msg.member.roles.has(whitelistedRole.id)) { // user has not upvoted yet
 			msg.edit({
 				embed: ({
 					color: 15684432,
@@ -104,7 +105,16 @@ exports.run = async (bot, msg, args) => {
 					description: `<:redx:411978781226696705> You must upvote my discord bot [here](https://discordbots.org/bot/${bot.user.id}) first!`
 				})
 			});
-		} else if (dbl.hasVoted(msg.author.id) && msg.member.roles.has(whitelistedRole.id)) {
+		} else if (dbl.hasVoted(msg.author.id) && !msg.member.roles.has(upvotedrole) && !msg.member.roles.has(whitelistedRole.id)) {
+			msg.edit({
+				embed: ({
+					color: 15684432,
+					title: `User ${requestuser}, has not upvoted!`,
+					timestamp: new Date(),
+					description: `<:redx:411978781226696705> You must [upvote](https://discordbots.org/bot/${bot.user.id}) my discord bot! If you have already upvoted then go to <#402757215401803779> and use the command \`verify\` to get the <@&414897780553941002> role which will allow you to access the <#430696398623735809> channel, then download the program in <#430696398623735809> and run it and press \`Get HWID\` then copy and paste the HWID in the box into the \`whitelist\` command in <#402757215401803779>.`
+				})
+			});
+		} else if (dbl.hasVoted(msg.author.id) && msg.member.roles.has(upvotedRole.id) && msg.member.roles.has(whitelistedRole.id)) {
 			msg.edit({
 				embed: ({
 					color: 15684432,
