@@ -105,13 +105,13 @@ exports.run = async (bot, msg, args) => {
 					description: `<:redx:411978781226696705> You must upvote my discord bot [here](https://discordbots.org/bot/${bot.user.id}) first!`
 				})
 			});
-		} else if (dbl.hasVoted(msg.author.id) && !msg.member.roles.has(upvotedrole) && !msg.member.roles.has(whitelistedRole.id)) {
+		} else if (dbl.hasVoted(msg.author.id) && !msg.member.roles.has(upvotedRole.id) && !msg.member.roles.has(whitelistedRole.id)) {
 			msg.edit({
 				embed: ({
 					color: 15684432,
 					title: `User ${requestuser}, has not upvoted!`,
 					timestamp: new Date(),
-					description: `<:redx:411978781226696705> You must [upvote](https://discordbots.org/bot/${bot.user.id}) my discord bot! If you have already upvoted then go to <#402757215401803779> and use the command \`verify\` to get the <@&414897780553941002> role which will allow you to access the <#430696398623735809> channel, then download the program in <#430696398623735809> and run it and press \`Get HWID\` then copy and paste the HWID in the box into the \`whitelist\` command in <#402757215401803779>.`
+					description: `<:redx:411978781226696705> You must verify that you have upvoted by going to <#402757215401803779> and using the \`verify\` command to get the <@&414897780553941002> role once you have this role goto <#402757215401803779> and download the .zip file, unzip it and run **HardwareID.exe** and press **Get HWID** then copy the key it gives you and goto <#402757215401803779> and type \`whitelist <your whitelist key>\`. Restart the exploit if it is opened, you should have the full version. If you do not then please let me <@269247101697916939> know.`
 				})
 			});
 		} else if (dbl.hasVoted(msg.author.id) && msg.member.roles.has(upvotedRole.id) && msg.member.roles.has(whitelistedRole.id)) {
