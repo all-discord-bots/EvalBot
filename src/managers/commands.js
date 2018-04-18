@@ -222,6 +222,7 @@ class CommandManager {
 
 		try {
 			return await command.run(this.bot, msg, args);
+			// return command.run(this.bot, msg, args);
 		} catch (err) {
 			msg.error(err);
 			return null;
