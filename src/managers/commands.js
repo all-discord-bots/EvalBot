@@ -10,14 +10,10 @@ class CommandManager {
 	}
 
 	_validateCommand(object) {
-		if (typeof object !== 'object')
-			return 'command setup is invalid';
-		if (typeof object.run !== 'function')
-			return 'run function is missing';
-		if (typeof object.info !== 'object')
-			return 'info object is missing';
-		if (typeof object.info.name !== 'string')
-			return 'info object is missing a valid name field';
+		if (typeof object !== 'object') return 'command setup is invalid';
+		if (typeof object.run !== 'function') return 'run function is missing';
+		if (typeof object.info !== 'object') return 'info object is missing';
+		if (typeof object.info.name !== 'string') return 'info object is missing a valid name field';
 		return null;
 	}
 
@@ -103,14 +99,32 @@ class CommandManager {
 			prefix = this.bot.config.prefix;
 		}
 
-		if (!input.startsWith(prefix)) return; // || !input.startsWith(`<@${this.bot.id}>`)) return;
-		let split = input.substr(prefix.length).trim().split(' ');
-		let split1 = input.substr(prefix).trim().split(' ');
-		let spli = new RegExp(prefix, 'gi');
-		split1[0].match(spli).length;
-		if (spli > prefix.length || spli < prefix.length) return; //|| spli > `<@${this.bot.id}>`.length || spli < `<@${this.bot.id}>`.length) return; // do this if you input the prefix more than one time ex. >>help when the prefix is >help
-		let base = split[0].toLowerCase();
-		let args = split.slice(1);
+		if (!input.startsWith(prefix) || !input.startsWith(`<@${this.bot.id}>`) || !input.startsWith(`<@!${this.bot.id}>`)) return; // || !input.startsWith(`<@${this.bot.id}>`)) return;
+		let split, split1, spli, base, args;
+		if (input.startsWith(prefix)) {
+			split = input.substr(prefix.length).trim().split(' ');
+			split1 = input.substr(prefix).trim().split(' ');
+			spli = new RegExp(prefix, 'gi');
+			split1[0].match(spli).length;
+			if (spli > prefix.length || spli < prefix.length) return; //|| spli > `<@${this.bot.id}>`.length || spli < `<@${this.bot.id}>`.length) return; // do this if you input the prefix more than one time ex. >>help when the prefix is >help
+			base = split[0].toLowerCase();
+			args = split.slice(1);
+		} else if (input.startsWith(`<@${this.bot.id}>`) || input.startsWith(`<@!${this.bot.id}>`)) {
+			if (input.startsWith(`<@${this.bot.id}>`)) {
+				split = input.substr(`<@${this.bot.id}>`.length).trim().split(' ');
+				split1 = input.substr(`<@${this.bot.id}>`).trim().split(' ');
+				spli = new RegExp(`<@${this.bot.id}>`, 'gi');
+			} else if (input.startsWith(`<@!${this.bot.id}>`)) {
+				split = input.substr(`<@!${this.bot.id}>`);
+				split1 = input.substr(`<@!${this.bot.id}>`).trim().split(' ');
+				spli = new RegExp(`<@!${this.bot.id}>`, 'gi');
+			}
+			split1[0].match(spli).length;
+			base = split[0].toLowerCase();
+			args = split.slice(1);
+		} else {
+			return;
+		}
 
 		// Try to find a built in command first
 		let command = this.get(base);
