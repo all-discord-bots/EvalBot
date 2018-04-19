@@ -109,7 +109,7 @@ class CommandManager {
 		let spli = new RegExp(prefix, 'gi');
 		// split1[0].match(spli).length;
 		//if (spli > prefix.length || spli < prefix.length) return; //|| spli > `<@${this.bot.id}>`.length || spli < `<@${this.bot.id}>`.length) return; // do this if you input the prefix more than one time ex. >>help when the prefix is >help
-		if (split1[0].match(spli).length != prefix.length) return;
+		if (split1[0].match(spli).length !== prefix.length) return;
 		let base = split[0].toLowerCase();
 		let args = split.slice(1);
 
@@ -437,7 +437,7 @@ class CommandManager {
 				.catch(() => {
 					msg.channel.send(discordOutput)
 						.then(m => m.delete(delay || 2000))
-						.catch(() => { /* We can't even show the error, so what now? */ });
+						.catch(() => { /* We can't even show the error, so what now? */ //});
 /*				});
 		}).bind(msg);
 
@@ -453,3 +453,26 @@ class CommandManager {
 
 module.exports = CommandManager;
 */
+
+
+
+
+
+
+
+Successfully launched shard 0
+2018-04-19T23:28:16.113569+00:00 app[worker.1]: /app/src/managers/commands.js:457
+2018-04-19T23:28:16.113609+00:00 app[worker.1]: });
+2018-04-19T23:28:16.113611+00:00 app[worker.1]: ^
+2018-04-19T23:28:16.113613+00:00 app[worker.1]: 
+2018-04-19T23:28:16.113616+00:00 app[worker.1]: SyntaxError: Unexpected token }
+2018-04-19T23:28:16.113618+00:00 app[worker.1]:     at createScript (vm.js:80:10)
+2018-04-19T23:28:16.113619+00:00 app[worker.1]:     at Object.runInThisContext (vm.js:139:10)
+2018-04-19T23:28:16.113621+00:00 app[worker.1]:     at Module._compile (module.js:616:28)
+2018-04-19T23:28:16.113624+00:00 app[worker.1]:     at Object.Module._extensions..js (module.js:663:10)
+2018-04-19T23:28:16.113625+00:00 app[worker.1]:     at Module.load (module.js:565:32)
+2018-04-19T23:28:16.113627+00:00 app[worker.1]:     at tryModuleLoad (module.js:505:12)
+2018-04-19T23:28:16.113629+00:00 app[worker.1]:     at Function.Module._load (module.js:497:3)
+2018-04-19T23:28:16.113630+00:00 app[worker.1]:     at Module.require (module.js:596:17)
+2018-04-19T23:28:16.113631+00:00 app[worker.1]:     at require (internal/module.js:11:18)
+2018-04-19T23:28:16.113633+00:00 app[worker.1]:     at Object.<anonymous> (/app/src/managers/index.js:2:21)
