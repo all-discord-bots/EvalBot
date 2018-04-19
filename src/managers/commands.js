@@ -101,14 +101,13 @@ class CommandManager {
 
 		if (!input.startsWith(prefix) || !input.startsWith(`<@${this.bot.id}>`) || !input.startsWith(`<@!${this.bot.id}>`)) return; // || !input.startsWith(`<@${this.bot.id}>`)) return;
 		let split, split1, spli, base, args;
+		if (split1[0].match(spli).length != prefix.length || split1[0].match(spli).length != `<@${this.bot.id}>`.length || split1[0].match(spli).length != `<@!${this.bot.id}>`.length)
 		if (input.startsWith(prefix)) {
 			split = input.substr(prefix.length).trim().split(' ');
 			split1 = input.substr(prefix).trim().split(' ');
 			spli = new RegExp(prefix, 'gi');
-			split1[0].match(spli).length;
-			if (spli > prefix.length || spli < prefix.length) return; //|| spli > `<@${this.bot.id}>`.length || spli < `<@${this.bot.id}>`.length) return; // do this if you input the prefix more than one time ex. >>help when the prefix is >help
-			base = split[0].toLowerCase();
-			args = split.slice(1);
+			// split1[0].match(spli).length;
+			// if (spli > prefix.length || spli < prefix.length) return; //|| spli > `<@${this.bot.id}>`.length || spli < `<@${this.bot.id}>`.length) return; // do this if you input the prefix more than one time ex. >>help when the prefix is >help
 		} else if (input.startsWith(`<@${this.bot.id}>`) || input.startsWith(`<@!${this.bot.id}>`)) {
 			if (input.startsWith(`<@${this.bot.id}>`)) {
 				split = input.substr(`<@${this.bot.id}>`.length).trim().split(' ');
@@ -119,12 +118,12 @@ class CommandManager {
 				split1 = input.substr(`<@!${this.bot.id}>`).trim().split(' ');
 				spli = new RegExp(`<@!${this.bot.id}>`, 'gi');
 			}
-			split1[0].match(spli).length;
-			base = split[0].toLowerCase();
-			args = split.slice(1);
+			//split1[0].match(spli).length;
 		} else {
-			return;
+			return; // console.warn(`No valid prefix provided`);
 		}
+		base = split[0].toLowerCase();
+		args = split.slice(1);
 
 		// Try to find a built in command first
 		let command = this.get(base);
