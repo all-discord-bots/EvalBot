@@ -9,15 +9,19 @@ exports.run = async (bot, msg, args) => {
 	}
 	let role = args.join(" ");
 	let grole;
-	if (msg.guild.roles.find(`name`, `${role}`)) {
-		grole = msg.guild.roles.find(`name`, `${role}`);
-	} else if (msg.guild.roles.find(`id`, `${role}`)) {
-		grole = msg.guild.roles.find(`id`, `${role}`);
-	} else {
-		return msg.channel.send(`<:redx:411978781226696705> No roles with the name ${grole.name} exists!`).catch(cosole.error);
+	try {
+		if (msg.guild.roles.find(`name`, `${role}`)) {
+			grole = msg.guild.roles.find(`name`, `${role}`);
+		} else if (msg.guild.roles.find(`id`, `${role}`)) {
+			grole = msg.guild.roles.find(`id`, `${role}`);
+		} else {
+			return msg.channel.send(`<:redx:411978781226696705> No roles with the name ${role.toString()} exists!`).catch(cosole.error);
+		}
+		msg.guild.members.filter(m => !m.user.bot).filter(m => m.roles.has(grole.id)).map(m => m.removeRole(grole).catch(console.error));
+		msg.channel.send(`<:check:411976443522711552> Successfully removed \`${grole.name}\` from all members.`);
+	} catch (err) {
+		msg.channel.send(`<:redx:411978781226696705> an error has occured \`${err.name}\`:\n\`\`\`${err.message}\`\`\``);
 	}
-	msg.guild.members.filter(m => !m.user.bot).filter(m => m.roles.has(grole.id)).map(m => m.removeRole(grole).catch(console.error));
-	msg.channel.send(`<:check:411976443522711552> Successfully removed \`${grole.name}\` from all members.`);
 };
 
 exports.info = {
