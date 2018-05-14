@@ -7,16 +7,21 @@ exports.run = async (bot, msg, args) => {
 	if (args.length < 1) {
 		return msg.channel.send(`<:redx:411978781226696705> Invalid arguments!`).catch(console.error);
 	}
-	let grole;
-	if (msg.guild.roles.find(`name`, `${args[0]}`)) {
-		grole = msg.guild.roles.find(`name`, `${args[0]}`);
-	} else if (msg.guild.roles.find(`id`, `${args[0]}`)) {
-		grole = msg.guild.roles.find(`name`, `${args[0]}`);
-	}  else {
-		return msg.channel.send(`<:redx:411978781226696705> No roles with the name ${grole.name} exists!`).catch(cosole.error);
+	try {
+		let role = args.join(" ");
+		let grole;
+		if (msg.guild.roles.find(`name`, `${role}`)) {
+			grole = msg.guild.roles.find(`name`, `${role}`);
+		} else if (msg.guild.roles.find(`id`, `${role}`)) {
+			grole = msg.guild.roles.find(`name`, `${role}`);
+		}  else {
+			return msg.channel.send(`<:redx:411978781226696705> No roles with the name ${role} exists!`).catch(cosole.error);
+		}
+		msg.guild.members.filter(m => !m.user.bot).filter(m => !m.roles.has(grole.id)).map(m => m.addRole(grole)).catch(console.error);
+		msg.channel.send(`<:check:411976443522711552> Successfully gave all members \`${grole.name}\``);
+	} catch (err) {
+		msg.channel.send(`<:redx:411978781226696705> an error has occured \`${err.name}\`:\n\`\`\`${err.message}\`\`\``);
 	}
-	msg.guild.members.filter(m => !m.user.bot).filter(m => !m.roles.has(grole.id)).map(m => m.addRole(grole)).catch(console.error);
-	msg.channel.send(`<:check:411976443522711552> Successfully gave all members \`${grole.name}\``);
 };
 
 exports.info = {
