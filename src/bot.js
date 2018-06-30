@@ -25,10 +25,7 @@ const bot = global.bot = exports.client = new Discord.Client();
 const Music = require('discord.js-musicbot-addon');
 const snekfetch = require('snekfetch');
 require('./conf/globals.js'); // load global variables file
-
-// begin database
 const { Client } = require('pg');
-// End database
 
 let guildArray = bot.guilds.array();
 
@@ -163,7 +160,7 @@ bot.once('ready', () => {
 		})
 	}).catch(console.error);
 	// begin database connection
-	const dbclient = new Client({
+/*	const dbclient = new Client({
 		connectionString: process.env.DATABASE_URL,
 		ssl: true,
 	});
@@ -174,7 +171,7 @@ bot.once('ready', () => {
 			console.log(JSON.stringify(row));
 		}
 		dbclient.end();
-	});
+	});*/
 });
 
 bot.once("guildUnavailable", (guild) => {
@@ -276,19 +273,6 @@ bot.on("guildMemberRemove", (member) => {
 	}).catch(console.error);
 });
 
-//var con = mysql.createConnection({
-//  host: "localhost",
-//  user: "id3223004_bannerbomb",
-//  password: "PASSWORD",
-//  database: "id3223004_discordbot",
-//});
-
-//con.connect(err => {
-//	if (err) throw err;
-//	console.log("Connected to database!");
-//	con.query("SHOW TABLES", console.log);
-//});
-
 bot.on('message', (msg) => {
 	if (msg.content === "") return;
 	if (bot.config.blockBots) {
@@ -301,15 +285,8 @@ bot.on('message', (msg) => {
 	}
 	// Load the music queue items
 	if (msg.channel.type !== "dm") {
-		//if (!musicqueue[msg.guild.id]) musicqueue[msg.guild.id] = [];
 		if (musicqueue[msg.guild.id] === undefined) musicqueue[msg.guild.id] = [];
-		//if (!musicqueue[msg.guild.id]['music']) musicqueue[msg.guild.id]['music'] = [];
 		if (musicqueue[msg.guild.id]['music'] === undefined) musicqueue[msg.guild.id]['music'] = [];
-		//if (!musicqueue[msg.guild.id]['loopqueue']) musicqueue[msg.guild.id]['loopqueue'] = false;
-		//if (!musicqueue[msg.guild.id]['loopsong']) musicqueue[msg.guild.id]['loopsong'] = false;
-		//if (!songqueue[msg.guild.id]) songqueue[msg.guild.id] = [];
-		//if (!musicqueue[msg.guild.id]['streaming']) musicqueue[msg.guild.id]['streaming'] = false;
-		//if (!musicqueue[msg.guild.id]['shuffle']) musicqueue[msg.guild.id]['shuffle'] = false;
 		if (musicqueue[msg.guild.id]['loopqueue'] === undefined) musicqueue[msg.guild.id]['loopqueue'] = false;
 		if (musicqueue[msg.guild.id]['loopsong'] === undefined) musicqueue[msg.guild.id]['loopsong'] = false;
 		if (musicqueue[msg.guild.id]['streaming'] === undefined) musicqueue[msg.guild.id]['streaming'] = false;
@@ -417,9 +394,7 @@ process.on('exit', () => {
 	loaded && bot.destroy();
 });
 
-//bot.on('error', console.error);
 bot.on('error', (e) => {
-	//Hook.custom(bot.user.username, `${e}`, "Error", "#EF5350");
 	bot.channels.get("415265475895754752").send({
 		embed: ({
 			color: 15684432,
@@ -427,12 +402,10 @@ bot.on('error', (e) => {
 			title: `Error`,
 			description: `${e}`
 		})
-	}); //.catch(console.error);
+	});
 	console.error;
 });
-//bot.on('warn', console.warn);
 bot.on('warn', (w) => {
-	//Hook.custom(bot.user.username, `${w}`, "Warn", "#C1BD3A");
 	bot.channels.get("415265475895754752").send({
 		embed: ({
 			color: 12696890,
@@ -440,13 +413,12 @@ bot.on('warn', (w) => {
 			title: `Warn`,
 			description: `${w}`
 		})
-	}); //.catch(console.error);
+	});
 	console.warn;
 });
 
 if (debug) {
 	bot.on('debug', (d) => {
-		//console.debug(d);
 		console.info(d);
 	});
 }
@@ -557,8 +529,6 @@ process.on('uncaughtException', (err) => {
 //});
 
 process.on('unhandledRejection', (err) => {
-	//Hook.custom(bot.user.username, `${err.stack}`, "Unhandled Rejection | Uncaught Promise error:", "#EF5350");
-	//consoleLoggerMsg("e","Unhandled Rejection | Uncaught Promise error",`${err.name}`,`${err.message}`,`${err.stack}`);
 	bot.channels.get("415265475895754752").send({
 		embed: ({
 			color: 15684432,
@@ -566,12 +536,10 @@ process.on('unhandledRejection', (err) => {
 			title: `Unhandled Rejection | Uncaught Promise error:`, //`${err.name} - Unhandled Rejection`,
 			description: `${err.stack}`
 		})
-	}); //.catch(console.error);
-	//console.error(`Uncaught Promise error:\n${err.stack}`);
+	});
 	logger.severe(`Uncaught Promise error:\n${err.stack}`);
 });
 
-//bot.config && bot.login(process.env.BOT_TOKEN).catch(console.error);
 bot.config && bot.login(process.env.BOT_TOKEN, (error, token) => {
 	// handle error and success
 	if (error) throw error;
