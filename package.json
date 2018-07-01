@@ -8,7 +8,7 @@
     "background": "screen -dmS CripsBot gulp",
     "config": "node src/scripts/configure.js",
     "debug": "node src/scripts/debug.js",
-    "dev": "gulp --dev"
+    "dev": "gulpjs/gulp#4.0 --save-dev"
   },
   "author": "BannerBomb",
   "license": "MIT",
@@ -69,7 +69,10 @@
     "lodash": "^4.17.10",
     "minimatch": "^3.0.4",
     "hoek": "^5.0.3",
-    "node-pre-gyp": "^0.6.39"
+    "node-pre-gyp": "^0.6.39",
+    "stringstream": "^0.0.6",
+    "deep-extend": "^0.6.0",
+    "sshpk": "^1.14.2"
   },
   "engines": {
     "npm": "6.1.0"
@@ -77,7 +80,7 @@
   "devDependencies": {
     "npm": "^6.1.0",
     "eslint": "^5.0.1",
-    "gulp": "^3.9.1",
+    "gulp4": "^4.0.2",
     "gulp-eslint": "^4.0.2"
   }
 }
