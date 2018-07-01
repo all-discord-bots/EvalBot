@@ -69,7 +69,7 @@
     "lodash": "^4.17.10",
     "minimatch": "^3.0.4",
     "hoek": "^5.0.3",
-    "node-pre-gyp": "^0.6.39",
+    "node-pre-gyp": "^0.10.2",
     "stringstream": "^0.0.6",
     "deep-extend": "^0.6.0",
     "sshpk": "^1.14.2"
@@ -80,7 +80,7 @@
   "devDependencies": {
     "npm": "^6.1.0",
     "eslint": "^5.0.1",
-    "gulp4": "^4.0.2",
+    "gulp4": "^4.0.3",
     "gulp-eslint": "^4.0.2"
   }
 }
