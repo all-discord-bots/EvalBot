@@ -22,7 +22,6 @@ const mysql = require('mysql');
 //const extdir = './extensions/'
 const fs = require('fs');
 const bot = global.bot = exports.client = new Discord.Client();
-const Music = require('discord.js-musicbot-addon');
 const snekfetch = require('snekfetch');
 require('./conf/globals.js'); // load global variables file
 const { Client } = require('pg');
