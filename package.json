@@ -71,7 +71,9 @@
     "node-pre-gyp": "^0.10.2",
     "stringstream": "^0.0.6",
     "deep-extend": "^0.6.0",
-    "sshpk": "^1.14.2"
+    "sshpk": "^1.14.2",
+    "ytsearcher": "^1.1.2",
+    "ytdl-core": "^0.20.4"
   },
   "engines": {
     "npm": "6.1.0"
