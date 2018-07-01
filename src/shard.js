@@ -16,7 +16,7 @@ const Manager = new Discord.ShardingManager('./src/bot.js', {
 let guilds = 0;
 let users = 0;
 
-// Manager.spawn(this.totalShards, 15000);
+Manager.spawn(this.totalShards, 15000);
 Manager.on('launch', (shard) => {
 	wbhook.success('CripsBot', `Successfully launched shard \`${shard.id}\`.`);
 	console.log(`Successfully launched shard ${shard.id}`);
