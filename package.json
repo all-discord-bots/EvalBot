@@ -37,7 +37,6 @@
     "node-opus": "^0.3.0",
     "opusscript": "^0.0.6",
     "music-metadata": "^2.0.4",
-    "discord-eco": "^0.0.10",
     "enmap": "^2.6.3",
     "enmap-level": "^2.1.0",
     "ms": "^2.1.1",
