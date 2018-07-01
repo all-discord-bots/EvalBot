@@ -1,11 +1,5 @@
 {
-  "queue": {
-    //"server id": [queue lists],
-  },
-  "loop": {
-  // "server id": true | false,
-  },
-  "lastplayed": {
-    // "server id": "last played song"
-  }
+  "queue": {},
+  "loop": {},
+  "lastplayed": {}
 }
