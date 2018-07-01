@@ -222,10 +222,7 @@ exports.gistUpload = (text, lang = 'js') => {
             }
 		},
         //}),
-        json: true,
-	headers: {
-		'User-Agent': 'Anonymous'
-	}
+        json: true
     })
         .then(res => {
             if (res && res.body && res.body.html_url) {
