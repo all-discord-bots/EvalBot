@@ -68,7 +68,8 @@
     "youtube-audio-stream": "^0.2.0",
     "lodash": "^4.17.10",
     "minimatch": "^3.0.4",
-    "hoek": "^5.0.3"
+    "hoek": "^5.0.3",
+    "node-pre-gyp": "^0.6.39"
   },
   "engines": {
     "npm": "6.1.0"
