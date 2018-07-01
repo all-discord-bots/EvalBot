@@ -65,7 +65,10 @@
     "time-convert": "^0.0.2",
     "node-machine-id": "^1.1.10",
     "better-pastebin": "^0.4.1",
-    "youtube-audio-stream": "^0.2.0"
+    "youtube-audio-stream": "^0.2.0",
+    "lodash": "^4.17.10",
+    "minimatch": "^3.0.4",
+    "hoek": "^5.0.3"
   },
   "engines": {
     "npm": "6.1.0"
