@@ -18,7 +18,8 @@ exports.run = async (bot, msg, args) => {
 		'Todays Christian Music',
 		'OpenFM 100% Metallica',
 		'North Pole Radio',
-		'Metal Rock FM'
+		'Metal Rock FM',
+		'Icecast Metal'
 	];
 	//'Monstercat'
 	//if (arg.length < 1) return msg.channel.send(`<:redx:411978781226696705> You must provide a radio stream url!`).catch(console.error);
