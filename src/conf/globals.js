@@ -12,6 +12,7 @@ const builtinradio = global.builtinradio = {
 	'openfm 100% metallica': 'http://gr-relay-13.gaduradio.pl/62',
 	'north pole radio': 'http://85.25.217.22:8050/christmas',
 	'metal rock fm': 'http://192.99.62.212:9408/stream',
-	'icecast metal': 'http://sentinel.scenesat.com:8000/stream2'
+	'icecast metal': 'http://sentinel.scenesat.com:8000/stream2',
+	'metal nation': 'http://198.100.145.185:8900/;'
 };
 // 'monstercat': 'https://www.youtube.com/watch?v=ueupsBPNkSc'
