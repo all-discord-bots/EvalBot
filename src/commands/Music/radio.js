@@ -20,7 +20,8 @@ exports.run = async (bot, msg, args) => {
 		'North Pole Radio',
 		'Metal Rock FM',
 		'Icecast Metal',
-		'Metal Nation'
+		'Metal Nation',
+		'Streamer Radio Metal'
 	];
 	//'Monstercat'
 	//if (arg.length < 1) return msg.channel.send(`<:redx:411978781226696705> You must provide a radio stream url!`).catch(console.error);
