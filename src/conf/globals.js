@@ -15,6 +15,7 @@ const builtinradio = global.builtinradio = {
 	'icecast metal': 'http://sentinel.scenesat.com:8000/stream2',
 	'metal nation': 'http://198.100.145.185:8900/;',
 	'streamer radio metal': 'https://streamer.radio.co/s6a349b3a2/listen',
-	'hard radio': 'http://3634.cloudrad.io/stream/1/;'
+	'hard radio': 'http://3634.cloudrad.io/stream/1/;',
+	'stream the world': 'https://15363.live.streamtheworld.com/KOMPFM_SC'
 };
 // 'monstercat': 'https://www.youtube.com/watch?v=ueupsBPNkSc'
