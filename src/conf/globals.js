@@ -17,6 +17,7 @@ const builtinradio = global.builtinradio = {
 	'streamer radio metal': 'https://streamer.radio.co/s6a349b3a2/listen',
 	'hard radio': 'http://3634.cloudrad.io/stream/1/;',
 	'stream the world': 'https://15363.live.streamtheworld.com/KOMPFM_SC',
-	'nc weather': 'http://wxradio.dyndns.org:8000/WNG538'
+	'nc weather': 'http://wxradio.dyndns.org:8000/WNG538',
+	'nc police dept': 'http://ca.radioboss.fm:8137/stream%26t%3D%26r%3D4RBS4'
 };
 // 'monstercat': 'https://www.youtube.com/watch?v=ueupsBPNkSc'
