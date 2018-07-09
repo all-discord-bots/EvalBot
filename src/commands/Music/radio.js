@@ -23,7 +23,8 @@ exports.run = async (bot, msg, args) => {
 		'Metal Nation',
 		'Streamer Radio Metal',
 		'Hard Radio',
-		'Stream The World'
+		'Stream The World',
+		'NC Weather'
 	];
 	//'Monstercat'
 	//if (arg.length < 1) return msg.channel.send(`<:redx:411978781226696705> You must provide a radio stream url!`).catch(console.error);
