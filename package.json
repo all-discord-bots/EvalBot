@@ -8,7 +8,7 @@
     "background": "screen -dmS CripsBot gulp",
     "config": "node src/scripts/configure.js",
     "debug": "node src/scripts/debug.js",
-    "dev": "gulpjs/gulp#4.0 --save-dev"
+    "dev": "gulp --dev"
   },
   "author": "BannerBomb",
   "license": "MIT",
@@ -84,7 +84,7 @@
     "node": "^10.5.0",
     "npm": "^6.1.0",
     "eslint": "^5.0.1",
-    "gulp4": "^4.0.3",
+    "gulp": "^3.9.1",
     "gulp-eslint": "^4.0.2"
   }
 }
