@@ -52,7 +52,6 @@
     "webhook-discord": "^2.0.6",
     "snekfetch": "^4.0.4",
     "got": "^8.3.1",
-    "pornhub-api": "^0.0.1",
     "libsodium-wrappers": "^0.7.3",
     "table-layout": "^0.4.4",
     "pg": "^7.4.3",
