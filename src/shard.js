@@ -5,8 +5,8 @@
 
 const Webhook = require('webhook-discord');
 const wbhook = new Webhook(process.env.WEBHOOK_SHARD_LOGGER);
-const Discord = require('discord.js');
-const Manager = new Discord.ShardingManager('./src/bot.js', {
+const { ShardingManager } = require('discord.js');
+const Manager = new ShardingManager('./src/bot.js', {
     respawn: true,
     //token: SpawnShards.botToken,
     token: process.env.BOT_TOKEN,
