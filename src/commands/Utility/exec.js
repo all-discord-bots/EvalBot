@@ -1,57 +1,131 @@
 const { exec } = require('child_process');
 const username = require('os').userInfo().username;
-//const rdcli = require('redis-cli');
-const events = require('events');
-const pm2 = require('pm2');
-const express = require('express');
 
-exports.run = (bot, msg, args) => {
-    if (msg.author.id !== bot.config.botCreatorID) return;
-    if (args.length < 1) return msg.channel.send(`<:redx:411978781226696705> Cannot execute a empty command!`).catch(console.error);
-    let parsed = bot.utils.parseArgs(args, 's', 'l:');
+exports.run = async (bot, msg, args) => {
+	if (msg.author.id !== bot.config.botCreatorID) return;
+	 if (args.length < 1) return msg.channel.send(`<:redx:411978781226696705> Cannot execute a empty command!`).catch(console.error);
+	 
+	let parsed = bot.utils.parseArgs(args, ['r', 'd', 's', 'f', 'w', 'fn:', 'l:']);
 
-    if (parsed.length < 1) return msg.channel.send(`<:redx:411978781226696705> You must provide a command to run!`).catch(console.error);
+	if (parsed.length < 1) return msg.channel.send(`<:redx:411978781226696705> You must provide a command to run!`).catch(console.error);
 
-    let ps = exec(parsed.leftover.join(' '));
-    if (!ps) return msg.channel.send(`<:redx:411978781226696705> Failed to start process!`).catch(console.error);
+	if (parsed.options.d) {
+		msg.delete();
+	}
 
-    if (parsed.options.s) {
-        return;
-    }
+	let ps = exec(parsed.leftover.join(' '));
+	if (!ps) return msg.channel.send(`<:redx:411978781226696705> Failed to start process!`).catch(console.error);
 
-    let opts = {
-        prefix: `\`\`\`${parsed.options.l || 'bash'}\n`,
-        suffix: '\n```',
-        delay: 10,
-        cutOn: '\n'
-    };
+	if (parsed.options.s) {
+		return;
+	}
 
-    ps.stdout.on('data', data => bot.utils.sendLarge(msg.channel, clean(data), opts));
-    ps.stderr.on('data', data => bot.utils.sendLarge(msg.channel, clean(data), opts));
+	let opts = {
+		delay: 10,
+		cutOn: '\n'
+	};
+
+	if (!parsed.options.r) {
+		opts.prefix = `\`\`\`${parsed.options.l || 'bash'}\n`;
+		opts.suffix = '\n```';
+	}
+
+	if (parsed.options.f) {
+		let output = '';
+
+		ps.stdout.on('data', data => output += data.toString());
+		await new Promise(resolve => {
+			ps.once('exit', async () => {
+				if (!output) {
+					return resolve();
+				}
+
+				try {
+					await msg.channel.send({
+						files: [
+							{
+								attachment: output.replace(/^file:\/\//, ''),
+								name: parsed.options.fn
+							}
+						]
+					});
+				} catch (err) {
+					msg.error('Invalid URL/path!');
+				}
+
+				resolve();
+			});
+		});
+	} else {
+		if (parsed.options.w) {
+			let output = '';
+			let handler = data => output += data.toString();
+
+			[ps.stdout, ps.stderr].forEach(stream => stream.on('data', handler));
+
+			await new Promise(resolve => {
+				ps.once('exit', async () => {
+					if (!output) {
+						return resolve();
+					}
+
+					await bot.utils.sendLarge(msg.channel, clean(output), opts);
+
+					resolve();
+				});
+			});
+		} else {
+			ps.stdout.on('data', data => bot.utils.sendLarge(msg.channel, clean(data), opts));
+			ps.stderr.on('data', data => bot.utils.sendLarge(msg.channel, clean(data), opts));
+
+			await new Promise(resolve => ps.once('exit', resolve));
+		}
+	}
 };
 
 const clean = function (data) {
-    return `${data}`
-        .replace(/`/g, '\\$&')
-        .replace(new RegExp(username, 'g'), '<Hidden>')
-        .replace(/\[[0-9]*m/g, '');
+	return `${data}`
+		.replace(/`/g, '\u200b$&')
+		.replace(new RegExp(username, 'g'), '<Hidden>')
+		.replace(/\[[0-9]*m/g, '');
 };
 
 exports.info = {
-    name: 'execute',
-    hidden: true,
-    aliases: ['exec'],
-    usage: 'exec <command>',
-    description: 'Executes a command in the console',
-    options: [
-        {
-            name: '-s',
-            description: 'Runs in silent mode, not showing any console output'
-        },
-        {
-            name: '-l',
-            usage: '-l <lang>',
-            description: 'Sets the language of the outputted code block'
-        }
-    ]
+	name: 'exec',
+	hidden: true,
+	aliases: ['execute'],
+	usage: 'exec <command>',
+	description: 'Executes a command in the console',
+	options: [
+		{
+			name: '-s',
+			description: 'Runs in silent mode, not showing any console output'
+		},
+		{
+			name: '-l',
+			usage: '-l <lang>',
+			description: 'Sets the language of the outputted code block'
+		},
+		{
+			name: '-r',
+			description: 'Sends the output raw, without any code blocks'
+		},
+		{
+			name: '-d',
+			description: 'Deletes the command message'
+		},
+		{
+			name: '-f',
+			description: 'Interperts the response as a file URL/path to send'
+		},
+		{
+			name: '-fn',
+			usage: '-fn <name>',
+			description: 'Sets the name for the sent file'
+		},
+		{
+			name: '-w',
+			description: 'Wait for the program to finish before sending the output'
+		}
+	]
 };
