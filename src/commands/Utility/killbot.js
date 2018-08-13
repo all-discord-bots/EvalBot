@@ -3,7 +3,7 @@ exports.run = async (bot, msg) => {
     (await msg.channel.send("Killing processes...").then((msg)=>{
         msg.edit(`<:check:411976443522711552> Killing all processes.`);
     }));
-    process.exit();
+    bot.shutdown(false);
 };
 
 exports.info = {
