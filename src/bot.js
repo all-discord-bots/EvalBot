@@ -206,10 +206,10 @@ class CripsBot extends Client {
 				}
 			}
 			stats.increment(`messages-${this.user.id === msg.author.id ? 'sent' : 'received'}`);
-			if (msg.isMentioned(this.user)) {
-				stats.increment('mentions');
-				console.log(`[MENTION] ${msg.author.username} | ${msg.guild ? msg.guild.name : '(DM)'} | #${msg.channel.name || 'N/A'}:\n${msg.cleanContent}`);
-			}
+			//if (msg.isMentioned(this.user)) {
+			//	stats.increment('mentions');
+			//	console.log(`[MENTION] ${msg.author.username} | ${msg.guild ? msg.guild.name : '(DM)'} | #${msg.channel.name || 'N/A'}:\n${msg.cleanContent}`);
+			//}
 			
 			if (msg.guild && this.config.blacklistedServers && this.config.blacklistedServers.indexOf(msg.guild.id.toString()) > -1) {
 				return;
