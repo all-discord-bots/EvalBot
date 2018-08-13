@@ -4,11 +4,20 @@
   "description": "A bot created by BannerBomb#9772",
   "main": "./src/shard.js",
   "scripts": {
-    "start": "gulp",
-    "background": "screen -dmS CripsBot gulp",
-    "config": "node ./src/scripts/configure.js",
-    "debug": "node ./src/scripts/debug.js",
-    "dev": "gulpjs/gulp#4.0 --save-dev"
+    "start": "./bin/cripsbot",
+    "background": "screen -dmS cripsbot ./bin/cripsbot",
+    "config": "./bin/cripsbot --config",
+    "debug": "./bin/cripsbot --debug",
+	"lint": "eslint src",
+    "dev": "nodemon -w src bin/cripsbot"
+	"precommit": "yarn lint"
+  },
+  "bin": {
+    "cripsbot": "./bin/cripsbot"
+  },
+  "engines": {
+    "node": ">=8.0.0",
+	"yarn": ">=1.0.0"
   },
   "author": "BannerBomb",
   "license": "MIT",
@@ -20,19 +29,20 @@
     "didyoumean2": "^1.3.0",
     "discord-emoji": "^1.1.1",
     "discord.js": "github:discordjs/discord.js#11.4-dev",
+	"env-paths": "^1.0.0",
     "figlet": "^1.2.0",
     "fs-extra": "^6.0.1",
-    "google-translate-api": "abyssvi/google-translate-api",
+    "google-translate-api": "^2.3.0",
     "https": "^1.0.0",
     "math-expression-evaluator": "^1.2.17",
+	"meow": "^5.0.0",
     "node-notifier": "^5.2.1",
     "normalize-url": "^3.0.1",
     "opn": "^5.3.0",
     "path": "^0.12.7",
-    "prompt": "^1.0.0",
     "readdir-recursive": "^0.0.4",
     "roll": "^1.2.0",
-    "webdict": "^0.2.2",
+    "webdict": "^0.3.0",
     "ffmpeg-binaries": "^3.2.2-3",
     "node-opus": "^0.3.0",
     "opusscript": "^0.0.6",
@@ -77,15 +87,10 @@
     "pornhub-api": "^0.0.1",
     "inquirer": "^6.1.0"
   },
-  "engines": {
-    "node": "10.5.0",
-    "npm": "6.1.0"
-  },
+
   "devDependencies": {
-    "node": "^10.5.0",
-    "npm": "^6.1.0",
-    "eslint": "^5.0.1",
-    "gulp4": "^4.0.3",
-    "gulp-eslint": "^4.0.2"
+    "eslint": "^4.19.1",
+    "husky": "^0.14.3",
+    "nodemon": "^1.17.4"
   }
 }
