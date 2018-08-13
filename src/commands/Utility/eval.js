@@ -1,118 +1,106 @@
 const stripIndents = require('common-tags').stripIndents;
-const Discord = require('discord.js');
-const sql = require('mysql');
-const moment = require('moment');
-require('moment-duration-format');
-const chalk = require('chalk');
-const os = require('os');
-const ms = require('ms');
-const enmap = require('enmap');
-const enmaplvl = require('enmap-level');
-const child_process = require('child_process');
-const events = require('events');
-const cluster = require('cluster');
-const DBL = require("dblapi.js");
-const { Pool, Client } = require('pg');
-const express = require('express');
 
 exports.run = async (bot, msg, args) => {
-    const dbl = new DBL(process.env.DB_TOKEN, bot);
-    const pool = Pool;
-    const dbclient = Client;
-    const client = bot;
-    const message = msg;
-    const guild = msg.guild;
-    const channel = msg.channel;
-    
-    if (msg.author.id !== bot.config.botCreatorID) return;
-    let parsed = bot.utils.parseArgs(args, ['l:', 'i', 'q']);
-    let lang = parsed.options.l || '';
+	const client = bot;
+	const message = msg;
+	const guild = msg.guild;
+	const channel = msg.channel;
+	
+	if (msg.author.id !== bot.config.botCreatorID) return;
+	let parsed = bot.utils.parseArgs(args, ['l:', 'i', 'q']);
+	let lang = parsed.options.l || '';
 
-    let code = parsed.leftover.join(' ');
-    let output;
+	let code = parsed.leftover.join(' ');
+	let output;
 
-    try {
-        output = await eval(code);
-    } catch (err) {
-        let messageone = err;
-        if (err && err.response && err.response.body && err.response.body.message) {
-            messageone = err.response.body.message;
-        }
+	try {
+		output = await eval(code);
+	} catch (err) {
+		let message = err;
+		if (err && err.response && err.response.body && err.response.body.message) {
+			message = err.response.body.message;
+		}
 
-        return errorHandler(msg, bot, code, `${messageone}`);
-    }
+		return errorHandler(msg, bot, code, `${message}`);
+	}
 
-    //msg.delete(); // Delete the error message
+	if (parsed.options.q) {
+		return;
+	}
 
-    if (parsed.options.q) {
-        return;
-    }
+	if (typeof output !== 'string') {
+		output = require('util').inspect(output);
+	}
 
-    if (typeof output !== 'string') {
-        output = require('util').inspect(output);
-    }
+	if (!lang) {
+		lang = 'javascript';
+	}
 
-    if (!lang) {
-        lang = 'javascript';
-    }
+	output = clean(output).replace(new RegExp(bot.utils.quoteRegex(bot.token), 'g'), 'BOT_TOKEN');
 
-    output = clean(output).replace(new RegExp(bot.utils.quoteRegex(bot.token), 'g'), 'BOT_TOKEN');
+	const displayedOutput = output.length < 1500
+		? `\n\`\`\`${lang}\n${output}\n\`\`\``
+		: `\n${await tryUpload(bot, output)}\n`;
 
-    const { url } = await bot.utils.gistUpload(output);
-    if (!url) return msg.channel.send(`<:redx:411978781226696705> Failed to upload!`).catch(console.error);
+	msg.channel.send({
+		embed: bot.utils.embed('', stripIndents`
+				**Input:**\n\`\`\`js\n${code}\n\`\`\`
+				**Output:**${displayedOutput}
+				`)
+	});
 
-    msg.channel.send({
-        embed: bot.utils.embed('', stripIndents`
-                **Input:**\n\`\`\`js\n${code}\n\`\`\`
-                **Output:**${output.length < 1500 ? `\n\`\`\`${lang}\n${output}\n\`\`\`` : `\n${url}\n`}
-                `)
-    });
-
-    if (output.length > 1500 && parsed.options.i) {
-        bot.utils.sendLarge(msg.channel, output, {
-            prefix: '```' + lang + '\n',
-            suffix: '```',
-            cutOn: ',',
-            cutAfter: true
-        });
-    }
+	if (output.length > 1500 && parsed.options.i) {
+		bot.utils.sendLarge(msg.channel, output, {
+			prefix: '```' + lang + '\n',
+			suffix: '```',
+			cutOn: ',',
+			cutAfter: true
+		});
+	}
 };
 
-function errorHandler(msg, bot, code, err) {
-    //msg.delete(); // Delete the error message
-    msg.channel.send({
-        embed: bot.utils.embed('', `**Input:**\n\`\`\`js\n${code}\n\`\`\`\n:x: **Error!**\n\`\`\`xl\n${clean(err)}\n\`\`\``, [], {
-            color: '#ff0000'
-        })
-    });
-}
+const tryUpload = async (bot, content) => {
+	const { url } = await bot.utils.textUpload(content);
+	if (!url) {
+		throw 'Failed to upload!';
+	}
+	return url;
+};
+
+const errorHandler = (msg, bot, code, err) => {
+	msg.channel.send({
+		embed: bot.utils.embed('', `**Input:**\n\`\`\`js\n${code}\n\`\`\`\n:x: **Error!**\n\`\`\`xl\n${clean(err)}\n\`\`\``, [], {
+			color: '#ff0000'
+		})
+	});
+};
 
 // Prevent @mentions, #channels or code blocks inside code blocks.
-function clean(text) {
-    return text.replace(/([`@#])/g, '$1\u200b');
+const clean = (text) => {
+	return text.replace(/([`@#])/g, '$1\u200b');
 }
 
 exports.info = {
-    name: 'eval',
-    aliases: ['js'],
-    hidden: true,
-    usage: 'eval <code>',
-    description: 'Evaluates arbitrary JavaScript',
-    options: [
-        {
-            name: '-l',
-            usage: '-l <lang>',
-            description: 'Sets the output code-block syntax language'
-        },
-        {
-            name: '-i',
-            usage: '-i',
-            description: 'Inline extra-long output in addition to uploading to hastebin'
-        },
-        {
-            name: '-q',
-            usage: '-q',
-            description: 'Does not print any output'
-        }
-    ]
+	name: 'eval',
+	aliases: ['js'],
+	hidden: true,
+	usage: 'eval <code>',
+	description: 'Evaluates arbitrary JavaScript',
+	options: [
+		{
+			name: '-l',
+			usage: '-l <lang>',
+			description: 'Sets the output code-block syntax language'
+		},
+		{
+			name: '-i',
+			usage: '-i',
+			description: 'Inline extra-long output in addition to uploading to hastebin'
+		},
+		{
+			name: '-q',
+			usage: '-q',
+			description: 'Does not print any output'
+		}
+	]
 };
