@@ -116,8 +116,7 @@ class CripsBot extends Client {
 			- Users: ${this.users.filter(user => !user.bot).size}
 			- Bots: ${this.users.filter(user => user.bot).size}
 			- Channels: ${this.channels.size}
-			- Guilds: ${this.guilds.size}
-			- Shards: ${this.shard.count}`);
+			- Guilds: ${this.guilds.size}`); // - Shards: ${this.shard.count}
 			
 			stats.set('start-time', process.hrtime());
 			
