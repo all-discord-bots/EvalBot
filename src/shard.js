@@ -3,23 +3,24 @@
     instead of your main bot file.
 */
 
-const Webhook = require('webhook-discord');
-const wbhook = new Webhook(process.env.WEBHOOK_SHARD_LOGGER);
-const { ShardingManager } = require('discord.js');
-const Manager = new ShardingManager('./src/bot.js', {
-    respawn: true,
+const Discord = require('discord.js');
+const Manager = new Discord.ShardingManager('./src/bot.js');
+Manager.spawn(1);
+
+//const Webhook = require('webhook-discord');
+//const wbhook = new Webhook(process.env.WEBHOOK_SHARD_LOGGER);
+//const { ShardingManager } = require('discord.js');
+//const Manager = new ShardingManager('./src/bot.js', {
+//    respawn: true,
     //token: SpawnShards.botToken,
-    token: process.env.BOT_TOKEN,
-    totalShards: 1
-});
+//    token: process.env.BOT_TOKEN,
+//    totalShards: "auto"
+//});
 
-let guilds = 0;
-let users = 0;
-
-console.log(`Value: ${this.totalShards} || Type: ${typeof(this.totalShards)} || ManagerConstValue: ${Manager.totalShards}`);
+// console.log(`Value: ${this.totalShards} || Type: ${typeof(this.totalShards)} || ManagerConstValue: ${Manager.totalShards}`);
 //Manager.spawn(this.totalShards, 15000);
-Manager.spawn(Manager.totalShards, 15000);
-Manager.on('launch', (shard) => {
-	wbhook.success('CripsBot', `Successfully launched shard \`${shard.id}\`.`);
-	console.log(`Successfully launched shard ${shard.id}`);
-});
+//Manager.spawn(Manager.totalShards, 15000);
+//Manager.on('launch', (shard) => {
+//	wbhook.success('CripsBot', `Successfully launched shard \`${shard.id}\`.`);
+//	console.log(`Successfully launched shard ${shard.id}`);
+//});
