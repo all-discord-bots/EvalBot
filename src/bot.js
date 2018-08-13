@@ -2,7 +2,7 @@
 
 const fse = require('fs-extra');
 const { Client, Collection } = require('discord.js');
-const stripIndents = require('common-tags').StripIdents;
+const stripIndents = require('common-tags').StripIndents;
 const chalk = require('chalk');
 const Managers = require('./managers');
 const DBL = require("dblapi.js");
