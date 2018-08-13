@@ -1,1 +1,1 @@
-worker: node src/shard.js
+worker: bin/cripsbot
