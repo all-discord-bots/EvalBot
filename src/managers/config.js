@@ -11,7 +11,7 @@ class ConfigManager {
         this._bot = bot;
         this._base = base;
 
-        this._configPath = path.resolve(global.settings.configsFolder, '../data/configs/config.json');
+        this._configPath = path.resolve(global.settings.configsFolder, '../../data/configs/config.json');
 
         this._dynamicImports = dynamicImports;
 
