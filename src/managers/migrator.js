@@ -10,7 +10,7 @@ exports.migrate = function (bot, base) {
 function migrateConfig(bot, base) {
     let firstPath = path.resolve(base, 'config.json');
     let secondPath = path.resolve(base, '../config.json');
-    let thirdPath = path.resolve(base, '../data/configs/config.json');
+    let thirdPath = path.resolve(base, '../../data/configs/config.json');
 
     moveIfExists(firstPath, secondPath, 'Failed to migrate config.json!');
     moveIfExists(secondPath, thirdPath, 'Failed to migrade config.json to configs!');
