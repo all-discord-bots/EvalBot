@@ -13,12 +13,12 @@ const Manager = new ShardingManager('./src/bot.js', {
     totalShards: 1
 });
 
-console.log(`BOT_TOKEN: ${process.env.BOT_TOKEN}
+console.log(`BOT_TOKEN: ${process.env.BOT_TOKEN}`);
 
 let guilds = 0;
 let users = 0;
 
-console.log(`Value: ${this.totalShards} || Type: ${typeof(this.totalShards)} || ManagerConstValue: ${Manager.totalShards}`)
+console.log(`Value: ${this.totalShards} || Type: ${typeof(this.totalShards)} || ManagerConstValue: ${Manager.totalShards}`);
 Manager.spawn(this.totalShards, 15000);
 //Manager.spawn();
 Manager.on('launch', (shard) => {
