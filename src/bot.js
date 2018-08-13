@@ -49,6 +49,10 @@ class CripsBot extends Client {
 		
 		// Prevent any further loading if we're prompting them.
 		if (!this.config) return;
+
+		 // Plugins
+		this.plugins = this.managers.pluginManager = new Managers.Plugins(this);
+		this.plugins.loadPlugins();
 		
 		// Storage
 		this.storage = new Managers.Storage();
