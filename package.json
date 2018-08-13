@@ -2,12 +2,12 @@
   "name": "CripsBot",
   "version": "1.0.0",
   "description": "A bot created by BannerBomb#9772",
-  "main": "src/shard.js",
+  "main": "./src/bot.js",
   "scripts": {
     "start": "gulp",
     "background": "screen -dmS CripsBot gulp",
-    "config": "node src/scripts/configure.js",
-    "debug": "node src/scripts/debug.js",
+    "config": "node ./src/scripts/configure.js",
+    "debug": "node ./src/scripts/debug.js",
     "dev": "gulpjs/gulp#4.0 --save-dev"
   },
   "author": "BannerBomb",
