@@ -2,14 +2,14 @@ const chalk = require('chalk');
 const { inspect } = require('util');
 
 /**
- * The SharpBot logger
+ * The CripsBot logger
  *
  * @class Logger
  */
 class Logger {
     /**
      * Creates an instance of Logger.
-     * @param {SharpBot} bot
+     * @param {CripsBot} bot
      *
      * @memberOf Logger
      */
@@ -18,7 +18,9 @@ class Logger {
     }
 
     _log(prefix, message) {
-        (console._original.log || console.log)(`${prefix} ${message}`);
+        (console._original && console._original.log
+            ? console._original.log
+            : console.log)(`${prefix} ${message}`);
     }
 
     info(message) {
@@ -55,6 +57,16 @@ class Logger {
         console.info = this._wrap(this.warn);
         console.error = this._wrap(this.severe);
         console.debug = this._wrap(this.debug);
+    }
+
+    uninject() {
+        if (!console._original) throw 'Logger not injected!';
+
+        let original = console._original;
+
+        delete console._original;
+
+        Object.assign(console, original);
     }
 
     _wrap(func) {
