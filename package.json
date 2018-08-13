@@ -73,7 +73,8 @@
     "sshpk": "^1.14.2",
     "ytsearcher": "^1.1.2",
     "ytdl-core": "^0.20.4",
-    "youtube-playlist-info": "^1.1.2"
+    "youtube-playlist-info": "^1.1.2",
+    "pornhub-api": "^0.0.1"
   },
   "engines": {
     "node": "10.5.0",
