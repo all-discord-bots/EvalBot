@@ -76,7 +76,7 @@ class CripsBot extends Client {
 		
 		// Discord Bot List Stats Upload
 		this.setInterval(() => {
-			dbl.postStats(this.guilds.size, this.shard.id, this.shard.count); // Current shard data
+			dbl.postStats(this.guilds.size);//, this.shard.id, this.shard.count); // Current shard data
 			//dbl.postStats(results.toString()); // Upload server count per shard
 			console.log('Uploaded Bot Stats!');
 		}, 1800000);
