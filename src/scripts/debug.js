@@ -1,6 +1,6 @@
 const path = require('path');
 const ConfigManager = require('../managers/config');
-const {gistUpload} = require('../utils');
+const { textUpload } = require('../utils');
 const packageJson = require('../../package.json');
 
 const manager = new ConfigManager(null, path.join(__dirname, '..'));
@@ -14,7 +14,7 @@ Object.keys(config).forEach(configName => {
     }
 });
 
-let debugMessage = `CripsBot ${packageJson.version} Debug Output:
+let debugMessage = `SharpBot ${packageJson.version} Debug Output:
 
 Config: ${JSON.stringify(config, null, 4)}
 `;
@@ -28,8 +28,8 @@ const handleError = error => {
     process.exit();
 };
 
-gistUpload(debugMessage, 'txt')
-    .then(({url}) => {
+textUpload(debugMessage)
+    .then(({ url }) => {
         if (url) {
             console.log('Here is the link to your debug output: ' + url);
         } else {
@@ -38,4 +38,3 @@ gistUpload(debugMessage, 'txt')
         process.exit();
     })
     .catch(handleError);
-
