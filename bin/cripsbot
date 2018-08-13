@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 const meow = require('meow');
-const CripsBot = require('..');
+const CripsBot = require('../index');
 
 const envPaths = require('env-paths');
 const paths = envPaths('CripsBot', { suffix: '' });
