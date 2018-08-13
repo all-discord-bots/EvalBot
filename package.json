@@ -9,7 +9,7 @@
 	"config": "./bin/cripsbot --config",
 	"debug": "./bin/cripsbot --debug",
 	"lint": "eslint src",
-	"dev": "nodemon -w src bin/cripsbot"
+	"dev": "nodemon -w src bin/cripsbot",
 	"precommit": "yarn lint"
   },
   "bin": {
