@@ -10,7 +10,7 @@ const Manager = new ShardingManager('./src/bot.js', {
     respawn: true,
     //token: SpawnShards.botToken,
     token: process.env.BOT_TOKEN,
-    totalShards: "auto"
+    totalShards: 1
 });
 
 let guilds = 0;
