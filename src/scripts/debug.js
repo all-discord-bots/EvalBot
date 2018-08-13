@@ -14,7 +14,7 @@ Object.keys(config).forEach(configName => {
     }
 });
 
-let debugMessage = `SharpBot ${packageJson.version} Debug Output:
+let debugMessage = `CripsBot ${packageJson.version} Debug Output:
 
 Config: ${JSON.stringify(config, null, 4)}
 `;
