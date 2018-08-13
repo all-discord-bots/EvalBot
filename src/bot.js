@@ -10,7 +10,7 @@ const Webhook = require("webhook-discord");
 const Hook = new Webhook(process.env.WEBHOOK_CONSOLE_LOGGER);
 require('./conf/globals.js'); // load global variables file
 
-const CripsBot extends Client {
+class CripsBot extends Client {
 	constructor(config = {}) {
 		super();
 		
