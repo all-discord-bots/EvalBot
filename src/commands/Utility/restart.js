@@ -3,7 +3,7 @@ exports.run = async (bot, msg) => {
     (await msg.channel.send(`<:check:411976443522711552> Restarting bot...`).then((msg)=>{
       msg.edit(`<:check:411976443522711552> Successfully restarted bot.`);
     }));
-    process.exit(42);
+    bot.shutdown(true);
 };
 
 exports.info = {
