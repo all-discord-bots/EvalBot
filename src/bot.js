@@ -164,6 +164,7 @@ class CripsBot extends Client {
 			let gbot = msg.guild.members.get(this.user.id);
 			let hascmd;
 			let splitmsg = msg.content.split(' ');
+			let joinmsg = splitmsg.join(' ');
 			if (!this.config[msg.guild.id]) {
 				hascmd = this.commands.all().map(n => this.config.prefix + n.info.name).filter(n => n === splitmsg[0]).length;
 				if (msg.content == this.config.prefix || msg.content == this.config.prefix + " " || msg.content == " " + this.config.prefix) return;
