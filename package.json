@@ -60,7 +60,7 @@
 	"cluster": "^0.7.7",
 	"dblapi.js": "^2.2.0",
 	"webhook-discord": "^2.3.0",
-	"snekfetch": "^4.0.4", -- node-fetch
+	"node-fetch": "^2.2.0",
 	"got": "^9.0.0",
 	"libsodium-wrappers": "^0.7.3",
 	"table-layout": "^0.4.4",
