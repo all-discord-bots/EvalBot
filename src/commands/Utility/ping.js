@@ -16,16 +16,16 @@ exports.run = async (bot, msg) => {
 			bitrate = '';
 		}
 		msg.edit("Collecting message edit latency...").then((msg) => {
-			let edited = msg.editedTimestamp;
+			let edited = msg.editedTimestamp || 0;
 			msg.edit({ embed: ({
 				color: 631398,
 				title: 'Ping Data',
 				description: `
 Roundtrip: \`${Math.round((end-msg.createdTimestamp)/2)}ms\`
-Discord Latency: \`${end-start}ms\`
+Discord Latency: \`${end - start}ms\`
 API Latency: \`${Math.round(bot.ping)}ms\`
 Heartbeat: \`${Math.floor(bpings)}ms\`
-Message Edit: \`${edited-start}ms\`
+Message Edit: \`${edited - start}ms\`
 ${bitrate}
 `
 			})});
