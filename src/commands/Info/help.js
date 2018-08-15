@@ -1,7 +1,6 @@
 const stripIndents = require('common-tags').stripIndents;
 
 exports.run = async (bot, msg, args) => {
-
 	let commands = [];
 	let title = 'Categories';
 
@@ -167,7 +166,9 @@ exports.info = {
 		'help',
 		'help music',
 		'help play',
-		'help all'
+		'help all',
+		'help music:play'
+		
 	],
 	description: 'Shows you help for all commands or just a single command'
 };
