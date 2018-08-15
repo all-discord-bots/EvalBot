@@ -213,5 +213,10 @@ exports.run = async (bot, msg, args) => {
 exports.info = {
 	name: 'play',
 	usage: 'play <url|search>',
+	examples: [
+		'play Ozzy Osbourne - Crazy Train',
+		'play Lamb of God - Blood of the Scribe',
+		'play Nickleback - How you remind me'
+	],
 	description: 'Play audio from YouTube.'
 };
