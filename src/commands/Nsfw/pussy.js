@@ -23,7 +23,7 @@ exports.run = async (bot, msg, args) => {
 	{
 		Searcher.gifs().then(result => {
 			//const attachment = new MessageAttachment(`${result[0].url}`);
-			msg.channel.send(`Title: __**${result[0].title}**__\r\nDuration: **${result[0].duration}**\r\n${result[0].url}`);
+			msg.channel.send(`Title: __**${result[0].title}**__\r\n${result[0].url}`);
 		}).catch(err => {
 			return msg.channel.send(`<:redx:411978781226696705> ${err.toString()}`);
 		});
