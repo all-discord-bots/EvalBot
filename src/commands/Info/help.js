@@ -167,8 +167,9 @@ exports.info = {
 		'help music',
 		'help play',
 		'help all',
-		'help music:play'
-		
+		'help module:music',
+		'help command:play',
+		'help module music'
 	],
 	description: 'Shows you help for all commands or just a single command'
 };
