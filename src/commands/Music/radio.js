@@ -221,5 +221,9 @@ exports.info = {
 	name: 'radio',
 	aliases: ['station', 'radio-station'],
 	usage: 'radio [station name|stream url]',
+	examples: [
+		'radio Fun Radio',
+		'radio ca.radioboss.fm:8137/stream%26t%3D%26r%3D4RBS4'
+	],
 	description: 'Stream a radio station to a voice channel. You can use a station name or a stream url to play the station. Use this command without arguments to view a list of the current stations.'
 };
