@@ -53,5 +53,8 @@ exports.run = async (bot, msg, args) => {
 exports.info = {
 	name: 'lyrics',
 	usage: 'lyrics <artist> <song>',
+	examples: [
+		'lyrics Ozzy Osbourne - Crazy Train'
+	],
 	description: 'Fetch lyrics for a given artist and song.'
 };
