@@ -7,11 +7,21 @@ const fetchVideoInfo = require('youtube-info');
 const duration = require('go-duration');
 const { milliseconds, seconds, minutes, hours, days } = require('time-convert');
 require('../../conf/globals.js');
-const search = new YTSearcher({
-	key: process.env.YOUTUBE_API_KEY,
-	revealkey: true
-});
-	search.search(musicqueue[msg.guild.id]['music'][0], { type: 'video' }).then(searchResult => {
+
+exports.run = async (bot, msg, args) => {
+	const search = new YTSearcher({
+		key: process.env.YOUTUBE_API_KEY,
+		revealkey: true
+	});
+	let gvid = args.join(' ');
+	let gsearch;
+	if (gvid.length < 1) {
+		if (!musicqueue[msg.guild.id] || musicqueue[msg.guild.id]['music'].length < 1) return msg.channel.send(`<:redx:411978781226696705> There are no items in the queue!`).catch(console.error);
+		gsearch = musicqueue[msg.guild.id]['music'][0];
+	} else if (gvid.length > 0) {
+		gsearch = gvid;
+	}
+	search.search(gsearch, { type: 'video' }).then(searchResult => {
 		let result = searchResult.first;
 		//if (!result/* || !musicqueue[msg.guild.id]*/) return msg.channel.send(`<:redx:411978781226696705> Could not get the video.`).catch(console.error);
 		//global.musicqueue.push(`${result.url}`); // result.id = video id // result.channelID = channel id // result.url = full video url // result.title = video name // result.description = video description
@@ -222,6 +232,7 @@ const search = new YTSearcher({
 			})});
 		}
 	}).catch(err => console.error(err.toString()));
+};
 
 exports.info = {
 	name: 'nowplaying',
