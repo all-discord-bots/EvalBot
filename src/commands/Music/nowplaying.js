@@ -124,7 +124,8 @@ exports.run = async (bot, msg, args) => {
 				//let replacecomma1 = replacecomma.replace("` ","") + "remove-this-string";
 				//let ListRegionsAllowed = replacecomma1.replace(" `remove-this-string","");
 				// current time function was here
-				msg.channel.send({embed: ({
+				// OLD ONE UNTIL FIX COMES OUT
+				/*msg.channel.send({embed: ({
 					color: 3447003,
 					title: `${result.title}`,
 					url: `${result.url}`,
@@ -142,7 +143,7 @@ exports.run = async (bot, msg, args) => {
 							value: `${dthumbnail}${mthumbnail}${hthumbnail}`
 						}, {
 							name: `**__Uploaded__**`,
-							value: `${moment.utc(udate).format("LLLL")}`, // \`${result.publishedAt}\``
+							value: `${moment.utc(udate).format("LLLL")} \`${result.publishedAt}\``
 						}, {
 							name: `**__Description__**`,
 							value: `${result.description}`
@@ -184,7 +185,65 @@ exports.run = async (bot, msg, args) => {
 						}
 					],
 					timestamp: new Date()
-				})});
+				})});*/
+				msg.channel.send({embed: ({
+					color: 3447003,
+					title: `${result.title}`,
+					url: `${result.url}`,
+					"thumbnail": {
+						url: `${thumbnail}`
+					}, fields: [
+						{
+							name: `**__Video__**`,
+							value: `[${result.title}](${result.url}) \`${result.id}\``
+						}, {
+							name: `**__Channel__**`,
+							value: `[${result.channelTitle}](https://www.youtube.com/channel/${result.channelId}) \`${result.channelId}\``
+						}, {
+							name: `**__Thumbnails__**`,
+							value: `${dthumbnail}${mthumbnail}${hthumbnail}`
+						}, {
+							name: `**__Uploaded__**`,
+							value: `${moment.utc(udate).format("LLLL")}`
+						}, {
+							name: `**__Duration__**`,
+							value: `\`${houronezero}${currenttimepos[0]}:${minonezero}${currenttimepos[1]}:${seconezero}${currenttimepos[2]}/${hourzero}${h}:${minzero}${m}:${seczero}${s}\``
+						}, {
+							name: `**__Genre__**`,
+							value: `\`${videoInfo.genre || 'N/A'}\``,
+							inline: true
+						}, {
+							name: `**__Paid__**`,
+							value: `\`${videoInfo.paid}\``,
+							inline: true
+						}, {
+							name: `**__Unlisted__**`,
+							value: `\`${videoInfo.unlisted}\``,
+							inline: true
+						}, {
+							name: `**__Family Friendly__**`,
+							value: `\`${videoInfo.isFamilyFriendly}\``,
+							inline: true
+						}, {
+							name: `**__Views__**`,
+							value: `\`${videoInfo.views || '0'}\``,
+							inline: true
+						}, {
+							name: `**__Comments__**`,
+							value: `\`${videoInfo.commentCount || '0'}\``,
+							inline: true
+						}, {
+							name: `**__Regions Allowed__**`,
+							value: `${videoInfo.regionsAllowed.toString()}`,
+							inline: true
+						}, {
+							name: `**__Likes/Dislikes__**`,
+							value: `:thumbsup:\`${videoInfo.likeCount || '0'}\`\n:thumbsdown:\`${videoInfo.dislikeCount || '0'}\``,
+							inline: true
+						}
+					],
+					timestamp: new Date()
+				})}).catch(console.error);
 				// ${ListRegionsAllowed.toString() || '`N/A`'}`,
 			});
 			// https://developers.google.com/youtube/v3/docs/activities
