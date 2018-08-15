@@ -390,7 +390,10 @@ class CripsBot extends Client {
 		});
 		
 		// Process handlers
-		process.on('exit', () => this.shutdown());
+		process.on('exit', (code) => {
+			console.log(`Exited with exit code ${code}`);
+			this.shutdown();
+		});
 		
 		process.on('uncaughtException', (err) => {
 			let errorMsg = (err ? err.stack || err : '').toString().replace(new RegExp(`${__dirname}\/`, 'g'), './');
