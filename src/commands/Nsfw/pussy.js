@@ -34,5 +34,8 @@ exports.info = {
 	name: 'pornsearch',
 	aliases: ['p0rnsearch','cornsearch','pronsearch','c0rnsearch','pr0nsearch'],
 	usage: 'pornsearch <search>',
+	examples: [
+		'pornsearch pussy'
+	],
 	description: 'Sends a porn video/gif.'
 };
