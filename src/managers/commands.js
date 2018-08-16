@@ -93,18 +93,14 @@ class CommandManager {
 
 	handleCommand(msg, input) {
 		let prefix;
-		if (!input.startsWith(`<@${this.bot.id}> `)) {
-			if (msg.channel.type !== "dm") {
-				if (this.bot.config[msg.guild.id] === undefined) {
-					prefix = this.bot.config.prefix;
-				} else if (this.bot.config[msg.guild.id] !== undefined) {
-					prefix = this.bot.config[msg.guild.id].prefix;
-				}
-			} else {
+		if (msg.channel.type !== "dm") {
+			if (this.bot.config[msg.guild.id] === undefined) {
 				prefix = this.bot.config.prefix;
+			} else if (this.bot.config[msg.guild.id] !== undefined) {
+				prefix = this.bot.config[msg.guild.id].prefix;
 			}
 		} else {
-			prefix = `<@${this.bot.id}> `
+			prefix = this.bot.config.prefix;
 		}
 
 		if (!input.startsWith(prefix)) return; // || !input.startsWith(`<@${this.bot.id}>`)) return;
