@@ -113,7 +113,7 @@ class CommandManager {
 		let spli = new RegExp(prefix, 'gi');
 		// split1[0].match(spli).length;
 		//if (spli > prefix.length || spli < prefix.length) return; //|| spli > `<@${this.bot.id}>`.length || spli < `<@${this.bot.id}>`.length) return; // do this if you input the prefix more than one time ex. >>help when the prefix is >help
-		if (split1[0].match(spli).length === 1 && split1[0].match(spli)[0].length !== prefix.length) return;
+		if (split1[0].match(spli).length !== 1 && split1[0].match(spli)[0].length !== prefix.length) return;
 		let base = split[0].toLowerCase();
 		let args = split.slice(1);
 
@@ -143,7 +143,7 @@ class CommandManager {
 
 			if (maybe) {
 				let mprefix;
-				if (!input.startsWith(`<@${this.bot.user.id}>`)) {
+				if (!msg.startsWith(`<@${this.bot.user.id}>`)) {
 					if (msg.channel.type !== "dm") {
 						if (!this.bot.config[msg.guild.id]) {
 							mprefix = this.bot.config.prefix;
@@ -160,7 +160,7 @@ class CommandManager {
 				return msg.channel.send(`:question: Did you mean \`${mprefix}${maybe}\`?`).then(m => m.delete(5000));
 			} else {
 				let nprefix;
-				if (!input.startsWith(`<@${this.bot.user.id}>`)) {
+				if (!msg.startsWith(`<@${this.bot.user.id}>`)) {
 					if (msg.channel.type !== "dm") {
 						if (!this.bot.config[msg.guild.id]) {
 							nprefix = this.bot.config.prefix;
