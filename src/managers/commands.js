@@ -171,7 +171,7 @@ class CommandManager {
 						nprefix = this.bot.config.prefix;
 					}
 				} else {
-					nprefix = = `<@${this.bot.user.id}>`
+					nprefix = `<@${this.bot.user.id}>`
 				}
 				return; //msg.channel.send(`:no_entry_sign: No commands were found that were similar to \`${nprefix}${name}\``);
 				//.then(m => m.delete(5000));
