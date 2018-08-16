@@ -143,26 +143,35 @@ class CommandManager {
 
 			if (maybe) {
 				let mprefix;
-				if (msg.channel.type !== "dm") {
-					if (!this.bot.config[msg.guild.id]) {
+				if (!input.startsWith(`<@${this.bot.user.id}>`)) {
+					if (msg.channel.type !== "dm") {
+						if (!this.bot.config[msg.guild.id]) {
+							mprefix = this.bot.config.prefix;
+						} else if (this.bot.config[msg.guild.id]) {
+							mprefix = this.bot.config[msg.guild.id].prefix;
+						}
+					} else {
 						mprefix = this.bot.config.prefix;
-					} else if (this.bot.config[msg.guild.id]) {
-						mprefix = this.bot.config[msg.guild.id].prefix;
 					}
 				} else {
-					mprefix = this.bot.config.prefix;
+					mprefix = `<@${this.bot.user.id}>`
 				}
+				
 				return msg.channel.send(`:question: Did you mean \`${mprefix}${maybe}\`?`).then(m => m.delete(5000));
 			} else {
 				let nprefix;
-				if (msg.channel.type !== "dm") {
-					if (!this.bot.config[msg.guild.id]) {
+				if (!input.startsWith(`<@${this.bot.user.id}>`)) {
+					if (msg.channel.type !== "dm") {
+						if (!this.bot.config[msg.guild.id]) {
+							nprefix = this.bot.config.prefix;
+						} else if (this.bot.config[msg.guild.id]) {
+							nprefix = this.bot.config[msg.guild.id].prefix;
+						}
+					} else {
 						nprefix = this.bot.config.prefix;
-					} else if (this.bot.config[msg.guild.id]) {
-						nprefix = this.bot.config[msg.guild.id].prefix;
 					}
 				} else {
-					nprefix = this.bot.config.prefix;
+					nprefix = = `<@${this.bot.user.id}>`
 				}
 				return; //msg.channel.send(`:no_entry_sign: No commands were found that were similar to \`${nprefix}${name}\``);
 				//.then(m => m.delete(5000));
