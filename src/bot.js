@@ -144,7 +144,7 @@ class CripsBot extends Client {
 			if (msg.content === "") return;
 			let gmsg = msg.content.toLowerCase().split(' ');
 			
-			if (msg.channel.type === "dm" && (gmsg.length > this.config.prefix.length && gmsg[0].toString().startsWith(this.config.prefix)) || (gmsg.length > `<@${this.user.id}>`.length && gmsg[0].toString().startsWith(`<@${this.user.id}>`)) || (gmsg.length > `<@!${this.user.id}>`.length && gmsg[0].toString().startsWith(`<@!${this.user.id}>`))) return msg.channel.send(`<:redx:411978781226696705> This command can only be used in a server.`).catch(err => console.error);
+			if (msg.channel.type === "dm" && (msg.content.length > this.config.prefix.length && gmsg[0].toString().startsWith(this.config.prefix)) || (msg.content.length > `<@${this.user.id}>`.length && gmsg[0].toString().startsWith(`<@${this.user.id}>`)) || (msg.content.length > `<@!${this.user.id}>`.length && gmsg[0].toString().startsWith(`<@!${this.user.id}>`))) return msg.channel.send(`<:redx:411978781226696705> This command can only be used in a server.`).catch(err => console.error);
 			if (msg.channel.type === "dm") return;
 			
 			// Create Music Queue
