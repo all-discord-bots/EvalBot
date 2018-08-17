@@ -14,7 +14,7 @@ exports.run = async (bot, msg, args) => {
 	if (args.length < 1) {
 		user = msg.guild.members.get(`${msg.member.id}`);
 		let gtoprole = user.roles.filter(m => m.name).map(m => m.position).sort(function(a, b){return b-a});
-		toprole = user.roles.filter(m => m.position === gtoprole[0]).map(m => m.name);
+		toprole = user.roles.filter(m => m.position === gtoprole[0]).map(m => m.id);
 	} else if (gargs.includes("<@") && gargs.includes(">") && !gargs.includes("<@&")) {
 		let r;
 		if (gargs.includes("<@!")) {
@@ -26,7 +26,7 @@ exports.run = async (bot, msg, args) => {
 		if (msg.guild.members.get(`${rone}`)) { // in current guild
 			user = msg.guild.members.get(`${rone}`);
 			let gtoprole = user.roles.filter(m => m.name).map(m => m.position).sort(function(a, b){return b-a});
-			toprole = user.roles.filter(m => m.position === gtoprole[0]).map(m => m.name);
+			toprole = user.roles.filter(m => m.position === gtoprole[0]).map(m => m.id);
 		} else if (!msg.guild.members.get(`${rone}`)) { // not in current guild
 			user = bot.users.find(`id`, `${rone}`);
 		}
@@ -34,7 +34,7 @@ exports.run = async (bot, msg, args) => {
 		if (msg.guild.members.get(`${args[0]}`)) {
 			user = msg.guild.members.get(`${args[0]}`);
 			let gtoprole = user.roles.filter(m => m.name).map(m => m.position).sort(function(a, b){return b-a});
-			toprole = user.roles.filter(m => m.position === gtoprole[0]).map(m => m.name);
+			toprole = user.roles.filter(m => m.position === gtoprole[0]).map(m => m.id);
 		} else if (!msg.guild.members.get(`${args[0]}`)) {
 			user = bot.users.find(`id`, `${args[0]}`);
 		} 
@@ -43,7 +43,7 @@ exports.run = async (bot, msg, args) => {
 		if (msg.guild.members.get(`${gusername.id}`)) {
 			user = msg.guild.members.get(`${gusername.id}`);
 			let gtoprole = user.roles.filter(m => m.name).map(m => m.position).sort(function(a, b){return b-a});
-			toprole = user.roles.filter(m => m.position === gtoprole[0]).map(m => m.name);
+			toprole = user.roles.filter(m => m.position === gtoprole[0]).map(m => m.id);
 		} else if (!msg.guild.members.get(`${gusername.id}`)) {
 			user = bot.users.find(`id`, `${gusername.id}`);
 		}
@@ -52,7 +52,7 @@ exports.run = async (bot, msg, args) => {
 		if (msg.guild.members.get(`${gdiscrim.id}`)) {
 			user = msg.guild.members.get(`${gdiscrim.id}`);
 			let gtoprole = user.roles.filter(m => m.name).map(m => m.position).sort(function(a, b){return b-a});
-			toprole = user.roles.filter(m => m.position === gtoprole[0]).map(m => m.name);
+			toprole = user.roles.filter(m => m.position === gtoprole[0]).map(m => m.id);
 		} else if (!msg.guild.members.get(`${gdiscrim.id}`)) {
 			user = bot.users.find(`id`, `${gdiscrim.id}`);
 		}
@@ -122,7 +122,7 @@ exports.run = async (bot, msg, args) => {
 			value: `${moment.utc(jdate).format("DD-MM-YY")} (${moment.duration(nowdate - jdate).format()} ago)`
 		}, {
 			name: 'Highest Role',
-			value: `@${toprole}`,
+			value: `<@&${toprole}>`,
 			inline: true
 		}, {
 			name: 'Member #',
@@ -156,5 +156,10 @@ exports.info = {
 	name: 'user-info',
 	aliases: ['user','userinfo','member','member-info','profile'],
 	usage: 'user-info <user>',
+	examples: [
+		'user-info BannerBomb',
+		'user-info @BannerBomb',
+		'user-info 9772'
+	],
 	description: 'Shows various information and data on the mentioned user.'
 };
