@@ -136,29 +136,48 @@ class CripsBot extends Client {
 					timestamp: new Date(),
 					description: `Ready in: \`${parseInt(readyTime - startTime)}ms\``
 				})
-			}).catch(console.error);
+			}).catch(err => console.error);
 		});
 		
 		this.on('message', (msg) => {
 			if (msg.author.bot) return;
 			if (msg.content === "") return;
 			let gmsg = msg.content.toLowerCase().split(' ');
-			if (gmsg.length > this.config.prefix.length && gmsg[0].toString().startsWith(this.config.prefix) && msg.channel.type === "dm") return msg.channel.send(`<:redx:411978781226696705> This command can only be used in a server.`).catch(console.error);
+			
+			//if ((gmsg.length > this.config.prefix.length || gmsg.length > `<@${this.user.id}>`.length || gmsg.length > `<@!${this.user.id}>`.length) && (gmsg[0].toString().startsWith(this.config.prefix) || gmsg[0].toString().startsWith(`<@${this.user.id}>`) || gmsg[0].toString().startsWith(`<@!${this.user.id}>`)) && msg.channel.type === "dm") return msg.channel.send(`<:redx:411978781226696705> This command can only be used in a server.`).catch(err => console.error);
 			
 			// Create Music Queue
-			if (musicqueue[msg.guild.id] === undefined) musicqueue[msg.guild.id] = [];
-			if (musicqueue[msg.guild.id]['music'] === undefined) musicqueue[msg.guild.id]['music'] = [];
-			if (musicqueue[msg.guild.id]['loopqueue'] === undefined) musicqueue[msg.guild.id]['loopqueue'] = false;
-			if (musicqueue[msg.guild.id]['loopsong'] === undefined) musicqueue[msg.guild.id]['loopsong'] = false;
-			if (musicqueue[msg.guild.id]['streaming'] === undefined) musicqueue[msg.guild.id]['streaming'] = false;
-			if (musicqueue[msg.guild.id]['shuffle'] === undefined) musicqueue[msg.guild.id]['shuffle'] = false;
-			if (songqueue[msg.guild.id] === undefined) songqueue[msg.guild.id] = [];
+			try {
+				if (musicqueue[msg.guild.id] === undefined)
+				{
+					musicqueue[msg.guild.id] = {
+						music: [],
+						loopqueue: false,
+						loopsong: false,
+						streaming: false,
+						shuffle: false
+					}
+				}
+				if (songqueue[msg.guild.id] === undefined)
+				{
+					songqueue[msg.guild.id] = []
+				}
+			} catch (err) {
+				this.channels.get("415265475895754752").send({
+					embed: ({
+						color: 15684432,
+						timestamp: new Date(),
+						title: `${err.toString()}`,
+						description: `\`\`\`\n${err.stack}\n\`\`\``
+					})
+				}).catch(err => console.error);
+			}
 			
 			// NO 'XD' messages
 			if (msg.guild.id === this.config.botMainServerID && gmsg[0] === "xd" && gmsg.length === 1) {
 				msg.delete().then(msg => {
 					msg.channel.send(`<:blobDerp:413114089225846785>`);
-				}).catch(console.error);
+				}).catch(err => console.error);
 			}
 			
 			let gbot = msg.guild.members.get(this.user.id);
@@ -167,8 +186,13 @@ class CripsBot extends Client {
 			let joinmsg = splitmsg.join(' ');
 			if (!this.config[msg.guild.id]) {
 				hascmd = this.commands.all().map(n => this.config.prefix + n.info.name).filter(n => n === splitmsg[0]).length;
-				if (msg.content == this.config.prefix || msg.content == this.config.prefix + " " || msg.content == " " + this.config.prefix) return;
-				if (msg.content.startsWith(this.config.prefix) && hascmd > 0) {
+				if (!msg.content.startsWith(`<@${this.user.id}>`) && !msg.content.startsWith(`<@!${this.user.id}>`))
+				{
+					if (msg.content === this.config.prefix || msg.content.replace(new RegExp(`[^${this.config.prefix}]+.+`,'gi'),'') !== this.config.prefix) return;
+				}
+				//if (msg.content == this.config.prefix || msg.content == this.config.prefix + " " || msg.content == " " + this.config.prefix) return;
+				if ((msg.content.startsWith(this.config.prefix) || msg.content.startsWith(`<@${this.user.id}>`) || msg.content.startsWith(`<@!${this.user.id}>`)) && hascmd > 0) {
+					if (msg.channel.type === "dm") return msg.channel.send(`<:redx:411978781226696705> This command can only be used in a server.`).catch(err => console.error);
 					// Begin debugging messages log for errors
 					if (msg.channel.id !== "345551930459684866") {
 						this.channels.get("415682448794451998").send({
@@ -180,15 +204,20 @@ class CripsBot extends Client {
 									name: `${msg.author.tag} - ${msg.author.id} | ${msg.guild.name} - ${msg.guild.id}`,
 								},
 							})
-						}).catch(console.error);
+						}).catch(err => console.error);
 					}
-					if (!gbot.hasPermission(0x00040000)) return msg.channel.send(`<:redx:411978781226696705> I am missing \`Use External Emojis\`!`).catch(console.error);
-					if (!gbot.hasPermission(0x00004000)) return msg.channel.send(`<:redx:411978781226696705> I am missing \`Embed Links\`!`).catch(console.error);
+					if (!gbot.hasPermission(0x00040000)) return msg.channel.send(`<:redx:411978781226696705> I am missing \`Use External Emojis\`!`).catch(err => console.error);
+					if (!gbot.hasPermission(0x00004000)) return msg.channel.send(`<:redx:411978781226696705> I am missing \`Embed Links\`!`).catch(err => console.error);
 				}
 			} else if (this.config[msg.guild.id]) {
 				hascmd = this.commands.all().map(n => this.config[msg.guild.id].prefix + n.info.name).filter(n => n === splitmsg[0]).length;
-				if (msg.content == this.config[msg.guild.id].prefix || msg.content == this.config[msg.guild.id].prefix + " " || msg.content == " " + this.config[msg.guild.id].prefix) return;
-				if (msg.content.startsWith(this.config[msg.guild.id].prefix) && hascmd > 0) {
+				//if (msg.content == this.config[msg.guild.id].prefix || msg.content == this.config[msg.guild.id].prefix + " " || msg.content == " " + this.config[msg.guild.id].prefix) return;
+				if (!msg.content.startsWith(`<@${this.user.id}>`) && !msg.content.startsWith(`<@!${this.user.id}>`))
+				{
+					if (msg.content === this.config[msg.guild.id].prefix || msg.content.replace(new RegExp(`[^${this.config[msg.guild.id].prefix}]+.+`,'gi'),'') !== this.config[msg.guild.id].prefix) return;
+				}
+				if ((msg.content.startsWith(this.config[msg.guild.id].prefix) || msg.content.startsWith(`<@${this.user.id}>`) || msg.content.startsWith(`<@!${this.user.id}>`)) && hascmd > 0) {
+					if (msg.channel.type === "dm") return msg.channel.send(`<:redx:411978781226696705> This command can only be used in a server.`).catch(err => console.error);
 					// Begin debugging messages log for errors
 					if (msg.channel.id !== "345551930459684866") {
 						this.channels.get("415682448794451998").send({
@@ -200,10 +229,10 @@ class CripsBot extends Client {
 									name: `${msg.author.tag} - ${msg.author.id} | ${msg.guild.name} - ${msg.guild.id}`,
 								},
 							})
-						}).catch(console.error);
+						}).catch(err => console.error);
 					}
-					if (!gbot.hasPermission(0x00040000)) return msg.channel.send(`<:redx:411978781226696705> I am missing \`Use External Emojis\`!`).catch(console.error);
-					if (!gbot.hasPermission(0x00004000)) return msg.channel.send(`<:redx:411978781226696705> I am missing \`Embed Links\`!`).catch(console.error);
+					if (!gbot.hasPermission(0x00040000)) return msg.channel.send(`<:redx:411978781226696705> I am missing \`Use External Emojis\`!`).catch(err => console.error);
+					if (!gbot.hasPermission(0x00004000)) return msg.channel.send(`<:redx:411978781226696705> I am missing \`Embed Links\`!`).catch(err => console.error);
 				}
 			}
 			stats.increment(`messages-${this.user.id === msg.author.id ? 'sent' : 'received'}`);
@@ -244,7 +273,7 @@ class CripsBot extends Client {
 					timestamp: new Date(),
 					description: `${guild.name} (${guild.id})\n\`${gusers} members   -   ${gbots} bots  (${Math.floor(gbots/gdecimal)}%)\`\n\nOwner: <@${guild.owner.id}>  \`[${guild.owner.user.username}#${guild.owner.user.discriminator}]\``
 				})
-			}).catch(console.error);
+			}).catch(err => console.error);
 			let s;
 			if (this.guilds.size === 1) {
 				s = "";
@@ -256,7 +285,7 @@ class CripsBot extends Client {
 		
 		// Removed from a server
 		this.on("guildDelete", (guild) => {
-			console.log("Left a guild: " + guild.name);
+			console.log(`Left a guild: ${guild.name}`);
 			let gusers = guild.members.filter(user => !user.user.bot).size; // get only users and exclude bots
 			let gtotal = guild.members.filter(user => user.user).size; // get all users and bots
 			let gbots = guild.members.filter(user => user.user.bot).size; // get all bots excluding users
@@ -270,7 +299,7 @@ class CripsBot extends Client {
 					timestamp: new Date(),
 					description: `${guild.name} (${guild.id})\n\`${gusers} members   -   ${gbots} bots  (${Math.floor(gbots/gdecimal)}%)\`\n\nOwner: <@${guild.owner.id}>  \`[${guild.owner.user.username}#${guild.owner.user.discriminator}]\``
 				})
-			}).catch(console.error);
+			}).catch(err => console.error);
 			let s;
 			if (this.guilds.size == 1) {
 				s = "";
@@ -293,7 +322,7 @@ class CripsBot extends Client {
 						icon_url: `${member.user.displayAvatarURL}`
 					},
 				})
-			}).catch(console.error);
+			}).catch(err => console.error);
 		});
 		
 		this.on("guildMemberRemove", (member) => {
@@ -309,7 +338,7 @@ class CripsBot extends Client {
 						icon_url: `${member.user.displayAvatarURL}`
 					},
 				})
-			}).catch(console.error);
+			}).catch(err => console.error);
 		});
 		
 		this.on('error', (e) => {
@@ -404,7 +433,7 @@ class CripsBot extends Client {
 					title: `Uncaught Exception`,
 					description: `${errorMsg}`
 				})
-			}); //.catch(console.error);
+			}); //.catch(err => console.error);
 			this.logger.severe(errorMsg);
 		});
 		
