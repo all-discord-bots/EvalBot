@@ -122,7 +122,7 @@ exports.run = async (bot, msg, args) => {
 			value: `${moment.utc(jdate).format("DD-MM-YY")} (${moment.duration(nowdate - jdate).format()} ago)`
 		}, {
 			name: 'Highest Role',
-			value: `${toprole}`,
+			value: `@${toprole}`,
 			inline: true
 		}, {
 			name: 'Member #',
