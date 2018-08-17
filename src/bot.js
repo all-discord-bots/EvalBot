@@ -144,24 +144,23 @@ class CripsBot extends Client {
 			if (msg.content === "") return;
 			let gmsg = msg.content.toLowerCase().split(' ');
 			
+			if ((gmsg.length > this.config.prefix.length || gmsg.length > `<@${this.user.id}>`.length || gmsg.length > `<@!${this.user.id}>`.length) && (gmsg[0].toString().startsWith(this.config.prefix) || gmsg[0].toString().startsWith(`<@${this.user.id}>`) || gmsg[0].toString().startsWith(`<@!${this.user.id}>`)) && msg.channel.type === "dm") return msg.channel.send(`<:redx:411978781226696705> This command can only be used in a server.`).catch(err => console.error);
+			
 			// Create Music Queue
 			try {
-				if (msg.channel.type !== "dm")
+				if (musicqueue[msg.guild.id] === undefined)
 				{
-					if (musicqueue[msg.guild.id] === undefined)
-					{
-						musicqueue[msg.guild.id] = {
-							music: [],
-							loopqueue: false,
-							loopsong: false,
-							streaming: false,
-							shuffle: false
-						}
+					musicqueue[msg.guild.id] = {
+						music: [],
+						loopqueue: false,
+						loopsong: false,
+						streaming: false,
+						shuffle: false
 					}
-					if (songqueue[msg.guild.id] === undefined)
-					{
-						songqueue[msg.guild.id] = []
-					}
+				}
+				if (songqueue[msg.guild.id] === undefined)
+				{
+					songqueue[msg.guild.id] = []
 				}
 			} catch (err) {
 				this.channels.get("415265475895754752").send({
@@ -173,6 +172,7 @@ class CripsBot extends Client {
 					})
 				}).catch(err => console.error);
 			}
+			
 			// NO 'XD' messages
 			if (msg.guild.id === this.config.botMainServerID && gmsg[0] === "xd" && gmsg.length === 1) {
 				msg.delete().then(msg => {
@@ -192,7 +192,7 @@ class CripsBot extends Client {
 				}
 				//if (msg.content == this.config.prefix || msg.content == this.config.prefix + " " || msg.content == " " + this.config.prefix) return;
 				if ((msg.content.startsWith(this.config.prefix) || msg.content.startsWith(`<@${this.user.id}>`) || msg.content.startsWith(`<@!${this.user.id}>`)) && hascmd > 0) {
-					if (msg.channel.type === "dm") return msg.channel.send(`<:redx:411978781226696705> This command can only be used in a server.`).catch(err => console.error);
+					//if (msg.channel.type === "dm") return msg.channel.send(`<:redx:411978781226696705> This command can only be used in a server.`).catch(err => console.error);
 					// Begin debugging messages log for errors
 					if (msg.channel.id !== "345551930459684866") {
 						this.channels.get("415682448794451998").send({
@@ -217,7 +217,7 @@ class CripsBot extends Client {
 					if (msg.content === this.config[msg.guild.id].prefix || msg.content.replace(new RegExp(`[^${this.config[msg.guild.id].prefix}]+.+`,'gi'),'') !== this.config[msg.guild.id].prefix) return;
 				}
 				if ((msg.content.startsWith(this.config[msg.guild.id].prefix) || msg.content.startsWith(`<@${this.user.id}>`) || msg.content.startsWith(`<@!${this.user.id}>`)) && hascmd > 0) {
-					if (msg.channel.type === "dm") return msg.channel.send(`<:redx:411978781226696705> This command can only be used in a server.`).catch(err => console.error);
+					//if (msg.channel.type === "dm") return msg.channel.send(`<:redx:411978781226696705> This command can only be used in a server.`).catch(err => console.error);
 					// Begin debugging messages log for errors
 					if (msg.channel.id !== "345551930459684866") {
 						this.channels.get("415682448794451998").send({
