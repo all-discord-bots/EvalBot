@@ -144,23 +144,24 @@ class CripsBot extends Client {
 			if (msg.content === "") return;
 			let gmsg = msg.content.toLowerCase().split(' ');
 			
-			//if ((gmsg.length > this.config.prefix.length || gmsg.length > `<@${this.user.id}>`.length || gmsg.length > `<@!${this.user.id}>`.length) && (gmsg[0].toString().startsWith(this.config.prefix) || gmsg[0].toString().startsWith(`<@${this.user.id}>`) || gmsg[0].toString().startsWith(`<@!${this.user.id}>`)) && msg.channel.type === "dm") return msg.channel.send(`<:redx:411978781226696705> This command can only be used in a server.`).catch(err => console.error);
-			
 			// Create Music Queue
 			try {
-				if (musicqueue[msg.guild.id] === undefined)
+				if (msg.channel.type !== "dm")
 				{
-					musicqueue[msg.guild.id] = {
-						music: [],
-						loopqueue: false,
-						loopsong: false,
-						streaming: false,
-						shuffle: false
+					if (musicqueue[msg.guild.id] === undefined)
+					{
+						musicqueue[msg.guild.id] = {
+							music: [],
+							loopqueue: false,
+							loopsong: false,
+							streaming: false,
+							shuffle: false
+						}
 					}
-				}
-				if (songqueue[msg.guild.id] === undefined)
-				{
-					songqueue[msg.guild.id] = []
+					if (songqueue[msg.guild.id] === undefined)
+					{
+						songqueue[msg.guild.id] = []
+					}
 				}
 			} catch (err) {
 				this.channels.get("415265475895754752").send({
@@ -172,7 +173,6 @@ class CripsBot extends Client {
 					})
 				}).catch(err => console.error);
 			}
-			
 			// NO 'XD' messages
 			if (msg.guild.id === this.config.botMainServerID && gmsg[0] === "xd" && gmsg.length === 1) {
 				msg.delete().then(msg => {
