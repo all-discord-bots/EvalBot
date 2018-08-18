@@ -1,5 +1,6 @@
 exports.run = async (bot, msg, args) => {
-  msg.channel.send(`${bot.utils.getMembers(msg,args.join(' '))}`);
+  let user = bot.utils.getMembers(msg,args.join(' '));
+  msg.channel.send(`${user}`);
 };
 
 exports.info = {
