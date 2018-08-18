@@ -1,5 +1,5 @@
 exports.run = async (bot, msg, args) => {
-  msg.channel.send(`<@${bot.utils.findMember(msg,args.join(' '))}>`);
+  msg.channel.send(`<@${bot.utils.getMember(msg,args.join(' '))}>`);
 };
 
 exports.info = {
