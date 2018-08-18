@@ -20,7 +20,7 @@ const getMembers = (msg,user,isMessage = false,guildOnly = false) => {
 	}
 	if (msg.guild.members.get(`${global.bot.users.array().filter(memberSearch(user,guildOnly))[0].id}`))
 	{
-		return msg.guild.members.array().filter(memberSearch(user,guildOnly))[0].toString();
+		return msg.guild.members.array().filter(memberSearch(user,guildOnly))[0]; // toString()
 	}
 	else if (!msg.guild.members.get(`${global.bot.users.array().filter(memberSearch(user,guildOnly))[0].id}`))
 	{
@@ -29,7 +29,7 @@ const getMembers = (msg,user,isMessage = false,guildOnly = false) => {
 			if (isMessage) return `<:redx:411978781226696705> I could not find that user.`;
 			return msg.channel.send(`<:redx:411978781226696705> I could not find that user.`);
 		}
-		return global.bot.users.array().filter(memberSearch(user,guildOnly))[0].toString();
+		return global.bot.users.array().filter(memberSearch(user,guildOnly))[0]; // .toString()
 	}
 	else
 	{
