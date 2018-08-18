@@ -12,20 +12,29 @@ const memberSearch = (search,guildOnly = false) => {
 	}
 };
 
-const getMembers = (msg,user,guildOnly = false) => {
-	if (global.bot.users.array().filter(memberSearch(user,guildOnly)).length <= 0) return `<:redx:411978781226696705> I could not find that user.`;
+const getMembers = (msg,user,isMessage = false,guildOnly = false) => {
+	if (global.bot.users.array().filter(memberSearch(user,guildOnly)).length <= 0)
+	{
+		if (isMessage) return `<:redx:411978781226696705> I could not find that user.`;
+		return msg.channel.send(`<:redx:411978781226696705> I could not find that user.`);
+	}
 	if (msg.guild.members.get(`${global.bot.users.array().filter(memberSearch(user,guildOnly))[0].id}`))
 	{
 		return msg.guild.members.array().filter(memberSearch(user,guildOnly))[0].toString();
 	}
 	else if (!msg.guild.members.get(`${global.bot.users.array().filter(memberSearch(user,guildOnly))[0].id}`))
 	{
-		if (guildOnly) return `<:redx:411978781226696705> I could not find that user.`;
+		if (guildOnly)
+		{
+			if (isMessage) return `<:redx:411978781226696705> I could not find that user.`;
+			return msg.channel.send(`<:redx:411978781226696705> I could not find that user.`);
+		}
 		return global.bot.users.array().filter(memberSearch(user,guildOnly))[0].toString();
 	}
 	else
 	{
-		return `<:redx:411978781226696705> I could not find that user.`;
+		if (isMessage) return `<:redx:411978781226696705> I could not find that user.`;
+		return msg.channel.send(`<:redx:411978781226696705> I could not find that user.`);
 	}
 };
 
