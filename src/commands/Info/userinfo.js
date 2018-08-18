@@ -19,6 +19,7 @@ exports.run = async (bot, msg, args) => {
 	
 	if (!user) return msg.channel.send(`<:redx:411978781226696705> I could not find that user.`);
 	if (user.toString().includes("I could not find that user.")) return;
+	if (user.presence === undefined || user.presence.status === undefined) return;
 	let statusemoji;
 	if (user.presence.status === "online") {
 		statusemoji = `<:online:411637359398879232>`;
