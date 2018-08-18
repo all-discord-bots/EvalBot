@@ -122,5 +122,5 @@ exports.info = {
 		'user-info @BannerBomb',
 		'user-info 9772'
 	],
-	description: 'Shows various information and data on the mentioned user.'
+	description: 'Shows various information and data about a user.'
 };
