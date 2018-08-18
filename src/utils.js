@@ -4,34 +4,28 @@ const got = require('got');
 const memberSearch = (search,guildOnly = false) => {
 	if (guildOnly)
 	{
-		return member => (member.user && ((member.user.username && member.user.username.toLowerCase().includes(search.toLowerCase())) || (member.user.id && member.user.id.toString().includes(search.replace(/<@!?|>/g,''))) || (member.nickname && member.nickname.toLowerCase().includes(search.toLowerCase())) || (member.user.tag && `${member.user.tag}`.toLowerCase().includes(search.toLowerCase()))));
+		return member => (member.user && ((member.user.username && member.user.username.toLowerCase().includes(search.toLowerCase())) || (member.user.id && member.user.id.toString().includes(search.replace(/<@!?|>/g,''))) || (member.nickname && `${member.nickname}`.toLowerCase().includes(search.toLowerCase())) || (member.user.tag && member.user.tag.toLowerCase().includes(search.toLowerCase()))));
 	}
 	else
 	{
-		return member => (member.user && ((member.user.username && member.user.username.toLowerCase().includes(search.toLowerCase())) || (member.user.id && member.user.id.toString().includes(search.replace(/<@!?|>/g,''))) || (member.nickname && member.nickname.toLowerCase().includes(search.toLowerCase())) || (member.user.tag && `${member.user.tag}`.toLowerCase().includes(search.toLowerCase())))) || (!member.user && ((member.username && member.username.toLowerCase().includes(search.toLowerCase())) || (member.id && member.id.toString().includes(search.replace(/<@!?|>/g,''))) || (member.tag && `${member.tag}`.toLowerCase().includes(search.toLowerCase()))));
+		return member => (member.user && ((member.user.username && member.user.username.toLowerCase().includes(search.toLowerCase())) || (member.user.id && member.user.id.toString().includes(search.replace(/<@!?|>/g,''))) || (member.nickname && `${member.nickname}`.toLowerCase().includes(search.toLowerCase())) || (member.user.tag && member.user.tag.toLowerCase().includes(search.toLowerCase())))) || (!member.user && ((member.username && member.username.toLowerCase().includes(search.toLowerCase())) || (member.id && member.id.toString().includes(search.replace(/<@!?|>/g,''))) || (member.tag && member.tag.toLowerCase().includes(search.toLowerCase()))));
 	}
 };
 
-const getMembers = (msg,user,guildOnly = false) => {
-	if (global.bot.users.array().filter(memberSearch(user,guildOnly)).length <= 0) return msg.channel.send(`<:redx:411978781226696705> I could not find that user.`).catch(err => console.error);
+const getMembers = async (msg,user,guildOnly = false) => {
+	if (global.bot.users.array().filter(memberSearch(user,guildOnly)).length <= 0) return `<:redx:411978781226696705> I could not find that user.`;
 	if (msg.guild.members.get(`${global.bot.users.array().filter(memberSearch(user,guildOnly))[0].id}`))
 	{
-		return msg.guild.members.array().filter(memberSearch(user,guildOnly))[0];
+		return msg.guild.members.array().filter(memberSearch(user,guildOnly))[0].toString();
 	}
 	else if (!msg.guild.members.get(`${global.bot.users.array().filter(memberSearch(user,guildOnly))[0].id}`))
 	{
-		if (!guildOnly)
-		{
-			return global.bot.users.array().filter(memberSearch(user,guildOnly))[0];
-		}
-		else
-		{
-			return msg.channel.send(`<:redx:411978781226696705> I could not find that user.`).catch(err => console.error);
-		}
+		if (guildOnly) return `<:redx:411978781226696705> I could not find that user.`;
+		return global.bot.users.array().filter(memberSearch(user,guildOnly))[0].toString();
 	}
 	else
 	{
-		return msg.channel.send(`<:redx:411978781226696705> I could not find that user.`).catch(err => console.error);
+		return `<:redx:411978781226696705> I could not find that user.`;
 	}
 };
 
