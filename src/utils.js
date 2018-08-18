@@ -12,7 +12,7 @@ const memberSearch = (search,guildOnly = false) => {
 	}
 };
 
-const getMembers = async (msg,user,guildOnly = false) => {
+const getMembers = (msg,user,guildOnly = false) => {
 	if (global.bot.users.array().filter(memberSearch(user,guildOnly)).length <= 0) return `<:redx:411978781226696705> I could not find that user.`;
 	if (msg.guild.members.get(`${global.bot.users.array().filter(memberSearch(user,guildOnly))[0].id}`))
 	{
