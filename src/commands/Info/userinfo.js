@@ -9,55 +9,16 @@ exports.run = async (bot, msg, args) => {
 		'Watching',
 	];
 	let user;
-	let toprole;
 	let gargs = args[0];
-	if (args.length < 1) {
-		user = msg.guild.members.get(`${msg.member.id}`);
-		let gtoprole = user.roles.filter(m => m.name).map(m => m.position).sort(function(a, b){return b-a});
-		toprole = user.roles.filter(m => m.position === gtoprole[0]).map(m => m.id);
-	} else if (gargs.includes("<@") && gargs.includes(">") && !gargs.includes("<@&")) {
-		let r;
-		if (gargs.includes("<@!")) {
-			r = gargs.replace(/<@!/g, '');
-		} else if (gargs.includes("<@") && !gargs.includes("!")) {
-			r = gargs.replace(/<@/g, '');
-		}
-		let rone = r.replace(/>/g, '');
-		if (msg.guild.members.get(`${rone}`)) { // in current guild
-			user = msg.guild.members.get(`${rone}`);
-			let gtoprole = user.roles.filter(m => m.name).map(m => m.position).sort(function(a, b){return b-a});
-			toprole = user.roles.filter(m => m.position === gtoprole[0]).map(m => m.id);
-		} else if (!msg.guild.members.get(`${rone}`)) { // not in current guild
-			user = bot.users.find(`id`, `${rone}`);
-		}
-	} else if (bot.users.find(`id`, `${args[0]}`)) {
-		if (msg.guild.members.get(`${args[0]}`)) {
-			user = msg.guild.members.get(`${args[0]}`);
-			let gtoprole = user.roles.filter(m => m.name).map(m => m.position).sort(function(a, b){return b-a});
-			toprole = user.roles.filter(m => m.position === gtoprole[0]).map(m => m.id);
-		} else if (!msg.guild.members.get(`${args[0]}`)) {
-			user = bot.users.find(`id`, `${args[0]}`);
-		} 
-	} else if (bot.users.find(`username`, `${args[0]}`)) {
-		let gusername = bot.users.find(`username`, `${args[0]}`);
-		if (msg.guild.members.get(`${gusername.id}`)) {
-			user = msg.guild.members.get(`${gusername.id}`);
-			let gtoprole = user.roles.filter(m => m.name).map(m => m.position).sort(function(a, b){return b-a});
-			toprole = user.roles.filter(m => m.position === gtoprole[0]).map(m => m.id);
-		} else if (!msg.guild.members.get(`${gusername.id}`)) {
-			user = bot.users.find(`id`, `${gusername.id}`);
-		}
-	} else if (bot.users.find(`discriminator`, `${args[0]}`)) {
-		let gdiscrim = bot.users.find(`discriminator`, `${args[0]}`);
-		if (msg.guild.members.get(`${gdiscrim.id}`)) {
-			user = msg.guild.members.get(`${gdiscrim.id}`);
-			let gtoprole = user.roles.filter(m => m.name).map(m => m.position).sort(function(a, b){return b-a});
-			toprole = user.roles.filter(m => m.position === gtoprole[0]).map(m => m.id);
-		} else if (!msg.guild.members.get(`${gdiscrim.id}`)) {
-			user = bot.users.find(`id`, `${gdiscrim.id}`);
-		}
+	if (args.length <= 0) {
+		user = bot.utils.getMembers(msg,`${msg.member.id}`); //msg.guild.members.get(`${msg.member.id}`);
+		//let gtoprole = user.roles.filter(m => m.name).map(m => m.position).sort(function(a, b){return b-a});
+		//toprole = user.roles.filter(m => m.position === gtoprole[0]).map(m => m.id);
+	} else {
+		user = bot.utils.getMembers(msg,args.join(' '));
 	}
-	if (!user) return msg.channel.send(`<:redx:411978781226696705> I could not find that user!`)
+	
+	if (user.includes(`<:redx:411978781226696705>`)) return msg.channel.send(`<:redx:411978781226696705> I could not find that user.`);
 	let statusemoji;
 	if (user.presence.status === "online") {
 		statusemoji = `<:online:411637359398879232>`;
@@ -122,7 +83,7 @@ exports.run = async (bot, msg, args) => {
 			value: `${moment.utc(jdate).format("DD-MM-YY")} (${moment.duration(nowdate - jdate).format()} ago)`
 		}, {
 			name: 'Highest Role',
-			value: `<@&${toprole}>`,
+			value: `<@&${msg.guild.members.get("269247101697916939").highestRole.id}>`,
 			inline: true
 		}, {
 			name: 'Member #',
