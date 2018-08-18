@@ -1,6 +1,37 @@
 const RichEmbed = require('discord.js').RichEmbed;
 const got = require('got');
 
+const memberSearch = (search,guildOnly = false) => {
+	if (guildOnly)
+	{
+		return member => (member.user && ((member.user.username && member.user.username.toLowerCase().includes(search)) || (member.user.id && member.user.id.toString().includes(search.replace(/<@!?|>/g,''))) || (member.nickname && member.nickname.toLowerCase().includes(search)) || (member.user.tag && `${member.user.tag}`.includes(search))));
+	}
+	else
+	{
+		return member => (member.user && ((member.user.username && member.user.username.toLowerCase().includes(search)) || (member.user.id && member.user.id.toString().includes(search.replace(/<@!?|>/g,''))) || (member.nickname && member.nickname.toLowerCase().includes(search)) || (member.user.tag && `${member.user.tag}`.includes(search)))) || (!member.user && ((member.username && member.username.toLowerCase().includes(search)) || (member.id && member.id.toString().includes(search.replace(/<@!?|>/g,''))) || (member.tag && `${member.tag}`.includes(search))));
+	}
+};
+
+const getMember = (msg,user,guildOnly = false) => {
+	if (global.bot.users.array().filter(memberSearch(user,guildOnly)).length <= 0) return msg.channel.send(`<:redx:411978781226696705> I could not find that user.`).catch(err => console.error);
+	if (msg.guild.members.get(`${global.bot.users.array().filter(memberSearch(user,guildOnly))[0].id}`))
+	{
+		return msg.guild.members.array().filter(memberSearch(user,guildOnly))[0];
+	}
+	else if (!msg.guild.members.get(`${global.bot.users.array().filter(memberSearch(user,guildOnly))[0].id}`))
+	{
+		if (!guildOnly)
+		{
+			return global.bot.users.array().filter(memberSearch(user,guildOnly))[0];
+		}
+		else
+		{
+			return msg.channel.send(`<:redx:411978781226696705> I could not find that user.`).catch(err => console.error);
+		}
+	}
+	return;
+}
+
 const randomSelection = choices => choices[Math.floor(Math.random() * choices.length)];
 
 const randomColor = () => [
@@ -30,7 +61,6 @@ const now = () => {
     let now = process.hrtime();
     return now[0] * 1e3 + now[1] / 1e6;
 };
-
 
 const timestampToDate = timestamp => {
     if (timestamp === true) {
@@ -229,6 +259,9 @@ const ixUpload = text => {
 };
 
 module.exports = {
+	// Fetch Members
+	memberSearch,
+	getMember,
     // Randomizers
     randomSelection,
     randomColor,
