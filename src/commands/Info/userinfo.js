@@ -9,7 +9,6 @@ exports.run = async (bot, msg, args) => {
 		'Watching',
 	];
 	let user;
-	let gargs = args[0];
 	if (args.length <= 0) {
 		user = bot.utils.getMembers(msg,`${msg.member.id}`); //msg.guild.members.get(`${msg.member.id}`);
 		//let gtoprole = user.roles.filter(m => m.name).map(m => m.position).sort(function(a, b){return b-a});
@@ -18,7 +17,7 @@ exports.run = async (bot, msg, args) => {
 		user = bot.utils.getMembers(msg,args.join(' '));
 	}
 	
-	if (user.includes(`<:redx:411978781226696705>`)) return msg.channel.send(`<:redx:411978781226696705> I could not find that user.`);
+	if (!user || user.includes(`<:redx:411978781226696705>`)) return msg.channel.send(`<:redx:411978781226696705> I could not find that user.`);
 	let statusemoji;
 	if (user.presence.status === "online") {
 		statusemoji = `<:online:411637359398879232>`;
@@ -122,5 +121,5 @@ exports.info = {
 		'user-info @BannerBomb',
 		'user-info 9772'
 	],
-	description: 'Shows various information and data about a user.'
+	description: 'Shows various information and data on the mentioned user.'
 };
