@@ -1,6 +1,7 @@
 'use strict';
 
 const fse = require('fs-extra');
+const fetch = require('node-fetch');
 const { Client, Collection } = require('discord.js');
 const stripIndents = require('common-tags').stripIndents;
 const chalk = require('chalk');
@@ -91,6 +92,43 @@ class CripsBot extends Client {
 			if (!this.user.bot) {
 				logger.severe(`${this.user.username} is a bot, but you entered a user token. Please follow the instructions at ${chalk.green('https://discordapp.com/developers')} and re-enter your token by running ${chalk.green('yarn run config')}.`);
 				return this.shutdown(false);
+			}
+			
+			const merge = function() {
+				let destination = {},
+					sources = [].slice.call(arguments, 0);
+					sources.forEach(function(source) {
+					let prop;
+					for (prop in source) {
+						if (prop in destination && Array.isArray(destination[prop])) {
+							// Concat Arrays
+							destination[prop] = destination[prop].concat(source[prop]);
+						} else if (prop in destination && typeof(destination[prop]) === "object") {
+							// Merge Objects
+							destination[prop] = merge(destination[prop], source[prop]);
+						} else {
+							// Set new values
+							destination[prop] = source[prop];
+						}
+					}
+				});
+				return destination;
+			};
+			
+			try {
+				// let array = new Array();
+				fse.readJson('../../data/config.json', function(err, data) {
+					if (err) return;
+					const res = await fetch('http://cripsbot.000webhostapp.com/database/read_json.php');
+					const fetchedData = await res.json();
+					if (fetchedData === "" || fetchedData === "null" || fetchedData === "{}" || fetchedData === "[]" || fetchedData === undefined || fetchedData === null) return;
+					let appendTo = JSON.parse(data);
+					//array.push(json,tojson);
+					fs.writeJson("../../data/config.json", JSON.stringify(merge(appendTo,fetchedData)));
+					console.log("Successfully set custom configuration data.");
+				});
+			} catch (err) {
+				return console.error(err.toString());
 			}
 			
 			let s;
