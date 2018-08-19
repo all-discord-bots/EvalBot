@@ -231,11 +231,11 @@ class CripsBot extends Client {
 			let hascmd;
 			let splitmsg = msg.content.split(' ');
 			let joinmsg = splitmsg.join(' ');
-			if (!this.config[msg.guild.id]) {
+			if (!this.config[msg.guild.id.toString()]) {
 				hascmd = this.commands.all().map(n => this.config.prefix + n.info.name).filter(n => n === splitmsg[0]).length;
 				if (!msg.content.startsWith(`<@${this.user.id}>`) && !msg.content.startsWith(`<@!${this.user.id}>`))
-				{
-					if (msg.content === this.config.prefix || msg.content.replace(new RegExp(`[^${this.config.prefix}]+.+`,'gi'),'') !== this.config.prefix) return;
+				{ // msg.content === this.config.prefix || 
+					if (msg.content.replace(new RegExp(`[^${this.config.prefix}]+.+`,'gi'),'') !== this.config.prefix) return;
 				}
 				//if (msg.content == this.config.prefix || msg.content == this.config.prefix + " " || msg.content == " " + this.config.prefix) return;
 				if ((msg.content.startsWith(this.config.prefix) || msg.content.startsWith(`<@${this.user.id}>`) || msg.content.startsWith(`<@!${this.user.id}>`)) && hascmd > 0) {
@@ -256,14 +256,15 @@ class CripsBot extends Client {
 					if (!gbot.hasPermission(0x00040000)) return msg.channel.send(`<:redx:411978781226696705> I am missing \`Use External Emojis\`!`).catch(err => console.error);
 					if (!gbot.hasPermission(0x00004000)) return msg.channel.send(`<:redx:411978781226696705> I am missing \`Embed Links\`!`).catch(err => console.error);
 				}
-			} else if (this.config[msg.guild.id]) {
-				hascmd = this.commands.all().map(n => this.config[msg.guild.id].prefix + n.info.name).filter(n => n === splitmsg[0]).length;
-				//if (msg.content == this.config[msg.guild.id].prefix || msg.content == this.config[msg.guild.id].prefix + " " || msg.content == " " + this.config[msg.guild.id].prefix) return;
+			} else if (this.config[msg.guild.id.toString()]) {
+				hascmd = this.commands.all().map(n => this.config[msg.guild.id.toString()].prefix + n.info.name).filter(n => n === splitmsg[0]).length;
+				//if (msg.content == this.config[msg.guild.id.toString()].prefix || msg.content == this.config[msg.guild.id.toString()].prefix + " " || msg.content == " " + this.config[msg.guild.id.toString()].prefix) return;
 				if (!msg.content.startsWith(`<@${this.user.id}>`) && !msg.content.startsWith(`<@!${this.user.id}>`))
 				{
-					if (msg.content === this.config[msg.guild.id].prefix || msg.content.replace(new RegExp(`[^${this.config[msg.guild.id].prefix}]+.+`,'gi'),'') !== this.config[msg.guild.id].prefix) return;
+					// msg.content.length === this.config[msg.guild.id.toString()].prefix || 
+					if (msg.content.replace(new RegExp(`[^${this.config[msg.guild.id.toString()].prefix}]+.+`,'gi'),'') !== this.config[msg.guild.id.toString()].prefix) return;
 				}
-				if ((msg.content.startsWith(this.config[msg.guild.id].prefix) || msg.content.startsWith(`<@${this.user.id}>`) || msg.content.startsWith(`<@!${this.user.id}>`)) && hascmd > 0) {
+				if ((msg.content.startsWith(this.config[msg.guild.id.toString()].prefix) || msg.content.startsWith(`<@${this.user.id}>`) || msg.content.startsWith(`<@!${this.user.id}>`)) && hascmd > 0) {
 					//if (msg.channel.type === "dm") return msg.channel.send(`<:redx:411978781226696705> This command can only be used in a server.`).catch(err => console.error);
 					// Begin debugging messages log for errors
 					if (msg.channel.id !== "345551930459684866") {
