@@ -162,7 +162,7 @@ class CripsBot extends Client {
 				} catch (err) {
 					return console.error(err.toString());
 				}
-				this.storage.saveAll();
+				//this.storage.saveAll();
 				console.log("Successfully set and saved the custom configuration data.");
 			}
 			
