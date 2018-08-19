@@ -1,4 +1,5 @@
 const stripIndents = require('common-tags').stripIndents;
+const fetch = require('node-fetch');
 
 exports.run = async (bot, msg, args) => {
 	const client = bot;
