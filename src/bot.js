@@ -119,8 +119,8 @@ class CripsBot extends Client {
 				// let array = new Array();
 				fse.readJson('../data/config.json', function(err, data) {
 					if (err) return;
-					const res = await fetch('http://cripsbot.000webhostapp.com/database/read_json.php');
-					const fetchedData = await res.json();
+					const res = fetch('http://cripsbot.000webhostapp.com/database/read_json.php');
+					const fetchedData = res.json();
 					if (fetchedData === "" || fetchedData === "null" || fetchedData === "{}" || fetchedData === "[]" || fetchedData === undefined || fetchedData === null) return;
 					let appendTo = JSON.parse(data);
 					//array.push(json,tojson);
