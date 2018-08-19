@@ -146,7 +146,7 @@ class ConfigManager {
         let array = new Array();
         array.push(this._config);
         array.push(json);
-        this._config = merge(array[0],array[1])
+        this._config = this.merge(array[0],array[1])
 
         this.save();
     }
