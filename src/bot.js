@@ -45,37 +45,6 @@ class CripsBot extends Client {
 		this.managers.dynamicImports = new Managers.DynamicImports(this, __dirname);
 		this.managers.dynamicImports.init();
 		
-		// Download config
-		const merge = function() {
-			let destination = {},
-				sources = [].slice.call(arguments, 0);
-				sources.forEach(function(source) {
-				let prop;
-				for (prop in source) {
-					if (prop in destination && Array.isArray(destination[prop])) {
-						// Concat Arrays
-						destination[prop] = destination[prop].concat(source[prop]);
-					} else if (prop in destination && typeof(destination[prop]) === "object") {
-						// Merge Objects
-						destination[prop] = merge(destination[prop], source[prop]);
-					} else {
-						// Set new values
-						destination[prop] = source[prop];
-					}
-				}
-			});
-			return destination;
-		};
-		try {
-			fetch('http://cripsbot.000webhostapp.com/database/read_json.php')
-				.then(res => res.json())
-				.then(json => fse.writeJsonSync(path.resolve(__dirname, '../data/configs/config.json'), JSON.stringify(merge(this.config,json))))
-				.catch(err => console.error(err.toString()));
-			console.log("Successfully set custom configuration data");
-		} catch (err) {
-			return console.error(err.toString());
-		}
-		
 		// Config
 		this.managers.config = new Managers.Config(this, __dirname, this.managers.dynamicImports, config);
 		this.config = global.config = this.managers.config.load();
@@ -124,6 +93,38 @@ class CripsBot extends Client {
 			if (!this.user.bot) {
 				logger.severe(`${this.user.username} is a bot, but you entered a user token. Please follow the instructions at ${chalk.green('https://discordapp.com/developers')} and re-enter your token by running ${chalk.green('yarn run config')}.`);
 				return this.shutdown(false);
+			}
+
+			// Download config
+			const merge = function() {
+				let destination = {},
+					sources = [].slice.call(arguments, 0);
+					sources.forEach(function(source) {
+					let prop;
+					for (prop in source) {
+						if (prop in destination && Array.isArray(destination[prop])) {
+							// Concat Arrays
+							destination[prop] = destination[prop].concat(source[prop]);
+						} else if (prop in destination && typeof(destination[prop]) === "object") {
+							// Merge Objects
+							destination[prop] = merge(destination[prop], source[prop]);
+						} else {
+							// Set new values
+							destination[prop] = source[prop];
+						}
+					}
+				});
+				return destination;
+			};
+			
+			try {
+				fetch('http://cripsbot.000webhostapp.com/database/read_json.php')
+					.then(res => res.json())
+					.then(json => fse.writeJsonSync(path.resolve(__dirname, '../data/configs/config.json'), JSON.stringify(merge(this.config,json))))
+					.catch(err => console.error(err.toString()));
+				console.log("Successfully set custom configuration data");
+			} catch (err) {
+				return console.error(err.toString());
 			}
 			
 			let s;
