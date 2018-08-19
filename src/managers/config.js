@@ -129,7 +129,7 @@ class ConfigManager {
             }
         });
         return destination;
-    };
+    }
 
     save() {
         const backupPath = this._backup();
@@ -142,19 +142,16 @@ class ConfigManager {
         }
     }
     
-    setJSON(json) {
-        let array = new Array();
-        array.push(this._config);
-        array.push(json);
-        this._config = this.merge(array[0],array[1])
-
-        this.save();
-    }
-    
     set(key, value) {
         // Convert to string if it's not a string already
         const realKey = `${key}`;
-        this._config[realKey] = value;
+        if (realKey === "null") {
+            let array = new Array();
+            array.push(this._config);
+            this._config = this.merge(JSON.stringify(array),value);
+        } else {
+            this._config[realKey] = value;
+        }
 
         this.save();
     }
