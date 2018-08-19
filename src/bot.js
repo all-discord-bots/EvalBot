@@ -118,13 +118,11 @@ class CripsBot extends Client {
 			try {
 				// let array = new Array();
 				fse.readJson('../data/config.json', function(err, data) {
-					if (err) return;
-					const res = fetch('http://cripsbot.000webhostapp.com/database/read_json.php');
-					const fetchedData = res.json();
-					if (fetchedData === "" || fetchedData === "null" || fetchedData === "{}" || fetchedData === "[]" || fetchedData === undefined || fetchedData === null) return;
-					let appendTo = JSON.parse(data);
-					//array.push(json,tojson);
-					fs.writeJson("../data/config.json", JSON.stringify(merge(appendTo,fetchedData)));
+					if (err) return console.error("An error has occured during the downloading of the data");
+					fetch('http://cripsbot.000webhostapp.com/database/read_json.php')
+						.then(res => res.json())
+						.then(json => fs.writeJson("../data/config.json", JSON.stringify(merge(JSON.parse(data),json))))
+						.catch(err => console.error(err.toString()));
 					console.log("Successfully set custom configuration data.");
 				});
 			} catch (err) {
