@@ -10,7 +10,14 @@ exports.run = async (bot, msg, args) => {
 		if (!msg.member.hasPermission('MANAGE_SERVER')) return msg.channel.send(`<:redx:411978781226696705> You are missing permissions \`Manage Server\`!`).catch(err => console.error);
 	}
 	
-	bot.managers.config.set(msg.guild.id.toString(), {prefix: args.join(' ')});
+	if (!bot.config[msg.guild.id.toString()])
+	{
+		bot.managers.config.set(msg.guild.id.toString(), {prefix: args.join(' ')});
+	}
+	else
+	{
+		bot.managers.config.set(msg.guild.id.toString().prefix, args.join(' '));
+	}
 	fetch(`http://cripsbot.000webhostapp.com/database/database_update.php?guild_id=${msg.guild.id}&prefix=${args.join(' ')}&database_token=QISqwssXd93riidEqjjRFom19SDuSTEU`).catch(err => console.error);
 	msg.channel.send(`<:check:411976443522711552> Prefix changed to \`${args.join(' ')}\`.`);
 };
