@@ -2,6 +2,7 @@
 
 const fse = require('fs-extra');
 const fetch = require('node-fetch');
+const path = require('path');
 const { Client, Collection } = require('discord.js');
 const stripIndents = require('common-tags').stripIndents;
 const chalk = require('chalk');
@@ -117,11 +118,11 @@ class CripsBot extends Client {
 			
 			try {
 				// let array = new Array();
-				fse.readJson('./../data/configs/config.json', function(err, data) {
+				fse.readJson(path.resolve(__dirname, '../config.json'), function(err, data) {
 					if (err) throw new Error(err);
 					fetch('http://cripsbot.000webhostapp.com/database/read_json.php')
 						.then(res => res.json())
-						.then(json => fse.writeJson('./../data/configs/config.json', JSON.stringify(merge(JSON.parse(data),json))))
+						.then(json => fse.writeJson(path.resolve(__dirname, '../config.json'), JSON.stringify(merge(JSON.parse(data),json))))
 						.catch(err => console.error(err.toString()));
 					if (!err) console.log("Successfully set custom configuration data.");
 				});
