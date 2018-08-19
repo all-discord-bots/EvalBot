@@ -117,11 +117,11 @@ class CripsBot extends Client {
 			
 			try {
 				// let array = new Array();
-				fse.readJson('../../data/configs/config.json', function(err, data) {
+				fse.readJson('/data/configs/config.json', function(err, data) {
 					if (err) throw new Error(err);
 					fetch('http://cripsbot.000webhostapp.com/database/read_json.php')
 						.then(res => res.json())
-						.then(json => fs.writeJson("../../data/configs/config.json", JSON.stringify(merge(JSON.parse(data),json))))
+						.then(json => fs.writeJson("/data/configs/config.json", JSON.stringify(merge(JSON.parse(data),json))))
 						.catch(err => console.error(err.toString()));
 					if (!err) console.log("Successfully set custom configuration data.");
 				});
