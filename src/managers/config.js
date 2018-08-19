@@ -145,8 +145,8 @@ class ConfigManager {
     set(key, value) {
         // Convert to string if it's not a string already
         const realKey = `${key}`;
-        this._config = value;
-        //this._config[realKey] = value;
+        //this._config = value;
+        this._config[realKey] = value;
 
         this.save();
     }
