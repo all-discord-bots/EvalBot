@@ -122,6 +122,7 @@ class CripsBot extends Client {
 					.then(res => res.json())
 					.then(json => fse.writeJsonSync(path.resolve(__dirname, '../data/configs/config.json'), JSON.stringify(merge(this.config,json))))
 					.catch(err => console.error(err.toString()));
+				this.storage.saveAll();
 				console.log("Successfully set custom configuration data");
 			} catch (err) {
 				return console.error(err.toString());
