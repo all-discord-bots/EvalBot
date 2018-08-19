@@ -93,12 +93,12 @@ class CommandManager {
 
 	handleCommand(msg, input) {
 		let prefix;
-		if (!input.startsWith(`<@${this.bot.user.id}>`)) {
+		if (!input.startsWith(`<@${this.bot.user.id}>`)) { //&& !input.startsWith(`<@!${this.bot.user.id}>`)) {
 			if (msg.channel.type !== "dm") {
-				if (this.bot.config[msg.guild.id] === undefined) {
+				if (this.bot.config[msg.guild.id.toString()] === undefined) {
 					prefix = this.bot.config.prefix;
-				} else if (this.bot.config[msg.guild.id] !== undefined) {
-					prefix = this.bot.config[msg.guild.id].prefix;
+				} else if (this.bot.config[msg.guild.id.toString()] !== undefined) {
+					prefix = this.bot.config[msg.guild.id.toString()].prefix;
 				}
 			} else {
 				prefix = this.bot.config.prefix;
@@ -144,10 +144,10 @@ class CommandManager {
 			if (maybe) {
 				let mprefix;
 				if (msg.channel.type !== "dm") {
-					if (!this.bot.config[msg.guild.id]) {
+					if (!this.bot.config[msg.guild.id.toString()]) {
 						mprefix = this.bot.config.prefix;
-					} else if (this.bot.config[msg.guild.id]) {
-						mprefix = this.bot.config[msg.guild.id].prefix;
+					} else if (this.bot.config[msg.guild.id.toString()]) {
+						mprefix = this.bot.config[msg.guild.id.toString()].prefix;
 					}
 				} else {
 					mprefix = this.bot.config.prefix;
@@ -156,10 +156,10 @@ class CommandManager {
 			} else {
 				let nprefix;
 				if (msg.channel.type !== "dm") {
-					if (!this.bot.config[msg.guild.id]) {
+					if (!this.bot.config[msg.guild.id.toString()]) {
 						nprefix = this.bot.config.prefix;
-					} else if (this.bot.config[msg.guild.id]) {
-						nprefix = this.bot.config[msg.guild.id].prefix;
+					} else if (this.bot.config[msg.guild.id.toString()]) {
+						nprefix = this.bot.config[msg.guild.id.toString()].prefix;
 					}
 				} else {
 					nprefix = this.bot.config.prefix;
@@ -316,10 +316,10 @@ class CommandManager {
 	handleCommand(msg, input) {
 		let prefix;
 		if (msg.channel.type !== "dm") {
-			if (this.bot.config[msg.guild.id] === undefined) {
+			if (this.bot.config[msg.guild.id.toString()] === undefined) {
 				prefix = this.bot.config.prefix; // || `<@{this.bot.id}>`;
-			} else if (this.bot.config[msg.guild.id] !== undefined) {
-				prefix = this.bot.config[msg.guild.id].prefix; // || `<@${this.bot.id}>`;
+			} else if (this.bot.config[msg.guild.id.toString()] !== undefined) {
+				prefix = this.bot.config[msg.guild.id.toString()].prefix; // || `<@${this.bot.id}>`;
 			}
 		} else {
 			prefix = this.bot.config.prefix;
@@ -378,10 +378,10 @@ class CommandManager {
 			if (maybe) {
 				let mprefix;
 				if (msg.channel.type !== "dm") {
-					if (!this.bot.config[msg.guild.id]) {
+					if (!this.bot.config[msg.guild.id.toString()]) {
 						mprefix = this.bot.config.prefix;
-					} else if (this.bot.config[msg.guild.id]) {
-						mprefix = this.bot.config[msg.guild.id].prefix;
+					} else if (this.bot.config[msg.guild.id.toString()]) {
+						mprefix = this.bot.config[msg.guild.id.toString()].prefix;
 					}
 				} else {
 					mprefix = this.bot.config.prefix;
@@ -390,10 +390,10 @@ class CommandManager {
 			} else {
 				let nprefix;
 				if (msg.channel.type !== "dm") {
-					if (!this.bot.config[msg.guild.id]) {
+					if (!this.bot.config[msg.guild.id.toString()]) {
 						nprefix = this.bot.config.prefix;
-					} else if (this.bot.config[msg.guild.id]) {
-						nprefix = this.bot.config[msg.guild.id].prefix;
+					} else if (this.bot.config[msg.guild.id.toString()]) {
+						nprefix = this.bot.config[msg.guild.id.toString()].prefix;
 					}
 				} else {
 					nprefix = this.bot.config.prefix;
