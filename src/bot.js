@@ -179,7 +179,14 @@ class CripsBot extends Client {
 			if (msg.content === "") return;
 			let gmsg = msg.content.toLowerCase().split(' ');
 			if (msg.channel.type === "dm") {
-				if ((msg.content.length > this.config.prefix.length && gmsg[0].toString().startsWith(this.config.prefix)) || (msg.content.length > `<@${this.user.id}>`.length && gmsg[0].toString().startsWith(`<@${this.user.id}>`)) || (msg.content.length > `<@!${this.user.id}>`.length && gmsg[0].toString().startsWith(`<@!${this.user.id}>`))) return msg.channel.send(`<:redx:411978781226696705> This command can only be used in a server.`).catch(err => console.error);
+				if (this.config.prefix === undefined)
+				{
+					if ((msg.content.length > 0 && gmsg[0].toString().startsWith(this.config.prefix)) || (msg.content.length > `<@${this.user.id}>`.length && gmsg[0].toString().startsWith(`<@${this.user.id}>`)) || (msg.content.length > `<@!${this.user.id}>`.length && gmsg[0].toString().startsWith(`<@!${this.user.id}>`))) return msg.channel.send(`<:redx:411978781226696705> This command can only be used in a server.`).catch(err => console.error);
+				}
+				else
+				{
+					if ((msg.content.length > this.config.prefix.length && gmsg[0].toString().startsWith(this.config.prefix)) || (msg.content.length > `<@${this.user.id}>`.length && gmsg[0].toString().startsWith(`<@${this.user.id}>`)) || (msg.content.length > `<@!${this.user.id}>`.length && gmsg[0].toString().startsWith(`<@!${this.user.id}>`))) return msg.channel.send(`<:redx:411978781226696705> This command can only be used in a server.`).catch(err => console.error);
+				}
 				return;
 			}
 			
@@ -491,7 +498,7 @@ class CripsBot extends Client {
 		if (!this.config) return false;
 		
 		this.login(process.env.BOT_TOKEN, (error, token) => {
-			if (error) throw error;
+			if (error) throw new Error(error);
 			if (token) console.log(token.toString());
 		});
 		
