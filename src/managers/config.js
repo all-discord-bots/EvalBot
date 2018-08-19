@@ -145,13 +145,8 @@ class ConfigManager {
     set(key, value) {
         // Convert to string if it's not a string already
         const realKey = `${key}`;
-        if (realKey === "null") {
-            let array = new Array();
-            array.push(this._config);
-            this._config = this.merge(JSON.stringify(array),value);
-        } else {
-            this._config[realKey] = value;
-        }
+        this._config.push(value);
+        //this._config[realKey] = value;
 
         this.save();
     }
