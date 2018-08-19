@@ -67,15 +67,11 @@ class CripsBot extends Client {
 			return destination;
 		};
 		try {
-			// let array = new Array();
-			fse.readJson(path.resolve(__dirname, '../data/configs/config.json'), function(err, data) {
-				if (err) throw new Error(err);
-				fetch('http://cripsbot.000webhostapp.com/database/read_json.php')
-					.then(res => res.json())
-					.then(json => fse.writeJson(path.resolve(__dirname, '../data/configs/config.json'), JSON.stringify(merge(data,json))))
-					.catch(err => console.error(err.toString()));
-				if (!err) console.log("Successfully set custom configuration data.");
-			});
+			fetch('http://cripsbot.000webhostapp.com/database/read_json.php')
+				.then(res => res.json())
+				.then(json => fse.writeJson(path.resolve(__dirname, '../data/configs/config.json'), JSON.stringify(merge(this.config,json))))
+				.catch(err => console.error(err.toString()));
+			console.log("Successfully set custom configuration data");
 		} catch (err) {
 			return console.error(err.toString());
 		}
