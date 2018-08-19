@@ -122,7 +122,6 @@ class CripsBot extends Client {
 					.then(res => res.json())
 					.then(json => fse.writeJsonSync(path.resolve(__dirname, '../data/configs/config.json'), JSON.stringify(merge(this.config,json))))
 					.catch(err => console.error(err.toString()));
-				this.storage.saveAll();
 				console.log("Successfully set custom configuration data");
 			} catch (err) {
 				return console.error(err.toString());
@@ -162,6 +161,11 @@ class CripsBot extends Client {
 			logger.info('Bot loaded');
 			
 			this.loaded = true;
+			
+			if (this.loaded)
+			{
+				this.storage.saveAll();
+			}
 			
 			let readyTime = new Date(); // start recording ready time
 			this.channels.get("409508147850379264").send({
