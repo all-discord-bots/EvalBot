@@ -94,38 +94,6 @@ class CripsBot extends Client {
 				logger.severe(`${this.user.username} is a bot, but you entered a user token. Please follow the instructions at ${chalk.green('https://discordapp.com/developers')} and re-enter your token by running ${chalk.green('yarn run config')}.`);
 				return this.shutdown(false);
 			}
-
-			// Download config
-			const merge = function() {
-				let destination = {},
-					sources = [].slice.call(arguments, 0);
-					sources.forEach(function(source) {
-					let prop;
-					for (prop in source) {
-						if (prop in destination && Array.isArray(destination[prop])) {
-							// Concat Arrays
-							destination[prop] = destination[prop].concat(source[prop]);
-						} else if (prop in destination && typeof(destination[prop]) === "object") {
-							// Merge Objects
-							destination[prop] = merge(destination[prop], source[prop]);
-						} else {
-							// Set new values
-							destination[prop] = source[prop];
-						}
-					}
-				});
-				return destination;
-			};
-			
-			try {
-				fetch('http://cripsbot.000webhostapp.com/database/read_json.php')
-					.then(res => res.json())
-					.then(json => fse.writeJsonSync(path.resolve(__dirname, '../data/configs/config.json'), JSON.stringify(merge(this.config,json))))
-					.catch(err => console.error(err.toString()));
-				console.log("Successfully set custom configuration data");
-			} catch (err) {
-				return console.error(err.toString());
-			}
 			
 			let s;
 			if (this.guilds.size === 1) {
@@ -164,7 +132,38 @@ class CripsBot extends Client {
 			
 			if (this.loaded)
 			{
+				// Download config
+				const merge = function() {
+					let destination = {},
+						sources = [].slice.call(arguments, 0);
+						sources.forEach(function(source) {
+						let prop;
+						for (prop in source) {
+							if (prop in destination && Array.isArray(destination[prop])) {
+								// Concat Arrays
+								destination[prop] = destination[prop].concat(source[prop]);
+							} else if (prop in destination && typeof(destination[prop]) === "object") {
+								// Merge Objects
+								destination[prop] = merge(destination[prop], source[prop]);
+							} else {
+								// Set new values
+								destination[prop] = source[prop];
+							}
+						}
+					});
+					return destination;
+				};
+				
+				try {
+					fetch('http://cripsbot.000webhostapp.com/database/read_json.php')
+						.then(res => res.json())
+						.then(json => fse.writeJsonSync(path.resolve(__dirname, '../data/configs/config.json'), JSON.stringify(merge(this.config,json))))
+						.catch(err => console.error(err.toString()));
+				} catch (err) {
+					return console.error(err.toString());
+				}
 				this.storage.saveAll();
+				console.log("Successfully set and saved the custom configuration data.");
 			}
 			
 			let readyTime = new Date(); // start recording ready time
