@@ -135,8 +135,8 @@ class CripsBot extends Client {
 				// Download config
 				const merge = function() {
 					let destination = {},
-						sources = [].slice.call(arguments, 0);
-						sources.forEach(function(source) {
+					sources = [].slice.call(arguments, 0);
+					sources.forEach(function(source) {
 						let prop;
 						for (prop in source) {
 							if (prop in destination && Array.isArray(destination[prop])) {
