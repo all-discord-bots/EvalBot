@@ -118,7 +118,9 @@ class CripsBot extends Client {
 			- Users: ${this.users.filter(user => !user.bot).size}
 			- Bots: ${this.users.filter(user => user.bot).size}
 			- Channels: ${this.channels.size}
-			- Guilds: ${this.guilds.size}`); // - Shards: ${this.shard.count}
+			- Guilds: ${this.guilds.size}
+			- Shards: ${this.shard.count || "undefined"}`
+			);
 			
 			stats.set('start-time', process.hrtime());
 			
@@ -302,7 +304,8 @@ class CripsBot extends Client {
 		
 		this.once("guildUnavailable", (guild) => {
 			if (guild.id !== this.config.botMainServerID) return;
-			this.users.filter(user => user.id === this.config.botCreatorID).forEach(user => user.sendMessage(`<@${this.config.botCreatorID}> \`${guild.name} [${guild.id}]\` is currently unavailable!`));
+			this.users.get(`${process.env.bot_owner}`).sendMessage(`<@${this.config.botCreatorID}> \`${guild.name} [${guild.id}]\` is currently unavailable!`);
+			//this.users.filter(user => user.id === this.config.botCreatorID).forEach(user => user.sendMessage(`<@${this.config.botCreatorID}> \`${guild.name} [${guild.id}]\` is currently unavailable!`));
 		});
 		
 		// Joined a server
@@ -323,7 +326,7 @@ class CripsBot extends Client {
 				})
 			}).catch(err => console.error);
 			let s;
-			if (this.guilds.size === 1) {
+			if (this.guilds.size == 1) {
 				s = "";
 			} else {
 				s = "s";
@@ -335,8 +338,8 @@ class CripsBot extends Client {
 		this.on("guildDelete", (guild) => {
 			console.log(`Left a guild: ${guild.name}`);
 			let gusers = guild.members.filter(user => !user.user.bot).size; // get only users and exclude bots
-			let gtotal = guild.members.filter(user => user.user).size; // get all users and bots
-			let gbots = guild.members.filter(user => user.user.bot).size; // get all bots excluding users
+			let gtotal = guild.members.filter(user => user.user).size - 1; // get all users and bots
+			let gbots = guild.members.filter(user => user.user.bot).size - 1; // get all bots excluding users
 			let gpercent = `${gtotal}%`; // total users and bots to percentage
 			let gparsepercent = parseFloat(gpercent); // parses the percentage
 			let gdecimal = gparsepercent / 100; // percentage to decimal
