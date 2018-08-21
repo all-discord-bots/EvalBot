@@ -8,16 +8,71 @@ class CommandManager {
 		this._commands = [];
 		this._categories = [];
 	}
-
+	
+	/**
+	 * Validates the constructor parameters
+	 * @param {CommandoClient} client - Client to validate
+	 * @param {CommandInfo} info - Info to validate
+	 * @private
+	 */
 	_validateCommand(object) {
-		if (typeof object !== 'object')
-			return 'command setup is invalid';
-		if (typeof object.run !== 'function')
-			return 'run function is missing';
-		if (typeof object.info !== 'object')
-			return 'info object is missing';
-		if (typeof object.info.name !== 'string')
-			return 'info object is missing a valid name field';
+		if (typeof object !== 'object') return 'command setup is invalid';
+		if (typeof object.run !== 'function') return 'run function is missing';
+		if (typeof object.info !== 'object') return 'info object is missing';
+		if (typeof object.info.name !== 'string') return 'info object is missing a valid name field';
+		/*if (object.info.name !== object.info.name.toLowerCase()) return 'command name object must be lowercase'; //throw new Error('Command name must be lowercase.');
+		if (typeof object.info.description !== 'string') throw new TypeError('Command description must be a string.');
+		if ('format' in object.info && typeof object.info.format !== 'string') throw new TypeError('Command format must be a string.');
+		if ('details' in object.info && typeof object.info.details !== 'string') throw new TypeError('Command details must be a string.');
+		if(object.info.aliases && object.info.aliases.some(ali => ali !== ali.toLowerCase())) {
+			throw new Error('Command aliases must be lowercase.');
+		}*/
+		if (object.info.examples && (!Array.isArray(object.info.examples) || object.info.examples.some(ex => typeof ex !== 'string'))) {
+			return 'command examples object must be an Array of strings'; //throw new TypeError('Command examples must be an Array of strings.');
+		}
+		if (object.info.clientPermissions) {
+			if (!Array.isArray(object.info.clientPermissions)) {
+				return 'command clientPermissions object must be an Array of permission key strings'; //throw new TypeError('Command clientPermissions must be an Array of permission key strings.');
+			}
+			for (const perm of object.info.clientPermissions) {
+				if (!permissions[perm]) return `invalid command clientPermission object: ${perm}`; //throw new RangeError(`Invalid command clientPermission: ${perm}`);
+			}
+		}
+		if (object.info.userPermissions) {
+			if (!Array.isArray(object.info.userPermissions)) {
+				return 'command userPermissions object must be an Array of permission key strings.'; //throw new TypeError('Command userPermissions must be an Array of permission key strings.');
+			}
+			for (const perm of object.info.userPermissions) {
+				if (!permissions[perm]) return `invalid command userPermission object: ${perm}`; //throw new RangeError(`Invalid command userPermission: ${perm}`);
+			}
+		}
+		/*if (object.info.throttling) {
+			if (typeof object.info.throttling !== 'object') throw new TypeError('Command throttling must be an Object.');
+			if (typeof object.info.throttling.usages !== 'number' || isNaN(object.info.throttling.usages)) {
+				throw new TypeError('Command throttling usages must be a number.');
+			}
+			if (object.info.throttling.usages < 1) throw new RangeError('Command throttling usages must be at least 1.');
+			if (typeof object.info.throttling.duration !== 'number' || isNaN(object.info.throttling.duration)) {
+				throw new TypeError('Command throttling duration must be a number.');
+			}
+			if (object.info.throttling.duration < 1) throw new RangeError('Command throttling duration must be at least 1.');
+		}*/
+		/*if (object.info.args && !Array.isArray(object.info.args)) throw new TypeError('Command args must be an Array.');
+		if ('argsPromptLimit' in object.info && typeof object.info.argsPromptLimit !== 'number') {
+			throw new TypeError('Command argsPromptLimit must be a number.');
+		}
+		if ('argsPromptLimit' in object.info && object.info.argsPromptLimit < 0) {
+			throw new RangeError('Command argsPromptLimit must be at least 0.');
+		}
+		if (object.info.argsType && !['single', 'multiple'].includes(object.info.argsType)) {
+			throw new RangeError('Command argsType must be one of "single" or "multiple".');
+		}
+		if (object.info.argsType === 'multiple' && object.info.argsCount && object.info.argsCount < 2) {
+			throw new RangeError('Command argsCount must be at least 2.');
+		}*/
+		/*if (object.info.patterns && (!Array.isArray(object.info.patterns) || object.info.patterns.some(pat => !(pat instanceof RegExp)))) {
+			throw new TypeError('Command patterns must be an Array of regular expressions.');
+		}*/
 		return null;
 	}
 
@@ -90,6 +145,117 @@ class CommandManager {
 	findBy(key, value) {
 		return this._commands.find(c => c.info[key] === value);
 	}
+	
+	/**
+	 Sets variables used to check information
+	 */
+	getInfo(variable,command) {
+		if (variable === "ownerOnly") {
+			/**
+			* Whether the command can only be used by an owner
+			* @type {boolean}
+			*/
+			return Boolean(command.ownerOnly) || false;
+		} else if (variable === "guildOnly") {
+			/**
+			* Whether the command can only be run in a guild channel
+			* @type {boolean}
+			*/
+			return Boolean(command.guildOnly) || false;
+		} else if (variable === "clientPermissions") {
+			/**
+			* Permissions required by the client to use the command.
+			* @type {?PermissionResolvable[]}
+			*/
+			return command.clientPermissions || null;
+		} else if (variable === "userPermissions") {
+			/**
+			* Permissions required by the user to use the command.
+			* @type {?PermissionResolvable[]}
+			*/
+			return command.userPermissions || null;
+		} else if (variable === "nsfw") {
+			/**
+			* Whether the command can only be used in NSFW channels
+			* @type {boolean}
+			*/
+			return Boolean(command.nsfw) || false;
+			/**
+			* How the arguments are split when passed to the command's run method
+			* @type {string}
+			*/
+			//let argsType = command.argsType || 'single';
+			/**
+			* Maximum number of arguments that will be split
+			* @type {number}
+			*/
+			//let argsCount = command.argsCount || 0;
+			/**
+			* Whether single quotes are allowed to encapsulate an argument
+			* @type {boolean}
+			*/
+			//let argsSingleQuotes = 'argsSingleQuotes' in command ? command.argsSingleQuotes : true;
+			/**
+			* Regular expression triggers
+			* @type {RegExp[]}
+			*/
+			//let patterns = command.patterns || null;
+			/**
+			* Whether the command is protected from being disabled
+			* @type {boolean}
+			*/
+			// let guarded = Boolean(command.guarded) || false;
+			/**
+			* Whether the command is enabled globally
+			* @type {boolean}
+			* @private
+			*/
+			//let _globalEnabled = command._globalEnabled || true;
+		}
+	}
+	
+	/**
+	 * Checks if the user has permission to use the command
+	 * @param {Message} message - The triggering command message
+	 * @param {boolean} [ownerOverride=true] - Whether the bot owner(s) will always have permission
+	 * @return {boolean|string} Whether the user has permission, or an error message to respond with if they don't
+	 */
+	hasPermission(msg,command,ownerOverride = true) {
+		if (!this.getInfo("ownerOnly",command) && !this.getInfo("userPermissions",command)) return true;
+		if (ownerOverride && msg.author.id == process.env.bot_owner) return true;
+		
+		if (this.getInfo("ownerOnly",command) && (ownerOverride || msg.author.id != process.env.bot_owner)) return; //`The \`${command.name}\` command can only be used by the bot owner.`;
+		
+		if (msg.channel.type === "text" && this.getInfo("userPermissions",command)) {
+			const missing = msg.channel.permissionsFor(msg.author).missing(this.getInfo("userPermissions",command));
+			if (missing.length > 0) {
+				return msg.channel.send({
+					embed: ({
+						description: `<:redx:411978781226696705> I don't have enough permissions to execute that command.\n<:transparent:411703305467854889>Missing: \`${missing.map(perm => this.bot.utils.permissions[perm]).join("` `")}\``,
+						color: 15684432,
+						timestamp: new Date(),
+						author: {
+							name: `${msg.author.tag}`,
+							icon_url: `${msg.author.displayAvatarURL}`
+						}
+					})
+				});
+			}
+		}
+		return true;
+	}
+	
+	/**
+	 * Checks if the command is usable for a message
+	 * @param {?Message} message - The message
+	 * @return {boolean}
+	 */
+	/*isUsable(message = null) {
+		if(!message) return this._globalEnabled;
+		if(this.guildOnly && message && !message.guild) return false;
+		const hasPermission = this.hasPermission(message);
+		return this.isEnabledIn(message.guild) && hasPermission && typeof hasPermission !== 'string';
+	}*/
 
 	handleCommand(msg, input) {
 		let prefix;
@@ -131,7 +297,8 @@ class CommandManager {
 		let command = this.get(base);
 
 		if (command) {
-			return this.execute(msg, command, args);
+			const hasPermission = this.hasPermission(msg, command.info);
+			if (hasPermission && typeof hasPermission !== 'object') return this.execute(msg, command, args);
 		} else {
 			return this._handleShortcuts(msg, base, args);
 		}
@@ -189,6 +356,7 @@ class CommandManager {
 				const command = this.get(base);
 
 				if (command) {
+					this.hasPermission(msg, command.info);
 					return this.execute(msg, command, args);
 				} else {
 					return msg.channel.send(`<:redx:411978781226696705> The shortcut \`${shortcut.name}\` is improperly set up!`);
