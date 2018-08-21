@@ -393,7 +393,7 @@ class CommandManager {
 
 		try {
 			const hasPerm = this.hasPermission(msg, command.info);
-			if (!hasPerm || typeof hasPerm === 'string') {
+			if (!hasPerm && typeof hasPerm === 'string') {
 				msg.channel.send({
 					embed: ({
 						description: hasPerm.toString(),
