@@ -167,13 +167,13 @@ class CommandManager {
 			* Permissions required by the client to use the command.
 			* @type {?PermissionResolvable[]}
 			*/
-			return command.clientPermissions || null;
+			return command.clientPermissions || undefined; //null;
 		} else if (variable === "userPermissions") {
 			/**
 			* Permissions required by the user to use the command.
 			* @type {?PermissionResolvable[]}
 			*/
-			return command.userPermissions || null;
+			return command.userPermissions || undefined; //null;
 		} else if (variable === "nsfw") {
 			/**
 			* Whether the command can only be used in NSFW channels
