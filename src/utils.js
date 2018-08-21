@@ -4,11 +4,11 @@ const got = require('got');
 const memberSearch = (search,guildOnly = false) => {
 	if (guildOnly)
 	{
-		return member => (member.user && ((member.user.username && member.user.username.toLowerCase().includes(search.toLowerCase())) || (member.user.id && member.user.id.toString().includes(search.replace(/<@!?|>/g,''))) || (member.nickname && `${member.nickname}`.toLowerCase().includes(search.toLowerCase())) || (member.user.tag && member.user.tag.toLowerCase().includes(search.toLowerCase()))));
+		return member => (member.user && ((member.user.username && member.user.username.toLowerCase().includes(search.toLowerCase())) || (member.user.id && member.user.id.toString().includes(search.replace(/<@!?|>/g,''))) || (member.displayName && member.displayName.toLowerCase().includes(search.toLowerCase())) || (member.user.tag && member.user.tag.toLowerCase().includes(search.toLowerCase()))));
 	}
 	else
 	{
-		return member => (member.user && ((member.user.username && member.user.username.toLowerCase().includes(search.toLowerCase())) || (member.user.id && member.user.id.toString().includes(search.replace(/<@!?|>/g,''))) || (member.nickname && `${member.nickname}`.toLowerCase().includes(search.toLowerCase())) || (member.user.tag && member.user.tag.toLowerCase().includes(search.toLowerCase())))) || (!member.user && ((member.username && member.username.toLowerCase().includes(search.toLowerCase())) || (member.id && member.id.toString().includes(search.replace(/<@!?|>/g,''))) || (member.tag && member.tag.toLowerCase().includes(search.toLowerCase()))));
+		return member => (member.user && ((member.user.username && member.user.username.toLowerCase().includes(search.toLowerCase())) || (member.user.id && member.user.id.toString().includes(search.replace(/<@!?|>/g,''))) || (member.displayName && member.displayName.toLowerCase().includes(search.toLowerCase())) || (member.user.tag && member.user.tag.toLowerCase().includes(search.toLowerCase())))) || (!member.user && ((member.username && member.username.toLowerCase().includes(search.toLowerCase())) || (member.id && member.id.toString().includes(search.replace(/<@!?|>/g,''))) || (member.tag && member.tag.toLowerCase().includes(search.toLowerCase()))));
 	}
 };
 
