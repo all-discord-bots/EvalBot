@@ -27,9 +27,9 @@ function makeCommand(type, url, transformer) {
         info: {
             name: type,
             usage: type,
-            description: `Sends a random ${type} image`
-        },
-        clientPermissions: ["ATTACH_FILES"]
+            description: `Sends a random ${type} image`,
+            clientPermissions: ["ATTACH_FILES"]
+        }
     };
 }
 
