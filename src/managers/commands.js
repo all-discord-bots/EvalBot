@@ -392,7 +392,7 @@ class CommandManager {
 		}).bind(msg);
 
 		try {
-			const hasPermission = this.hasPermission(msg, command.info);
+			const hasPerm = this.hasPermission(msg, command.info);
 			if (!hasPerm || typeof hasPerm === 'string') {
 				msg.channel.send({
 					embed: ({
@@ -405,7 +405,7 @@ class CommandManager {
 						}
 					})
 				});
-			} else if (hasPerm && typeof this.hasPerm !== 'string') {
+			} else if (hasPerm && typeof hasPerm !== 'string') {
 				return await command.run(this.bot, msg, args);
 			}
 		} catch (err) {
