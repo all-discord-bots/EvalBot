@@ -12,6 +12,6 @@ exports.run = async (bot, msg, args) => {
 exports.info = {
     name: 'sendemoji',
     usage: 'sendemoji <emoji id>',
-    clientPermissions: ["EXTERNAL_EMOJIS"],
+    clientPermissions: ["USE_EXTERNAL_EMOJIS"],
     description: 'Make the bot message an emoji from an emoji ID only if the bot is in the server.'
 };
