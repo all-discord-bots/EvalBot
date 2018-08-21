@@ -356,8 +356,8 @@ class CommandManager {
 				const command = this.get(base);
 
 				if (command) {
-					this.hasPermission(msg, command.info);
-					return this.execute(msg, command, args);
+					const hasPermission = this.hasPermission(msg, command.info);
+					if (hasPermission && typeof hasPermission !== 'object') return this.execute(msg, command, args);
 				} else {
 					return msg.channel.send(`<:redx:411978781226696705> The shortcut \`${shortcut.name}\` is improperly set up!`);
 					//return msg.channel.send(`:no_entry_sign: The shortcut \`${shortcut.name}\` is improperly set up!`);
