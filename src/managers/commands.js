@@ -303,7 +303,7 @@ class CommandManager {
 		if (command) {
 			const hasPermission = this.hasPermission(msg, command.info);
 			if (!hasPermission || typeof hasPermission === 'string') {
-				return msg.channel.send({
+				msg.channel.send({
 					embed: ({
 						description: hasPermission.toString(),
 						color: 15684432,
@@ -375,7 +375,21 @@ class CommandManager {
 
 				if (command) {
 					const hasPermission = this.hasPermission(msg, command.info);
-					if (hasPermission && typeof hasPermission !== 'object') return this.execute(msg, command, args);
+					if (!hasPermission || typeof hasPermission === 'string') {
+						msg.channel.send({
+							embed: ({
+								description: hasPermission.toString(),
+								color: 15684432,
+								timestamp: new Date(),
+								author: {
+									name: `${msg.author.tag}`,
+									icon_url: `${msg.author.displayAvatarURL}`
+								}
+							})
+						});
+					} else if (hasPermission && typeof this.hasPermission !== 'string') {
+						return this.execute(msg, command, args);
+					}
 				} else {
 					return msg.channel.send(`<:redx:411978781226696705> The shortcut \`${shortcut.name}\` is improperly set up!`);
 					//return msg.channel.send(`:no_entry_sign: The shortcut \`${shortcut.name}\` is improperly set up!`);
