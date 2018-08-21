@@ -35,7 +35,7 @@ class CommandManager {
 				return 'command clientPermissions object must be an Array of permission key strings'; //throw new TypeError('Command clientPermissions must be an Array of permission key strings.');
 			}
 			for (const perm of object.info.clientPermissions) {
-				if (!permissions[perm]) return `invalid command clientPermission object: ${perm}`; //throw new RangeError(`Invalid command clientPermission: ${perm}`);
+				if (!this.bot.utils.permissions[perm]) return `invalid command clientPermission object: ${perm}`; //throw new RangeError(`Invalid command clientPermission: ${perm}`);
 			}
 		}
 		if (object.info.userPermissions) {
@@ -43,7 +43,7 @@ class CommandManager {
 				return 'command userPermissions object must be an Array of permission key strings.'; //throw new TypeError('Command userPermissions must be an Array of permission key strings.');
 			}
 			for (const perm of object.info.userPermissions) {
-				if (!permissions[perm]) return `invalid command userPermission object: ${perm}`; //throw new RangeError(`Invalid command userPermission: ${perm}`);
+				if (!this.bot.utils.permissions[perm]) return `invalid command userPermission object: ${perm}`; //throw new RangeError(`Invalid command userPermission: ${perm}`);
 			}
 		}
 		/*if (object.info.throttling) {
