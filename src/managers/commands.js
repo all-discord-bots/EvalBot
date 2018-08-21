@@ -155,7 +155,7 @@ class CommandManager {
 			* Whether the command can only be used by an owner
 			* @type {boolean}
 			*/
-			return false; //Boolean(command.ownerOnly) || false;
+			return Boolean(command.ownerOnly) || false;
 		} else if (variable === "guildOnly") {
 			/**
 			* Whether the command can only be run in a guild channel
