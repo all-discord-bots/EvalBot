@@ -389,25 +389,25 @@ class CripsBot extends Client {
 			}).catch(err => console.error);
 		});
 		
-		this.on('error', (e) => {
+		this.on('error', (err) => {
 			this.channels.get("415265475895754752").send({
 				embed: ({
 					color: 15684432,
 					timestamp: new Date(),
 					title: `Error`,
-					description: `${e}`
+					description: `${err}`
 				})
 			});
 			console.error;
 		});
 		
-		this.on('warn', (w) => {
+		this.on('warn', (wrn) => {
 			this.channels.get("415265475895754752").send({
 				embed: ({
 					color: 12696890,
 					timestamp: new Date(),
 					title: `Warn`,
-					description: `${w}`
+					description: `${wrn}`
 				})
 			});
 			console.warn;
@@ -415,60 +415,179 @@ class CripsBot extends Client {
 		
 		this.once('disconnect', (event) => {
 			if (event.code === 0) {
-				this.logger.warn("Gateway Error");
-				Hook.custom(this.user.username, "[0] Gateway Error", "Warn", "#C1BD3A");
+				this.logger.severe("Gateway Error");
+				this.channels.get("415265475895754752").send({
+					embed: ({
+						color: 15684432,
+						timestamp: new Date(),
+						title: `Error`,
+						description: `[${event.code}] Gateway Error`
+					})
+				});
+				//Hook.custom(this.user.username, "[0] Gateway Error", "Warn", "#C1BD3A");
 			} else if (event.code === 1000) {
-				this.logger.warn("Disconnected from Discord cleanly.");
-				Hook.custom(this.user.username, "[1000] Disconnected from Discord cleanly", "Info", "#59EADA");
+				this.logger.info("Disconnected from Discord cleanly.");
+				this.channels.get("415265475895754752").send({
+					embed: ({
+						color: 5892826,
+						timestamp: new Date(),
+						title: `Info`,
+						description: `[${event.code}] Disconnected from Discord cleanly.`
+					})
+				});
+				//Hook.custom(this.user.username, "[1000] Disconnected from Discord cleanly", "Info", "#59EADA");
 			} else if (event.code === 4000) {
 				this.logger.warn('Unknown Error');
-				Hook.custom(this.user.username, "[4000] Unknown Error", "Warn", "#C1BD3A");
+				this.channels.get("415265475895754752").send({
+					embed: ({
+						color: 12696890,
+						timestamp: new Date(),
+						title: `Warn`,
+						description: `[${event.code}] Unknown Error`
+					})
+				});
+				//Hook.custom(this.user.username, "[4000] Unknown Error", "Error", "#C1BD3A");
 			} else if (event.code === 4001) {
 				this.logger.warn('Unknown Opcode');
-				Hook.custom(this.user.username, "[4001] Unknown Opcode", "Warn", "#C1BD3A");
+				this.channels.get("415265475895754752").send({
+					embed: ({
+						color: 12696890,
+						timestamp: new Date(),
+						title: `Warn`,
+						description: `[${event.code}] Unknown Opcode`
+					})
+				});
+				//Hook.custom(this.user.username, "[4001] Unknown Opcode", "Warn", "#C1BD3A");
 			} else if (event.code === 4002) {
 				this.logger.warn('Decode Error');
-				Hook.custom(this.user.username, "[4002] Decode Error", "Warn", "#C1BD3A");
+				this.channels.get("415265475895754752").send({
+					embed: ({
+						color: 12696890,
+						timestamp: new Date(),
+						title: `Warn`,
+						description: `[${event.code}] Decode Error`
+					})
+				});
+				//Hook.custom(this.user.username, "[4002] Decode Error", "Warn", "#C1BD3A");
 			} else if (event.code === 4003) {
 				this.logger.severe('Not Authenticated');
-				Hook.custom(this.user.username, "[4003] Not Authenticated", "Error", "#EF5350");
+				this.channels.get("415265475895754752").send({
+					embed: ({
+						color: 15684432,
+						timestamp: new Date(),
+						title: `Error`,
+						description: `[${event.code}] Not Authenticated`
+					})
+				});
+				//Hook.custom(this.user.username, "[4003] Not Authenticated", "Error", "#EF5350");
 				return this.shutdown(false);
 			} else if (event.code === 4004) {
 				// Force the user to reconfigure if their token is invalid
 				this.logger.severe(`Failed to authenticate with Discord. Please follow the instructions at ${chalk.green('https://discordapp.com/developers')} and re-enter your token by running ${chalk.green('yarn run config')}.`);
-				Hook.custom(this.user.username, `[4004] Failed to authenticate with Discord. Please follow the instructions at ${chalk.green('https://discordapp.com/developers')} and re-enter your token by running ${chalk.green('yarn run config')}.`, "Error", "#EF5350");
+				this.channels.get("415265475895754752").send({
+					embed: ({
+						color: 15684432,
+						timestamp: new Date(),
+						title: `Error`,
+						description: `[${event.code}] Failed to authenticate with Discord. Please follow the instructions at ${chalk.green('https://discordapp.com/developers')} and re-enter your token by running ${chalk.green('yarn run config')}.`
+					})
+				});
+				//Hook.custom(this.user.username, `[4004] Failed to authenticate with Discord. Please follow the instructions at ${chalk.green('https://discordapp.com/developers')} and re-enter your token by running ${chalk.green('yarn run config')}.`, "Error", "#EF5350");
 				return this.shutdown(false);
 			} else if (event.code === 4005) {
 				this.logger.info('Already Authenticated');
-				Hook.custom(this.user.username, "[4005] Already Authenticated", "Info", "#59EADA");
+				this.channels.get("415265475895754752").send({
+					embed: ({
+						color: 5892826,
+						timestamp: new Date(),
+						title: `Info`,
+						description: `[${event.code}] Already Authenticated`
+					})
+				});
+				//Hook.custom(this.user.username, "[4005] Already Authenticated", "Info", "#59EADA");
 			} else if (event.code === 4006) {
 				this.logger.severe('Session Not Valid');
-				Hook.custom(this.user.username, "[4006] Session Not Valid", "Error", "#EF5350");
+				this.channels.get("415265475895754752").send({
+					embed: ({
+						color: 15684432,
+						timestamp: new Date(),
+						title: `Error`,
+						description: `[${event.code}] Session Not Valid`
+					})
+				});
+				//Hook.custom(this.user.username, "[4006] Session Not Valid", "Error", "#EF5350");
 				return this.shutdown(false);
 			} else if (event.code === 4007) {
 				this.logger.warn('Invalid Sequence Number');
-				Hook.custom(this.user.username, "[4007] Invalid Sequence Number", "Warn", "#C1BD3A");
+				this.channels.get("415265475895754752").send({
+					embed: ({
+						color: 12696890,
+						timestamp: new Date(),
+						title: `Warn`,
+						description: `[${event.code}] Invalid Sequence Number`
+					})
+				});
+				//Hook.custom(this.user.username, "[4007] Invalid Sequence Number", "Warn", "#C1BD3A");
 			} else if (event.code === 4008) {
 				this.logger.info('Rate Limited');
-				Hook.custom(this.user.username, "[4008] Rate Limited", "Info", "#59EADA");
+				this.channels.get("415265475895754752").send({
+					embed: ({
+						color: 5892826,
+						timestamp: new Date(),
+						title: `Info`,
+						description: `[${event.code}] Rate Limited`
+					})
+				});
+				//Hook.custom(this.user.username, "[4008] Rate Limited", "Info", "#59EADA");
 			} else if (event.code === 4009) {
 				this.logger.severe('Session Timeout');
-				Hook.custom(this.user.username, "[4009] Session Timeout", "Error", "#EF5350");
+				this.channels.get("415265475895754752").send({
+					embed: ({
+						color: 15684432,
+						timestamp: new Date(),
+						title: `Error`,
+						description: `[${event.code}] Session Timeout`
+					})
+				});
+				//Hook.custom(this.user.username, "[4009] Session Timeout", "Error", "#EF5350");
 				return this.shutdown(false);
 			} else if (event.code === 4010) {
 				this.logger.warn('Invalid Shard');
-				Hook.custom(this.user.username, "[4010] Invalid Shard", "Warn", "#C1BD3A");
+				this.channels.get("415265475895754752").send({
+					embed: ({
+						color: 15684432,
+						timestamp: new Date(),
+						title: `Warn`,
+						description: `[${event.code}] Invalid Shard`
+					})
+				});
+				//Hook.custom(this.user.username, "[4010] Invalid Shard", "Warn", "#C1BD3A");
 			} else {
 				this.logger.warn(`Disconnected from Discord with code ${event.code}`);
-				Hook.custom(this.user.username, `Disconnected from Discord with code ${event.code}`, "Warn", "#C1BD3A");
+				this.channels.get("415265475895754752").send({
+					embed: ({
+						color: 12696890,
+						timestamp: new Date(),
+						title: `Warn`,
+						description: `Disconnected from Discord with code ${event.code}`
+					})
+				});
+				//Hook.custom(this.user.username, `Disconnected from Discord with code ${event.code}`, "Warn", "#C1BD3A");
 			}
-			
 			this.shutdown();
 		});
 		
 		// Process handlers
 		process.on('exit', (code) => {
-			console.log(`Exited with exit code ${code}`);
+			this.logger.info(`Exited with exit code ${code}`);
+			this.channels.get("415265475895754752").send({
+				embed: ({
+					color: 12696890,
+					timestamp: new Date(),
+					title: `Info`,
+					description: `Exited with exit code ${code}`
+				})
+			});
 			this.shutdown();
 		});
 		
