@@ -222,6 +222,7 @@ class CommandManager {
 	 */
 	hasPermission(msg,command,ownerOverride = true) {
 		let userpermspassed = false;
+		if (this.getInfo("ownerOnly",command)) return false;
 		if (command.userPermissions) {
 			if (!this.getInfo("ownerOnly",command) && !this.getInfo("userPermissions",command)) return true;
 			if (ownerOverride && msg.author.id == process.env.bot_owner) return true;
@@ -231,17 +232,7 @@ class CommandManager {
 			if (msg.channel.type === "text" && this.getInfo("userPermissions",command)) {
 				const missing = msg.channel.permissionsFor(msg.author).missing(this.getInfo("userPermissions",command));
 				if (missing.length > 0) {
-					return msg.channel.send({
-						embed: ({
-							description: `<:redx:411978781226696705> You do not have permission to use the \`${command.name}\` command.\n<:transparent:411703305467854889>Missing: \`${missing.map(perm => this.bot.utils.permissions[perm]).join("` `")}\``,
-							color: 15684432,
-							timestamp: new Date(),
-							author: {
-								name: `${msg.author.tag}`,
-								icon_url: `${msg.author.displayAvatarURL}`
-							}
-						})
-					});
+					return `<:redx:411978781226696705> You do not have permission to use the \`${command.name}\` command.\n<:transparent:411703305467854889>Missing: \`${missing.map(perm => this.bot.utils.permissions[perm]).join("` `")}\``;
 				}
 			}
 			//return true;
@@ -251,17 +242,7 @@ class CommandManager {
 			if (msg.channel.type !== "dm" && this.getInfo("clientPermissions",command)) {
 				const missing = msg.channel.permissionsFor(this.bot.user).missing(this.getInfo("clientPermissions",command));
 				if (missing.length > 0) {
-					return msg.channel.send({
-						embed: ({
-							description: `<:redx:411978781226696705> I don't have enough permissions to execute that command.\n<:transparent:411703305467854889>Missing: \`${missing.map(perm => this.bot.utils.permissions[perm]).join("` `")}\``,
-							color: 15684432,
-							timestamp: new Date(),
-							author: {
-								name: `${msg.author.tag}`,
-								icon_url: `${msg.author.displayAvatarURL}`
-							}
-						})
-					});
+					return `<:redx:411978781226696705> I don't have enough permissions to execute that command.\n<:transparent:411703305467854889>Missing: \`${missing.map(perm => this.bot.utils.permissions[perm]).join("` `")}\``;
 				}
 			}
 		}
@@ -321,7 +302,21 @@ class CommandManager {
 
 		if (command) {
 			const hasPermission = this.hasPermission(msg, command.info);
-			if (hasPermission && typeof hasPermission !== 'object') return this.execute(msg, command, args);
+			if (!hasPermission || typeof hasPermission === 'string') {
+				return msg.channel.send({
+					embed: ({
+						description: hasPermission.toString(),
+						color: 15684432,
+						timestamp: new Date(),
+						author: {
+							name: `${msg.author.tag}`,
+							icon_url: `${msg.author.displayAvatarURL}`
+						}
+					})
+				});
+			} else if (hasPermission && typeof this.hasPermission !== 'string') {
+				return this.execute(msg, command, args);
+			}
 		} else {
 			return this._handleShortcuts(msg, base, args);
 		}
