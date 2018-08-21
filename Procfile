@@ -1,1 +1,1 @@
-worker: src/shard.js
+worker: node src/shard.js
