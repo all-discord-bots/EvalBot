@@ -64,7 +64,7 @@ exports.run = async (bot, msg, args) => {
 	if (commands.length > 0) {
 		let fields = commands.filter(cmd => !cmd.info.hidden)
 			.sort((a,b) => a.info.name.localeCompare(b.info.name))
-			.map(cmd => getHelp(bot,cmd,commands.length === 1));
+			.map(cmd => getHelp(bot,msg,cmd,commands.length === 1));
 		
 		// Temporary workaround for the 2k char limit
 		let maxLength = 1900;
@@ -105,7 +105,7 @@ exports.run = async (bot, msg, args) => {
 		});
 	}
 	} catch (err) {
-		console.error(err.toString());
+		console.error(`------ ${err.stack}`);
 	}
 };
 
@@ -113,8 +113,9 @@ exports.run = async (bot, msg, args) => {
 * @todo - Make individual fields for each of the items
 * @example - **Usage:** goes on it's own field like `unbelievaboat bot`, **Description** goes on it's own field as well... etc;
 */
-const getHelp = (bot, command, single) => {
+const getHelp = (bot, msg, command, single) => {
 	try {
+		let prefix = msg.guild && (bot.config[msg.guild.id.toString()] && bot.config[msg.guild.id.toString()].prefix) || bot.config.prefix;
 	let description = stripIndents`
 		**Usage:** \`${prefix}${command.info.usage || command.info.name}\`
 		**Aliases:** \`${(command.info.aliases && command.info.aliases.join('` `')) || '<no aliases>'}\`
@@ -143,7 +144,7 @@ const getHelp = (bot, command, single) => {
 		value: description
 	};
 	} catch (err) {
-		console.error(err.toString());
+		console.error(`------ ${err.stack}`);
 	}
 };
 
