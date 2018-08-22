@@ -1,5 +1,6 @@
 const ms = require('ms');
 exports.run = async (bot, msg, args) => {
+try {
   let gbot = msg.guild.members.get(bot.user.id);
   if (!gbot.hasPermission(0x00000010)) return msg.channel.send(`<:redx:411978781226696705> I am missing \`Manage Channels\`!`).catch(console.error);
   if (msg.author.id !== bot.config.botCreatorID) {
@@ -51,6 +52,9 @@ exports.run = async (bot, msg, args) => {
       });
     });
   }
+} catch (err) {
+console.error(err.stack);
+}
 };
 
 exports.info = {
