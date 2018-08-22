@@ -443,13 +443,13 @@ class CommandManager {
 				embed: ({
 					color: 15684432,
 					timestamp: new Date(),
-					title: `${err.name}`,
+					title: `${err.name || "Unknown Error"}`,
 					author: {
 						name: `${msg.author.tag}`,
 						icon_url: `${msg.author.displayAvatarURL}`
 					},
 					footer: {
-						text: `${}`
+						text: `${err.toString() || "N/A"}`
 					},
 					description: `\`\`\`\n${err.stack || "N/A"}\n\`\`\``,
 					fields: [
