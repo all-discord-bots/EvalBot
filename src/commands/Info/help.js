@@ -1,85 +1,74 @@
 const stripIndents = require('common-tags').stripIndents;
 
 exports.run = async (bot, msg, args) => {
-	let commands = [];
 	let title = 'Categories';
-
+	let prefix = msg.guild && (bot.config[msg.guild.id.toString()] && bot.config[msg.guild.id.toString()].prefix) || prefix;
+	let commands = [];
+	let aliases = [];
+	let modules = bot.commands.categories().sort();
+	let modules_lowercase = modules.map(module => `${module.toLowerCase()}`);
+	
 	if (args.length > 0) {
-		let categories = bot.commands.categories().sort();
-		let module = categories.map(c => `${c.toLowerCase()}`);
-		let fcmd = bot.commands.get(args[0].toLowerCase());
-		let aliases = ["NOTHING_HERE", "NOTHING_HERE_EITHER"];
-		if (fcmd && fcmd.info.name) {
-			aliases = fcmd.info.aliases;
-		}
-		let gcmd;
-		let gali;
-		if (fcmd) {
-			gcmd = fcmd.info.name;
-			if (fcmd.info.aliases) {
-				gali = fcmd.info.aliases;
+		/**
+		* Check if the user typed the command like `help prefix` or `help module:music` or `help command:prefix`
+		*/
+		if (args.length === 1) {
+			let command_args = args[0].toLowerCase().replace(/^(module:|command:)/gi,'');
+			let find_command = bot.commands.get(command_args.toLowerCase());
+			let command_name = ((find_command && find_command.info.name) || "<unknown command>");
+			let command_aliases = ((find_command && find_command.info.aliases) || []);
+			aliases = command_aliases;
+			if (/^(module:)/i.test(args[0].toLowerCase()) || new RegExp(modules_lowercase.join('|')).test(args[0].toLowerCase())) {
+				if (!bot.commands.all(command_args.toLowerCase())) return msg.channel.send(`<:redx:411978781226696705> The module '${args[0].toLowerCase()}' does not exist!`).catch(err => console.error);
+				commands = bot.commands.all(command_args.toLowerCase());
+				title = `${command_args.toLowerCase()} Commands`;
+			} else if (/^(command:)/i.test(args[0].toLowerCase()) || new RegExp(commands.join("|")).test(args[0].toLowerCase()) || new RegExp(aliases.join("|")).test(args[0].toLowerCase())) {
+				if (!find_command) return msg.channel.send(`<:redx:411978781226696705> The command \`${args[0].toLowerCase()}\` does not exist!`).catch(err => console.error);
+				commands =  [find_command];
+				title = `Help for \`${command_name.toLowerCase()}\``;
+			} else if (/^(all)$/i.test(args[0].toLowerCase())) {
+				commands = bot.commands.all();
+				title = 'All Commands';
 			} else {
-				gali = "THIS_IS_A_FAKE_ALIASES_TO_FORCE_A_FALSE_STATEMENT";
+				if (new RegExp(modules_lowercase.join('|')).test(command_args)) {
+					commands = bot.commands.all(command_args.toLowerCase());
+					title = `${command_args.toLowerCase()} Commands`;
+				} else if (find_command) {
+					commands = [find_command];
+					title = `Help for \`${command_name.toLowerCase()}\``;
+				} else {
+					return msg.channel.send(`<:redx:411978781226696705> No command or module \`${args[0].toLowerCase()}\` exists!`).catch(err => console.error);
+				}
+				// if (new RegExp(modules_lowercase('|')).test(args[0].toLowerCase())) return msg.channel.send(`<:redx:411978781226696705> a command and module with the same name was found please use \`command:${args[0].toLowerCase()}\` or \`module:${args[0].toLowerCase()}\`!`);
+				//commands = [find_command];
 			}
-		} else {
-			gcmd = "THIS_IS_A_FAKE_COMMAND_TO_FORCE_A_FALSE_STATEMENT";
-			gali = "THIS_IS_A_FAKE_ALIASES_TO_FORCE_A_FALSE_STATEMENT";
-		}
-		if (args.length === 1 && new RegExp(module.join("|")).test(args[0].toLowerCase()) || /^category:|module:|type:/i.test(args[0].toLowerCase())) {
-			if (new RegExp(module.join("|")).test(gcmd.toLowerCase()) === true || new RegExp(module.join("|")).test(gali.toLowerCase()) === true) {
-				return msg.channel.send(`<:redx:411978781226696705> a command and module with the same name was found please use \`command:${args[0].toLowerCase()}\` or \`module:${args[0].toLowerCase()}\` or \`command ${args[0].toLowerCase()}\`!`);
+			/**
+			* Checks if the user typed the command like `help command prefix` or `help module music`
+			*/
+		} else if (args.length > 1) {
+			let find_command = bot.commands.get(args[1].toLowerCase());
+			let command_name = ((find_command && find_command.info.name) || "Unknown Command");
+			if (/^(command)$/i.test(args[0].toLowerCase())) {
+				if (!find_command) return msg.channel.send(`<:redx:411978781226696705> The command \`${args[0].toLowerCase()}\` does not exist!`).catch(err => console.error);
+				commands = [find_command];
+				title = `Help for \`${command_name.toLowerCase()}\``;
+			} else if (/^(module)$/i.test(args[0].toLowerCase())) {
+				if (!bot.commands.all(args[1].toLowerCase())) return msg.channel.send(`<:redx:411978781226696705> The module \`${args[0].toLowerCase()}\` does not exist!`).catch(err => console.error);
+				commands = bot.commands.all(args[1].toLowerCase());
+				title = `${args[1].toLowerCase()} Commands`;
 			}
-		//if (/^category|module|type$/i.test(args[0])) {
-			//if (args.length < 1) { // 2
-			//    throw 'You must specify a module!';
-			//}
-			let getargs;
-			if (/^category:|module:|type:/i.test(args[0].toLowerCase())) {
-				getargs = args[0].replace(/^category:|module:|type:/gi, "");
-			} else {
-				getargs = args[0];
-			}
-			commands = bot.commands.all(getargs);
-			title = `${getargs.toLowerCase()} Commands`;
-		} else if (/^all|full|every$/i.test(args[0])) {
-			commands = bot.commands.all();
-			title = 'All Commands';
-		} else if (args.length === 1 && new RegExp(commands.join("|")).test(args[0].toLowerCase()) === true || new RegExp(aliases.join("|")).test(args[0].toLowerCase()) === true || /^command:|cmd:/i.test(args[0].toLowerCase())) {
-			//if (new RegExp(module.join("|")).test(gcmd.toLowerCase()) === true || new RegExp(module.join("|")).test(gali.toLowerCase()) === true) {
-			//	return msg.channel.send(` a command and module with the same name was found please use \`command:${args[0].toLowerCase()}\` or \`module:${args[0].toLowerCase()}\`!`);
-			//}
-			let gargs;
-			if (/^command:|cmd:/i.test(args[0].toLowerCase())) {
-				gargs = args[0].replace(/^command:|cmd:/gi, "");
-			} else {
-				gargs = args[0];
-			}
-			let command = bot.commands.get(gargs);
-			if (!command) return msg.channel.send(`<:redx:411978781226696705> The command '${args[0]}' does not exist!`).catch(console.error);
-			commands = [command];
-			title = `Help for \`${command.info.name.toLowerCase()}\``;
-		} else if (/^command|cmd$/i.test(args[0]) && args.length > 1) {
-			let command = bot.commands.get(args[1]);
-			if (!command) return msg.channel.send(`<:redx:411978781226696705> The command '${args[1]}' does not exist!`).catch(console.error);
-			commands = [command];
-			title = `Help for \`${command.info.name.toLowerCase()}\``;
-		} else {
-			let command = bot.commands.get(args[0]);
-			if (!command) return msg.channel.send(`<:redx:411978781226696705> The command '${args[0]}' does not exist!`).catch(console.error);
-			commands = [command];
-			title = `Help for \`${command.info.name.toLowerCase()}\``;
 		}
 	}
-
+	
 	if (commands.length > 0) {
-		let fields = commands.filter(c => !c.info.hidden)
-			.sort((a, b) => a.info.name.localeCompare(b.info.name))
-			.map(c => getHelp(bot, c, commands.length === 1));
-
+		let fields = commands.filter(cmd => !cmd.info.hidden)
+			.sort((a,b) => a.info.name.localeCompare(b.info.name))
+			.map(cmd => getHelp(bot,cmd,commands.length === 1));
+		
 		// Temporary workaround for the 2k char limit
 		let maxLength = 1900;
 		let messages = [];
-
+		
 		while (fields.length > 0) {
 			let len = 0;
 			let i = 0;
@@ -94,53 +83,44 @@ exports.run = async (bot, msg, args) => {
 				}
 				i++;
 			}
-
-			messages.push({ fields: fields.splice(0, i) });
+			messages.push({ fields: fields.splice(0,i) });
 		}
-
-		//msg.delete().catch(() => { });
+		
 		messages.map(m => m.fields).forEach(async fields => {
 			(await msg.channel.send({
-				embed: bot.utils.embed(title, 'Commands List', fields)
+				embed: bot.utils.embed(title,'Commands List',fields)
 			}));
 		});
 	} else {
-		let categories = bot.commands.categories().sort();
-		 msg.channel.send({
+		msg.channel.send({
 			embed: bot.utils.embed(title, stripIndents`
 			**Available categories:**
-			${categories.map(c => `- __${c}__`).join('\n')}
+			${modules.map(module => `- __${module}__`).join('\n')}
 
 			**Usage:**
-			Do \`${bot.config.prefix}help module <name>\` or \`${bot.config.prefix}help [module:<name>]\` for a list of commands in a specific category.
-			Do \`${bot.config.prefix}help all\` for a list of every command available in this bot.
-			Do \`${bot.config.prefix}help <command>\` or \`${bot.config.prefix}help command <command>\` or \`${bot.config.prefix}help command:<command>\` for **extended** command help and command options.`)
+			Do \`${prefix}help module <name>\` or \`${prefix}help [module:<name>]\` for a list of commands in a specific category.
+			Do \`${prefix}help all\` for a list of every command available.
+			Do \`${prefix}help <command>\` or \`${prefix}help command <command>\` or \`${prefix}help command:<command>\` for **extended** command help and command options.`)
 		});
 	}
 };
 
+/**
+* @todo - Make individual fields for each of the items
+* @example - **Usage:** goes on it's own field like `unbelievaboat bot`, **Description** goes on it's own field as well... etc;
+*/
 const getHelp = (bot, command, single) => {
-	let aliasesstr = "," + command.info.aliases + ",";
-	let replacecomma = aliasesstr.replace(/,/g, "` `");
-	let replacecomma1 = replacecomma.replace("` ","") + "remove-this-string";
-	let replacecomma2 = replacecomma1.replace(" `remove-this-string","");
-	let finishedstr;
-	if (command.info.aliases === undefined || command.info.aliases == "") {
-		finishedstr = "`<no aliases>`";
-	} else {
-		finishedstr = replacecomma2;
-	}
 	let description = stripIndents`
-		**Usage:** \`${bot.config.prefix}${command.info.usage || command.info.name}\`
-		**Aliases:** ${finishedstr}
-		**Description:** ${command.info.description || '<no description>'}
-		**Category:** __${command.info.category}__`;
+		**Usage:** \`${prefix}${command.info.usage || command.info.name}\`
+		**Aliases:** \`${(command.info.aliases && command.info.aliases.join('` `')) || '<no aliases>'}\`
+		**Description:** \`${command.info.description || '<no description>'}\`
+		**Category:** \`${command.info.category || '<unknown category>'}\``;
 
 	if (command.info.credits)
 		description += `\n**Credits:** *${command.info.credits}*`;
 
 	if (single && command.info.examples)
-		description += `\n**Examples:**\n${command.info.examples.map(example => `\`${bot.config.prefix}${example}\``).join('\n')}`;
+		description += `\n**Examples:**\n${command.info.examples.map(example => `\`${prefix}${example}\``).join('\n')}`;
 
 	if (single && command.info.options instanceof Array) {
 		let options = command.info.options.map(option => {
@@ -161,15 +141,17 @@ const getHelp = (bot, command, single) => {
 
 exports.info = {
 	name: 'help',
-	usage: 'help all|[command]|[command <command>]|[module:<command>]|[command:<command>]',
+	allowDM: true,
+	usage: 'help [all | command | module]',
 	examples: [
 		'help',
 		'help music',
 		'help play',
 		'help all',
-		'help module:music',
 		'help command:play',
+		'help command play',
+		'help module:music',
 		'help module music'
 	],
-	description: 'Shows you help for all commands or just a single command'
+	description: 'Shows you help for all commands, commands in a module or just a single command'
 };
