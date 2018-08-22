@@ -1,5 +1,10 @@
 const ms = require('ms');
 exports.run = async (bot, msg, args) => {
+  let gbot = msg.guild.members.get(bot.user.id);
+  if (!gbot.hasPermission(0x00000010)) return msg.channel.send(`<:redx:411978781226696705> I am missing \`Manage Channels\`!`).catch(console.error);
+  if (msg.author.id !== bot.config.botCreatorID) {
+    if (!msg.member.hasPermission('MANAGE_CHANNELS')) return msg.channel.send(`<:redx:411978781226696705> You are missing the permissions \`Manage Channels\`!`).catch(console.error);
+  }
   let gchannel;
   let cping = args[0];
   let rping = cping.replace(/<#/g, '');
@@ -49,10 +54,8 @@ exports.run = async (bot, msg, args) => {
 };
 
 exports.info = {
-	name: 'lock-down',
-	userPermissions: ["MANAGE_CHANNELS"],
-	clientPermissions: ["MANAGE_CHANNELS"],
-	aliases: ['channel-lock-down','lock-down-channel','lockdown'],
-	description: 'Lock down a channel, to prevent anyone sending messages. (Unless they have Administrator permission, or Send Messages is set to Allow in channel permissions for a role they have.). Example 1s, 1m, 1h .etc you can use `unlock` or `release` to un-lockdown a channel.',
-	usage: 'lock-down [channel] [duration]'
+  name: 'lock-down',
+  aliases: ['channel-lock-down','lock-down-channel','lockdown'],
+  description: 'Lock down a channel, to prevent anyone sending messages. (Unless they have Administrator permission, or Send Messages is set to Allow in channel permissions for a role they have.). Example 1s, 1m, 1h .etc you can use `unlock` or `release` to un-lockdown a channel.',
+  usage: 'lock-down [channel] [duration]'
 };
