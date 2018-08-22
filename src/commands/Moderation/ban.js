@@ -26,7 +26,7 @@ exports.run = async (bot, msg, args) => {
 		}
 		msg.channel.send(`<:check:411976443522711552> Successfully banned <@${bUser.id}>`).catch(err => console.error);
 	} catch (err) {
-		console.error(err.toString);
+		console.error(err.toString());
 	}
 };
 
