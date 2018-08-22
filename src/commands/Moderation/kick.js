@@ -6,10 +6,8 @@ exports.run = async (bot, message, args) => {
 		let modlogs = "mod_logs"; // mod_logs channel
 		let kUser = bot.utils.getMembers(msg,args[0],false,true);
 		if (!kUser) return msg.channel.send(`<:redx:411978781226696705> I could not find that user.`).catch(err => console.error);
-		if (kUser.toString().includes("I could not find that user.")) return;
+		if (typeof(kUser) === 'string' && kUser.includes("I could not find that user.")) return;
 		let kReason = args.join(" ").slice(22);
-		let gbot = msg.guild.members.get(bot.user.id);
-		if (!gbot.hasPermission(0x00000002)) return msg.channel.send(`<:redx:411978781226696705> I am missing \`Kick Members\`!`).catch(err => console.error);
 		if(!msg.guild.member(kUser).kickable) return msg.channel.send(`<:redx:411978781226696705> I may need my role moved higher!`).catch(err => console.error);
 		if (kUser.user.id === msg.author.id) return msg.channel.send(`<:redx:411978781226696705> I cannot allow self-harm!`).catch(err => console.error);
 		let kickChannel = msg.guild.channels.find(`name`, `${modlogs}`);
