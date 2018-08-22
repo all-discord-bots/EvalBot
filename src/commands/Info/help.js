@@ -26,7 +26,7 @@ exports.run = async (bot, msg, args) => {
 				if (bot.commands.all(command_args.toLowerCase()).length <= 0) return msg.channel.send(`<:redx:411978781226696705> The module '${command_args.toLowerCase()}' does not exist!`).catch(err => console.error);
 				commands = bot.commands.all(command_args.toLowerCase());
 				title = `\`${command_args.toLowerCase()}\` Commands`;
-			} else if (/^(command:)/i.test(args[0].toLowerCase()) && (new RegExp(commands.join("|")).test(command_args.toLowerCase()) || new RegExp(aliases.join("|")).test(command_args.toLowerCase()))) {
+			} else if (/^(command:)/i.test(args[0].toLowerCase()) && (new RegExp(commands.join('|')).test(command_args.toLowerCase()) || new RegExp(aliases.join("|")).test(command_args.toLowerCase()))) {
 				if (!find_command) return msg.channel.send(`<:redx:411978781226696705> The command \`${command_args.toLowerCase()}\` does not exist!`).catch(err => console.error);
 				commands =  [find_command];
 				title = `Help for \`${command_name.toLowerCase()}\``;
@@ -38,7 +38,7 @@ exports.run = async (bot, msg, args) => {
 					commands = [find_command];
 					title = `Help for \`${command_name.toLowerCase()}\``;
 				} else {
-					return msg.channel.send(`<:redx:411978781226696705> No command or module \`${args[0].toLowerCase()}\` exists!`).catch(err => console.error);
+					return msg.channel.send(`<:redx:411978781226696705> No command or module \`${command_args.toLowerCase()}\` exists!`).catch(err => console.error);
 				}
 				// if (new RegExp(modules_lowercase('|')).test(args[0].toLowerCase())) return msg.channel.send(`<:redx:411978781226696705> a command and module with the same name was found please use \`command:${args[0].toLowerCase()}\` or \`module:${args[0].toLowerCase()}\`!`);
 				//commands = [find_command];
@@ -54,7 +54,7 @@ exports.run = async (bot, msg, args) => {
 				commands = [find_command];
 				title = `Help for \`${command_name.toLowerCase()}\``;
 			} else if (/^(module)$/i.test(args[0].toLowerCase())) {
-				if (!bot.commands.all(args[1].toLowerCase())) return msg.channel.send(`<:redx:411978781226696705> The module \`${args[0].toLowerCase()}\` does not exist!`).catch(err => console.error);
+				if (bot.commands.all(args[1].toLowerCase()).length <= 0) return msg.channel.send(`<:redx:411978781226696705> The module \`${args[1].toLowerCase()}\` does not exist!`).catch(err => console.error);
 				commands = bot.commands.all(args[1].toLowerCase());
 				title = `${args[1].toLowerCase()} Commands`;
 			}
@@ -114,10 +114,20 @@ exports.run = async (bot, msg, args) => {
 * @example - **Usage:** goes on it's own field like `unbelievaboat bot`, **Description** goes on it's own field as well... etc;
 */
 const getHelp = (bot, msg, command, single) => {
+	let aliasesstr = `,${command.info.aliases},`;
+	let replacecomma = aliasesstr.replace(/,/g, "` `");
+	let replacecomma1 = replacecomma.replace("` ","") + "remove-this-string";
+	let replacecomma2 = replacecomma1.replace(" `remove-this-string","");
+	let finishedstr;
+	if (command.info.aliases === undefined || command.info.aliases == "") {
+		finishedstr = "`<no aliases>`";
+	} else {
+		finishedstr = replacecomma2;
+	}
 	let prefix = msg.guild && (bot.config[msg.guild.id.toString()] && bot.config[msg.guild.id.toString()].prefix) || bot.config.prefix;
 	let description = stripIndents`
 		**Usage:** \`${prefix}${command.info.usage || command.info.name}\`
-		**Aliases:** \`${(command.info.aliases && command.info.aliases.join('` `')) || '<no aliases>'}\`
+		**Aliases:** ${finishedstr}
 		**Description:** \`${command.info.description || '<no description>'}\`
 		**Category:** \`${command.info.category || '<unknown category>'}\``;
 
