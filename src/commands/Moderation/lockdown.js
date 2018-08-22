@@ -1,7 +1,5 @@
 const ms = require('ms');
 exports.run = async (bot, msg, args) => {
-  if (msg.author.id !== bot.config.botCreatorID) {
-  }
   let gchannel;
   let cping = args[0];
   let rping = cping.replace(/<#/g, '');
