@@ -6,9 +6,6 @@ const Discord = require('discord.js');
 require('../../conf/globals.js');
 
 exports.run = async (bot, msg, args) => {
-	let gbot = msg.guild.members.get(bot.user.id);
-	if (!gbot.hasPermission(0x00100000)) return msg.channel.send(`<:redx:411978781226696705> I am missing \`Connect\` permissions!`).catch(console.error);
-	if (!gbot.hasPermission(0x00200000)) return msg.channel.send(`<:redx:411978781226696705> I am missing \`Speak\` permissions!`).catch(console.error);
 	let arg = args.join(' ');
 	if (arg.length < 1) return msg.channel.send(`<:redx:411978781226696705> You must provide a url or search string!`).catch(console.error);
 	if (!msg.member.voiceChannel) return msg.channel.send(`<:redx:411978781226696705> You must be in a voice channel!`).catch(console.error);
@@ -24,13 +21,6 @@ exports.run = async (bot, msg, args) => {
 		revealkey: true
 	});
 
-	//if (!musicqueue[msg.guild.id]) musicqueue[msg.guild.id] = [];
-	//if (!songqueue[msg.guild.id]) songqueue[msg.guild.id] = [];
-	//if (!musicqueue[msg.guild.id]['streaming']) musicqueue[msg.guild.id]['streaming'] = false;
-	//if (!musicqueue[msg.guild.id]['loopqueue']) musicqueue[msg.guild.id]['loopqueue'] = false;
-	//if (!musicqueue[msg.guild.id]['loopsong']) musicqueue[msg.guild.id]['loopsong'] = false;
-	//if (!musicqueue[msg.guild.id]['shuffle']) musicqueue[msg.guild.id]['shuffle'] = false;
-	//if (!musicqueue[msg.guild.id]['music']) musicqueue[msg.guild.id]['music'] = [];
 	search.search(arg, { type: 'video' }).then(searchResult => {
 		let result = searchResult.first;
 		//if (!result) return msg.channel.send(`<:redx:411978781226696705> Could not find this video.`).catch(console.error);
@@ -145,7 +135,6 @@ exports.run = async (bot, msg, args) => {
 
 				dispatcher.on('error', (error) => {
 					// Skip to the next song.
-					console.log(error);
 					console.log(`Dispatcher: ${error}`);
 					if (msg && msg.channel) msg.channel.send(`<:redx:411978781226696705> Dispatcher error!\n\`${error}\``);
 					queue.shift();
@@ -165,41 +154,6 @@ exports.run = async (bot, msg, args) => {
 								executeQueue(musicqueue[msg.guild.id]['music']); // Play the next song in the queue.
 							}
 						}
-							//musicqueue[msg.guild.id]['music'].push(musicqueue[msg.guild.id]['music'][0])
-							//if (musicqueue[msg.guild.id]['music'].length > 0) {
-							//	songqueue[msg.guild.id].push(musicqueue[msg.guild.id]['music']) // push the array to the backup queue
-							//}
-							
-							
-							
-							
-							
-							
-							/*
-						} else if (musicqueue[msg.guild.id]['loopsong'] && !musicqueue[msg.guild.id]['loopqueue']) {
-							if (songqueue[msg.guild.id].length < 1) {
-								songqueue[msg.guild.id].push(musicqueue[msg.guild.id]['music'][0]);
-							} else if (songqueue[msg.guild.id].length > 0) {
-								songqueue[msg.guild.id].splice(0, songqueue[msg.guild.id].length);
-								songqueue[msg.guild.id].push(musicqueue[msg.guild.id]['music'][0]);
-							}
-							executeQueue(songqueue[msg.guild.id]);
-						} else if (!musicqueue[msg.guild.id]['loopqueue'] && !musicqueue[msg.guild.id]['loopsong']) {
-							if (queue.length > 0) {
-								// Remove the song from the queue.
-								queue.shift();
-								// Play the next song in the queue.
-								executeQueue(musicqueue[msg.guild.id]['music']);
-							}
-						} else {
-							if (queue.length > 0) {
-								// Remove the song from the queue.
-								queue.shift();
-								// Play the next song in the queue.
-								executeQueue(musicqueue[msg.guild.id]['music']);
-							}
-						}
-						*/
 					}, 1000);
 				});
 			} catch (error) {
@@ -213,6 +167,7 @@ exports.run = async (bot, msg, args) => {
 exports.info = {
 	name: 'play',
 	usage: 'play <url|search>',
+	clientPermissions: ['SPEAK','CONNECT'],
 	examples: [
 		'play Ozzy Osbourne - Crazy Train',
 		'play Lamb of God - Blood of the Scribe',
