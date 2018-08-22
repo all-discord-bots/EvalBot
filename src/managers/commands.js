@@ -147,7 +147,9 @@ class CommandManager {
 	}
 	
 	/**
-	 Sets variables used to check information
+	 * Sets variables used to check information
+	 * @param {Variable} var - Used to get the variable
+	 * @param {Command} command - The command object to obtain info from
 	 */
 	getInfo(variable,command) {
 		if (variable === "ownerOnly") {
@@ -217,54 +219,69 @@ class CommandManager {
 	/**
 	 * Checks if the user has permission to use the command
 	 * @param {Message} message - The triggering command message
+	 * @param {Command} command - The command object to obtain info from
 	 * @param {boolean} [ownerOverride=true] - Whether the bot owner(s) will always have permission
 	 * @return {boolean|string} Whether the user has permission, or an error message to respond with if they don't
 	 */
-	hasPermission(msg,command,ownerOverride = true) {
-		let userpermspassed = false;
-		if (this.getInfo("ownerOnly",command)) return false;
+	checkUserPermissions(msg,command,ownerOverride = true) {
 		if (command.userPermissions) {
 			if (!this.getInfo("ownerOnly",command) && !this.getInfo("userPermissions",command)) return true;
 			if (ownerOverride && msg.author.id == process.env.bot_owner) return true;
-			
-			if (this.getInfo("ownerOnly",command) && (ownerOverride || msg.author.id != process.env.bot_owner)) return; //`The \`${command.name}\` command can only be used by the bot owner.`;
-			
+			if (this.getInfo("ownerOnly",command) && (ownerOverride || msg.author.id != process.env.bot_owner)) return; // `The \`${command.name}\` command can only be used by the bot owner.`;
 			if (msg.channel.type === "text" && this.getInfo("userPermissions",command)) {
 				const missing = msg.channel.permissionsFor(msg.author).missing(this.getInfo("userPermissions",command));
-				if (missing.length > 0) {
-					return `<:redx:411978781226696705> You do not have permission to use the \`${command.name}\` command.\n<:transparent:411703305467854889>Missing: \`${missing.map(perm => this.bot.utils.permissions[perm]).join("` `")}\``;
-				}
-			}
-			//return true;
-			userpermspassed = true;
-		}
-		if (command.clientPermissions && userpermspassed) {
-			if (msg.channel.type !== "dm" && this.getInfo("clientPermissions",command)) {
-				const missing = msg.channel.permissionsFor(this.bot.user).missing(this.getInfo("clientPermissions",command));
-				if (missing.length > 0) {
-					return `<:redx:411978781226696705> I don't have enough permissions to execute that command.\n<:transparent:411703305467854889>Missing: \`${missing.map(perm => this.bot.utils.permissions[perm]).join("` `")}\``;
-				}
+				if (missing.length > 0) return `<:redx:411978781226696705> You do not have permission to use the \`${command.name}\` command.\n<:transparent:411703305467854889>Missing: \`${missing.map(perm => this.bot.utils.permissions[perm]).join("` `")}\``;
 			}
 		}
 		return true;
 	}
 	
 	/**
+	 * Checks if the client has permission to use the command
+	 * @param {Message} message - The triggering command message
+	 * @param {Command} command - The command object to obtain info from
+	 * @return {boolean|string} Whether the client has permission, or an error message to respond with if the bot doesn't
+	 */
+	checkClientPermissions(msg,command) {
+		if (command.clientPermissions) {
+			if (msg.channel.type !== "dm" && this.getInfo("clientPermissions",command)) {
+				const missing = msg.channel.permissionsFor(this.bot.user).missing(this.getInfo("clientPermissions",command));
+				if (missing.length > 0) return `<:redx:411978781226696705> I don't have enough permissions to execute that command.\n<:transparent:411703305467854889>Missing: \`${missing.map(perm => bot.utils.permissions[perm]).join("` `")}\``;
+			}
+		}
+		return true;
+	}
+	
+	/**
+	 * Checks and returns the results of the user/client permissions
+	 * @param {Message} message - The triggering command message
+	 * @param {Command} command - The command object to obtain info from
+	 * @return {boolean|string} Whether the user/client has permission, or an error message to respond with if they don't
+	 */
+	hasPermission(msg,command) {
+		return ((typeof(this.checkClientPermissions(msg,command)) !== 'string') ? this.checkUserPermissions(msg,command) : this.checkClientPermissions(msg,command));
+	}
+	
+	/**
 	 * Checks if the command is usable for a message
-	 * @param {?Message} message - The message
+	 * @param {?Message} msg - The message
+	 * @param {Command} command - The command to get the information from
 	 * @return {boolean}
 	 */
-	/*isUsable(message = null) {
-		if(!message) return this._globalEnabled;
-		if(this.guildOnly && message && !message.guild) return false;
-		const hasPermission = this.hasPermission(message);
-		return this.isEnabledIn(message.guild) && hasPermission && typeof hasPermission !== 'string';
-	}*/
+	isUsable(msg,command) { //(message = null) {
+		//if(!message) return this._globalEnabled;
+		//if(this.guildOnly && message && !message.guild) return false;
+		//const hasPermission = this.hasPermission(message);
+		//return this.isEnabledIn(message.guild) && hasPermission && typeof hasPermission !== 'string';
+		if ((this.getInfo("ownerOnly",command) && msg.author.id != process.env.bot_owner) || (this.getInfo("guildOnly",command) && msg.guild.id != process.env.main_bot_guild)) return false;
+		if (this.getInfo("nsfw",command) && !msg.channel.nsfw) return `<:redx:411978781226696705> This command can only be used in NSFW marked channels.`;
+		return this.hasPermission(msg,command);
+	}
 
 	handleCommand(msg, input) {
 		let prefix;
 		if (!input.startsWith(`<@${this.bot.user.id}>`)) { //&& !input.startsWith(`<@!${this.bot.user.id}>`)) {
-			if (msg.channel.type !== "dm") {
+			/*if (msg.channel.type !== "dm") {
 				if (this.bot.config[msg.guild.id.toString()] === undefined) {
 					prefix = this.bot.config.prefix;
 				} else if (this.bot.config[msg.guild.id.toString()] !== undefined) {
@@ -272,11 +289,12 @@ class CommandManager {
 				}
 			} else {
 				prefix = this.bot.config.prefix;
-			}
+			}*/
+			prefix = msg.guild && (this.bot.config[msg.guild.id.toString()] && this.bot.config[msg.guild.id.toString()].prefix) || this.bot.config.prefix;
 		} else {
 			prefix = `<@${this.bot.user.id}>`;
 		}
-
+		
 		if (!input.startsWith(prefix)) return; // || !input.startsWith(`<@${this.bot.id}>`)) return;
 		let split = input.substr(prefix.length).trim().split(' ');
 		let split1 = input.substr(prefix).trim().split(' ');
@@ -322,7 +340,7 @@ class CommandManager {
 			});
 
 			if (maybe) {
-				let mprefix;
+				/*let mprefix;
 				if (msg.channel.type !== "dm") {
 					if (!this.bot.config[msg.guild.id.toString()]) {
 						mprefix = this.bot.config.prefix;
@@ -331,10 +349,11 @@ class CommandManager {
 					}
 				} else {
 					mprefix = this.bot.config.prefix;
-				}
+				}*/
+				//let mprefix = msg.guild && (this.bot.config[msg.guild.id.toString()] && this.bot.config[msg.guild.id.toString()].prefix) || this.bot.config.prefix;
 				return; //msg.channel.send(`:question: Did you mean \`${mprefix}${maybe}\`?`).then(m => m.delete(5000));
 			} else {
-				let nprefix;
+				/*let nprefix;
 				if (msg.channel.type !== "dm") {
 					if (!this.bot.config[msg.guild.id.toString()]) {
 						nprefix = this.bot.config.prefix;
@@ -343,7 +362,8 @@ class CommandManager {
 					}
 				} else {
 					nprefix = this.bot.config.prefix;
-				}
+				}*/
+				//let nprefix = msg.guild && (this.bot.config[msg.guild.id.toString()] && this.bot.config[msg.guild.id.toString()].prefix) || this.bot.config.prefix;
 				return; //msg.channel.send(`:no_entry_sign: No commands were found that were similar to \`${nprefix}${name}\``);
 				//.then(m => m.delete(5000));
 			}
@@ -392,22 +412,10 @@ class CommandManager {
 		}).bind(msg);
 
 		try {
-			const hasPerm = this.hasPermission(msg, command.info);
-			if (!hasPerm && typeof hasPerm === 'string') {
-				msg.channel.send({
-					embed: ({
-						description: hasPerm.toString(),
-						color: 15684432,
-						timestamp: new Date(),
-						author: {
-							name: `${msg.author.tag}`,
-							icon_url: `${msg.author.displayAvatarURL}`
-						}
-					})
-				});
-			} else if (hasPerm && typeof hasPerm !== 'string') {
-				return await command.run(this.bot, msg, args);
-			}
+			const isUsable = this.isUsable(msg, command.info);
+			if (typeof(isUsable) === 'boolean' && !isUsable) return;
+			if (typeof(isUsable) === 'string') return msg.channel.send({ embed: ({ description: `${isUsable}`, color: 15684432, timestamp: new Date(), author: { name: `${msg.author.tag}`, icon_url: `${msg.author.displayAvatarURL}` }})});
+			return await command.run(this.bot, msg, args);
 		} catch (err) {
 			msg.error(err);
 			return null;
