@@ -2,7 +2,7 @@
 const Pornsearch = require('pornsearch');
 
 exports.run = async (bot, msg, args) => {
-	if (!msg.channel.nsfw) return msg.channel.send(`<:redx:411978781226696705> This channel has not been marked as NSFW!`).catch(console.error);
+	//if (!msg.channel.nsfw) return msg.channel.send(`<:redx:411978781226696705> This channel has not been marked as NSFW!`).catch(console.error);
 	if (args.length < 1) return msg.channel.send(`<:redx:411978781226696705> Please provide a search string!`).catch(console.error);
 	//let gbot = msg.guild.members.get(bot.user.id);
 	//if (!gbot.hasPermission(0x00008000)) return msg.channel.send(`<:redx:411978781226696705> I am missing \`Attach Files\`!`).catch(console.error);
@@ -32,6 +32,7 @@ exports.run = async (bot, msg, args) => {
 	
 exports.info = {
 	name: 'pornsearch',
+	nsfw: true,
 	aliases: ['p0rnsearch','cornsearch','pronsearch','c0rnsearch','pr0nsearch'],
 	usage: 'pornsearch <search>',
 	examples: [
