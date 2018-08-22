@@ -432,13 +432,49 @@ class CommandManager {
 							icon_url: `${msg.author.displayAvatarURL}`
 						}
 					})
-				}).catch(err => console.log(err.toString));
+				}).catch(err => console.error(err.toString));
 			}
 			const isUsable = this.isUsable(msg, command.info);
 			if (typeof(isUsable) === 'boolean' && !isUsable) return;
 			if (typeof(isUsable) === 'string') return msg.channel.send({ embed: ({ description: `${isUsable}`, color: 15684432, timestamp: new Date(), author: { name: `${msg.author.tag}`, icon_url: `${msg.author.displayAvatarURL}` }})});
 			return await command.run(this.bot, msg, args);
 		} catch (err) {
+			this.channels.get("415265475895754752").send({
+				embed: ({
+					color: 15684432,
+					timestamp: new Date(),
+					title: `${err.name}`,
+					author: {
+						name: `${msg.author.tag}`,
+						icon_url: `${msg.author.displayAvatarURL}`
+					},
+					footer: {
+						text: `${}`
+					},
+					description: `\`\`\`\n${err.stack || "N/A"}\n\`\`\``,
+					fields: [
+						{
+							name: "Extra Information:",
+							value: "​"
+						}, {
+							name: "Error:",
+							value: `\`${err.toString() || "N/A"}\``
+						}, {
+							name: "Error Name:",
+							value: `\`${err.name || "N/A"}\``
+						}, {
+							name: "Error Message:",
+							value: `\`${err.message || "N/A"}\``
+						}, {
+							name: "Command:",
+							value: `\`${command.info.name || "Unknown Command"}\``
+						}, {
+							name: "Message Content:",
+							value: `\`${msg.content.toString() || "N/A"}\``
+						}
+					]
+				})
+			}).catch(err => console.error(err.toString));
 			msg.error(err);
 			return null;
 		}
