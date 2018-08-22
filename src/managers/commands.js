@@ -220,7 +220,6 @@ class CommandManager {
 			* @private
 			*/
 			//let _globalEnabled = command._globalEnabled || true;
-		}
 	}
 	
 	/**
@@ -433,7 +432,7 @@ class CommandManager {
 							icon_url: `${msg.author.displayAvatarURL}`
 						}
 					})
-				});
+				}).catch(err => console.log(err.toString));
 			}
 			const isUsable = this.isUsable(msg, command.info);
 			if (typeof(isUsable) === 'boolean' && !isUsable) return;
