@@ -1,6 +1,6 @@
 const Discord = require("discord.js");
 
-exports.run = async (bot, message, args) => {
+exports.run = async (bot, msg, args) => {
 	try {
 		if (args.length <= 0) return msg.channel.send(`<:redx:411978781226696705> You must provide a user to kick`).catch(err => console.err);
 		let modlogs = "mod_logs"; // mod_logs channel
