@@ -1,7 +1,6 @@
 const stripIndents = require('common-tags').stripIndents;
 
 exports.run = async (bot, msg, args) => {
-	try {
 	let title = 'Categories';
 	let prefix = msg.guild && (bot.config[msg.guild.id.toString()] && bot.config[msg.guild.id.toString()].prefix) || bot.config.prefix;
 	let commands = [];
@@ -19,17 +18,17 @@ exports.run = async (bot, msg, args) => {
 			let command_name = ((find_command && find_command.info.name) || "<unknown command>");
 			let command_aliases = ((find_command && find_command.info.aliases) || []);
 			aliases = [command_aliases];
-			if (/^(module:)/i.test(args[0].toLowerCase()) || new RegExp(modules_lowercase.join('|')).test(command_args.toLowerCase())) {
+			if (/^(all)$/i.test(args[0].toLowerCase())) {
+				commands = bot.commands.all();
+				title = 'All Commands';
+			} else if (/^(module:)/i.test(args[0].toLowerCase()) && (new RegExp(modules_lowercase.join('|')).test(command_args.toLowerCase()))) {
 				if (!bot.commands.all(command_args.toLowerCase())) return msg.channel.send(`<:redx:411978781226696705> The module '${command_args.toLowerCase()}' does not exist!`).catch(err => console.error);
 				commands = bot.commands.all(command_args.toLowerCase());
 				title = `\`${command_args.toLowerCase()}\` Commands`;
-			} else if (/^(command:)/i.test(args[0].toLowerCase()) || new RegExp(commands.join("|")).test(command_args.toLowerCase()) || new RegExp(aliases.join("|")).test(command_args.toLowerCase())) {
+			} else if (/^(command:)/i.test(args[0].toLowerCase()) && (new RegExp(commands.join("|")).test(command_args.toLowerCase()) || new RegExp(aliases.join("|")).test(command_args.toLowerCase()))) {
 				if (!find_command) return msg.channel.send(`<:redx:411978781226696705> The command \`${command_args.toLowerCase()}\` does not exist!`).catch(err => console.error);
 				commands =  [find_command];
 				title = `Help for \`${command_name.toLowerCase()}\``;
-			} else if (/^(all)$/i.test(args[0].toLowerCase())) {
-				commands = bot.commands.all();
-				title = 'All Commands';
 			} else {
 				if (new RegExp(modules_lowercase.join('|')).test(command_args)) {
 					commands = bot.commands.all(command_args.toLowerCase());
@@ -50,7 +49,7 @@ exports.run = async (bot, msg, args) => {
 			let find_command = bot.commands.get(args[1].toLowerCase());
 			let command_name = ((find_command && find_command.info.name) || "Unknown Command");
 			if (/^(command)$/i.test(args[0].toLowerCase())) {
-				if (!find_command) return msg.channel.send(`<:redx:411978781226696705> The command \`${args[0].toLowerCase()}\` does not exist!`).catch(err => console.error);
+				if (!find_command) return msg.channel.send(`<:redx:411978781226696705> The command \`${args[1].toLowerCase()}\` does not exist!`).catch(err => console.error);
 				commands = [find_command];
 				title = `Help for \`${command_name.toLowerCase()}\``;
 			} else if (/^(module)$/i.test(args[0].toLowerCase())) {
@@ -104,9 +103,6 @@ exports.run = async (bot, msg, args) => {
 			Do \`${prefix}help <command>\` or \`${prefix}help command <command>\` or \`${prefix}help command:<command>\` for **extended** command help and command options.`)
 		});
 	}
-	} catch (err) {
-		console.error(`------ ${err.stack}`);
-	}
 };
 
 /**
@@ -114,8 +110,7 @@ exports.run = async (bot, msg, args) => {
 * @example - **Usage:** goes on it's own field like `unbelievaboat bot`, **Description** goes on it's own field as well... etc;
 */
 const getHelp = (bot, msg, command, single) => {
-	try {
-		let prefix = msg.guild && (bot.config[msg.guild.id.toString()] && bot.config[msg.guild.id.toString()].prefix) || bot.config.prefix;
+	let prefix = msg.guild && (bot.config[msg.guild.id.toString()] && bot.config[msg.guild.id.toString()].prefix) || bot.config.prefix;
 	let description = stripIndents`
 		**Usage:** \`${prefix}${command.info.usage || command.info.name}\`
 		**Aliases:** \`${(command.info.aliases && command.info.aliases.join('` `')) || '<no aliases>'}\`
@@ -143,14 +138,12 @@ const getHelp = (bot, msg, command, single) => {
 		name: single ? '\u200b' : command.info.name,
 		value: description
 	};
-	} catch (err) {
-		console.error(`------ ${err.stack}`);
-	}
 };
 
 exports.info = {
 	name: 'help',
 	usage: 'help [all | command | module]',
+	allowDM: true,
 	examples: [
 		'help',
 		'help music',
