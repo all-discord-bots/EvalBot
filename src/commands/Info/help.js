@@ -128,7 +128,7 @@ const getHelp = (bot, msg, command, single) => {
 	let description = stripIndents`
 		**Usage:** \`${prefix}${command.info.usage || command.info.name}\`
 		**Aliases:** ${finishedstr}
-		**Description:** \`${command.info.description || '<no description>'}\`
+		**Description:** ${command.info.description || '<no description>'}
 		**Category:** \`${command.info.category || '<unknown category>'}\``;
 
 	if (command.info.credits)
