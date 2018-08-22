@@ -5,7 +5,7 @@ exports.run = async (bot, msg, args) => {
 		if (!msg.member.voiceChannel) return msg.channel.send(`<:redx:411978781226696705> You must be in a voice channel!`).catch(err => console.error);
 		const voiceConnection = bot.voiceConnections.find(val => val.channel.guild.id == msg.guild.id);
 		if (voiceConnection === null) return msg.channel.send(`<:redx:411978781226696705> There is no audio being played.`).catch(err => console.error);
-		if (musicqueue[msg.guild.id]['music'].length <= 0) return msg.channel.send(`<:redx:411978781226696705> There are no audios in the queue to loop!`).catch(err => console.error);
+		if (!musicqueue[msg.guild.id] || musicqueue[msg.guild.id]['music'].length <= 0) return msg.channel.send(`<:redx:411978781226696705> There are no audios in the queue to loop!`).catch(err => console.error);
 		let arg = args.join(' ').toLowerCase();
 		if (arg === 'song' || arg === 'current' || arg === 'this' || arg === 'one' || arg === 'repeat') {
 			if (!musicqueue[msg.guild.id]['loopsong']) {
@@ -38,7 +38,7 @@ exports.info = {
 	userPermissions: ['CONNECT'],
 	clientPermissions: ['CONNECT'],
 	aliases: ['loopqueue', 'loopsong', 'loopone', 'loopcurrent', 'loopall'],
-	usage: 'loop [queue | song]',
+	usage: 'loop [queue|song]',
 	examples: [
 		'loop',
 		'loop queue',
