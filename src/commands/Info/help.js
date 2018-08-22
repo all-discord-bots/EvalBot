@@ -1,6 +1,7 @@
 const stripIndents = require('common-tags').stripIndents;
 
 exports.run = async (bot, msg, args) => {
+	try {
 	let title = 'Categories';
 	let prefix = msg.guild && (bot.config[msg.guild.id.toString()] && bot.config[msg.guild.id.toString()].prefix) || bot.config.prefix;
 	let commands = [];
@@ -22,7 +23,7 @@ exports.run = async (bot, msg, args) => {
 				commands = bot.commands.all();
 				title = 'All Commands';
 			} else if (/^(module:)/i.test(args[0].toLowerCase()) && (new RegExp(modules_lowercase.join('|')).test(command_args.toLowerCase()))) {
-				if (!bot.commands.all(command_args.toLowerCase())) return msg.channel.send(`<:redx:411978781226696705> The module '${command_args.toLowerCase()}' does not exist!`).catch(err => console.error);
+				if (bot.commands.all(command_args.toLowerCase()).length <= 0) return msg.channel.send(`<:redx:411978781226696705> The module '${command_args.toLowerCase()}' does not exist!`).catch(err => console.error);
 				commands = bot.commands.all(command_args.toLowerCase());
 				title = `\`${command_args.toLowerCase()}\` Commands`;
 			} else if (/^(command:)/i.test(args[0].toLowerCase()) && (new RegExp(commands.join("|")).test(command_args.toLowerCase()) || new RegExp(aliases.join("|")).test(command_args.toLowerCase()))) {
@@ -30,10 +31,10 @@ exports.run = async (bot, msg, args) => {
 				commands =  [find_command];
 				title = `Help for \`${command_name.toLowerCase()}\``;
 			} else {
-				if (new RegExp(modules_lowercase.join('|')).test(command_args)) {
+				if (new RegExp(modules_lowercase.join('|')).test(args[0].toLowerCase())) {
 					commands = bot.commands.all(command_args.toLowerCase());
 					title = `${command_args.toLowerCase()} Commands`;
-				} else if (find_command) {
+				} else if (bot.commands.get(args[0].toLowerCase())) {
 					commands = [find_command];
 					title = `Help for \`${command_name.toLowerCase()}\``;
 				} else {
@@ -103,6 +104,9 @@ exports.run = async (bot, msg, args) => {
 			Do \`${prefix}help <command>\` or \`${prefix}help command <command>\` or \`${prefix}help command:<command>\` for **extended** command help and command options.`)
 		});
 	}
+	} catch (err) {
+		console.error(err.stack);
+	}
 };
 
 /**
@@ -142,8 +146,8 @@ const getHelp = (bot, msg, command, single) => {
 
 exports.info = {
 	name: 'help',
-	usage: 'help [all | command | module]',
 	allowDM: true,
+	usage: 'help [all | command | module]',
 	examples: [
 		'help',
 		'help music',
