@@ -1,6 +1,7 @@
 const stripIndents = require('common-tags').stripIndents;
 
 exports.run = async (bot, msg, args) => {
+	try {
 	let title = 'Categories';
 	let prefix = msg.guild && (bot.config[msg.guild.id.toString()] && bot.config[msg.guild.id.toString()].prefix) || prefix;
 	let commands = [];
@@ -103,6 +104,9 @@ exports.run = async (bot, msg, args) => {
 			Do \`${prefix}help <command>\` or \`${prefix}help command <command>\` or \`${prefix}help command:<command>\` for **extended** command help and command options.`)
 		});
 	}
+	} catch (err) {
+		console.error(err.toString());
+	}
 };
 
 /**
@@ -110,6 +114,7 @@ exports.run = async (bot, msg, args) => {
 * @example - **Usage:** goes on it's own field like `unbelievaboat bot`, **Description** goes on it's own field as well... etc;
 */
 const getHelp = (bot, command, single) => {
+	try {
 	let description = stripIndents`
 		**Usage:** \`${prefix}${command.info.usage || command.info.name}\`
 		**Aliases:** \`${(command.info.aliases && command.info.aliases.join('` `')) || '<no aliases>'}\`
@@ -137,6 +142,9 @@ const getHelp = (bot, command, single) => {
 		name: single ? '\u200b' : command.info.name,
 		value: description
 	};
+	} catch (err) {
+		console.error(err.toString());
+	}
 };
 
 exports.info = {
