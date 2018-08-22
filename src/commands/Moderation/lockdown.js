@@ -3,24 +3,19 @@ const ms = require('ms');
 exports.run = async (bot, msg, args) => {
 	try {
 		let gchannel;
-		let cping = args[0];
-		let rping = cping.replace(/<#/g, '');
-		let roneping = rping.replace(/>/g, '');
 		if (msg.guild.channels.find(`name`, `${args[0]}`)) {
 			gchannel = msg.guild.channels.find(`name`, `${args[0]}`);
-		} else if (msg.guild.channels.find(`id`, `${args[0]}`)) {
-			gchannel = msg.guild.channels.find(`id`, `${args[0]}`);
+		} else if (msg.guild.channels.get(`${args[0]}`)) {
+			gchannel = msg.guild.channels.get(`${args[0]}`);
 		} else if (msg.content.includes("<#") && msg.content.includes(">")) {
-			gchannel = msg.guild.channels.find(`id`, `${roneping}`); // gets the channels id
+			gchannel = msg.guild.channels.get(`${args[0].replace(/<#|>/g, '')}`); // gets the channels id
 		} else {
-			gchannel = msg.guild.channels.find(`id`, `${msg.channel.id}`);
+			gchannel = msg.guild.channels.get(`${msg.channel.id}`);
 		}
 		if (!bot.lockit) bot.lockit = [];
-		//let time = args.join(' ');
-		let time = args[1];
 		let validUnlocks = ['release', 'unlock'];
-		if (!time) return msg.channel.send(`<:redx:411978781226696705> You must set a duration for the lockdown in either hours, minutes or seconds`).catch(console.error);
-		if (validUnlocks.includes(time)) {
+		if (!args[1]) return msg.channel.send(`<:redx:411978781226696705> You must set a duration for the lockdown in either hours, minutes or seconds`).catch(console.error);
+		if (validUnlocks.includes(args[1])) {
 			gchannel.overwritePermissions(msg.guild.id, {
 				SEND_MESSAGES: null
 			}).then(() => {
@@ -34,13 +29,13 @@ exports.run = async (bot, msg, args) => {
 			gchannel.overwritePermissions(msg.guild.id, {
 				SEND_MESSAGES: false
 			}).then(() => {
-				msg.channel.send(`<:check:411976443522711552> <#${gchannel.id}> locked down for ${ms(ms(time), { long:true })}`).then(() => {
+				msg.channel.send(`<:check:411976443522711552> <#${gchannel.id}> locked down for ${ms(ms(args[1]), { long:true })}`).then(() => {
 					bot.lockit[gchannel.id] = setTimeout(() => {
 						gchannel.overwritePermissions(msg.guild.id, {
 							SEND_MESSAGES: null
 						}).then(msg.channel.send(`<:check:411976443522711552> <#${gchannel.id}> is no longer locked-down.`)).catch(console.error);
 						delete bot.lockit[gchannel.id];
-					}, ms(time));
+					}, ms(args[1]));
 				}).catch(error => {
 					console.log(error);
 				});
