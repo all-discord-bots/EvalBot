@@ -3,7 +3,7 @@ const stripIndents = require('common-tags').stripIndents;
 exports.run = async (bot, msg, args) => {
 	try {
 	let title = 'Categories';
-	let prefix = msg.guild && (bot.config[msg.guild.id.toString()] && bot.config[msg.guild.id.toString()].prefix) || prefix;
+	let prefix = msg.guild && (bot.config[msg.guild.id.toString()] && bot.config[msg.guild.id.toString()].prefix) || bot.config.prefix;
 	let commands = [];
 	let aliases = [];
 	let modules = bot.commands.categories().sort();
