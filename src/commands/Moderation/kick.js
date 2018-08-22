@@ -1,11 +1,8 @@
 const Discord = require("discord.js");
 
-exports.run = async (bot, msg, args) => {
-	try {
-		if (args.length <= 0) return msg.chaconst Discord = require("discord.js");
-
 exports.run = async (bot, message, args) => {
 	try {
+		if (args.length <= 0) return msg.channel.send(`<:redx:411978781226696705> You must provide a user to kick`).catch(err => console.err);
 		let modlogs = "mod_logs"; // mod_logs channel
 		let kUser = bot.utils.getMembers(msg,args[0],false,true);
 		if (!kUser) return msg.channel.send(`<:redx:411978781226696705> I could not find that user.`).catch(err => console.error);
