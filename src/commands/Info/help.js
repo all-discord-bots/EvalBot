@@ -17,13 +17,13 @@ exports.run = async (bot, msg, args) => {
 			let find_command = bot.commands.get(command_args.toLowerCase());
 			let command_name = ((find_command && find_command.info.name) || "<unknown command>");
 			let command_aliases = ((find_command && find_command.info.aliases) || []);
-			aliases = command_aliases;
-			if (/^(module:)/i.test(args[0].toLowerCase()) || new RegExp(modules_lowercase.join('|')).test(args[0].toLowerCase())) {
-				if (!bot.commands.all(command_args.toLowerCase())) return msg.channel.send(`<:redx:411978781226696705> The module '${args[0].toLowerCase()}' does not exist!`).catch(err => console.error);
+			aliases = [command_aliases];
+			if (/^(module:)/i.test(args[0].toLowerCase()) || new RegExp(modules_lowercase.join('|')).test(command_args.toLowerCase())) {
+				if (!bot.commands.all(command_args.toLowerCase())) return msg.channel.send(`<:redx:411978781226696705> The module '${command_args.toLowerCase()}' does not exist!`).catch(err => console.error);
 				commands = bot.commands.all(command_args.toLowerCase());
-				title = `${command_args.toLowerCase()} Commands`;
-			} else if (/^(command:)/i.test(args[0].toLowerCase()) || new RegExp(commands.join("|")).test(args[0].toLowerCase()) || new RegExp(aliases.join("|")).test(args[0].toLowerCase())) {
-				if (!find_command) return msg.channel.send(`<:redx:411978781226696705> The command \`${args[0].toLowerCase()}\` does not exist!`).catch(err => console.error);
+				title = `\`${command_args.toLowerCase()}\` Commands`;
+			} else if (/^(command:)/i.test(args[0].toLowerCase()) || new RegExp(commands.join("|")).test(command_args.toLowerCase()) || new RegExp(aliases.join("|")).test(command_args.toLowerCase())) {
+				if (!find_command) return msg.channel.send(`<:redx:411978781226696705> The command \`${command_args.toLowerCase()}\` does not exist!`).catch(err => console.error);
 				commands =  [find_command];
 				title = `Help for \`${command_name.toLowerCase()}\``;
 			} else if (/^(all)$/i.test(args[0].toLowerCase())) {
@@ -141,7 +141,6 @@ const getHelp = (bot, command, single) => {
 
 exports.info = {
 	name: 'help',
-	allowDM: true,
 	usage: 'help [all | command | module]',
 	examples: [
 		'help',
