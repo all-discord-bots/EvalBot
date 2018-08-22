@@ -54,7 +54,7 @@ exports.run = async (bot, msg, args) => {
 exports.info = {
 	name: 'lock-down',
 	userPermissions: ["MANAGE_CHANNELS"],
-	clientPermissions: ["MANAGE_CHANNELS"],
+	clientPermissions: ["MANAGE_CHANNELS","MANAGE_ROLES"],
 	aliases: ['channel-lock-down','lock-down-channel','lockdown'],
 	description: 'Lock down a channel, to prevent anyone sending messages. (Unless they have Administrator permission, or Send Messages is set to Allow in channel permissions for a role they have.). Example 1s, 1m, 1h .etc you can use `unlock` or `release` to un-lockdown a channel.',
 	usage: 'lock-down [channel] [duration]'
