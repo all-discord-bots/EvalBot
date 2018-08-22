@@ -183,7 +183,7 @@ class CripsBot extends Client {
 			if (msg.author.bot) return;
 			if (msg.content === "") return;
 			let gmsg = msg.content.toLowerCase().split(' ');
-			if (msg.channel.type === "dm") {
+			/*if (msg.channel.type === "dm") {
 				if (this.config.prefix === undefined)
 				{
 					if ((msg.content.length > 0 && gmsg[0].toString().startsWith(this.config.prefix)) || (msg.content.length > `<@${this.user.id}>`.length && gmsg[0].toString().startsWith(`<@${this.user.id}>`)) || (msg.content.length > `<@!${this.user.id}>`.length && gmsg[0].toString().startsWith(`<@!${this.user.id}>`))) return msg.channel.send(`<:redx:411978781226696705> This command can only be used in a server.`).catch(err => console.error);
@@ -193,42 +193,44 @@ class CripsBot extends Client {
 					if ((msg.content.length > this.config.prefix.length && gmsg[0].toString().startsWith(this.config.prefix)) || (msg.content.length > `<@${this.user.id}>`.length && gmsg[0].toString().startsWith(`<@${this.user.id}>`)) || (msg.content.length > `<@!${this.user.id}>`.length && gmsg[0].toString().startsWith(`<@!${this.user.id}>`))) return msg.channel.send(`<:redx:411978781226696705> This command can only be used in a server.`).catch(err => console.error);
 				}
 				return;
-			}
-			
-			// Create Music Queue
-			try {
-				if (musicqueue[msg.guild.id] === undefined)
-				{
-					musicqueue[msg.guild.id] = {
-						music: [],
-						loopqueue: false,
-						loopsong: false,
-						streaming: false,
-						shuffle: false
+			}*/
+			if (msg.channel.type !== 'dm')
+			{
+				// Create Music Queue
+				try {
+					if (musicqueue[msg.guild.id] === undefined)
+					{
+						musicqueue[msg.guild.id] = {
+							music: [],
+							loopqueue: false,
+							loopsong: false,
+							streaming: false,
+							shuffle: false
+						}
 					}
+					if (songqueue[msg.guild.id] === undefined)
+					{
+						songqueue[msg.guild.id] = [];
+					}
+				} catch (err) {
+					this.channels.get("415265475895754752").send({
+						embed: ({
+							color: 15684432,
+							timestamp: new Date(),
+							title: `${err.toString()}`,
+							description: `\`\`\`\n${err.stack}\n\`\`\``
+						})
+					}).catch(err => console.error);
 				}
-				if (songqueue[msg.guild.id] === undefined)
-				{
-					songqueue[msg.guild.id] = []
+				
+				// NO 'XD' messages
+				if (msg.guild.id === this.config.botMainServerID && gmsg[0] === "xd" && gmsg.length === 1) {
+					msg.delete().then(msg => {
+						msg.channel.send(`<:blobDerp:413114089225846785>`);
+					}).catch(err => console.error);
 				}
-			} catch (err) {
-				this.channels.get("415265475895754752").send({
-					embed: ({
-						color: 15684432,
-						timestamp: new Date(),
-						title: `${err.toString()}`,
-						description: `\`\`\`\n${err.stack}\n\`\`\``
-					})
-				}).catch(err => console.error);
 			}
-			
-			// NO 'XD' messages
-			if (msg.guild.id === this.config.botMainServerID && gmsg[0] === "xd" && gmsg.length === 1) {
-				msg.delete().then(msg => {
-					msg.channel.send(`<:blobDerp:413114089225846785>`);
-				}).catch(err => console.error);
-			}
-			
+			/*
 			let gbot = msg.guild.members.get(this.user.id);
 			let hascmd;
 			let splitmsg = msg.content.split(' ');
@@ -284,7 +286,7 @@ class CripsBot extends Client {
 					if (!gbot.hasPermission(0x00040000)) return msg.channel.send(`<:redx:411978781226696705> I am missing \`Use External Emojis\`!`).catch(err => console.error);
 					if (!gbot.hasPermission(0x00004000)) return msg.channel.send(`<:redx:411978781226696705> I am missing \`Embed Links\`!`).catch(err => console.error);
 				}
-			}
+			}*/
 			stats.increment(`messages-${this.user.id === msg.author.id ? 'sent' : 'received'}`);
 			//if (msg.isMentioned(this.user)) {
 			//	stats.increment('mentions');
