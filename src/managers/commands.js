@@ -182,6 +182,13 @@ class CommandManager {
 			* @type {boolean}
 			*/
 			return Boolean(command.nsfw) || false;
+		} else if (variable === "allowDM") {
+			/**
+			* Whether the command can be run in the bots dm's
+			* @type {boolean}
+			*/
+			return Boolean(command.allowDM) || false;
+		}
 			/**
 			* How the arguments are split when passed to the command's run method
 			* @type {string}
@@ -273,7 +280,10 @@ class CommandManager {
 		//if(this.guildOnly && message && !message.guild) return false;
 		//const hasPermission = this.hasPermission(message);
 		//return this.isEnabledIn(message.guild) && hasPermission && typeof hasPermission !== 'string';
-		if ((this.getInfo("ownerOnly",command) && msg.author.id != process.env.bot_owner) || (this.getInfo("guildOnly",command) && msg.guild.id != process.env.main_bot_guild)) return false;
+		if (this.getInfo("ownerOnly",command) && msg.author.id != process.env.bot_owner) return false;
+		if (this.getInfo("guildOnly",command) && msg.guild.id != process.env.main_bot_guild) return false;
+		if (!this.getInfo("allowDM",command) && msg.channel.type === 'dm') return `<:redx:411978781226696705> This command can only be used in a server.`;
+		if (this.getInfo("allowDM",command) && msg.channel.type === 'dm') return true;
 		if (this.getInfo("nsfw",command) && !msg.channel.nsfw) return `<:redx:411978781226696705> This command can only be used in NSFW marked channels.`;
 		return this.hasPermission(msg,command);
 	}
