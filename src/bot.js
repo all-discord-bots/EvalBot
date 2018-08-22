@@ -395,27 +395,27 @@ class CripsBot extends Client {
 		});
 		
 		this.on('error', (err) => {
+			console.error(`${err}`);
 			this.channels.get("415265475895754752").send({
 				embed: ({
 					color: 15684432,
 					timestamp: new Date(),
 					title: `Error`,
-					description: `${err}`
+					description: `\`${err}\``
 				})
 			});
-			console.error;
 		});
 		
-		this.on('warn', (wrn) => {
+		this.on('warn', (warning) => {
+			console.warn(`${warning}`);
 			this.channels.get("415265475895754752").send({
 				embed: ({
 					color: 12696890,
 					timestamp: new Date(),
 					title: `Warn`,
-					description: `${wrn}`
+					description: `\`${warning}\``
 				})
 			});
-			console.warn;
 		});
 		
 		this.once('disconnect', (event) => {
@@ -426,7 +426,7 @@ class CripsBot extends Client {
 						color: 15684432,
 						timestamp: new Date(),
 						title: `Error`,
-						description: `[${event.code}] Gateway Error`
+						description: `\`[${event.code}] Gateway Error\``
 					})
 				});
 				//Hook.custom(this.user.username, "[0] Gateway Error", "Warn", "#C1BD3A");
@@ -437,7 +437,7 @@ class CripsBot extends Client {
 						color: 5892826,
 						timestamp: new Date(),
 						title: `Info`,
-						description: `[${event.code}] Disconnected from Discord cleanly.`
+						description: `\`[${event.code}] Disconnected from Discord cleanly.\``
 					})
 				});
 				//Hook.custom(this.user.username, "[1000] Disconnected from Discord cleanly", "Info", "#59EADA");
@@ -448,7 +448,7 @@ class CripsBot extends Client {
 						color: 12696890,
 						timestamp: new Date(),
 						title: `Warn`,
-						description: `[${event.code}] Unknown Error`
+						description: `\`[${event.code}] Unknown Error\``
 					})
 				});
 				//Hook.custom(this.user.username, "[4000] Unknown Error", "Error", "#C1BD3A");
@@ -459,7 +459,7 @@ class CripsBot extends Client {
 						color: 12696890,
 						timestamp: new Date(),
 						title: `Warn`,
-						description: `[${event.code}] Unknown Opcode`
+						description: `\`[${event.code}] Unknown Opcode\``
 					})
 				});
 				//Hook.custom(this.user.username, "[4001] Unknown Opcode", "Warn", "#C1BD3A");
@@ -470,7 +470,7 @@ class CripsBot extends Client {
 						color: 12696890,
 						timestamp: new Date(),
 						title: `Warn`,
-						description: `[${event.code}] Decode Error`
+						description: `\`[${event.code}] Decode Error\``
 					})
 				});
 				//Hook.custom(this.user.username, "[4002] Decode Error", "Warn", "#C1BD3A");
@@ -481,7 +481,7 @@ class CripsBot extends Client {
 						color: 15684432,
 						timestamp: new Date(),
 						title: `Error`,
-						description: `[${event.code}] Not Authenticated`
+						description: `\`[${event.code}] Not Authenticated\``
 					})
 				});
 				//Hook.custom(this.user.username, "[4003] Not Authenticated", "Error", "#EF5350");
@@ -494,7 +494,7 @@ class CripsBot extends Client {
 						color: 15684432,
 						timestamp: new Date(),
 						title: `Error`,
-						description: `[${event.code}] Failed to authenticate with Discord. Please follow the instructions at ${chalk.green('https://discordapp.com/developers')} and re-enter your token by running ${chalk.green('yarn run config')}.`
+						description: `\`[${event.code}] Failed to authenticate with Discord. Please follow the instructions at ${chalk.green('https://discordapp.com/developers')} and re-enter your token by running ${chalk.green('yarn run config')}.\``
 					})
 				});
 				//Hook.custom(this.user.username, `[4004] Failed to authenticate with Discord. Please follow the instructions at ${chalk.green('https://discordapp.com/developers')} and re-enter your token by running ${chalk.green('yarn run config')}.`, "Error", "#EF5350");
@@ -506,7 +506,7 @@ class CripsBot extends Client {
 						color: 5892826,
 						timestamp: new Date(),
 						title: `Info`,
-						description: `[${event.code}] Already Authenticated`
+						description: `\`[${event.code}] Already Authenticated\``
 					})
 				});
 				//Hook.custom(this.user.username, "[4005] Already Authenticated", "Info", "#59EADA");
@@ -517,7 +517,7 @@ class CripsBot extends Client {
 						color: 15684432,
 						timestamp: new Date(),
 						title: `Error`,
-						description: `[${event.code}] Session Not Valid`
+						description: `\`[${event.code}] Session Not Valid\``
 					})
 				});
 				//Hook.custom(this.user.username, "[4006] Session Not Valid", "Error", "#EF5350");
@@ -529,7 +529,7 @@ class CripsBot extends Client {
 						color: 12696890,
 						timestamp: new Date(),
 						title: `Warn`,
-						description: `[${event.code}] Invalid Sequence Number`
+						description: `\`[${event.code}] Invalid Sequence Number\``
 					})
 				});
 				//Hook.custom(this.user.username, "[4007] Invalid Sequence Number", "Warn", "#C1BD3A");
@@ -540,7 +540,7 @@ class CripsBot extends Client {
 						color: 5892826,
 						timestamp: new Date(),
 						title: `Info`,
-						description: `[${event.code}] Rate Limited`
+						description: `\`[${event.code}] Rate Limited\``
 					})
 				});
 				//Hook.custom(this.user.username, "[4008] Rate Limited", "Info", "#59EADA");
@@ -551,7 +551,7 @@ class CripsBot extends Client {
 						color: 15684432,
 						timestamp: new Date(),
 						title: `Error`,
-						description: `[${event.code}] Session Timeout`
+						description: `\`[${event.code}] Session Timeout\``
 					})
 				});
 				//Hook.custom(this.user.username, "[4009] Session Timeout", "Error", "#EF5350");
@@ -563,7 +563,7 @@ class CripsBot extends Client {
 						color: 15684432,
 						timestamp: new Date(),
 						title: `Warn`,
-						description: `[${event.code}] Invalid Shard`
+						description: `\`[${event.code}] Invalid Shard\``
 					})
 				});
 				//Hook.custom(this.user.username, "[4010] Invalid Shard", "Warn", "#C1BD3A");
@@ -574,7 +574,7 @@ class CripsBot extends Client {
 						color: 12696890,
 						timestamp: new Date(),
 						title: `Warn`,
-						description: `Disconnected from Discord with code ${event.code}`
+						description: `\`Disconnected from Discord with code ${event.code}\``
 					})
 				});
 				//Hook.custom(this.user.username, `Disconnected from Discord with code ${event.code}`, "Warn", "#C1BD3A");
@@ -583,14 +583,37 @@ class CripsBot extends Client {
 		});
 		
 		// Process handlers
-		process.on('exit', (code) => {
-			this.logger.info(`Exited with exit code ${code}`);
+		process.on('warning', (warning) => {
 			this.channels.get("415265475895754752").send({
 				embed: ({
 					color: 12696890,
 					timestamp: new Date(),
-					title: `Info`,
-					description: `Exited with exit code ${code}`
+					title: `Process Warning`,
+					description: `\`\`\`\n${warning.stack || "N/A"}\n\`\`\``,
+					fields: [
+						{
+							name: `Warning:`,
+							value: `\`${warning.toString() || "N/A"}\``
+						}, {
+							name: `Warning Name:`,
+							value: `\`${warning.name || "N/A"}\``
+						}, {
+							name: `Warning Message:`,
+							value: `\`${warning.message || "N/A"}\``
+						}
+					]
+				})
+			});
+		});
+		
+		process.on('exit', (code) => {
+			this.logger.info(`Process exited with exit code ${code}`);
+			this.channels.get("415265475895754752").send({
+				embed: ({
+					color: 12696890,
+					timestamp: new Date(),
+					title: `Process Exited`,
+					description: `\`Process exited with exit code ${code}\``
 				})
 			});
 			this.shutdown();
@@ -598,29 +621,66 @@ class CripsBot extends Client {
 		
 		process.on('uncaughtException', (err) => {
 			let errorMsg = (err ? err.stack || err : '').toString().replace(new RegExp(`${__dirname}\/`, 'g'), './');
+			this.logger.severe(errorMsg);
 			this.channels.get("415265475895754752").send({
 				embed: ({
 					color: 15684432,
 					timestamp: new Date(),
 					title: `Uncaught Exception`,
-					description: `${errorMsg}`
+					description: `\`\`\`\n${errorMsg}\n\`\`\``,
+					fields: [
+						{
+							name: `Error Name:`,
+							value: `\`${err.name || "N/A"}\``
+						}, {
+							name: `Error Message:`,
+							value: `\`${err.message || "N/A"}\``
+						}
+					]
 				})
 			}); //.catch(err => console.error);
-			this.logger.severe(errorMsg);
 		});
 		
 		process.on('unhandledRejection', (err) => {
+			this.logger.severe(`Uncaught Promise error:\n${err.stack}`);
 			this.channels.get("415265475895754752").send({
 				embed: ({
 					color: 15684432,
 					timestamp: new Date(),
 					title: `Unhandled Rejection | Uncaught Promise error:`,
-					description: `${err.stack}`
+					description: `\`\`\`\n${err.stack}\n\`\`\``,
+					fields: [
+						{
+							name: `Error Message:`,
+							value: `\`${err.message}\``
+						}
+					]
+				})
+			});
+		}); // `${err.name} - Unhandled Rejection`,
+	}
+	
+/*	process.on('unhandledRejection', (reason,err) => {
+			this.channels.get("415265475895754752").send({
+				embed: ({
+					color: 15684432,
+					timestamp: new Date(),
+					title: `Unhandled Rejection:`,
+					description: `\`${err.stack}\``,
+					fields: [
+						{
+							name: `Error Message:`,
+							value: `\`${err.message}\``
+						}, {
+							name: `Error Reason:`,
+							value: `\`${reason}\``
+						}
+					]
 				})
 			});
 			this.logger.severe(`Uncaught Promise error:\n${err.stack}`);
 		}); // `${err.name} - Unhandled Rejection`,
-	}
+	}*/
 	
 	start() {
 		if (!this.config) return false;
