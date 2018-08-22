@@ -7,7 +7,7 @@ exports.run = async (bot, msg, args) => {
 		let rping = cping.replace(/<#/g, '');
 		let roneping = rping.replace(/>/g, '');
 		if (msg.guild.channels.find(`name`, `${args[0]}`)) {
-		gchannel = msg.guild.channels.find(`name`, `${args[0]}`);
+			gchannel = msg.guild.channels.find(`name`, `${args[0]}`);
 		} else if (msg.guild.channels.find(`id`, `${args[0]}`)) {
 			gchannel = msg.guild.channels.find(`id`, `${args[0]}`);
 		} else if (msg.content.includes("<#") && msg.content.includes(">")) {
