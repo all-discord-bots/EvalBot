@@ -4,8 +4,8 @@ exports.run = async (bot, msg, args) => {
 	try {
 		if (args.length <= 0) return msg.channel.send(`<:redx:411978781226696705> You must provide a user to ban.`).catch(err => console.error);
 		let modlogs = "mod_logs";
-		let bUser = bot.utils.getMembers(msg,args[0],false,true);
-		if (!bUser) return msg.channel.send(`<:redx:411978781226696705> I could not find that user.`).catch(err => console.error);
+		let bUser = bot.utils.getMembers(msg,args[0]);
+		if (!msg.guild.member(bUser)) return msg.channel.send(`<:redx:411978781226696705> I could not find that user.`).catch(err => console.error);
 		if (bUser.toString().includes("I could not find that user.")) return;
 		let bReason = args.join(" ").slice(22);
 		if(!msg.guild.member(bUser).bannable) return msg.channel.send(`<:redx:411978781226696705> I may need my role moved higher!`).catch(err => console.error);
