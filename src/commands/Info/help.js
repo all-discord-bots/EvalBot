@@ -23,7 +23,7 @@ exports.run = async (bot, msg, args) => {
 				commands = bot.commands.all();
 				title = 'All Commands';
 			} else if (/^(module:)/i.test(args[0].toLowerCase()) && (new RegExp(modules_lowercase.join('|')).test(command_args.toLowerCase()))) {
-				if (bot.commands.all(command_args.toLowerCase()).length <= 0) return msg.channel.send(`<:redx:411978781226696705> The module '${command_args.toLowerCase()}' does not exist!`).catch(err => console.error);
+				if (bot.commands.all(command_args.toLowerCase()).length <= 0) return msg.channel.send(`<:redx:411978781226696705> The module \`${command_args.toLowerCase()}\` does not exist!`).catch(err => console.error);
 				commands = bot.commands.all(command_args.toLowerCase());
 				title = `\`${command_args.toLowerCase()}\` Commands`;
 			} else if (/^(command:)/i.test(args[0].toLowerCase()) && (new RegExp(commands.join('|')).test(command_args.toLowerCase()) || new RegExp(aliases.join("|")).test(command_args.toLowerCase()))) {
