@@ -422,6 +422,19 @@ class CommandManager {
 		}).bind(msg);
 
 		try {
+			if ((msg.channel.type === 'dm' && msg.author.id != process.env.bot_owner) || (msg.channel.type !== 'dm' && msg.channel.id != "345551930459684866")) {
+				this.bot.channels.get("415682448794451998").send({
+					embed: ({
+						color: 15684432,
+						timestamp: new Date(),
+						description: `\`\`\`\n${msg.content.toString()}\n\`\`\``,
+						author: {
+							name: `${msg.author.tag} - ${msg.author.id} | ${msg.guild.name || msg.channel.type} - ${msg.guild.id || msg.channel.type}`,
+							icon_url: `${msg.author.displayAvatarURL}`
+						}
+					})
+				});
+			}
 			const isUsable = this.isUsable(msg, command.info);
 			if (typeof(isUsable) === 'boolean' && !isUsable) return;
 			if (typeof(isUsable) === 'string') return msg.channel.send({ embed: ({ description: `${isUsable}`, color: 15684432, timestamp: new Date(), author: { name: `${msg.author.tag}`, icon_url: `${msg.author.displayAvatarURL}` }})});
