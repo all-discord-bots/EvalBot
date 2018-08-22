@@ -4,8 +4,8 @@ exports.run = async (bot, msg, args) => {
 	try {
 		if (args.length <= 0) return msg.channel.send(`<:redx:411978781226696705> You must provide a user to kick`).catch(err => console.err);
 		let modlogs = "mod_logs"; // mod_logs channel
-		let kUser = bot.utils.getMembers(msg,args[0],false,true);
-		if (!kUser) return msg.channel.send(`<:redx:411978781226696705> I could not find that user.`).catch(err => console.error);
+		let kUser = bot.utils.getMembers(msg,args[0]);
+		if (!msg.guild.member(kUser)) return msg.channel.send(`<:redx:411978781226696705> I could not find that user.`).catch(err => console.error);
 		if (kUser.toString().includes("I could not find that user.")) return;
 		let kReason = args.join(" ").slice(22);
 		if(!msg.guild.member(kUser).kickable) return msg.channel.send(`<:redx:411978781226696705> I may need my role moved higher!`).catch(err => console.error);
