@@ -233,7 +233,7 @@ class CommandManager {
 		if (command.userPermissions) {
 			if (!this.getInfo("ownerOnly",command) && !this.getInfo("userPermissions",command)) return true;
 			if (ownerOverride && msg.author.id == process.env.bot_owner) return true;
-			if (this.getInfo("ownerOnly",command) && (ownerOverride || msg.author.id != process.env.bot_owner)) return; // `The \`${command.name}\` command can only be used by the bot owner.`;
+			if (this.getInfo("ownerOnly",command) && (ownerOverride || msg.author.id != process.env.bot_owner)) return false; // `The \`${command.name}\` command can only be used by the bot owner.`;
 			if (msg.channel.type === "text" && this.getInfo("userPermissions",command)) {
 				const missing = msg.channel.permissionsFor(msg.author).missing(this.getInfo("userPermissions",command));
 				if (missing.length > 0) return `<:redx:411978781226696705> You do not have permission to use the \`${command.name}\` command.\n<:transparent:411703305467854889>Missing: \`${missing.map(perm => this.bot.utils.permissions[perm]).join("` `")}\``;
