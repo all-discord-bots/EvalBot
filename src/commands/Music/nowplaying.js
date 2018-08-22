@@ -1,179 +1,311 @@
-const stream = require('youtube-audio-stream');
-const ytdl = require('ytdl-core');
 const { YTSearcher } = require('ytsearcher');
-const ypi = require('youtube-playlist-info');
 const Discord = require('discord.js');
+const moment = require('moment');
+require('moment-duration-format');
+const ms = require('ms');
+const fetchVideoInfo = require('youtube-info');
+const duration = require('go-duration');
+const { milliseconds, seconds, minutes, hours, days } = require('time-convert');
 require('../../conf/globals.js');
 
 exports.run = async (bot, msg, args) => {
-	let gbot = msg.guild.members.get(bot.user.id);
-	if (!gbot.hasPermission(0x00100000)) return msg.channel.send(`<:redx:411978781226696705> I am missing \`Connect\` permissions!`).catch(console.error);
-	if (!gbot.hasPermission(0x00200000)) return msg.channel.send(`<:redx:411978781226696705> I am missing \`Speak\` permissions!`).catch(console.error);
-	let arg = args.join(' ');
-	if (arg.length < 1) return msg.channel.send(`<:redx:411978781226696705> You must provide a url or search string!`).catch(console.error);
-	if (!msg.member.voiceChannel) return msg.channel.send(`<:redx:411978781226696705> You must be in a voice channel!`).catch(console.error);
-	//let getQueue;
-	//	getQueue = (server) => {
-	//		// Return the queue.
-	//		if (!musicqueue[server]) musicqueue[server] = [];
-	//		return musicqueue[server];
-	//	};
-	//const queue = getQueue(msg.guild.id);
-	const search = new YTSearcher({
-		key: process.env.YOUTUBE_API_KEY,
-		revealkey: true
-	});
-
-	search.search(arg, { type: 'video' }).then(searchResult => {
-		let result = searchResult.first;
-		//if (!result) return msg.channel.send(`<:redx:411978781226696705> Could not find this video.`).catch(console.error);
-		// result.id = video id // result.channelID = channel id // result.url = full video url // result.title = video name // result.description = video description
-		musicqueue[msg.guild.id]['music'].push(`${result.url}`);
-		if (musicqueue[msg.guild.id]['music'].length === 1 || !bot.voiceConnections.find(val => val.channel.guild.id == msg.guild.id)) executeQueue(musicqueue[msg.guild.id]['music']);
-		if (result.url) { // message information about the video on playing the video
-			let thumbnail;
-			if (result.thumbnails.default.url && !result.thumbnails.medium.url && !result.thumbnails.high.url) {
-				thumbnail = `${result.thumbnails.default.url}`;
-			} else if (result.thumbnails.default.url && result.thumbnails.medium.url && !result.thumbnails.high.url) {
-				thumbnail = `${result.thumbnails.medium.url}`;
-			} else if (result.thumbnails.default.url && result.thumbnails.medium.url && result.thumbnails.high.url) {
-				thumbnail = `${result.thumbnails.high.url}`;
-			}
-			msg.channel.send({
-				embed: ({
-					color: 3447003,
-					title: `${result.title} by ${result.channelTitle}`,
-					url: `${result.url}`,
-					description: `${result.description}`,
-					"thumbnail": {
-						url: `${thumbnail}`
-					},
-					timestamp: new Date()
-				})
-			});
-		}
-	}).catch(console.error);
-	console.log(`${musicqueue[msg.guild.id]['music'].toString()}`);
-
-	var musicbot = {
-		youtubeKey: process.env.YOUTUBE_API_KEY, // A YouTube Data API3 key. Required to run.
-		thumbnailType: 'high', // Type of thumbnails to use for videos on embeds. Can equal: default, medium, high.
-		global: false, // Whether to use one global queue or server specific ones.
-		maxQueueSize: 100, // Max queue size allowed. Defaults 20.
-		defVolume: 100, // The default volume of music. 1 - 200, defaults 50.
-		anyoneCanSkip: true, // Whether or not anyone can skip.
-		clearInvoker: false, // Whether to delete command messages.
-		messageHelp: false, // Whether to message the user on help command usage. If it can't, it will send it in the channel like normal.
-		//botAdmins: [], // An array of Discord user ID's to be admins as the bot. They will ignore permissions for the bot, including the set command.
-		enableQueueStat: true, // Whether to enable the queue status, old fix for an error that occurs for a few people.
-		anyoneCanAdjust: true, // Whether anyone can adjust volume.
-		ownerOverMember: false, // Whether the owner over-rides CanAdjust and CanSkip.
-		anyoneCanLeave: true, // Whether anyone can make the bot leave the currently connected channel. // false because of a bug with permissions atm
-		//botOwner: '269247101697916939', // The ID of the Discord user to be seen as the owner. Required if using ownerOverMember.
-		logging: true, // Some extra none needed logging (such as caught errors that didn't crash the bot, etc).
-		requesterName: true, // Whether or not to display the username of the song requester.
-		inlineEmbeds: false, // Whether or not to make embed fields inline (help command and some fields are excluded).
-		disableHelp: true, // Disable the help command.
-		disableSet: true, // Disable the set command.
-		disableOwnerCmd: true, // Disable the owner command.
-		streamMode: 0
-		//disableLeaveCmd: true // Disable the leave command. // Because this command is broken at the moment
-		// https://www.npmjs.com/package/discord.js-musicbot-addon
-	};
-
-	function executeQueue(queue) {
-		// If the queue is empty, finish.
-		if (queue.length === 0) {
-			msg.channel.send(`<:check:411976443522711552> Playback finished.`);
-
-			// Leave the voice channel.
-			const voiceConnection = bot.voiceConnections.find(val => val.channel.guild.id == msg.guild.id);
-			if (voiceConnection !== null) return voiceConnection.disconnect();
-		}
-
-		new Promise((resolve, reject) => {
-			// Join the voice channel if not already in one.
-			const voiceConnection = bot.voiceConnections.find(val => val.channel.guild.id == msg.guild.id);
-			if (!msg.member.voiceChannel) return msg.channel.send(`<:redx:411978781226696705> You must be in a voice channel!`).catch(console.error);
-			if (voiceConnection === null) {
-				// Check if the user is in a voice channel.
-				if (msg.member.voiceChannel && msg.member.voiceChannel.joinable) {
-					msg.member.voiceChannel.join().then(connection => {
-						resolve(connection);
-					}).catch((error) => {
-						console.log(error);
-					});
-				} else if (!msg.member.voiceChannel.joinable) {
-					msg.channel.send(`<:redx:411978781226696705> I do not have permission to join your voice channel!`);
-					reject();
-				} else {
-					// Otherwise, clear the queue and do nothing.
-					queue.splice(0, queue.length);
-					reject();
-				}
-			} else {
-				resolve(voiceConnection);
-			}
-		}).then(connection => {
-			// Get the first item in the queue.
-			const video = queue[0];
-
-			// Play the video.
-			try {
-				//if (!musicbot.global) {
-				//  const lvid = musicbot.getLast(msg.guild.id);
-				//  musicbot.setLast(msg.guild.id, video);
-				//  if (lvid !== video) musicbot.np(msg);
-				//};
-				musicqueue[msg.guild.id]['streaming'] = false;
-				let dispatcher = musicbot.streamMode == 0 ? connection.playStream(ytdl(video.toString(), { filter: 'audioonly' }), { volume: (musicbot.defVolume / 100) }) : connection.playStream(stream(video.toString()), { volume: (musicbot.defVolume / 100) }); // YouTube, and Streams stream (1) is broken
-
-				connection.on('error', (error) => {
-					// Skip to the next song.
-					console.log(`Dispatcher/connection: ${error}`);
-					if (msg && msg.channel) msg.channel.send(`<:redx:411978781226696705> Dispatcher error!\n\`${error}\``);
-					queue.shift();
-					executeQueue(musicqueue[msg.guild.id]['music']);
-				});
-
-				dispatcher.on('error', (error) => {
-					// Skip to the next song.
-					console.log(`Dispatcher: ${error}`);
-					if (msg && msg.channel) msg.channel.send(`<:redx:411978781226696705> Dispatcher error!\n\`${error}\``);
-					queue.shift();
-					executeQueue(musicqueue[msg.guild.id]['music']);
-				});
-
-				dispatcher.on('end', () => {
-					// Wait a second.
-					setTimeout(() => {
-						if (musicqueue[msg.guild.id]['loopqueue'] && !musicqueue[msg.guild.id]['loopsong']) {
-							executeQueue(musicqueue[msg.guild.id]['music']);
-						} else if (!musicqueue[msg.guild.id]['loopqueue'] && musicqueue[msg.guild.id]['loopsong']) {
-							executeQueue(musicqueue[msg.guild.id]['music'][0]); // do this until I have it remove the current playing item
-						} else {
-							if (queue.length > 0) {
-								queue.shift(); // Remove the song from the queue
-								executeQueue(musicqueue[msg.guild.id]['music']); // Play the next song in the queue.
-							}
-						}
-					}, 1000);
-				});
-			} catch (error) {
-				console.log(error);
-			}
-		}).catch((error) => {
-			console.log(error);
+	try {
+		const search = new YTSearcher({
+			key: process.env.YOUTUBE_API_KEY,
+			revealkey: true
 		});
+		let gvid = args.join(' ');
+		let gsearch;
+		if (gvid.length < 1) {
+			if (!musicqueue[msg.guild.id] || musicqueue[msg.guild.id]['music'].length < 1) return msg.channel.send(`<:redx:411978781226696705> There are no items in the queue!`).catch(err => console.error);
+			gsearch = musicqueue[msg.guild.id]['music'][0];
+		} else if (gvid.length > 0) {
+			gsearch = gvid;
+		}
+		search.search(gsearch, { type: 'video' }).then(searchResult => {
+			let result = searchResult.first;
+			//if (!result/* || !musicqueue[msg.guild.id]*/) return msg.channel.send(`<:redx:411978781226696705> Could not get the video.`).catch(err => console.error);
+			//global.musicqueue.push(`${result.url}`); // result.id = video id // result.channelID = channel id // result.url = full video url // result.title = video name // result.description = video description
+			if (result || !musicqueue[msg.guild.id] || musicqueue[msg.guild.id] && !musicqueue[msg.guild.id]['streaming']) { // message information about the video on playing the video
+				fetchVideoInfo(result.id, function (err, videoInfo) {
+					if (err) throw new Error(err);
+					let videoDuration = duration(`${videoInfo.duration}s`); // seconds --> miliseconds
+					/*Format Duration*/
+					let d, h, m, s; // days, hours, minutes, seconds
+					s = Math.floor(parseInt(videoDuration - 1) / 1000); // - 1 is used to round the video to get the proper second count
+					m = Math.floor(s / 60);
+					s = s % 60;
+					h = Math.floor(m / 60);
+					m = m % 60;
+					d = Math.floor(h / 24);
+					h = h % 24;
+					/*Format Duration*/
+					/*Format Playtime*/
+					const voiceConnection = bot.voiceConnections.find(val => val.channel.guild.id == msg.guild.id);
+					let currenttime;
+					if (voiceConnection) {
+						currenttime = voiceConnection.player.dispatcher.time; //ms(parseInt(voiceConnection.player.dispatcher.time));
+					} else if (!voiceConnection) {
+						currenttime = `0`;
+					}
+					//let currentDuration = duration(`${currenttime.toString()}`);
+					//let done, hone, mone, sone; // days, hours, minutes, seconds
+					let currenttimepos = milliseconds.to(hours,minutes,seconds)(parseInt(currenttime));
+					/*sone = Math.floor(currentDuration / 1000);
+					mone = Math.floor(sone / 60);
+					sone = sone % 60;
+					hone = Math.floor(mone / 60);
+					mone = mone % 60; // -1 here
+					done = Math.floor(hone / 24);
+					hone = hone % 24;*/
+					/*Format Playtime*/
+					// Begin adding leading zeros
+					let seczero, minzero, hourzero, seconezero, minonezero, houronezero;
+					if (s < 10) {
+						seczero = '0';
+					} else if (s > 9) {
+						seczero = '';
+					}
+					if (m < 10) {
+						minzero = '0';
+					} else if (m > 9) {
+						minzero = '';
+					}
+					if (h < 10) {
+						hourzero = '0';
+					} else if (h > 9) {
+						hourzero = '';
+					}
+					if (currenttimepos[2] < 10) {
+						seconezero = '0';
+					} else if (currenttimepos[2] > 9) {
+						seconezero = '';
+					}
+					if (currenttimepos[1] < 10) {
+						minonezero = '0';
+					} else if (currenttimepos[1] > 9) {
+						minonezero = '';
+					}
+					if (currenttimepos[0] < 10) {
+						houronezero = '0';
+					} else if (currenttimepos[0] > 9) {
+						houronezero = '';
+					}
+					// End add leading zero
+					let thumbnail;
+					if (result.thumbnails.default.url && !result.thumbnails.medium.url && !result.thumbnails.high.url) {
+						thumbnail = `${result.thumbnails.default.url}`;
+					} else if (result.thumbnails.default.url && result.thumbnails.medium.url && !result.thumbnails.high.url) {
+						thumbnail = `${result.thumbnails.medium.url}`;
+					} else if (result.thumbnails.default.url && result.thumbnails.medium.url && result.thumbnails.high.url) {
+						thumbnail = `${result.thumbnails.high.url}`;
+					}
+					let udate = new Date(result.publishedAt).getTime();
+					let dthumbnail;
+					if (result.thumbnails.default.url) {
+						dthumbnail = `- [Default](${result.thumbnails.default.url}) \`${result.thumbnails.default.width}×${result.thumbnails.default.height}\`\n`;
+					} else {
+						dthumbnail = '';
+					}
+					let mthumbnail;
+					if (result.thumbnails.medium.url) {
+						mthumbnail = `- [Medium](${result.thumbnails.medium.url}) \`${result.thumbnails.medium.width}×${result.thumbnails.medium.height}\`\n`;
+					} else {
+						mthumbnail = '';
+					}
+					let hthumbnail;
+					if (result.thumbnails.high.url) {
+						hthumbnail = `- [High](${result.thumbnails.high.url}) \`${result.thumbnails.high.width}×${result.thumbnails.high.height}\``;
+					} else {
+						hthumbnail = '';
+					}
+					//let GetRegionsAllowed = videoInfo.regionsAllowed.toString();
+					//let regionsstr = "," + GetRegionsAllowed.toString() + ",";
+					//let replacecomma = regionsstr.replace(/,/g, "` `");
+					//let replacecomma1 = replacecomma.replace("` ","") + "remove-this-string";
+					//let ListRegionsAllowed = replacecomma1.replace(" `remove-this-string","");
+					// current time function was here
+					// OLD ONE UNTIL FIX COMES OUT
+					/*msg.channel.send({embed: ({
+						color: 3447003,
+						title: `${result.title}`,
+						url: `${result.url}`,
+						"thumbnail": {
+							url: `${thumbnail}`
+						}, fields: [
+							{
+								name: `**__Video__**`,
+								value: `[${result.title}](${result.url}) \`${result.id}\``
+							}, {
+								name: `**__Channel__**`,
+								value: `[${result.channelTitle}](https://www.youtube.com/channel/${result.channelId}) \`${result.channelId}\``
+							}, {
+								name: `**__Thumbnails__**`,
+								value: `${dthumbnail}${mthumbnail}${hthumbnail}`
+							}, {
+								name: `**__Uploaded__**`,
+								value: `${moment.utc(udate).format("LLLL")} \`${result.publishedAt}\``
+							}, {
+								name: `**__Description__**`,
+								value: `${result.description}`
+							}, {
+								name: `**__Duration__**`,
+								value: `\`${houronezero}${currenttimepos[0]}:${minonezero}${currenttimepos[1]}:${seconezero}${currenttimepos[2]}/${hourzero}${h}:${minzero}${m}:${seczero}${s}\``
+							}, {
+								name: `**__Genre__**`,
+								value: `\`${videoInfo.genre || 'N/A'}\``,
+								inline: true
+							}, {
+								name: `**__Paid__**`,
+								value: `\`${videoInfo.paid}\``,
+								inline: true
+							}, {
+								name: `**__Unlisted__**`,
+								value: `\`${videoInfo.unlisted}\``,
+								inline: true
+							}, {
+								name: `**__Family Friendly__**`,
+								value: `\`${videoInfo.isFamilyFriendly}\``,
+								inline: true
+							}, {
+								name: `**__Views__**`,
+								value: `\`${videoInfo.views || '0'}\``,
+								inline: true
+							}, {
+								name: `**__Comments__**`,
+								value: `\`${videoInfo.commentCount || '0'}\``,
+								inline: true
+							}, {
+								name: `**__Regions Allowed__**`,
+								value: `${videoInfo.regionsAllowed.toString()}`,
+								inline: true
+							}, {
+								name: `**__Likes/Dislikes__**`,
+								value: `:thumbsup:\`${videoInfo.likeCount || '0'}\`\n:thumbsdown:\`${videoInfo.dislikeCount || '0'}\``,
+								inline: true
+							}
+						],
+						timestamp: new Date()
+					})});*/
+					msg.channel.send({embed: ({
+						color: 3447003,
+						title: `${result.title}`,
+						url: `${result.url}`,
+						"thumbnail": {
+							url: `${thumbnail}`
+						}, fields: [
+							{
+								name: `**__Video__**`,
+								value: `[${result.title}](${result.url}) \`${result.id}\``
+							}, {
+								name: `**__Channel__**`,
+								value: `[${result.channelTitle}](https://www.youtube.com/channel/${result.channelId}) \`${result.channelId}\``
+							}, {
+								name: `**__Thumbnails__**`,
+								value: `${dthumbnail}${mthumbnail}${hthumbnail}`
+							}, {
+								name: `**__Uploaded__**`,
+								value: `${moment.utc(udate).format("LLLL")}`
+							}, {
+								name: `**__Duration__**`,
+								value: `\`${houronezero}${currenttimepos[0]}:${minonezero}${currenttimepos[1]}:${seconezero}${currenttimepos[2]}/${hourzero}${h}:${minzero}${m}:${seczero}${s}\``
+							}, {
+								name: `**__Genre__**`,
+								value: `\`${videoInfo.genre || 'N/A'}\``,
+								inline: true
+							}, {
+								name: `**__Paid__**`,
+								value: `\`${videoInfo.paid}\``,
+								inline: true
+							}, {
+								name: `**__Unlisted__**`,
+								value: `\`${videoInfo.unlisted}\``,
+								inline: true
+							}, {
+								name: `**__Family Friendly__**`,
+								value: `\`${videoInfo.isFamilyFriendly}\``,
+								inline: true
+							}, {
+								name: `**__Views__**`,
+								value: `\`${videoInfo.views || '0'}\``,
+								inline: true
+							}, {
+								name: `**__Comments__**`,
+								value: `\`${videoInfo.commentCount || '0'}\``,
+								inline: true
+							}, {
+								name: `**__Regions Allowed__**`,
+								value: `${videoInfo.regionsAllowed.toString()}`,
+								inline: true
+							}, {
+								name: `**__Likes/Dislikes__**`,
+								value: `:thumbsup:\`${videoInfo.likeCount || '0'}\`\n:thumbsdown:\`${videoInfo.dislikeCount || '0'}\``,
+								inline: true
+							}
+						],
+						timestamp: new Date()
+					})}).catch(err => console.error);
+					// ${ListRegionsAllowed.toString() || '`N/A`'}`,
+				});
+				// https://developers.google.com/youtube/v3/docs/activities
+			} else if (!result || musicqueue[msg.guild.id] && musicqueue[msg.guild.id]['streaming']) {
+				const voiceConnection = bot.voiceConnections.find(val => val.channel.guild.id == msg.guild.id);
+				let currenttime;
+				if (voiceConnection) {
+					currenttime = parseInt(voiceConnection.player.dispatcher.time); //ms(parseInt(voiceConnection.player.dispatcher.time));
+				} else if (!voiceConnection) {
+					currenttime = `0`;
+				}
+				let streamingDuration = milliseconds.to(hours,minutes,seconds)(parseInt(currenttime));
+				/*let currentDuration = duration(`${currenttime.toString()}`);
+				let d, h, m, s; // days, hours, minutes, seconds
+				s = Math.floor(currentDuration / 1000);
+				m = Math.floor(s / 60);
+				s = s % 60;
+				h = Math.floor(m / 60);
+				m = m % 60; // -1 here
+				d = Math.floor(h / 24);
+				h = h % 24;
+				*/
+				let seczero, minzero, hourzero;
+				if (streamingDuration[2] < 10) {
+					seczero = '0';
+				} else if (streamingDuration[2] > 9) {
+					seczero = '';
+				}
+				if (streamingDuration[1] < 10) {
+					minzero = '0';
+				} else if (streamingDuration[1] > 9) {
+					minzero = '';
+				}
+				if (streamingDuration[0] < 10) {
+					hourzero = '0';
+				} else if (streamingDuration[0] > 9) {
+					hourzero = '';
+				}
+				msg.channel.send({embed: ({
+					color: 3447003,
+					title: `Streaming`,
+					url: `${musicqueue[msg.guild.id]['music'][0]}`,
+					description: `Streaming [${musicqueue[msg.guild.id]['music'][0]}](${musicqueue[msg.guild.id]['music'][0]}) for \`${hourzero}${streamingDuration[0]}:${minzero}${streamingDuration[1]}:${seczero}${streamingDuration[2]}\``,
+					timestamp: new Date()
+				})});
+			}
+		}).catch(err => console.error(err.toString()));
+	} catch (err) {
+		console.error(err.toString());
 	}
 };
+
 exports.info = {
-	name: 'play',
-	usage: 'play <url|search>',
+	name: 'nowplaying',
+	clientPermissions: ['CONNECT'],
+	aliases: ['np','searchvideo','searchvid','viddetails','videodetails'],
 	examples: [
-		'play Ozzy Osbourne - Crazy Train',
-		'play Lamb of God - Blood of the Scribe',
-		'play Nickleback - How you remind me'
+		'nowplaying',
+		'nowplaying https://www.youtube.com/watch?v=FVovq9TGBw0',
+		'nowplaying Ozzy Osbourne - Crazy Train'
 	],
-	description: 'Play audio from YouTube.'
+	usage: 'nowplaying [url|search]',
+	description: 'Shows the currently playing song.'
 };
