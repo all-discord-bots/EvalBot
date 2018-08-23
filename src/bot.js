@@ -8,6 +8,7 @@ const stripIndents = require('common-tags').stripIndents;
 const chalk = require('chalk');
 const Managers = require('./managers');
 const DBL = require("dblapi.js");
+const axios = require('axios');
 const Webhook = require("webhook-discord");
 const Hook = new Webhook(process.env.WEBHOOK_CONSOLE_LOGGER);
 require('./conf/globals.js'); // load global variables file
@@ -24,7 +25,8 @@ class CripsBot extends Client {
 		
 		let startTime = new Date(); // start recording time of boot
 		
-		const dbl = new DBL(process.env.DB_TOKEN, client);
+		//const dbl = new DBL(process.env.DB_TOKEN, client);
+		const dbl = new DBL(process.env.DB_TOKEN, { webhookPort: 5000, webhookAuth: 'password' });
 		
 		global.bot = this;
 		
@@ -76,11 +78,100 @@ class CripsBot extends Client {
 			this.deleted.clear();
 		}, 7200000);
 		
-		// Discord Bot List Stats Upload
-		this.setInterval(() => {
+		// Uploads bot stats to api's
+		/*this.setInterval(() => {
 			dbl.postStats(this.guilds.size);//, this.shard.id, this.shard.count); // Current shard data
 			//dbl.postStats(results.toString()); // Upload server count per shard
 			console.log('Uploaded Bot Stats!');
+		}, 1800000);*/
+		
+		dbl.webhook.on('ready', (hook) => {
+			try {
+				console.log(`Webhook running at http://${hook.hostname}:${hook.port}${hook.path}`);
+			} catch (err) {
+				console.error(err.toString());
+			}
+		});
+		dbl.webhook.on('vote', (vote) => {
+			try {
+				console.log(`User with ID ${vote.user} just voted!`);
+				this.channels.get("415255346710577162").send({
+					embed: ({
+						color: 5892826,
+						timestamp: new Date(),
+						title: `Info`,
+						description: `\`[${event.code}] Already Authenticated\``
+					})
+				});
+			} catch (err) {
+				console.error(err.toString());
+			}
+		});
+		
+		async function postDiscordStats() {
+			const discordBots = axios({
+				method: 'post',
+				url: `https://discordbots.org/api/bots/${this.user.id}/stats`,
+				headers: {
+					Authorization: ''
+				},
+				data: {
+					server_count: this.guilds.size
+				}
+			})/*
+			const discordPw = axios({
+				method: 'post',
+				url: `https://bots.discord.pw/api/bots/${this.user.id}/stats`,
+				headers: {
+					Authorization: ''
+				},
+				data: {
+					server_count: this.guilds.size
+				}
+			})
+			const botlistSpace = axios({
+				method: 'post',
+				url: `https://botlist.space/api/bots/${this.user.id}`,
+				headers: {
+					Authorization: ''
+				},
+				data: {
+					server_count: this.guilds.size
+				}
+			})
+			const discordServices = axios({
+				method: 'post',
+				url: `https://discord.services/api/bots/${this.user.id}`,
+				headers: {
+					Authorization: ''
+				},
+				data: {
+					server_count: this.guilds.size
+				}
+			})
+			const listCord = axios({
+				method: 'post',
+				url: `https://listcord.com/api/bot/${this.user.id}/guilds`,
+				headers: {
+					Authorization: ''
+				},
+				data: {
+					guilds: this.guilds.size
+				}
+			})
+			const [dbres, dpwres, bspaceres, dservres, listres] = await Promise.all([discordBots, discordPw, botlistSpace, discordServices, listCord])
+			console.log(dbres.res, dpwres.res, bspaceres.res, dservres.res, listres.res)
+			*/
+			const [dbres] = await Promise.all([discordBots]);
+			console.log(dbres.res);
+		}
+		
+		this.setInterval(() => {
+			try {
+				postDiscordStats();
+			} catch (err) {
+				console.error(err.toString());
+			}
 		}, 1800000);
 		
 		// Uncategorized
