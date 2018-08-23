@@ -7,9 +7,8 @@ require('../../conf/globals.js');
 
 exports.run = async (bot, msg, args) => {
 	try {
-		let arg = args.join(' ');
-		if (arg.length < 1) return msg.channel.send(`<:redx:411978781226696705> You must provide a url or search string!`).catch(err => console.error)
-		if (!msg.member.voiceChannel) return msg.channel.send(`<:redx:411978781226696705> You must be in a voice channel!`).catch(err => console.error)
+		if (args.length <= 0) return msg.channel.send(`<:redx:411978781226696705> You must provide a url or search string!`).catch(err => console.error);
+		if (!msg.member.voiceChannel) return msg.channel.send(`<:redx:411978781226696705> You must be in a voice channel!`).catch(err => console.error);
 		// let getQueue;
 		//	getQueue = (server) => {
 		//		// Return the queue.
@@ -21,7 +20,7 @@ exports.run = async (bot, msg, args) => {
 			key: process.env.YOUTUBE_API_KEY,
 			revealkey: true
 		});
-		search.search(arg, { type: 'video' }).then(searchResult => {
+		search.search(args.join(' '), { type: 'video' }).then(searchResult => {
 			let result = searchResult.first;
 			//if (!result) return msg.channel.send(`<:redx:411978781226696705> Could not find this video.`).catch(err => console.error)
 			// result.id = video id // result.channelID = channel id // result.url = full video url // result.title = video name // result.description = video description
@@ -50,7 +49,7 @@ exports.run = async (bot, msg, args) => {
 				});
 			}
 		}).catch(err => console.error);
-		console.log(`${musicqueue[msg.guild.id]['music'].toString()}`);
+		// console.log(`${musicqueue[msg.guild.id]['music'].toString()}`);
 		let musicbot = {
 			youtubeKey: process.env.YOUTUBE_API_KEY, // A YouTube Data API3 key. Required to run.
 			thumbnailType: 'high', // Type of thumbnails to use for videos on embeds. Can equal: default, medium, high.
@@ -121,14 +120,14 @@ exports.run = async (bot, msg, args) => {
 					let dispatcher = musicbot.streamMode == 0 ? connection.playStream(ytdl(video.toString(), { filter: 'audioonly' }), { volume: (musicbot.defVolume / 100) }) : connection.playStream(stream(video.toString()), { volume: (musicbot.defVolume / 100) }); // YouTube, and Streams stream (1) is broken
 					connection.on('error', (error) => {
 						// Skip to the next song.
-						console.log(`Dispatcher/connection: ${error}`);
+						console.error(`Dispatcher/connection: ${error.stack}`);
 						if (msg && msg.channel) msg.channel.send(`<:redx:411978781226696705> Dispatcher error!\n\`${error}\``);
 						queue.shift();
 						executeQueue(musicqueue[msg.guild.id]['music']);
 					});
 					dispatcher.on('error', (error) => {
 						// Skip to the next song.
-						console.log(`Dispatcher: ${error}`);
+						console.error(`Dispatcher: ${error.stack}`);
 						if (msg && msg.channel) msg.channel.send(`<:redx:411978781226696705> Dispatcher error!\n\`${error}\``);
 						queue.shift();
 						executeQueue(musicqueue[msg.guild.id]['music']);
@@ -163,6 +162,7 @@ exports.run = async (bot, msg, args) => {
 exports.info = {
 	name: 'play',
 	usage: 'play <url|search>',
+	userPermissions: ['CONNECT'],
 	clientPermissions: ['SPEAK','CONNECT'],
 	examples: [
 		'play Ozzy Osbourne - Crazy Train',
