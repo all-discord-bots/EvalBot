@@ -3,7 +3,6 @@ require('../../conf/globals.js');
 
 exports.run = async (bot, msg, args) => {
 	try {
-		let arg = args.join(' ');
 		let radiostationsqueue = [
 			'Fun Radio',
 			'1.FM Absolute Top 40',
@@ -24,8 +23,8 @@ exports.run = async (bot, msg, args) => {
 			'NC Weather'
 		];
 		//'Monstercat'
-		//if (arg.length < 1) return msg.channel.send(`<:redx:411978781226696705> You must provide a radio stream url!`).catch(err => console.error);
-		if (arg.length < 1) {
+		//if (args.join(' ').length < 1) return msg.channel.send(`<:redx:411978781226696705> You must provide a radio stream url!`).catch(err => console.error);
+		if (args.length <= 0) {
 			let getradio = radiostationsqueue.toString();
 			let radiostations = getradio.replace(/,/gi, '\n');
 			return msg.channel.send({
@@ -36,7 +35,6 @@ exports.run = async (bot, msg, args) => {
 					timestamp: new Date()
 				})
 			});
-
 		}
 		if (!msg.member.voiceChannel) return msg.channel.send(`<:redx:411978781226696705> You must be in a voice channel!`).catch(err => console.error);
 		//let getQueue;
@@ -56,13 +54,8 @@ exports.run = async (bot, msg, args) => {
 				return false;
 			}
 		}
-		if (get_video_id(arg.toString())) return msg.channel.send(`<:redx:411978781226696705> You can play YouTube videos using the \`play\` command. Please specify a radio station url.`).catch(err => console.error);
-		//if (!musicqueue[msg.guild.id]) musicqueue[msg.guild.id] = [];
-		//if (!musicqueue[msg.guild.id]['streaming']) musicqueue[msg.guild.id]['streaming'] = false;
-		//if (!musicqueue[msg.guild.id]['loopqueue']) musicqueue[msg.guild.id]['loopqueue'] = false;
-		//if (!musicqueue[msg.guild.id]['loopsong']) musicqueue[msg.guild.id]['loopsong'] = false;
-		//if (!musicqueue[msg.guild.id]['music']) musicqueue[msg.guild.id]['music'] = [];
-		let getarg = arg.toLowerCase().toString();
+		if (get_video_id(args.join(' ').toString())) return msg.channel.send(`<:redx:411978781226696705> You can play YouTube videos using the \`play\` command. Please specify a radio station url.`).catch(err => console.error);
+		let getarg = args.join(' ').toLowerCase().toString();
 		if (getarg.length < 4) return msg.channel.send(`<:redx:411978781226696705> You must provide a valid stream`);
 		let filteredbuiltinradio = radiostationsqueue.map(list => list.toLowerCase().toString()).filter(list => list.toLowerCase().startsWith(getarg.toString()));
 		let queuethis;
@@ -84,10 +77,10 @@ exports.run = async (bot, msg, args) => {
 		if (playingbuiltinstations) {
 			streamingmsg = filteredbuiltinradio[0];
 		} else if (!playingbuiltinstations) {
-			streamingmsg = arg.toString();
+			streamingmsg = args.join(' ').toString();
 		}
 		msg.channel.send(`<:check:411976443522711552> Streaming \`${streamingmsg.toString()}\`.`);
-		console.log(`${musicqueue[msg.guild.id]['music'].toString()}`);
+		//console.log(`${musicqueue[msg.guild.id]['music'].toString()}`);
 
 		let musicbot = {
 			thumbnailType: 'high', // Type of thumbnails to use for videos on embeds. Can equal: default, medium, high.
@@ -116,7 +109,7 @@ exports.run = async (bot, msg, args) => {
 
 		function executeQueue(queue) {
 			// If the queue is empty, finish.
-			if (queue.length === 0) {
+			if (queue.length <= 0) {
 				musicqueue[msg.guild.id]['loopqueue'] = false;
 				musicqueue[msg.guild.id]['loopsong'] = false;
 				musicqueue[msg.guild.id]['streaming'] = false;
@@ -207,6 +200,7 @@ exports.run = async (bot, msg, args) => {
 exports.info = {
 	name: 'radio',
 	aliases: ['station', 'radio-station'],
+	userPermissions: ['CONNECT'],
 	clientPermissions: ['CONNECT','SPEAK'],
 	usage: 'radio [station name|stream url]',
 	examples: [
