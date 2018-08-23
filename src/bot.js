@@ -26,7 +26,7 @@ class CripsBot extends Client {
 		let startTime = new Date(); // start recording time of boot
 		
 		//const dbl = new DBL(process.env.DB_TOKEN, client);
-		const dbl = new DBL(process.env.DB_TOKEN, { webhookPort: 5000, webhookAuth: 'password' });
+		const dbl = new DBL(process.env.DBL_TOKEN, { webhookPort: 5000, webhookAuth: process.env.DBL_WEBHOOK });
 		
 		global.bot = this;
 		
@@ -92,6 +92,7 @@ class CripsBot extends Client {
 				console.error(err.toString());
 			}
 		});
+		
 		dbl.webhook.on('vote', (vote) => {
 			try {
 				console.log(`User with ID ${vote.user} just voted!`);
