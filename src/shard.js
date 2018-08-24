@@ -20,9 +20,9 @@ const ShardManager = new ShardingManager(path.resolve(__dirname, '../bin/cripsbo
 ShardManager.spawn();
 ShardManager.on('launch', (shard) => {
 	try {
-		if (shard.id == ShardManager.totalShards) {
-			utils.shards.shift();
-			utils.shards.push(ShardManager.shards);
+		if (shard.id == shard.manager.totalShards) {
+			global.shards.shift();
+			global.shards.push(ShardManager.shards);
 		}
 		wbhook.success('CripsBot', `Successfully launched shard \`${shard.id}\`.`);
 		console.log(`Successfully launched shard ${shard.id}`);
