@@ -3,7 +3,7 @@ exports.run = (bot, msg, args) => {
 		if (args.length <= 0) return msg.channel.send(`<:redx:411978781226696705> You must specify the number of messages to clean reactions for.`).catch((err) => console.error);
 		if (!parseInt(args[0], 10)) return msg.channel.send(`<:redx:411978781226696705> Please provide a number of messages to clean reactions for.`).catch((err) => console.error);
 		msg.channel.fetchMessages({limit: parseInt(args[0], 10)}).then((msglog) => {
-			(await msg.channel.send(`<:check:411976443522711552> Clearing reactions for \`${args[0]}\` messages in this channel...`).then((msg) => {
+			(await msg.channel.send(`:arrows_counterclockwise: Clearing reactions for \`${args[0]}\` messages in this channel...`).then((msg) => {
 				let count = 0;
 				msglog.forEach((message) => {
 					message.clearReactions();
