@@ -31,7 +31,7 @@ exports.run = async (bot, msg, args) => {
 
 exports.info = {
 	name: 'bug-report',
-	userPermissions: ['MANAGE_SERVER'],
+	userPermissions: ['MANAGE_GUILD'],
 	aliases: ['bugreport','reportbug','sendbugreport','send-bug-report','feedback'],
 	usage: 'bug-report <explain your bug here>',
 	examples: [
