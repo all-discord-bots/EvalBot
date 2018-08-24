@@ -1,7 +1,7 @@
-const { RichEmbed, Collection } = require('discord.js');
+const { RichEmbed } = require('discord.js');
 const got = require('got');
 
-let shards = new Collection();
+const shards = [];
 
 const memberSearch = (search,guildOnly = false) => {
 	if (guildOnly)
