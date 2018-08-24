@@ -6,9 +6,6 @@ exports.run = async (bot, msg, args) => {
 		if (bot.config[msg.guild.id.toString()]) return msg.channel.send(`This guilds current prefix is \`${bot.config[msg.guild.id.toString()].prefix}\`.`).catch(err => console.error);
 	}
 	
-	if (msg.author.id !== bot.config.botCreatorID) {
-		if (!msg.member.hasPermission('MANAGE_SERVER')) return msg.channel.send(`<:redx:411978781226696705> You are missing permissions \`Manage Server\`!`).catch(err => console.error);
-	}
 	try {
 		bot.managers.config.set(msg.guild.id.toString(), {prefix: args.join(' ').toString()});
 		fetch(`http://cripsbot.000webhostapp.com/database/database_update.php?guild_id=${msg.guild.id}&prefix=${args.join(' ')}&database_token=QISqwssXd93riidEqjjRFom19SDuSTEU`).catch(err => console.error);
@@ -20,8 +17,10 @@ exports.run = async (bot, msg, args) => {
 
 exports.info = {
 	name: 'prefix',
+	userPermissions: ['MANAGE_GUILD'],
 	usage: 'prefix <prefix>',
 	examples: [
+		'prefix',
 		'prefix !'
 	],
 	description: 'Change the prefix of the bot'
