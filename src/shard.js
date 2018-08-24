@@ -9,7 +9,7 @@ const wbhook = new Webhook(process.env.WEBHOOK_SHARD_LOGGER);
 const path = require('path');
 const { ShardingManager } = require('discord.js');
 
-const = collected_shards = global.collected_shards = [];
+const collected_shards = global.collected_shards = [];
 
 const ShardManager = new ShardingManager(path.resolve(__dirname, '../bin/cripsbot'), {
 	respawn: true,
