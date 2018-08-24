@@ -1,3 +1,49 @@
+Node.js
+
+discord.js (external sharding)
+
+Last Updated: April 15th, 2018, 10:57 AM
+
+const Client = require('botlist.space');
+
+const client = new Client('bot ID', 'bot token from site');
+
+// The `bot` variable below should be your Discord bot
+
+bot.shard.fetchClientValues('guilds.size').then((guilds) => {
+    client.postServerCount(guilds.reduce((a, b) => a + b, 0)).then(() => {
+        console.log('Set the current bot\'s server count to ' + bot.guilds.size + ' guilds.');
+    }).catch((e) => {
+        console.error('Failed to post server count. ' + e.code);
+    });
+}).catch((error) => {
+    console.error('Failed to get bot shard guild count', error);
+});
+discord.js (internal sharding) / Eris
+
+Last Updated: April 15th, 2018, 10:57 AM
+
+const Client = require('botlist.space');
+
+const client = new Client('bot ID', 'bot token from site');
+
+// The `bot` variable below should be your Discord bot
+
+client.postServerCount(bot.guilds.size).then(() => { 
+    console.log('Set the current bot\'s server count to ' + bot.guilds.size + ' guilds.');
+}).catch((e) => {
+    console.error('Failed to post server count. ' + e.code);
+});
+
+
+
+
+
+
+
+
+
+
 >eval bot.shard.broadcastEval(`
 bot.channels.get("408827136858652674").send(bot.shard.id);
 `);
