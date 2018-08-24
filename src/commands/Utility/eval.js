@@ -1,3 +1,4 @@
+const Discord = require('discord.js');
 const stripIndents = require('common-tags').stripIndents;
 const fetch = require('node-fetch');
 
@@ -38,8 +39,21 @@ exports.run = async (bot, msg, args) => {
 			lang = 'javascript';
 		}
 
-		output = clean(output).replace(new RegExp(bot.utils.quoteRegex(bot.token), 'g'), 'BOT_TOKEN');
-
+		output = clean(output)
+			.replace(new RegExp(bot.utils.quoteRegex(bot.token), 'g'), 'BOT_TOKEN');
+			.replace(new RegExp(bot.utils.quoteRegex(process.env.DBL_TOKEN_AUTH), 'g'), 'DBL_TOKEN_AUTH')
+			.replace(new RegExp(bot.utils.quoteRegex(process.env.DBL_WEBHOOK_AUTH), 'g'), 'DBL_WEBHOOK_AUTH')
+			.replace(new RegExp(bot.utils.quoteRegex(process.env.CONNECTION_LOGGER), 'g'), 'CONNECTION_LOGGER')
+			.replace(new RegExp(bot.utils.quoteRegex(process.env.DATABASE_URL), 'g'), 'DATABASE_URL')
+			.replace(new RegExp(bot.utils.quoteRegex(process.env.LYRICS_API_TOKEN), 'g'), 'LYRICS_API_TOKEN')
+			.replace(new RegExp(bot.utils.quoteRegex(process.env.TERMINAL_TOKEN), 'g'), 'TERMINAL_TOKEN')
+			.replace(new RegExp(bot.utils.quoteRegex(process.env.WEBHOOK_CONSOLE_LOGGER), 'g'), 'WEBHOOK_CONSOLE_LOGGER')
+			.replace(new RegExp(bot.utils.quoteRegex(process.env.YOUTUBE_API_KEY), 'g'), 'YOUTUBE_API_KEY')
+			.replace(new RegExp(bot.utils.quoteRegex(process.env.WEBHOOK_MESSAGES_DELETED_LOGGER), 'g'), 'WEBHOOK_MESSAGES_DELETED_LOGGER')
+			.replace(new RegExp(bot.utils.quoteRegex(process.env.WEBHOOK_SHARD_LOGGER), 'g'), 'WEBHOOK_SHARD_LOGGER')
+			.replace(new RegExp(bot.utils.quoteRegex(process.env.PASTEBIN_KEY), 'g'), 'PASTEBIN_KEY');
+			
+			
 		const displayedOutput = output.length < 1500
 			? `\n\`\`\`${lang}\n${output}\n\`\`\``
 			: `\n${await tryUpload(bot, output)}\n`;
