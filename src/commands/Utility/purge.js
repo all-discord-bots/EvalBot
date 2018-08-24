@@ -25,7 +25,7 @@ exports.run = async (bot, msg, args) => {
 						title: `<:check:411976443522711552> Successfully purged \`${parseInt(args[0].toString().replace(/^[-]/g,''))}\` messages.`
 					})
 				});
-			})).catch((err) => {
+			}).catch((err) => {
 				console.error(err.toString());
 				msg.edit({
 					embed: ({
@@ -33,7 +33,7 @@ exports.run = async (bot, msg, args) => {
 					})
 				});
 			});
-		}).catch((err) => {
+		})).catch((err) => {
 			console.error(err.toString());
 			msg.channel.send({
 				embed: ({
