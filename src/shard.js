@@ -22,7 +22,6 @@ ShardManager.on('launch', (shard) => {
 	try {
 		//utils.shards.shift();
 		utils.shards.push(shard);
-		}
 		wbhook.success('CripsBot', `Successfully launched shard \`${shard.id}\`.`);
 		console.log(`Successfully launched shard ${shard.id}`);
 	} catch (err) {
