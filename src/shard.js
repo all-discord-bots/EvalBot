@@ -19,7 +19,7 @@ const ShardManager = new ShardingManager(path.resolve(__dirname, '../bin/cripsbo
 ShardManager.spawn();
 ShardManager.on('launch', (shard) => {
 	try {
-		if (shard.id == ShardManager.manager.totalShards) {
+		if (shard.id == ShardManager.totalShards) {
 			global.shards.shift();
 			global.shards.push(ShardManager.shards);
 		}
