@@ -40,7 +40,7 @@ exports.run = async (bot, msg, args) => {
 		}
 
 		output = clean(output)
-			.replace(new RegExp(bot.utils.quoteRegex(bot.token), 'g'), 'BOT_TOKEN');
+			.replace(new RegExp(bot.utils.quoteRegex(bot.token), 'g'), 'BOT_TOKEN')
 			.replace(new RegExp(bot.utils.quoteRegex(process.env.DBL_TOKEN_AUTH), 'g'), 'DBL_TOKEN_AUTH')
 			.replace(new RegExp(bot.utils.quoteRegex(process.env.DBL_WEBHOOK_AUTH), 'g'), 'DBL_WEBHOOK_AUTH')
 			.replace(new RegExp(bot.utils.quoteRegex(process.env.CONNECTION_LOGGER), 'g'), 'CONNECTION_LOGGER')
