@@ -1,4 +1,4 @@
-exports.run = async (bot, msg) => {
+exports.run = async (bot, msg, args) => {
 	let start = new Date().getTime();
 	(await msg.channel.send({ embed: ({ author: { name: 'Pinging...', icon_url: 'http://4.bp.blogspot.com/-JF6M1HaI9rQ/VD_eCkLpG7I/AAAAAAAAAXk/0f1ym7hBXYs/s1600/Loading-Circle.gif', }})}).then((msg) => {
 		let end = new Date().getTime();
@@ -38,5 +38,8 @@ exports.info = {
 	aliases: ['pong'],
 	hidden: true,
 	usage: 'ping',
+	examples: [
+		'ping'
+	],
 	description: 'Get the Latency of the bot.'
 };
