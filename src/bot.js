@@ -242,7 +242,7 @@ class CripsBot extends Client {
 		this.loaded = false;
 		this.shuttingDown = false;
 		this.utils = global.utils = require('./utils');
-		this.shards = global.shards = [];
+		this.shards = global.shards = this.utils.shards;
 		
 		// Event listeners
 		this.on('ready', () => {
