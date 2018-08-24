@@ -2,83 +2,99 @@ const stripIndents = require('common-tags').stripIndents;
 const fetch = require('node-fetch');
 
 exports.run = async (bot, msg, args) => {
-	const client = bot;
-	const message = msg;
-	const guild = msg.guild;
-	const channel = msg.channel;
-	
-	if (msg.author.id !== bot.config.botCreatorID) return;
-	let parsed = bot.utils.parseArgs(args, ['l:', 'i', 'q']);
-	let lang = parsed.options.l || '';
-
-	let code = parsed.leftover.join(' ');
-	let output;
-
 	try {
-		output = await eval(code);
-	} catch (err) {
-		let message = err;
-		if (err && err.response && err.response.body && err.response.body.message) {
-			message = err.response.body.message;
+		const client = bot;
+		const message = msg;
+		const guild = msg.guild;
+		const channel = msg.channel;
+		
+		if (msg.author.id !== bot.config.botCreatorID) return;
+		let parsed = bot.utils.parseArgs(args, ['l:', 'i', 'q']);
+		let lang = parsed.options.l || '';
+
+		let code = parsed.leftover.join(' ');
+		let output;
+
+		try {
+			output = await eval(code);
+		} catch (err) {
+			let message = err;
+			if (err && err.response && err.response.body && err.response.body.message) {
+				message = err.response.body.message;
+			}
+
+			return errorHandler(msg, bot, code, `${message}`);
 		}
 
-		return errorHandler(msg, bot, code, `${message}`);
-	}
+		if (parsed.options.q) {
+			return;
+		}
 
-	if (parsed.options.q) {
-		return;
-	}
+		if (typeof output !== 'string') {
+			output = require('util').inspect(output);
+		}
 
-	if (typeof output !== 'string') {
-		output = require('util').inspect(output);
-	}
+		if (!lang) {
+			lang = 'javascript';
+		}
 
-	if (!lang) {
-		lang = 'javascript';
-	}
+		output = clean(output).replace(new RegExp(bot.utils.quoteRegex(bot.token), 'g'), 'BOT_TOKEN');
 
-	output = clean(output).replace(new RegExp(bot.utils.quoteRegex(bot.token), 'g'), 'BOT_TOKEN');
+		const displayedOutput = output.length < 1500
+			? `\n\`\`\`${lang}\n${output}\n\`\`\``
+			: `\n${await tryUpload(bot, output)}\n`;
 
-	const displayedOutput = output.length < 1500
-		? `\n\`\`\`${lang}\n${output}\n\`\`\``
-		: `\n${await tryUpload(bot, output)}\n`;
-
-	msg.channel.send({
-		embed: bot.utils.embed('', stripIndents`
-				**Input:**\n\`\`\`js\n${code}\n\`\`\`
-				**Output:**${displayedOutput}
-				`)
-	});
-
-	if (output.length > 1500 && parsed.options.i) {
-		bot.utils.sendLarge(msg.channel, output, {
-			prefix: '```' + lang + '\n',
-			suffix: '```',
-			cutOn: ',',
-			cutAfter: true
+		msg.channel.send({
+			embed: bot.utils.embed('', stripIndents`
+					**Input:**\n\`\`\`js\n${code}\n\`\`\`
+					**Output:**${displayedOutput}
+					`)
 		});
+
+		if (output.length > 1500 && parsed.options.i) {
+			bot.utils.sendLarge(msg.channel, output, {
+				prefix: '```' + lang + '\n',
+				suffix: '```',
+				cutOn: ',',
+				cutAfter: true
+			});
+		}
+	} catch (err) {
+		console.error(err.toString());
 	}
 };
 
 const tryUpload = async (bot, content) => {
-	const { url } = await bot.utils.textUpload(content);
-	if (!url) {
-		throw 'Failed to upload!';
+	try {
+		const { url } = await bot.utils.textUpload(content);
+		if (!url) {
+			throw 'Failed to upload!';
+		}
+		return url;
+	} catch (err) {
+		console.error(err.toString());
 	}
-	return url;
 };
 
 const errorHandler = (msg, bot, code, err) => {
-	msg.channel.send({
-		embed: bot.utils.embed('', `**Input:**\n\`\`\`js\n${code}\n\`\`\`\n:x: **Error!**\n\`\`\`xl\n${clean(err)}\n\`\`\``, [], {
-			color: '#ff0000'
-		})
-	});
+	try {
+		msg.channel.send({
+			embed: bot.utils.embed('', `**Input:**\n\`\`\`js\n${code}\n\`\`\`\n:x: **Error!**\n\`\`\`xl\n${clean(err)}\n\`\`\``, [], {
+				color: '#ff0000'
+			})
+		});
+	} catch (err) {
+		console.error(err.toString());
+	}
 };
 
 // Prevent @mentions, #channels or code blocks inside code blocks.
 const clean = (text) => {
-	return text.replace(/([`@#])/g, '$1\u200b');
+	try {
+		return text.replace(/([`@#])/g, '$1\u200b');
+	} catch (err) {
+		console.error(err.toString());
+	}
 }
 
 exports.info = {
@@ -86,6 +102,9 @@ exports.info = {
 	aliases: ['js'],
 	hidden: true,
 	usage: 'eval <code>',
+	examples: [
+		'eval bot.user.id'
+	],
 	description: 'Evaluates arbitrary JavaScript',
 	options: [
 		{
