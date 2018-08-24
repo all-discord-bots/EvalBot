@@ -9,7 +9,7 @@ const path = require('path');
 const { ShardingManager } = require('discord.js');
 
 global.spawnedshards = [];
-global.ShardManager = new ShardingManager(path.resolve(__dirname, '../bin/cripsbot'), {
+const ShardManager = new ShardingManager(path.resolve(__dirname, '../bin/cripsbot'), {
 	respawn: true,
 	token: process.env.BOT_TOKEN,
 	totalShards: 'auto',
