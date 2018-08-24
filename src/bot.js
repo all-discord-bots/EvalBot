@@ -7,7 +7,7 @@ const { Client, Collection } = require('discord.js');
 const stripIndents = require('common-tags').stripIndents;
 const chalk = require('chalk');
 const Managers = require('./managers');
-const DBL = require("dblapi.js");
+const DBL = require('dblapi.js');
 const axios = require('axios');
 const Webhook = require("webhook-discord");
 const Hook = new Webhook(process.env.WEBHOOK_CONSOLE_LOGGER);
@@ -775,25 +775,29 @@ class CripsBot extends Client {
 		});
 		
 		process.on('uncaughtException', (err) => {
-			let errorMsg = (err ? err.stack || err : '').toString().replace(new RegExp(`${__dirname}\/`, 'g'), './');
-			this.logger.severe(errorMsg);
-			this.channels.get("415265475895754752").send({
-				embed: ({
-					color: 15684432,
-					timestamp: new Date(),
-					title: `Uncaught Exception`,
-					description: `\`\`\`\n${errorMsg}\n\`\`\``,
-					fields: [
-						{
-							name: `Error Name:`,
-							value: `\`${err.name || "N/A"}\``
-						}, {
-							name: `Error Message:`,
-							value: `\`${err.message || "N/A"}\``
-						}
-					]
-				})
-			}); //.catch(err => console.error);
+			try {
+				let errorMsg = (err ? err.stack || err : '').toString().replace(new RegExp(`${__dirname}\/`, 'g'), './');
+				this.logger.severe(errorMsg);
+				this.channels.get("415265475895754752").send({
+					embed: ({
+						color: 15684432,
+						timestamp: new Date(),
+						title: `Uncaught Exception`,
+						description: `\`\`\`\n${errorMsg}\n\`\`\``,
+						fields: [
+							{
+								name: `Error Name:`,
+								value: `\`${err.name || "N/A"}\``
+							}, {
+								name: `Error Message:`,
+								value: `\`${err.message || "N/A"}\``
+							}
+						]
+					})
+				}).catch(err => console.error);
+			} catch (err) {
+				console.error(err.toString());
+			}
 		});
 		
 		process.on('unhandledRejection', (err) => {
