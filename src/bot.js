@@ -177,8 +177,8 @@ class CripsBot extends Client {
 						shard_count: bot.shard.count // Type: Number, The amount of shards the bot has.
 					}
 				})
-				.then(success => console.log("Uploaded Bot Stats to DBL!"))
-				.catch(err => console.error(err.toString()));
+				//.then(success => console.log("Uploaded Bot Stats to DBL!"))
+				//.catch(err => console.error(err.toString()));
 				/*
 				const discordPw = axios({
 					method: 'post',
@@ -224,7 +224,7 @@ class CripsBot extends Client {
 				console.log(dbres.res, dpwres.res, bspaceres.res, dservres.res, listres.res)
 				*/
 				const [dbres] = await Promise.all([discordBots]);
-				console.log(dbres.res);
+				console.log(dbres.toString());
 			} catch (err) {
 				console.error(err.toString());
 			}
