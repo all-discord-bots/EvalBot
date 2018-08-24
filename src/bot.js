@@ -119,7 +119,7 @@ class CripsBot extends Client {
 						title: `User Upvoted!`,
 						author: {
 							name: `${this.users.get(vote.user.toString()).tag}`,
-							icon_url: `\`${this.users.get(vote.user.toString()).displayAvatarURL}\``
+							icon_url: `${this.users.get(vote.user.toString()).displayAvatarURL}`
 						},
 						fields: [
 							{
