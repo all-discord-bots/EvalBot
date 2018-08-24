@@ -177,7 +177,7 @@ class CripsBot extends Client {
 						shard_count: bot.shard.count // Type: Number, The amount of shards the bot has.
 					}
 				}).then(() => {
-					console.log("Uploaded Bot Stats to DBL!"))
+					console.log("Uploaded Bot Stats to DBL!");
 				}).catch(err => console.error(err.toString()));
 				/*
 				const discordPw = axios({
