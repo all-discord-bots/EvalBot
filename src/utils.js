@@ -298,6 +298,8 @@ const ixUpload = text => {
 };
 
 module.exports = {
+	// Shard Utilities
+	shards,
 	// Fetch Members
 	memberSearch,
 	getMembers,
