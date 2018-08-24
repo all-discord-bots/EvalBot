@@ -33,14 +33,14 @@ exports.run = async (bot, msg, args) => {
 					})
 				});
 			});
-		}).catch((err) => {
+		})).catch((err) => {
 			console.error(err.toString());
 			msg.channel.send({
 				embed: ({
 					title: `<:redx:411978781226696705> I am sorry, but I seem to have encountered an error and was not able to purge any of the messages. Feel free to retry the command.`
 				})
 			});
-		}));
+		});
 	} catch (err) {
 		console.error(err.toString());
 	}
