@@ -194,7 +194,7 @@ class CripsBot extends Client {
 					method: 'post',
 					url: `https://botlist.space/api/bots/${this.user.id}`,
 					headers: {
-						Authorization: ''
+						Authorization: `${process.env.BOTLIST_SPACE_TOKEN_AUTH}`
 					},
 					data: {
 						server_count: this.guilds.size
