@@ -22,7 +22,7 @@ ShardManager.on('launch', (shard) => {
 	try {
 		if (shard.id + 1 == ShardManager.totalShards) {
 			utils.shards.shift();
-			utils.shards.push(ShardManager.shards.toObject());
+			utils.shards.push(ShardManager.shards.toArray());
 		}
 		wbhook.success('CripsBot', `Successfully launched shard \`${shard.id}\`.`);
 		console.log(`Successfully launched shard ${shard.id}`);
