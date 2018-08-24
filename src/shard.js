@@ -7,9 +7,9 @@ const utils = require('./utils');
 const Webhook = require('webhook-discord');
 const wbhook = new Webhook(process.env.WEBHOOK_SHARD_LOGGER);
 const path = require('path');
-const { Collection, ShardingManager } = require('discord.js');
+const { ShardingManager } = require('discord.js');
 
-let collected_shards = global.collected_shards = new Collection();
+const = collected_shards = global.collected_shards = [];
 
 const ShardManager = new ShardingManager(path.resolve(__dirname, '../bin/cripsbot'), {
 	respawn: true,
@@ -22,9 +22,11 @@ const ShardManager = new ShardingManager(path.resolve(__dirname, '../bin/cripsbo
 ShardManager.spawn();
 ShardManager.on('launch', (shard) => {
 	try {
-		if (shard.id + 1 == ShardManager.totalShards) {
-			collected_shards = ShardManager.shards;
-			utils.shards = collected_shards;
+		collected_shards.push(shard);
+		if (collected_shards.length >= ShardManager.totalShards) {
+			utils.shards.shift();
+			utils.shards.push(collected_shards);
+			collected_shards = [];
 		}
 		wbhook.success('CripsBot', `Successfully launched shard \`${shard.id}\`.`);
 		console.log(`Successfully launched shard ${shard.id}`);
