@@ -3,6 +3,7 @@
     instead of your main bot file.
 */
 
+const utils = require('./utils');
 const Webhook = require('webhook-discord');
 const wbhook = new Webhook(process.env.WEBHOOK_SHARD_LOGGER);
 const path = require('path');
@@ -20,8 +21,8 @@ ShardManager.spawn();
 ShardManager.on('launch', (shard) => {
 	try {
 		if (shard.id == ShardManager.totalShards) {
-			global.shards.shift();
-			global.shards.push(ShardManager.shards);
+			utils.shards.shift();
+			utils.shards.push(ShardManager.shards);
 		}
 		wbhook.success('CripsBot', `Successfully launched shard \`${shard.id}\`.`);
 		console.log(`Successfully launched shard ${shard.id}`);
