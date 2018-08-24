@@ -25,7 +25,7 @@ exports.run = async (bot, msg, args) => {
 						title: `<:check:411976443522711552> Successfully purged \`${parseInt(args[0].toString().replace(/^[-]/g,''))}\` messages.`
 					})
 				});
-			}).catch((err) => {
+			})).catch((err) => {
 				console.error(err.toString());
 				msg.edit({
 					embed: ({
@@ -40,7 +40,7 @@ exports.run = async (bot, msg, args) => {
 					title: `<:redx:411978781226696705> I am sorry, but I seem to have encountered an error and was not able to purge any of the messages. Feel free to retry the command.`
 				})
 			});
-		}));
+		});
 	} catch (err) {
 		console.error(err.toString());
 	}
@@ -50,7 +50,7 @@ exports.info = {
 	name: 'purge',
 	userPermissions: ['MANAGE_MESSAGES'],
 	clientPermissions: ['MANAGE_MESSAGES'],
-	usage: 'purge <amount>' // usage: 'purge <user>|<number of messages>'
+	usage: 'purge <amount>', // usage: 'purge <user>|<number of messages>'
 	examples: [
 		'purge 10'
 	],
