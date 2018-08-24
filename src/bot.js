@@ -25,8 +25,8 @@ class CripsBot extends Client {
 		
 		let startTime = new Date(); // start recording time of boot
 		
-		//const dbl = new DBL(process.env.DB_TOKEN, client);
-		const dbl = new DBL(process.env.DBL_TOKEN, { webhookPort: 5000, webhookAuth: process.env.DBL_WEBHOOK });
+		//const dbl = new DBL(process.env.DBL_TOKEN_AUTH, client);
+		const dbl = new DBL(process.env.DBL_TOKEN_AUTH, { webhookPort: 5000, webhookAuth: process.env.DBL_WEBHOOK_AUTH });
 		
 		global.bot = this;
 		
@@ -85,6 +85,22 @@ class CripsBot extends Client {
 			console.log('Uploaded Bot Stats!');
 		}, 1800000);*/
 		
+		/*
+		const Discord = require("discord.js");
+		const client = new Discord.Client();
+		const DBL = require("dblapi.js");
+		const dbl = new DBL('Your discordbots.org token', client);
+		
+		// Optional events
+		dbl.on('posted', () => {
+			console.log('Server count posted!');
+		})
+		
+		dbl.on('error', e => {
+			console.log(`Oops! ${e}`);
+		})
+		*/
+		
 		dbl.webhook.on('ready', (hook) => {
 			try {
 				console.log(`Webhook running at http://${hook.hostname}:${hook.port}${hook.path}`);
@@ -100,8 +116,23 @@ class CripsBot extends Client {
 					embed: ({
 						color: 5892826,
 						timestamp: new Date(),
-						title: `Info`,
-						description: `\`[${event.code}] Already Authenticated\``
+						title: `User Upvoted!`,
+						author: {
+							name: `${bot.users.get(vote.user.toString()).tag}`,
+							icon_url: `${bot.users.get(vote.user.toString()).displayAvatarURL}`
+						},
+						fields: [
+							{
+								name: `Tag:`,
+								value: `bot.users.get(vote.user.toString()).username`
+							}, {
+								name: `Username:`,
+								value: `${bot.users.get(vote.user.toString()).username}`
+							}, {
+								name: `ID:`,
+								value: `${vote.user}`
+							}
+						]
 					})
 				});
 			} catch (err) {
@@ -109,62 +140,94 @@ class CripsBot extends Client {
 			}
 		});
 		
+		dbl.on('error', (err) => {
+			let errorMsg = (err ? err.stack || err : '').toString().replace(new RegExp(`${__dirname}\/`, 'g'), './');
+			console.log(`Oops! ${errorMsg}`);
+			this.channels.get("415265475895754752").send({
+				embed: ({
+					color: 15684432,
+					timestamp: new Date(),
+					title: `Uncaught Exception`,
+					description: `\`\`\`\n${errorMsg}\n\`\`\``,
+					fields: [
+						{
+							name: `Error Name:`,
+							value: `\`${err.name || "N/A"}\``
+						}, {
+							name: `Error Message:`,
+							value: `\`${err.message || "N/A"}\``
+						}
+					]
+				})
+			});
+		})
+		
 		async function postDiscordStats() {
-			const discordBots = axios({
-				method: 'post',
-				url: `https://discordbots.org/api/bots/${this.user.id}/stats`,
-				headers: {
-					Authorization: ''
-				},
-				data: {
-					server_count: this.guilds.size
-				}
-			})/*
-			const discordPw = axios({
-				method: 'post',
-				url: `https://bots.discord.pw/api/bots/${this.user.id}/stats`,
-				headers: {
-					Authorization: ''
-				},
-				data: {
-					server_count: this.guilds.size
-				}
-			})
-			const botlistSpace = axios({
-				method: 'post',
-				url: `https://botlist.space/api/bots/${this.user.id}`,
-				headers: {
-					Authorization: ''
-				},
-				data: {
-					server_count: this.guilds.size
-				}
-			})
-			const discordServices = axios({
-				method: 'post',
-				url: `https://discord.services/api/bots/${this.user.id}`,
-				headers: {
-					Authorization: ''
-				},
-				data: {
-					server_count: this.guilds.size
-				}
-			})
-			const listCord = axios({
-				method: 'post',
-				url: `https://listcord.com/api/bot/${this.user.id}/guilds`,
-				headers: {
-					Authorization: ''
-				},
-				data: {
-					guilds: this.guilds.size
-				}
-			})
-			const [dbres, dpwres, bspaceres, dservres, listres] = await Promise.all([discordBots, discordPw, botlistSpace, discordServices, listCord])
-			console.log(dbres.res, dpwres.res, bspaceres.res, dservres.res, listres.res)
-			*/
-			const [dbres] = await Promise.all([discordBots]);
-			console.log(dbres.res);
+			try {
+				const discordBots = axios({
+					method: 'post',
+					url: `https://discordbots.org/api/bots/${this.user.id}/stats`,
+					headers: {
+						Authorization: process.env.DBL_TOKEN_AUTH
+					},
+					data: {
+						server_count: this.guilds.size, // Type: Numbers or Array of numbers, The amount of servers the bot is in. If an array it acts like `shards`
+						// shards: [], // Type: Array of numbers, The amount of servers the bot is in per shard.
+						shard_id: this.shard.id, // Type: Number, The zero-indexed id of the shard posting. Makes server_count set the shard specific server count.
+						shard_count: this.shard.count // Type: Number, The amount of shards the bot has.
+					}
+				});
+				//.then(success => console.log("Uploaded Bot Stats to DBL!"))
+				//.catch(err => console.error(err.toString()));
+				/*
+				const discordPw = axios({
+					method: 'post',
+					url: `https://bots.discord.pw/api/bots/${this.user.id}/stats`,
+					headers: {
+						Authorization: ''
+					},
+					data: {
+						server_count: this.guilds.size
+					}
+				})
+				const botlistSpace = axios({
+					method: 'post',
+					url: `https://botlist.space/api/bots/${this.user.id}`,
+					headers: {
+						Authorization: ''
+					},
+					data: {
+						server_count: this.guilds.size
+					}
+				})
+				const discordServices = axios({
+					method: 'post',
+					url: `https://discord.services/api/bots/${this.user.id}`,
+					headers: {
+						Authorization: ''
+					},
+					data: {
+						server_count: this.guilds.size
+					}
+				})
+				const listCord = axios({
+					method: 'post',
+					url: `https://listcord.com/api/bot/${this.user.id}/guilds`,
+					headers: {
+						Authorization: ''
+					},
+					data: {
+						guilds: this.guilds.size
+					}
+				})
+				const [dbres, dpwres, bspaceres, dservres, listres] = await Promise.all([discordBots, discordPw, botlistSpace, discordServices, listCord])
+				console.log(dbres.res, dpwres.res, bspaceres.res, dservres.res, listres.res)
+				*/
+				const [dbres] = await Promise.all([discordBots]);
+				console.log(dbres.res);
+			} catch (err) {
+				console.error(err.toString());
+			}
 		}
 		
 		this.setInterval(() => {
