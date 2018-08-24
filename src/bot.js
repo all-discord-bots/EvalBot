@@ -162,19 +162,19 @@ class CripsBot extends Client {
 			});
 		})
 		
-		async function postDiscordStats() {
+		async function postDiscordStats(bot) {
 			try {
 				const discordBots = axios({
 					method: 'post',
-					url: `https://discordbots.org/api/bots/${this.user.id}/stats`,
+					url: `https://discordbots.org/api/bots/${bot.user.id}/stats`,
 					headers: {
-						Authorization: process.env.DBL_TOKEN_AUTH
+						Authorization: `${process.env.DBL_TOKEN_AUTH}`
 					},
 					data: {
-						server_count: this.guilds.size, // Type: Numbers or Array of numbers, The amount of servers the bot is in. If an array it acts like `shards`
+						server_count: bot.guilds.size, // Type: Numbers or Array of numbers, The amount of servers the bot is in. If an array it acts like `shards`
 						// shards: [], // Type: Array of numbers, The amount of servers the bot is in per shard.
-						shard_id: this.shard.id, // Type: Number, The zero-indexed id of the shard posting. Makes server_count set the shard specific server count.
-						shard_count: this.shard.count // Type: Number, The amount of shards the bot has.
+						shard_id: bot.shard.id, // Type: Number, The zero-indexed id of the shard posting. Makes server_count set the shard specific server count.
+						shard_count: bot.shard.count // Type: Number, The amount of shards the bot has.
 					}
 				})
 				.then(success => console.log("Uploaded Bot Stats to DBL!"))
@@ -232,7 +232,7 @@ class CripsBot extends Client {
 		
 		this.setInterval(() => {
 			try {
-				postDiscordStats();
+				postDiscordStats(this);
 			} catch (err) {
 				console.error(err.toString());
 			}
@@ -245,7 +245,7 @@ class CripsBot extends Client {
 		this.shards = global.shards = [];
 		
 		// Event listeners
-		this.on ('ready', () => {
+		this.on('ready', () => {
 			if (!this.user.bot) {
 				logger.severe(`${this.user.username} is a bot, but you entered a user token. Please follow the instructions at ${chalk.green('https://discordapp.com/developers')} and re-enter your token by running ${chalk.green('yarn run config')}.`);
 				return this.shutdown(false);
