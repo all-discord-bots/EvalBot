@@ -52,7 +52,7 @@ exports.run = async (bot, msg, args) => {
 			.replace(new RegExp(bot.utils.quoteRegex(process.env.WEBHOOK_MESSAGES_DELETED_LOGGER), 'g'), 'WEBHOOK_MESSAGES_DELETED_LOGGER')
 			.replace(new RegExp(bot.utils.quoteRegex(process.env.WEBHOOK_SHARD_LOGGER), 'g'), 'WEBHOOK_SHARD_LOGGER')
 			.replace(new RegExp(bot.utils.quoteRegex(process.env.PASTEBIN_KEY), 'g'), 'PASTEBIN_KEY');
-			
+			.replace(new RegExp(bot.utils.quoteRegex(process.env.BOTLIST_SPACE_TOKEN_AUTH), 'g'), 'BOTLIST_SPACE_TOKEN_AUTH');
 			
 		const displayedOutput = output.length < 1500
 			? `\n\`\`\`${lang}\n${output}\n\`\`\``
