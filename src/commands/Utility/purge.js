@@ -19,7 +19,7 @@ exports.run = async (bot, msg, args) => {
 		messages.map(async m => await m.delete().catch(console.error));
 */
 		(await msg.channel.send({ embed: ({ title: `<a:loading:414954381176340480> Purging \`${parseInt(args[0].toString().replace(/^[-]/g,''))}\` messages...` })}).then((msg) => {
-			msg.channel.bulkDelete(parseInt(args[0].toString().replace(/^[-]/g,''))).then(() => {
+			msg.channel.bulkDelete(`${parseInt(args[0].toString().replace(/^[-]/g,''))}`).then(() => {
 				msg.edit({
 					embed: ({
 						title: `<:check:411976443522711552> Successfully purged \`${parseInt(args[0].toString().replace(/^[-]/g,''))}\` messages.`
