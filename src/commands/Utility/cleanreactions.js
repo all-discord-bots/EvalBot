@@ -22,8 +22,8 @@ exports.run = async (bot, msg, args) => {
 						})
 					});
 				});
-			}));
-		}).catch((err) => {
+			});
+		})).catch((err) => {
 			console.error(err.toString());
 			msg.channel.send({
 				embed: ({
