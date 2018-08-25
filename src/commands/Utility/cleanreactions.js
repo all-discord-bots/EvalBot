@@ -2,7 +2,7 @@ exports.run = async (bot, msg, args) => {
 	try {
 		if (args.length <= 0) return msg.channel.send(`<:redx:411978781226696705> You must specify the number of messages to clean reactions for.`).catch((err) => console.error);
 		if (!parseInt(args[0]) || !parseInt(parseInt(args[0].toString().replace(/^[-]/g,'')), 10)) return msg.channel.send(`<:redx:411978781226696705> Please provide a number of messages to clean reactions for.`).catch((err) => console.error);
-		msg.channel.fetchMessages({limit: `${parseInt(parseInt(args[0].toString().replace(/^[-]/g,'')), 10)}`}).then((msglog) => {
+		msg.channel.fetchMessages({limit: parseInt(parseInt(args[0].toString().replace(/^[-]/g,'')), 10)}).then((msglog) => {
 			(await msg.channel.send({ embed: ({ title: `<a:loading:414954381176340480> Clearing reactions for \`${parseInt(args[0].toString().replace(/^[-]/g,''))}\` messages in this channel...` })}).then((msg) => {
 				let count = 0;
 				msglog.forEach((message) => {
