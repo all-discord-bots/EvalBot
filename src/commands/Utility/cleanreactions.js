@@ -23,14 +23,14 @@ exports.run = async (bot, msg, args) => {
 					});
 				});
 			});
-		})).catch((err) => {
+		}).catch((err) => {
 			console.error(err.toString());
 			msg.channel.send({
 				embed: ({
 					title: `<:redx:411978781226696705> I am sorry but I seem to have encountered an error. I wasn't able to clean any of the messages of their reactions. Feel free to retry the command.`
 				})
 			});
-		});
+		}));
 	} catch (err) {
 		console.error(err.toString());
 	}
@@ -41,10 +41,10 @@ exports.info = {
 	userPermissions: ['MANAGE_MESSAGES'],
 	clientPermissions: ['MANAGE_MESSAGES'],
 	hidden: true,
-	aliases: ['cr'],
+	aliases: ['cr','cleanreactions'],
 	usage: 'clearreactions <amount>',
 	examples: [
-		'clearreactions 5'
+		'clearreactions 5',
 	],
 	description: 'Clears all reactions from given number of messages.'
 };
