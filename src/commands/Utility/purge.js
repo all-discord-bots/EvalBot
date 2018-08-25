@@ -17,17 +17,17 @@ exports.run = async (bot, msg, args) => {
 			messages.length = amount + 1;
 		}
 		messages.map(async m => await m.delete().catch(console.error));
-*/
+		*/
 		(await msg.channel.send({ embed: ({ title: `<a:loading:414954381176340480> Purging \`${parseInt(args[0].toString().replace(/^[-]/g,''))}\` messages...` })}).then((msg) => {
 			msg.channel.bulkDelete(`${parseInt(args[0].toString().replace(/^[-]/g,''))}`).then(() => {
-				msg.edit({
+				msg.channel.send({
 					embed: ({
 						title: `<:check:411976443522711552> Successfully purged \`${parseInt(args[0].toString().replace(/^[-]/g,''))}\` messages.`
 					})
 				});
 			}).catch((err) => {
 				console.error(err.toString());
-				msg.edit({
+				msg.channel.send({
 					embed: ({
 						title: `<:redx:411978781226696705> I am sorry, but I seem to have encountered an error while purging the messages. I may not have been able to successfully purge some the messages.`
 					})
