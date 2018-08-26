@@ -165,6 +165,7 @@ exports.info = {
 	clientPermissions: ['CONNECT','SPEAK'],
 	usage: 'radio [station name | stream url]',
 	examples: [
+		'radio',
 		'radio Fun Radio',
 		'radio ca.radioboss.fm:8137/stream%26t%3D%26r%3D4RBS4'
 	],
