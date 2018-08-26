@@ -70,7 +70,7 @@ exports.info = {
 	userPermissions: ["MANAGE_CHANNELS"],
 	clientPermissions: ["MANAGE_CHANNELS","MANAGE_ROLES"],
 	aliases: ['channel-lock-down','lock-down-channel','lockdown'],
-	usage: 'lock-down [channel] [length]'
+	usage: 'lock-down [channel] [length]',
 	examples: [
 		'lock-down #general 3m',
 		'lock-down #general',
