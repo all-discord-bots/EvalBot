@@ -21,16 +21,16 @@ exports.run = async (bot, msg, args) => {
 			days: parseFloat(args[1]) || 0,
 			reason: `${reason}`
 		}).then(() => {
-			msg.channel.send(`<:check:411976443522711552> Case #N/A <@${user.id}> has been banned.`);
+			msg.channel.send(`<:check:411976443522711552> \`Case #N/A\` <@${user.id}> has been banned.`);
 		}).catch((err) => {
 			console.error(err.toString());
-			msg.channel.send(`<:redx:411978781226696705> I was unable to ban <@${user.id}> because ${err}`);
+			msg.channel.send(`<:redx:411978781226696705> I was unable to ban <@${user.id}> because ${err.message}.`);
 		});
 		let modlogs_channel = msg.guild.channels.find(`name`, `${modlogs}`);
 		if (modlogs_channel) {
-			let desc = ``;
+			let ban_reason = ``;
 			if (reason !== "") {
-				desc = `\n**Reason:** ${reason}`
+				ban_reason = `\n**Reason:** ${reason}`
 			}
 			modlogs_channel.send({
 				embed: ({
