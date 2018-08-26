@@ -26,6 +26,7 @@ exports.run = async (bot, msg, args) => {
 
 exports.info = {
   name: 'warnlevel',
+  ownerOnly: true,
   hidden: true, // broken atm
   aliases: ['warnlvl','warn-level'],
   usage: 'warnlevel <user>',
