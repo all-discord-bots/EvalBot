@@ -1,77 +1,102 @@
 const Discord = require("discord.js");
 const fs = require("fs");
 const ms = require("ms");
-let warns = JSON.parse(fs.readFileSync("./warnings.json", "utf8"));
 
 exports.run = async (bot, msg, args) => {
-  let autoban = false;
-  let automute = false;
-  let mutedrole = "muted";
-  let modlogs = "mod_logs";
-  //!warn @daeshan <reason>
-  let gbot = msg.guild.members.get(bot.user.id);
-  if (!gbot.hasPermission(0x00000002)) return msg.channel.send(`<:redx:411978781226696705> I am missing \`Kick Members\`!`).catch(console.error);
-  if (msg.author.id !== bot.config.botCreatorID) {
-    if(!msg.member.hasPermission("KICK_MEMBERS")) return msg.channel.send(`<:redx:411978781226696705> You are missing the permissions \`Kick Members\`!`).catch(console.error);
-  }
-  let wUser = msg.guild.member(msg.mentions.users.first()) || msg.guild.members.get(args[0])
-  if(!wUser) return msg.channel.send(`<:redx:411978781226696705> Can't find that user!`).catch(console.error);
-//  if(wUser.hasPermission("MANAGE_MESSAGES")) return message.reply("They waaaay too kewl");
-  let reason = args.join(" ").slice(22);
-  if (!reason) return msg.channel.send(`<:redx:411978781226696705> Please provide a reason.`).catch(console.error);
-  if (wUser.user.id === msg.author.id) return msg.channel.send(`<:redx:411978781226696705> I cannot allow self-harm!`).catch(console.error);
-  if(!warns[wUser.id]) warns[wUser.id] = {
-    warns: 0
-  };
+	try {
+		let warns = JSON.parse(fs.readFileSync("./warnings.json", "utf8"));
+		//let autopunish = false;
+		//let mutedrole = "muted";
+		let modlogs = "mod_logs";
+		switch (args.length) {
+			case 0:
+				return msg.channel.send(`<:redx:411978781226696705> Too few arguments provided.`);
+			case 1:
+				return msg.channel.send(`<:redx:411978781226696705> Invalid \`[reason]\` argument given.`);
+		}
+		let user = bot.utils.getMembers(msg,args[1]);
+		if (!user) return msg.channel.send(`<:redx:411978781226696705> I could not find that user.`);
+		if (user.toString().includes("I could not find that user.")) return;
+		if (!msg.guild.members.get(`${user.id}`)) return msg.channel.send(`<:redx:411978781226696705> I could not find that user.`);
+		let reason = args.slice(1).join(' ');
+		
+		if (reason === "") return msg.channel.send(`<:redx:411978781226696705> Invalid \`<reason>\` argument given.`);
+		if (user.id == msg.author.id) return msg.channel.send(`<:redx:411978781226696705> I cannot allow self-harm!`);
+		if(!warns[user.id]) {
+			warns[user.id] = {
+				warns: 0
+			};
+		}
+		warns[user.id].warns++;
+		fs.writeFile("./warnings.json",JSON.stringify(warns),(err) => {
+			if (err) console.error(err);
+		});
 
-  warns[wUser.id].warns++;
-
-  fs.writeFile("./warnings.json", JSON.stringify(warns), (err) => {
-    if (err) console.log(err)
-  });
-  
-  let warnEmbed = new Discord.RichEmbed()
-  .setDescription("Warns")
-  .setAuthor(msg.author.username)
-  .setColor("#fc6400")
-  .addField("Warned User", `<@${wUser.id}>`)
-  .addField("Warned In", msg.channel)
-  .addField("Number of Warnings", warns[wUser.id].warns)
-  .addField("Reason", reason);
-
-  let warnchannel = msg.guild.channels.find(`name`, `${modlogs}`);
- // if(!warnchannel) return msg.channel.send(`<:redx:411978781226696705> Couldn't find ${modlogs} channel!`).catch(console.error);
-  
-  if (warnchannel) {
-    warnchannel.send(warnEmbed);
-  }
-
-  if (automute) {
-    if(warns[wUser.id].warns === 2){
-      let muterole = msg.guild.roles.find(`name`, `${mutedrole}`);
-      if(!muterole) return msg.channel.send(`<:redx:411978781226696705> Cannot find ${mutedrole} role!`).catch(console.error);
-
-      let mutetime = "10s";
-      await(wUser.addRole(muterole.id)).catch(console.error);
-      msg.channel.send(`<:check:411976443522711552> <@${wUser.id}> has been temporarily muted.`);
-
-      setTimeout(function() {
-        wUser.removeRole(muterole.id).catch(console.error);
-        msg.channel.send(`<:check:411976443522711552> <@${wUser.id}> has been unmuted.`);
-      }, ms(mutetime));
-    }
-  }
-  if (autoban) {
-    if(warns[wUser.id].warns === 3) {
-      msg.guild.member(wUser).ban(reason).catch(err => msg.channel.send(`<:redx:411978781226696705>  Could not ban ${wUser.username}: ${err}`));
-      msg.reply(`<:check:411976443522711552> <@${wUser.id}> has been banned.`);
-    }
-  }
-
-}
+		let warnchannel = msg.guild.channels.find(`name`, `${modlogs}`);
+		if (warnchannel) {
+			warnchannel.send({
+				embed: ({
+					description: `**Member:** ${user.tag} ${user.id}\n**Action:** Warn\n**Reason:** ${reason}`,
+					color: 16771899,
+					timestamp: new Date(),
+					author: {
+						name: `${msg.author.tag}`,
+						icon_url: `${msg.author.displayAvatarURL}`
+					},
+					footer: {
+						`Case #N/A`
+						//text: `Case #${caseNum}`
+					}
+				})
+			});
+		}
+		
+		/*if (autopunish) {
+			switch (warns[user.id].warns) {
+				default:
+					break;
+				case 1:
+					break;
+				case 2:
+					let muterole = msg.guild.roles.find(`name`, `${mutedrole}`);
+					if (!muterole) return msg.channel.send(`<:redx:411978781226696705> Cannot find ${mutedrole} role!`);
+					let mutetime = "10s";
+					await user.addRole(muterole.id).then(() => {
+						msg.channel.send(`<:check:411976443522711552> <@${user.id}> has been temporarily muted for \`${mutetime}\`.`);
+					}).catch((err) => {
+						console.error(err.toString());
+						msg.channel.send(`<:redx:411978781226696705> I was not able to mute \`${user.username}\`: ${err}`);
+					});
+					setTimeout(function() {
+						await user.removeRole(muterole.id).then(() => {
+							msg.channel.send(`<:check:411976443522711552> <@${user.id}> has been unmuted.`);
+						}).catch((err) => {
+							console.error(err.toString());
+							msg.channel.send(`<:redx:411978781226696705> I was not able to unmute ${user.username}: ${err}`);
+						});
+					}, ms(mutetime));
+					break;
+				case 3:
+					await user.ban(reason).then(() => {
+						msg.channel.send(`<:check:411976443522711552> <@${user.id}> has been banned.`);
+					}).catch((err) => {
+						console.error(err.toString());
+						msg.channel.send(`<:redx:411978781226696705> I was not able to ban ${user.username}: ${err}`);
+					});
+			}
+		}*/
+	} catch (err) {
+		console.error(err.toString());
+	}
+};
 
 exports.info = {
-  name: 'warn',
-  usage: 'warn <member> <reason>',
-  description: 'Gives member a warning, usually for breaking the rules. If you would like to let the bot keep logs of moderations create a text channel named `mod_logs`'
-}
+	name: 'warn',
+	aliases: ['w'],
+	userPermissions: ['KICK_MEMBERS'],
+	usage: 'warn <member> <reason>',
+	examples: [
+		'warn BannerBomb Being too awesome'
+	],
+	description: 'Gives member a warning, usually for breaking the rules. If you would like to let the bot keep logs of moderations create a text channel named `mod_logs`'
+};
