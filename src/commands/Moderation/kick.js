@@ -19,7 +19,7 @@ exports.run = async (bot, msg, args) => {
 			msg.channel.send(`<:check:411976443522711552> \`Case #N/A\` <@${user.id}> has been kicked.`);
 		}).catch((err) => {
 			console.error(err.toString());
-			msg.channel.send(`<:redx:411978781226696705> I was unable to kick <@${user.id}> because ${err.message}.`);
+			return msg.channel.send(`<:redx:411978781226696705> I was unable to kick <@${user.id}> because ${err.message}.`);
 		});
 		let modlogs_channel = msg.guild.channels.find(`name`, `${modlogs}`);
 		if (modlogs_channel) {
