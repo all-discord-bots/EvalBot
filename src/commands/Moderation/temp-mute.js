@@ -56,7 +56,7 @@ exports.info = {
 	aliases: ['un-ban','rm-ban','remove-ban'],
 	userPermissions: ['BAN_MEMBERS'],
 	clientPermissions: ['BAN_MEMBERS'],
-	usage: 'unban <member> [reason]'
+	usage: 'unban <member> [reason]',
 	examples: [
 		'unban BannerBomb because he learned his lesson',
 		'unban BannerBomb'
