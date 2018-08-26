@@ -1,30 +1,48 @@
-const Discord = require("discord.js");
-
 exports.run = async (bot, msg, args) => {
 	try {
-		if (args.length <= 0) return msg.channel.send(`<:redx:411978781226696705> You must provide a user to kick`).catch(err => console.err);
-		let modlogs = "mod_logs"; // mod_logs channel
-		let kUser = bot.utils.getMembers(msg,args[0]);
-		if (!msg.guild.member(kUser)) return msg.channel.send(`<:redx:411978781226696705> I could not find that user.`).catch(err => console.error);
-		if (kUser.toString().includes("I could not find that user.")) return;
-		let kReason = args.join(" ").slice(22);
-		if(!msg.guild.member(kUser).kickable) return msg.channel.send(`<:redx:411978781226696705> I may need my role moved higher!`).catch(err => console.error);
-		if (kUser.user.id === msg.author.id) return msg.channel.send(`<:redx:411978781226696705> I cannot allow self-harm!`).catch(err => console.error);
-		let kickChannel = msg.guild.channels.find(`name`, `${modlogs}`);
-		// if(!kickChannel) return msg.channel.send(`Can't find ${modlogs} channel.`).catch(err => console.error);
-		msg.guild.member(kUser).kick(kReason).catch(err => msg.channel.send(`I could not kick this user due to the error: ${err}`));
-		if (kickChannel) {
-			let kickEmbed = new Discord.RichEmbed()
-				.setDescription("~Kick~")
-				.setColor("#e56b00")
-				.addField("Kicked User", `${kUser} with ID ${kUser.id}`)
-				.addField("Kicked By", `<@${msg.author.id}> with ID ${msg.author.id}`)
-				.addField("Kicked In", msg.channel)
-				.addField("Time", msg.createdAt)
-				.addField("Reason", kReason);
-			kickChannel.send(kickEmbed).catch(err => console.error);
+		let modlogs = "mod_logs";
+		switch (args.length) {
+			case 0:
+				return msg.channel.send(`<:redx:411978781226696705> Too few arguments given.`);
 		}
-		msg.channel.send(`<:check:411976443522711552> Successfully kicked <@${kUser.id}>`).catch(err => console.error);
+		let user = bot.utils.getMembers(msg,args[0]);
+		if (!user) return msg.channel.send(`<:redx:411978781226696705> I could not find that user.`);
+		if (user.toString().includes("I could not find that user.")) return;
+		if (!msg.guild.members.get(`${user.id}`)) return msg.channel.send(`<:redx:411978781226696705> I could not find that user.`);
+		let reason = args.slice(1).join(' ');
+		if (user.id == msg.author.id) return msg.channel.send(`<:redx:411978781226696705> I cannot allow self-harm!`);
+		if (user.manageable == false) return msg.channel.send(`<:redx:411978781226696705> I may need my role moved higher!`);
+		if (user.kickable == false) return msg.channel.send(`<:redx:411978781226696705> I cannot kick that user.`);
+		await user.kick({
+			reason: `${reason}`
+		}).then(() => {
+			msg.channel.send(`<:check:411976443522711552> \`Case #N/A\` <@${user.id}> has been kicked.`);
+		}).catch((err) => {
+			console.error(err.toString());
+			msg.channel.send(`<:redx:411978781226696705> I was unable to kick <@${user.id}> because ${err.message}.`);
+		});
+		let modlogs_channel = msg.guild.channels.find(`name`, `${modlogs}`);
+		if (modlogs_channel) {
+			let kick_reason = ``;
+			if (reason !== "") {
+				kick_reason = `\n**Reason:** ${reason}`
+			}
+			modlogs_channel.send({
+				embed: ({
+					description: `**Member:** ${user.tag} (${user.id})\n**Action:** Kick${kick_reason}`,
+					color: 16747777,
+					timestamp: new Date(),
+					author: {
+						name: `${msg.author.tag}`,
+						icon_url: `${msg.author.displayAvatarURL}`
+					},
+					footer: {
+						text: `Case #N/A`
+						//text: `Case #${caseNum}`
+					}
+				})
+			});
+		}
 	} catch (err) {
 		console.error(err.toString());
 	}
@@ -35,6 +53,10 @@ exports.info = {
 	clientPermissions: ["KICK_MEMBERS"],
 	userPermissions: ["KICK_MEMBERS"],
 	aliases: ['smear'],
-	usage: 'kick <member> <reason>',
+	usage: 'kick <member> [reason]',
+	examples: [
+		'kick BannerBomb Being so amazing',
+		'kick BannerBomb'
+	],
 	description: 'Kick a user from the server. If you would like to let the bot keep logs of moderations create a text channel named `mod_logs`'
 };
