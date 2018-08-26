@@ -12,9 +12,9 @@ exports.run = (bot, msg, args) => {
 		if (user.toString().includes("I could not find that user.")) return;
 		if (!msg.guild.members.get(`${user.id}`)) return msg.channel.send(`<:redx:411978781226696705> I could not find that user.`);
 		let reason;
-		//if (ms(`${parseFloat(args[1])}`) && args[1] <= 0) return msg.channel.send(`Invalid mute length provided.`);
+		//if (ms(`${args[1]}`) && args[1] <= 0) return msg.channel.send(`Invalid mute length provided.`);
 		let mute_length = ``;
-		if (ms(`${parseFloat(args[1])}`)) {
+		if (ms(`${args[1]}`)) {
 			reason = args.slice(2).join(' ');
 		} else {
 			reason = args.slice(1).join(' ');
@@ -32,7 +32,7 @@ exports.run = (bot, msg, args) => {
 		if (!mute_role) return msg.channel.send(`<:redx:411978781226696705> I was unable to find the role \`${muted_role_name}\` you can set one up using the \`muted-role\` command.`);
 		if (!user.roles.has(mute_role.id)) {
 			user.addRole(mute_role.id).then(() => {
-				msg.channel.send(`<:check:411976443522711552> \`Case #N/A\` <@${user.id}> has been muted for ${ms(ms(`${parseFloat(args[1])}`),{ long: true })}.`);
+				msg.channel.send(`<:check:411976443522711552> \`Case #N/A\` <@${user.id}> has been muted for ${ms(ms(`${args[1]}`),{ long: true })}.`);
 				if (mute_length !== 'infinite') {
 					bot[msg.guild.id]['muted_users'][user.id] = setTimeout(() => {
 						delete bot[msg.guild.id]['muted_users'][user.id];
@@ -41,7 +41,7 @@ exports.run = (bot, msg, args) => {
 						}).catch((err) => {
 							console.error(err.toString());
 						});
-					}, ms(`${parseFloat(args[1])}`));
+					}, ms(`${args[1]}`));
 				}
 			}).catch((err) => {
 				console.error(err.toString());
@@ -61,7 +61,7 @@ const log_moderation = async (msg,user,args,mute_length,color,action,reason,modl
 	if (modlogs_channel) {
 		let mute_duration = ``;
 		if (mute_length !== 'infinite') {
-			mute_duration = `\n**Length** ${ms(ms(`${parseFloat(args[1])}`),{ long: true })}`;
+			mute_duration = `\n**Length** ${ms(ms(`${args[1]}`),{ long: true })}`;
 		}
 		let mute_reason = ``;
 		if (reason !== "") {
