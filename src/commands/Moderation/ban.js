@@ -61,7 +61,8 @@ exports.info = {
 	usage: 'ban <member> [days delete] [reason]',
 	examples: [
 		'ban BannerBomb being amazing',
-		'ban BannerBomb 3 for no reason'
+		'ban BannerBomb 3 for no reason',
+		'ban BannerBomb'
 	],
 	description: 'Bans users from your guild. If you would like to let the bot keep logs of moderations create a text channel named `mod_logs`'
 };
