@@ -20,7 +20,7 @@ exports.run = async (bot, msg, args) => {
 		if (!bot.lockit) bot.lockit = [];
 		let validUnlocks = ['release', 'unlock'];
 		//if (args[1] && !ms(`${parseFloat(args[1])}`)) return msg.channel.send(`<:redx:411978781226696705> Invalid \`[length]\` argument given.`);
-		if (!args[1] && validUnlocks.includes(args[1])) {
+		if (args[1] && validUnlocks.includes(args[1])) {
 			if (!bot.lockit[gchannel.id] || bot.lockit[gchannel.id] <= 0) return msg.channel.send(`<:redx:411978781226696705> <#${gchannel}> is not currently locked-down.`);
 			gchannel.overwritePermissions(msg.guild.id, {
 				SEND_MESSAGES: null
