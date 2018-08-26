@@ -21,8 +21,8 @@ exports.run = (bot, msg, args) => {
 			mute_length = 'infinite';
 		}
 		let muted_members = {};
-		if (!muted_membersmsg.guild.id]) {
-			muted_membersmsg.guild.id] = {
+		if (!muted_members[msg.guild.id]) {
+			muted_members[msg.guild.id] = {
 				muted_users: {}
 			};
 		}
@@ -34,8 +34,8 @@ exports.run = (bot, msg, args) => {
 			user.addRole(mute_role.id).then(() => {
 				msg.channel.send(`<:check:411976443522711552> \`Case #N/A\` <@${user.id}> has been muted for ${ms(ms(`${args[1]}`),{ long: true })}.`);
 				if (mute_length !== 'infinite') {
-					muted_membersmsg.guild.id]['muted_users'][user.id] = setTimeout(() => {
-						delete muted_membersmsg.guild.id]['muted_users'][user.id];
+					muted_members[msg.guild.id]['muted_users'][user.id] = setTimeout(() => {
+						delete muted_members[msg.guild.id]['muted_users'][user.id];
 						user.removeRole(mute_role.id).then(() => {
 							log_moderation(msg,user,args,mute_length,6732650,'Un-mute','Automatic Unmute');
 						}).catch((err) => {
