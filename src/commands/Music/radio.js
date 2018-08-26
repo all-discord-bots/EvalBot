@@ -21,28 +21,19 @@ exports.run = async (bot, msg, args) => {
 			'Stream The World',
 			'NC Weather'
 		];
-		//'Monstercat'
 		switch (args.length) {
 			case 0:
 				return msg.channel.send({
 					embed: ({
 						color: 3447003,
 						title: `__**Radio Stations**__`,
-						description: `${radiostationsqueue.toString().replace(/[,]/gi, '\n').toString()}`,
+						description: `${radiostationsqueue.toString().replace(/[,]/gi, '\n')}`,
 						timestamp: new Date()
 					})
 				});
 		}
 		if (!msg.member.voiceChannel) return msg.channel.send(`<:redx:411978781226696705> You must be in a voice channel!`).catch((err) => console.error);
-		//let getQueue;
-		//	getQueue = (server) => {
-		//		// Return the queue.
-		//		if (!musicqueue[server]) musicqueue[server] = [];
-		//		return musicqueue[server];
-		//	};
-		//const queue = getQueue(msg.guild.id);
-
-		if (get_video_id(args.join(' ').toString())) return msg.channel.send(`<:redx:411978781226696705> You can play YouTube videos using the \`play\` command. Please specify a radio station url.`).catch((err) => console.error);
+		if (get_video_id(args.join(' ').toString())) return msg.channel.send(`<:redx:411978781226696705> You can play YouTube videos using the \`play\` command. Please specify a radio station url.`);
 		let getarg = args.join(' ').toLowerCase().toString();
 		if (getarg.length <= 3) return msg.channel.send(`<:redx:411978781226696705> You must provide a valid stream.`);
 		let filteredbuiltinradio = radiostationsqueue.map((list) => list.toLowerCase().toString()).filter(list => list.toLowerCase().startsWith(getarg.toString()));
@@ -118,14 +109,9 @@ exports.run = async (bot, msg, args) => {
 
 				// Play the video.
 				try {
-					//if (!musicbot.global) {
-					//  const lvid = musicbot.getLast(msg.guild.id);
-					//  musicbot.setLast(msg.guild.id, video);
-					//  if (lvid !== video) musicbot.np(msg);
-					//};
 					musicqueue[msg.guild.id]['streaming'] = true;
 					let dispatcher = connection.playStream(video.toString(), { filter: 'audioonly' }, { volume: (musicbot.defVolume / 100) }); // Radio
-
+					
 					connection.on('error',(error) => {
 						// Skip to the next song.
 						console.log(`Dispatcher/connection: ${error}`);
@@ -136,16 +122,15 @@ exports.run = async (bot, msg, args) => {
 						queue.shift();
 						executeQueue(musicqueue[msg.guild.id]['music']);
 					});
-
+					
 					dispatcher.on('error',(error) => {
 						// Skip to the next song.
-						console.error(error.toString());
-						console.log(`Dispatcher: ${error}`);
+						console.error(`Dispatcher: ${error}`);
 						if (msg && msg.channel) msg.channel.send(`<:redx:411978781226696705> Dispatcher error!\n\`${error}\``);
 						queue.shift();
 						executeQueue(musicqueue[msg.guild.id]['music']);
 					});
-
+					
 					dispatcher.on('end',() => {
 						// Wait a second.
 						setTimeout(() => {
@@ -158,10 +143,10 @@ exports.run = async (bot, msg, args) => {
 						}, 1000);
 					});
 				} catch (error) {
-					console.error(error.toString());
+					return console.error(error);
 				}
 			}).catch((error) => {
-				console.error(error.toString());
+				return console.error(error);
 			});
 		}
 	} catch (err) {
@@ -170,17 +155,11 @@ exports.run = async (bot, msg, args) => {
 };
 
 const get_video_id = (string) => {
-	if (string.match(/(?:\?v=|&v=|youtu\.be\/)(.*?)(?:\?|&|$)/)) {
-		return true;
-	} else {
-		return false;
-	}
+	return Boolean(new RegExp(/(?:\?v=|&v=|youtu\.be\/)(.*?)(?:\?|&|$)/).test(string));
 };
 
 exports.info = {
 	name: 'radio',
-	ownerOnly: true,
-	hidden: true,
 	aliases: ['station', 'radio-station'],
 	userPermissions: ['CONNECT'],
 	clientPermissions: ['CONNECT','SPEAK'],
