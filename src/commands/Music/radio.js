@@ -60,6 +60,17 @@ exports.run = async (bot, msg, args) => {
 			return msg.channel.send(`<:redx:411978781226696705> Please provide a valid stream url to play or built-in radio station name!`);
 		}
 		musicqueue[msg.guild.id]['music'].push(`${queuethis.toString()}`);
+		if (musicqueue[msg.guild.id]['music'].length >= 2) {
+			musicqueue[msg.guild.id]['music'].shift();
+			try {
+				const voiceConnection = bot.voiceConnections.find(val => val.channel.guild.id == msg.guild.id);
+				const dispatcher = voiceConnection.player.dispatcher;
+				if (voiceConnection.paused) dispatcher.resume();
+				dispatcher.end();
+			} catch (err) {
+				console.error(err.toString());
+			}
+		}
 		if (musicqueue[msg.guild.id]['music'].length === 1 || !bot.voiceConnections.find(val => val.channel.guild.id == msg.guild.id)) {
 			executeQueue(musicqueue[msg.guild.id]['music']);
 		}
@@ -73,44 +84,13 @@ exports.run = async (bot, msg, args) => {
 		//console.log(`${musicqueue[msg.guild.id]['music'].toString()}`);
 
 		let musicbot = {
-			thumbnailType: 'high', // Type of thumbnails to use for videos on embeds. Can equal: default, medium, high.
-			global: false, // Whether to use one global queue or server specific ones.
-			maxQueueSize: 100, // Max queue size allowed. Defaults 20.
-			defVolume: 100, // The default volume of music. 1 - 200, defaults 50.
-			anyoneCanSkip: true, // Whether or not anyone can skip.
-			clearInvoker: false, // Whether to delete command messages.
-			messageHelp: false, // Whether to message the user on help command usage. If it can't, it will send it in the channel like normal.
-			//botAdmins: [], // An array of Discord user ID's to be admins as the bot. They will ignore permissions for the bot, including the set command.
-			enableQueueStat: true, // Whether to enable the queue status, old fix for an error that occurs for a few people.
-			anyoneCanAdjust: true, // Whether anyone can adjust volume.
-			ownerOverMember: false, // Whether the owner over-rides CanAdjust and CanSkip.
-			anyoneCanLeave: true, // Whether anyone can make the bot leave the currently connected channel. // false because of a bug with permissions atm
-			//botOwner: '269247101697916939', // The ID of the Discord user to be seen as the owner. Required if using ownerOverMember.
-			logging: true, // Some extra none needed logging (such as caught errors that didn't crash the bot, etc).
-			requesterName: true, // Whether or not to display the username of the song requester.
-			inlineEmbeds: false, // Whether or not to make embed fields inline (help command and some fields are excluded).
-			disableHelp: true, // Disable the help command.
-			disableSet: true, // Disable the set command.
-			disableOwnerCmd: true, // Disable the owner command.
-			streamMode: 0
-			//disableLeaveCmd: true // Disable the leave command. // Because this command is broken at the moment
+			defVolume: 100 // The default volume of music. 1 - 200, defaults 50.
 			// https://www.npmjs.com/package/discord.js-musicbot-addon
 		};
 
 		function executeQueue(queue) {
-			const voiceConnection = bot.voiceConnections.find(val => val.channel.guild.id == msg.guild.id);
-			if (queue.length >= 2) {
-				queue.shift();
-				try {
-					const dispatcher = voiceConnection.player.dispatcher;
-					if (voiceConnection.paused) dispatcher.resume();
-					dispatcher.end();
-				} catch (err) {
-					console.error(err.toString());
-				}
-			};
-			
 			new Promise((resolve, reject) => {
+				const voiceConnection = bot.voiceConnections.find(val => val.channel.guild.id == msg.guild.id);
 				// Join the voice channel if not already in one.
 				if (!msg.member.voiceChannel) return msg.channel.send(`<:redx:411978781226696705> You must be in a voice channel!`).catch((err) => console.error);
 				if (voiceConnection === null) {
@@ -119,7 +99,7 @@ exports.run = async (bot, msg, args) => {
 						msg.member.voiceChannel.join().then((connection) => {
 							resolve(connection);
 						}).catch((error) => {
-							console.error(error.toString());
+							return console.error(error.toString());
 						});
 					} else if (!msg.member.voiceChannel.joinable) {
 						msg.channel.send(`<:redx:411978781226696705> I do not have permission to join your voice channel!`);
@@ -199,6 +179,8 @@ const get_video_id = (string) => {
 
 exports.info = {
 	name: 'radio',
+	ownerOnly: true,
+	hidden: true,
 	aliases: ['station', 'radio-station'],
 	userPermissions: ['CONNECT'],
 	clientPermissions: ['CONNECT','SPEAK'],
