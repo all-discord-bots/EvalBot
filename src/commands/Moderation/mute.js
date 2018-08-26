@@ -10,6 +10,7 @@ exports.run = (bot, msg, args) => {
 		let user = bot.utils.getMembers(msg,args[0]);
 		if (!user) return msg.channel.send(`<:redx:411978781226696705> I could not find that user.`);
 		if (user.toString().includes("I could not find that user.")) return;
+		if (!msg.guild.members.get(`${user.id}`)) return msg.channel.send(`<:redx:411978781226696705> I could not find that user.`);
 		let reason;
 		//if (ms(`${parseFloat(args[1])}`) && args[1] <= 0) return msg.channel.send(`Invalid mute length provided.`);
 		let mute_length = ``;
