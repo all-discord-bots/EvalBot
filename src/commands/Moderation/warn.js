@@ -1,4 +1,3 @@
-const Discord = require("discord.js");
 const fs = require("fs");
 const ms = require("ms");
 
@@ -8,13 +7,15 @@ exports.run = async (bot, msg, args) => {
 		//let autopunish = false;
 		//let mutedrole = "muted";
 		let modlogs = "mod_logs";
+		let modlogs_channel = msg.guild.channels.find(`name`, `${modlogs}`);
+		if (!modlogs_channel) return msg.channel.send(`<:redx:411978781226696705> You must have the \`mod_logs\` channel setup`);
 		switch (args.length) {
 			case 0:
 				return msg.channel.send(`<:redx:411978781226696705> Too few arguments provided.`);
 			case 1:
-				return msg.channel.send(`<:redx:411978781226696705> Invalid \`[reason]\` argument given.`);
+				return msg.channel.send(`<:redx:411978781226696705> Invalid \`<reason>\` argument given.`);
 		}
-		let user = bot.utils.getMembers(msg,args[1]);
+		let user = bot.utils.getMembers(msg,args[0]);
 		if (!user) return msg.channel.send(`<:redx:411978781226696705> I could not find that user.`);
 		if (user.toString().includes("I could not find that user.")) return;
 		if (!msg.guild.members.get(`${user.id}`)) return msg.channel.send(`<:redx:411978781226696705> I could not find that user.`);
@@ -32,11 +33,10 @@ exports.run = async (bot, msg, args) => {
 			if (err) console.error(err);
 		});
 
-		let warnchannel = msg.guild.channels.find(`name`, `${modlogs}`);
-		if (warnchannel) {
-			warnchannel.send({
+		if (modlogs_channel) {
+			modlogs_channel.send({
 				embed: ({
-					description: `**Member:** ${user.tag} ${user.id}\n**Action:** Warn\n**Reason:** ${reason}`,
+					description: `**Member:** ${user.tag} (${user.id})\n**Action:** Warn\n**Reason:** ${reason}`,
 					color: 16771899,
 					timestamp: new Date(),
 					author: {
@@ -44,7 +44,7 @@ exports.run = async (bot, msg, args) => {
 						icon_url: `${msg.author.displayAvatarURL}`
 					},
 					footer: {
-						`Case #N/A`
+						text: `Case #N/A`
 						//text: `Case #${caseNum}`
 					}
 				})
