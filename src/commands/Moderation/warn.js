@@ -36,7 +36,7 @@ exports.run = async (bot, msg, args) => {
 		if (modlogs_channel) {
 			modlogs_channel.send({
 				embed: ({
-					description: `**Member:** ${user.tag} (${user.id})\n**Action:** Warn\n**Reason:** ${reason}`,
+					description: `**Member:** ${user.user.tag} (${user.id})\n**Action:** Warn\n**Reason:** ${reason}`,
 					color: 16771899,
 					timestamp: new Date(),
 					author: {
