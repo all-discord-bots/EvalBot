@@ -65,14 +65,14 @@ exports.run = async (bot, msg, args) => {
 			queuethis = builtinradio[filteredbuiltinradio[0].toLowerCase()];
 		} else if (filteredbuiltinradio.length > 1) {
 			return msg.channel.send(`<:redx:411978781226696705> Too many results found, try to be a bit more specific with the radio name.\nIf you keep receiving this error please contact the developer!`).catch(err => console.error);
-		} else if (getarg.includes('.') || getarg.startsWith('http')) {
+		} else if (getarg.includes('.') || getarg.startsWith('http') || getargs.startsWith('https')) {
 			playingbuiltinstations = false;
 			queuethis = getarg.toString();
 		} else {
 			return msg.channel.send(`<:redx:411978781226696705> Please provide a valid stream url to play or built-in radio station name!`);
 		}
-		musicqueue[msg.guild.id]['music'].shift();
 		musicqueue[msg.guild.id]['music'].push(`${queuethis.toString()}`);
+		musicqueue[msg.guild.id]['music'].shift();
 		if (musicqueue[msg.guild.id]['music'].length === 1 || !bot.voiceConnections.find(val => val.channel.guild.id == msg.guild.id)) executeQueue(musicqueue[msg.guild.id]['music']);
 		let streamingmsg;
 		if (playingbuiltinstations) {
@@ -203,9 +203,8 @@ exports.info = {
 	aliases: ['station', 'radio-station'],
 	userPermissions: ['CONNECT'],
 	clientPermissions: ['CONNECT','SPEAK'],
-	usage: 'radio [station name | stream url]',
+	usage: 'radio [station name|stream url]',
 	examples: [
-		'radio',
 		'radio Fun Radio',
 		'radio ca.radioboss.fm:8137/stream%26t%3D%26r%3D4RBS4'
 	],
