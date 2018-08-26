@@ -99,10 +99,10 @@ exports.run = async (bot, msg, args) => {
 
 		function executeQueue(queue) {
 			const voiceConnection = bot.voiceConnections.find(val => val.channel.guild.id == msg.guild.id);
-			const dispatcher = voiceConnection.player.dispatcher;
 			if (queue.length >= 2) {
 				queue.shift();
 				try {
+					const dispatcher = voiceConnection.player.dispatcher;
 					if (voiceConnection.paused) dispatcher.resume();
 					dispatcher.end();
 				} catch (err) {
