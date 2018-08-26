@@ -55,6 +55,8 @@ let mutedrole = "Muted"; // name of the 'muted' role
 
 exports.info = {
   name: 'tempmute',
+  hidden: true,
+  ownerOnly: true,
   aliases: ['temp-mute','c-mute','chat-mute','t-mute','text-mute','m'],
   usage: 'tempmute <user> [1s/m/h/d]',
   description: 'Mutes a member from the server. This prevents them from sending messages. If no length is given they will be muted until un-muted. Length format examples: `1s`, `1m`, `1h`, `1d`, `1w`, `1mth`, `1y`.',
