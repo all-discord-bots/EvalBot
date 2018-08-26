@@ -20,7 +20,7 @@ exports.run = async (bot, msg, args) => {
 		if (!bot.lockit) bot.lockit = [];
 		let validUnlocks = ['release', 'unlock'];
 		//if (args[1] && !ms(`${parseFloat(args[1])}`)) return msg.channel.send(`<:redx:411978781226696705> Invalid \`[length]\` argument given.`);
-		if (!parseFloat(args[1]) && validUnlocks.includes(parseFloat(args[1]))) {
+		if (!args[1] && validUnlocks.includes(args[1])) {
 			if (!bot.lockit[gchannel.id] || bot.lockit[gchannel.id] <= 0) return msg.channel.send(`<:redx:411978781226696705> <#${gchannel}> is not currently locked-down.`);
 			gchannel.overwritePermissions(msg.guild.id, {
 				SEND_MESSAGES: null
@@ -31,12 +31,12 @@ exports.run = async (bot, msg, args) => {
 			}).catch((err) => {
 				return console.log(err.toString());
 			});
-		} else if (parseFloat(args[1]) && ms(`${parseFloat(args[1])}`)) {
+		} else if (args[1] && ms(`${args[1]}`)) {
 			if (bot.lockit[gchannel.id]) return msg.channel.send(`<:redx:411978781226696705> <#${gchannel}> is already locked-down.`);
 			gchannel.overwritePermissions(msg.guild.id, {
 				SEND_MESSAGES: false
 			}).then(() => {
-				msg.channel.send(`<:check:411976443522711552> <#${gchannel.id}> has been locked-down for ${ms(ms(`${parseFloat(args[1])}`), { long:true })}`).then(() => {
+				msg.channel.send(`<:check:411976443522711552> <#${gchannel.id}> has been locked-down for ${ms(ms(`${args[1]}`), { long:true })}`).then(() => {
 					bot.lockit[gchannel.id] = setTimeout(() => {
 						gchannel.overwritePermissions(msg.guild.id, {
 							SEND_MESSAGES: null
@@ -46,7 +46,7 @@ exports.run = async (bot, msg, args) => {
 						}).catch((err) => {
 							return console.error(err.toString());
 						});
-					}, ms(`${parseFloat(args[1])}`));
+					}, ms(`${args[1]}`));
 				}).catch((err) => {
 					return console.error(err.toString());
 				});
