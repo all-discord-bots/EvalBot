@@ -9,7 +9,7 @@ exports.run = async (bot, msg, args) => {
 		if (!user) return msg.channel.send(`<:redx:411978781226696705> I could not find that user.`);
 		if (user.toString().includes("I could not find that user.")) return;
 		let reason = args.slice(1).join(' ');
-		await msg.guild.fetchBans().then((bans) => {
+		await msg.guild.fetchBans().then(async(bans) => {
 			let users = bans.filter((user_object) => user_object === user);
 			if (!users.first()) return msg.channel.send(`<:redx:411978781226696705> That user is not currently banned.`);
 			await msg.guild.unban(user,{
