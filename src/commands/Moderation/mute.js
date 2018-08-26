@@ -67,7 +67,7 @@ exports.run = (bot, msg, args) => {
 
 exports.info = {
 	name: 'mute',
-	aliases: ['unmute'],
+	aliases: ['m'],
 	userPermissions: ['KICK_MEMBERS'],
 	clientPermissions: ['MANAGE_ROLES'],
 	usage: 'mute <member> [length] [reason]',
