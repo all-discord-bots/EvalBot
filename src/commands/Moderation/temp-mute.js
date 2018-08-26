@@ -32,7 +32,7 @@ exports.run = async (bot, msg, args) => {
 			}
 			modlogs_channel.send({
 				embed: ({
-					description: `**Member:** ${user.tag} (${user.id})\n**Action:** Un-ban${unban_reason}`,
+					description: `**Member:** ${user.user.tag} (${user.id})\n**Action:** Un-ban${unban_reason}`,
 					color: 6732650,
 					timestamp: new Date(),
 					author: {
