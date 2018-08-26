@@ -40,7 +40,7 @@ exports.run = (bot, msg, args) => {
 						}).catch((err) => {
 							console.error(err.toString());
 						});
-					}, ms(`${parseFloat(args[1])}`);
+					}, ms(`${parseFloat(args[1])}`));
 				}
 			}).catch((err) => {
 				console.error(err.toString());
@@ -60,7 +60,7 @@ const log_moderation = async (msg,user,args,mute_length,color,action,reason,modl
 	if (modlogs_channel) {
 		let mute_duration = ``;
 		if (mute_length !== 'infinite') {
-			mute_duration = `\n**Length** ${ms(ms(`${parseFloat(args[1])}`), { long: true })}`;
+			mute_duration = `\n**Length** ${ms(ms(`${parseFloat(args[1])}`),{ long: true })}`;
 		}
 		let mute_reason = ``;
 		if (reason !== "") {
@@ -82,7 +82,7 @@ const log_moderation = async (msg,user,args,mute_length,color,action,reason,modl
 			})
 		});
 	}
-}
+};
 
 exports.info = {
 	name: 'mute',
