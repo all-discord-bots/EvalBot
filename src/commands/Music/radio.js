@@ -71,6 +71,7 @@ exports.run = async (bot, msg, args) => {
 		} else {
 			return msg.channel.send(`<:redx:411978781226696705> Please provide a valid stream url to play or built-in radio station name!`);
 		}
+		musicqueue[msg.guild.id]['music'].shift();
 		musicqueue[msg.guild.id]['music'].push(`${queuethis.toString()}`);
 		if (musicqueue[msg.guild.id]['music'].length === 1 || !bot.voiceConnections.find(val => val.channel.guild.id == msg.guild.id)) executeQueue(musicqueue[msg.guild.id]['music']);
 		let streamingmsg;
@@ -202,8 +203,9 @@ exports.info = {
 	aliases: ['station', 'radio-station'],
 	userPermissions: ['CONNECT'],
 	clientPermissions: ['CONNECT','SPEAK'],
-	usage: 'radio [station name|stream url]',
+	usage: 'radio [station name | stream url]',
 	examples: [
+		'radio',
 		'radio Fun Radio',
 		'radio ca.radioboss.fm:8137/stream%26t%3D%26r%3D4RBS4'
 	],
