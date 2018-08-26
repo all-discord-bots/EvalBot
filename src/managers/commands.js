@@ -149,94 +149,101 @@ class CommandManager {
 	/**
 	 * Sets variables used to check information
 	 * @param {Variable} var - Used to get the variable
-	 * @param {Command} command - The command object to obtain info from
+	 * @param {Info} command.info - The command object to obtain info from
 	 */
-	getInfo(variable,command) {
-		if (variable === "ownerOnly") {
-			/**
-			* Whether the command can only be used by an owner
-			* @type {boolean}
-			*/
-			return Boolean(command.ownerOnly) || false;
-		} else if (variable === "guildOnly") {
-			/**
-			* Whether the command can only be run in a guild channel
-			* @type {boolean}
-			*/
-			return Boolean(command.guildOnly) || false;
-		} else if (variable === "clientPermissions") {
-			/**
-			* Permissions required by the client to use the command.
-			* @type {?PermissionResolvable[]}
-			*/
-			return command.clientPermissions || undefined; //null;
-		} else if (variable === "userPermissions") {
-			/**
-			* Permissions required by the user to use the command.
-			* @type {?PermissionResolvable[]}
-			*/
-			return command.userPermissions || undefined; //null;
-		} else if (variable === "nsfw") {
-			/**
-			* Whether the command can only be used in NSFW channels
-			* @type {boolean}
-			*/
-			return Boolean(command.nsfw) || false;
-		} else if (variable === "allowDM") {
-			/**
-			* Whether the command can be run in the bots dm's
-			* @type {boolean}
-			*/
-			return Boolean(command.allowDM) || false;
+	getInfo(variable,info) {
+		switch (variable) {
+			case 'ownerOnly':
+				/**
+				* Whether the command can only be used by an owner
+				* @type {boolean}
+				*/
+				return Boolean(info.ownerOnly) || false;
+			case 'guildOnly':
+				/**
+				* Whether the command can only be run in a guild channel
+				* @type {boolean}
+				*/
+				return Boolean(info.guildOnly) || false;
+			case 'clientPermissions':
+				/**
+				* Permissions required by the client to use the info.
+				* @type {?PermissionResolvable[]}
+				*/
+				return info.clientPermissions || undefined; //null;
+			case 'userPermissions':
+				/**
+				* Permissions required by the user to use the info.
+				* @type {?PermissionResolvable[]}
+				*/
+				return info.userPermissions || undefined; //null;
+			case 'nsfw':
+				/**
+				* Whether the command can only be used in NSFW channels
+				* @type {boolean}
+				*/
+				return Boolean(info.nsfw) || false;
+			case 'allowDM':
+				/**
+				* Whether the command can be run in the bots dm's
+				* @type {boolean}
+				*/
+				return Boolean(info.allowDM) || false;
+			case 'argsType':
+				/**
+				* How the arguments are split when passed to the command's run method
+				* @type {string}
+				*/
+				return info.argsType || 'single';
+			case 'argsCount':
+				/**
+				* Maximum number of arguments that will be split
+				* @type {number}
+				*/
+				return info.argsCount || 0;
+			case 'argsSingleQuotes':
+				/**
+				* Whether single quotes are allowed to encapsulate an argument
+				* @type {boolean}
+				*/
+				return 'argsSingleQuotes' in info ? info.argsSingleQuotes : true;
+			case 'patterns':
+				/**
+				* Regular expression triggers
+				* @type {RegExp[]}
+				*/
+				return info.patterns || undefined; //null;
+			case 'guarded':
+				/**
+				* Whether the command is protected from being disabled
+				* @type {boolean}
+				*/
+				return Boolean(info.guarded) || false;
+			case '_globalEnabled':
+				/**
+				* Whether the command is enabled globally
+				* @type {boolean}
+				* @private
+				*/
+				return Boolean(info._globalEnabled) || true;
 		}
-			/**
-			* How the arguments are split when passed to the command's run method
-			* @type {string}
-			*/
-			//let argsType = command.argsType || 'single';
-			/**
-			* Maximum number of arguments that will be split
-			* @type {number}
-			*/
-			//let argsCount = command.argsCount || 0;
-			/**
-			* Whether single quotes are allowed to encapsulate an argument
-			* @type {boolean}
-			*/
-			//let argsSingleQuotes = 'argsSingleQuotes' in command ? command.argsSingleQuotes : true;
-			/**
-			* Regular expression triggers
-			* @type {RegExp[]}
-			*/
-			//let patterns = command.patterns || null;
-			/**
-			* Whether the command is protected from being disabled
-			* @type {boolean}
-			*/
-			// let guarded = Boolean(command.guarded) || false;
-			/**
-			* Whether the command is enabled globally
-			* @type {boolean}
-			* @private
-			*/
-			//let _globalEnabled = command._globalEnabled || true;
 	}
 	
 	/**
 	 * Checks if the user has permission to use the command
 	 * @param {Message} message - The triggering command message
-	 * @param {Command} command - The command object to obtain info from
+	 * @param {Info} command.info - The command object to obtain info from
 	 * @param {boolean} [ownerOverride=true] - Whether the bot owner(s) will always have permission
 	 * @return {boolean|string} Whether the user has permission, or an error message to respond with if they don't
 	 */
-	checkUserPermissions(msg,command,ownerOverride = true) {
-		if (command.userPermissions) {
-			if (!this.getInfo("ownerOnly",command) && !this.getInfo("userPermissions",command)) return true;
+	checkUserPermissions(msg,info,ownerOverride = true) {
+		if (info.userPermissions) {
+			if (!this.getInfo("ownerOnly",info) && !this.getInfo("userPermissions",info)) return true;
 			if (ownerOverride && msg.author.id == process.env.bot_owner) return true;
-			if (this.getInfo("ownerOnly",command) && (ownerOverride || msg.author.id != process.env.bot_owner)) return false; // `The \`${command.name}\` command can only be used by the bot owner.`;
-			if (msg.channel.type === "text" && this.getInfo("userPermissions",command)) {
-				const missing = msg.channel.permissionsFor(msg.author).missing(this.getInfo("userPermissions",command));
-				if (missing.length > 0) return `<:redx:411978781226696705> You do not have permission to use the \`${command.name}\` command.\n<:transparent:411703305467854889>Missing: \`${missing.map(perm => this.bot.utils.permissions[perm]).join("` `")}\``;
+			if (this.getInfo("ownerOnly",info) && (ownerOverride || msg.author.id != process.env.bot_owner)) return false; // `The \`${info.name}\` command can only be used by the bot owner.`;
+			if (msg.channel.type === "text" && this.getInfo("userPermissions",info)) {
+				const missing = msg.channel.permissionsFor(msg.author).missing(this.getInfo("userPermissions",info));
+				if (missing.length > 0) return `<:redx:411978781226696705> You do not have permission to use the \`${info.name}\` command.\n<:transparent:411703305467854889>Missing: \`${missing.map(perm => this.bot.utils.permissions[perm]).join("` `")}\``;
 			}
 		}
 		return true;
@@ -245,13 +252,13 @@ class CommandManager {
 	/**
 	 * Checks if the client has permission to use the command
 	 * @param {Message} message - The triggering command message
-	 * @param {Command} command - The command object to obtain info from
+	 * @param {Info} command.info - The command object to obtain info from
 	 * @return {boolean|string} Whether the client has permission, or an error message to respond with if the bot doesn't
 	 */
-	checkClientPermissions(msg,command) {
-		if (command.clientPermissions) {
-			if (msg.channel.type !== "dm" && this.getInfo("clientPermissions",command)) {
-				const missing = msg.channel.permissionsFor(this.bot.user).missing(this.getInfo("clientPermissions",command));
+	checkClientPermissions(msg,info) {
+		if (info.clientPermissions) {
+			if (msg.channel.type !== "dm" && this.getInfo("clientPermissions",info)) {
+				const missing = msg.channel.permissionsFor(this.bot.user).missing(this.getInfo("clientPermissions",info));
 				if (missing.length > 0) return `<:redx:411978781226696705> I don't have enough permissions to execute that command.\n<:transparent:411703305467854889>Missing: \`${missing.map(perm => bot.utils.permissions[perm]).join("` `")}\``;
 			}
 		}
@@ -261,44 +268,35 @@ class CommandManager {
 	/**
 	 * Checks and returns the results of the user/client permissions
 	 * @param {Message} message - The triggering command message
-	 * @param {Command} command - The command object to obtain info from
+	 * @param {Info} command.info - The command object to obtain info from
 	 * @return {boolean|string} Whether the user/client has permission, or an error message to respond with if they don't
 	 */
-	hasPermission(msg,command) {
-		return ((typeof(this.checkClientPermissions(msg,command)) !== 'string') ? this.checkUserPermissions(msg,command) : this.checkClientPermissions(msg,command));
+	hasPermission(msg,info) {
+		return ((typeof(this.checkClientPermissions(msg,info)) !== 'string') ? this.checkUserPermissions(msg,info) : this.checkClientPermissions(msg,info));
 	}
 	
 	/**
 	 * Checks if the command is usable for a message
 	 * @param {?Message} msg - The message
-	 * @param {Command} command - The command to get the information from
+	 * @param {Info} command.info - The command to get the information from
 	 * @return {boolean}
 	 */
-	isUsable(msg,command) { //(message = null) {
+	isUsable(msg,info) { //(message = null) {
 		//if(!message) return this._globalEnabled;
 		//if(this.guildOnly && message && !message.guild) return false;
 		//const hasPermission = this.hasPermission(message);
 		//return this.isEnabledIn(message.guild) && hasPermission && typeof hasPermission !== 'string';
-		if (this.getInfo("ownerOnly",command) && msg.author.id != process.env.bot_owner) return false;
-		if (this.getInfo("guildOnly",command) && msg.guild.id != process.env.main_bot_guild) return false;
-		if (!this.getInfo("allowDM",command) && msg.channel.type === 'dm') return `<:redx:411978781226696705> This command can only be used in a server.`;
-		if (this.getInfo("allowDM",command) && msg.channel.type === 'dm') return true;
-		if (this.getInfo("nsfw",command) && !msg.channel.nsfw) return `<:redx:411978781226696705> This command can only be used in NSFW marked channels.`;
-		return this.hasPermission(msg,command);
+		if (this.getInfo("ownerOnly",info) && msg.author.id != process.env.bot_owner) return false;
+		if (this.getInfo("guildOnly",info) && msg.guild.id != process.env.main_bot_guild) return false;
+		if (!this.getInfo("allowDM",info) && msg.channel.type === 'dm') return `<:redx:411978781226696705> This command can only be used in a server.`;
+		if (this.getInfo("allowDM",info) && msg.channel.type === 'dm') return true;
+		if (this.getInfo("nsfw",info) && !msg.channel.nsfw) return `<:redx:411978781226696705> This command can only be used in NSFW marked channels.`;
+		return this.hasPermission(msg,info);
 	}
 
 	handleCommand(msg, input) {
 		let prefix;
 		if (!input.startsWith(`<@${this.bot.user.id}>`)) { //&& !input.startsWith(`<@!${this.bot.user.id}>`)) {
-			/*if (msg.channel.type !== "dm") {
-				if (this.bot.config[msg.guild.id.toString()] === undefined) {
-					prefix = this.bot.config.prefix;
-				} else if (this.bot.config[msg.guild.id.toString()] !== undefined) {
-					prefix = this.bot.config[msg.guild.id.toString()].prefix;
-				}
-			} else {
-				prefix = this.bot.config.prefix;
-			}*/
 			prefix = msg.guild && (this.bot.config[msg.guild.id.toString()] && this.bot.config[msg.guild.id.toString()].prefix) || this.bot.config.prefix;
 		} else {
 			prefix = `<@${this.bot.user.id}>`;
@@ -439,7 +437,7 @@ class CommandManager {
 			if (typeof(isUsable) === 'string') return msg.channel.send({ embed: ({ description: `${isUsable}`, color: 15684432, timestamp: new Date(), author: { name: `${msg.author.tag}`, icon_url: `${msg.author.displayAvatarURL}` }})});
 			return await command.run(this.bot, msg, args);
 		} catch (err) {
-			this.channels.get("415265475895754752").send({
+			this.bot.channels.get("415265475895754752").send({
 				embed: ({
 					color: 15684432,
 					timestamp: new Date(),
