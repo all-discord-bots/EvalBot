@@ -1,7 +1,7 @@
 exports.run = async (bot, msg, args) => {
 	try {
 		let start = new Date().getTime();
-		(await msg.channel.send({ embed: ({ title: `<a:loading:414954381176340480> Pinging...` }})}).then((msg) => {
+		(await msg.channel.send({ embed: ({ title: `<a:loading:414954381176340480> Pinging...` })}).then((msg) => {
 			let end = new Date().getTime();
 			let bpings;
 			if (bot.pings.length < 1) {
