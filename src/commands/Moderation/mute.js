@@ -28,7 +28,7 @@ exports.run = (bot, msg, args) => {
 		if (user.id == msg.author.id) return msg.channel.send(`<:redx:411978781226696705> I cannot allow self-harm!`);
 		if (user.manageable == false) return msg.channel.send(`<:redx:411978781226696705> I may need my role moved higher!`);
 		let mute_role = msg.guild.roles.find('name', muted_role_name);
-		if (!mute_role) return msg.channel.send(`<:redx:411978781226696705> I was unable to find the role `${muted_role_name}` you can set one up using the \`muted-role\` command.`);
+		if (!mute_role) return msg.channel.send(`<:redx:411978781226696705> I was unable to find the role \`${muted_role_name}\` you can set one up using the \`muted-role\` command.`);
 		if (!user.roles.has(mute_role.id)) {
 			user.addRole(mute_role.id).then(() => {
 				msg.channel.send(`<:check:411976443522711552> \`Case #N/A\` <@${user.id}> has been muted for ${ms(ms(`${parseFloat(args[1])}`),{ long: true })}.`);
@@ -64,7 +64,7 @@ const log_moderation = async (msg,user,args,mute_length,color,action,reason,modl
 		}
 		let mute_reason = ``;
 		if (reason !== "") {
-			mute_reason = `\n**Reason:** ${reason}`
+			mute_reason = `\n**Reason:** ${reason}`;
 		}
 		modlogs_channel.send({
 			embed: ({
@@ -95,5 +95,5 @@ exports.info = {
 		'mute BannerBomb 10d for not listening',
 		'mute BannerBomb'
 	],
-	description: `Mutes a member from the server.\nThis prevents them from sending messages.\nIf no length is given they will be muted until un-muted.\nIf you would like to let the bot keep logs of moderations create a text channel named \`${modlogs}\``
+	description: `Mutes a member from the server.\nThis prevents them from sending messages.\nIf no length is given they will be muted until un-muted.\nIf you would like to let the bot keep logs of moderations create a text channel named \`mod_logs\``
 };
