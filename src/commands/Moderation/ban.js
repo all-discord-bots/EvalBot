@@ -17,7 +17,7 @@ exports.run = async (bot, msg, args) => {
 		if (user.id == msg.author.id) return msg.channel.send(`<:redx:411978781226696705> I cannot allow self-harm!`);
 		if (user.manageable == false) return msg.channel.send(`<:redx:411978781226696705> I may need my role moved higher!`);
 		if (user.bannable == false) return msg.channel.send(`<:redx:411978781226696705> I cannot ban that user.`);
-		await user.ban({
+		await msg.guild.ban(user,{
 			days: parseFloat(args[1]) || 0,
 			reason: `${reason}`
 		}).then(() => {
@@ -64,5 +64,5 @@ exports.info = {
 		'ban BannerBomb 3 for no reason',
 		'ban BannerBomb'
 	],
-	description: 'Bans users from your guild. If you would like to let the bot keep logs of moderations create a text channel named `mod_logs`'
+	description: 'Bans users from your guild. If you would like to let the bot keep logs of moderations create a text channel named `mod_logs`.'
 };
