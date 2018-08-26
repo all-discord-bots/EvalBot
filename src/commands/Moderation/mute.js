@@ -37,7 +37,7 @@ exports.run = (bot, msg, args) => {
 					muted_members[msg.guild.id]['muted_users'][user.id] = setTimeout(() => {
 						delete muted_members[msg.guild.id]['muted_users'][user.id];
 						user.removeRole(mute_role.id).then(() => {
-							log_moderation(msg,user,args,mute_length,6732650,'Un-mute','Automatic Unmute');
+							log_moderation(msg,user,args,'',6732650,'Un-mute','Automatic Unmute');
 						}).catch((err) => {
 							console.error(err.toString());
 						});
@@ -60,7 +60,7 @@ const log_moderation = async (msg,user,args,mute_length,color,action,reason,modl
 	let modlogs_channel = msg.guild.channels.find('name', `${modlogs}`);
 	if (modlogs_channel) {
 		let mute_duration = ``;
-		if (mute_length !== 'infinite') {
+		if (mute_length !== '' && mute_length !== 'infinite') {
 			mute_duration = `\n**Length** ${ms(ms(`${args[1]}`),{ long: true })}`;
 		}
 		let mute_reason = ``;
@@ -69,7 +69,7 @@ const log_moderation = async (msg,user,args,mute_length,color,action,reason,modl
 		}
 		modlogs_channel.send({
 			embed: ({
-				description: `**Member:** ${user.tag} (${user.id})\n**Action:** ${action}${mute_duration}${mute_reason}`,
+				description: `**Member:** ${user.user.tag} (${user.id})\n**Action:** ${action}${mute_duration}${mute_reason}`,
 				color: color,
 				timestamp: new Date(),
 				author: {
