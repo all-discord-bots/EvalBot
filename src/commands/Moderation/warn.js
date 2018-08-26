@@ -32,7 +32,7 @@ exports.run = async (bot, msg, args) => {
 		fs.writeFile("./warnings.json",JSON.stringify(warns),(err) => {
 			if (err) console.error(err);
 		});
-
+		msg.channel.send(`<:check:411976443522711552> \`Case #N/A\` <@${user.id}> has been warned.`);
 		if (modlogs_channel) {
 			modlogs_channel.send({
 				embed: ({
