@@ -16,16 +16,16 @@ exports.run = async (bot, msg, args) => {
 			key: process.env.YOUTUBE_API_KEY,
 			revealkey: true
 		});
-		search.search(args.join(' '), { type: 'video' }).then(searchResult => {
+		search.search(args.join(' '), { type: 'video' }).then((searchResult) => {
 			let result = searchResult.first;
 			//if (!result) return msg.channel.send(`<:redx:411978781226696705> Could not find this video.`).catch(err => console.error)
 			// result.id = video id // result.channelID = channel id // result.url = full video url // result.title = video name // result.description = video description
-			music_items[msg.guild.id]['queue'].push({
+			music_items[msg.guild.id].queue.push({
 				title: `${result.title || 'N/A'}`,
 				url: `${result.url}`,
-				requester: msg.author
+				requester: msg.author,
 			});
-			if (music_items[msg.guild.id]['queue'].length === 1 || !bot.voiceConnections.find(val => val.channel.guild.id == msg.guild.id)) executeQueue(music_items[msg.guild.id]['queue']);
+			if (music_items[msg.guild.id].queue.length === 1 || !bot.voiceConnections.find(val => val.channel.guild.id == msg.guild.id)) executeQueue(music_items[msg.guild.id].queue);
 			if (result.url) { // message information about the video on playing the video
 				let thumbnail;
 				if (result.thumbnails.default.url && !result.thumbnails.medium.url && !result.thumbnails.high.url) {
@@ -49,23 +49,23 @@ exports.run = async (bot, msg, args) => {
 				});
 			}
 		}).catch(err => console.error);
-		// console.log(`${music_items[msg.guild.id]['queue'].toString()}`);
+		// console.log(`${music_items[msg.guild.id].queue.toString()}`);
 		function executeQueue(queue) {
 			// If the queue is empty, finish.
-			if (queue.length === 0) {
+			if (queue.length <= 0) {
 				msg.channel.send(`<:check:411976443522711552> Playback finished.`);
 				// Leave the voice channel.
-				const voiceConnection = bot.voiceConnections.find(val => val.channel.guild.id == msg.guild.id);
+				const voiceConnection = bot.voiceConnections.find((val) => val.channel.guild.id == msg.guild.id);
 				if (voiceConnection !== null) return voiceConnection.disconnect();
 			}
 			new Promise((resolve, reject) => {
 				// Join the voice channel if not already in one.
-				const voiceConnection = bot.voiceConnections.find(val => val.channel.guild.id == msg.guild.id);
+				const voiceConnection = bot.voiceConnections.find((val) => val.channel.guild.id == msg.guild.id);
 				if (!msg.member.voiceChannel) return msg.channel.send(`<:redx:411978781226696705> You must be in a voice channel!`).catch(err => console.error)
 				if (voiceConnection === null) {
 					// Check if the user is in a voice channel.
 					if (msg.member.voiceChannel && msg.member.voiceChannel.joinable) {
-						msg.member.voiceChannel.join().then(connection => {
+						msg.member.voiceChannel.join().then((connection) => {
 							resolve(connection);
 						}).catch((error) => {
 							console.error(error.toString());
@@ -81,7 +81,7 @@ exports.run = async (bot, msg, args) => {
 				} else {
 					resolve(voiceConnection);
 				}
-			}).then(connection => {
+			}).then((connection) => {
 				// Get the first item in the queue.
 				const video = queue[0].url;
 				// Play the video.
@@ -98,26 +98,26 @@ exports.run = async (bot, msg, args) => {
 						console.error(`Dispatcher/connection: ${error.stack}`);
 						if (msg && msg.channel) msg.channel.send(`<:redx:411978781226696705> Dispatcher error!\n\`${error}\``);
 						queue.shift();
-						executeQueue(music_items[msg.guild.id]['queue']);
+						executeQueue(music_items[msg.guild.id].queue);
 					});
 					dispatcher.on('error',(error) => {
 						// Skip to the next song.
 						console.error(`Dispatcher: ${error.stack}`);
 						if (msg && msg.channel) msg.channel.send(`<:redx:411978781226696705> Dispatcher error!\n\`${error}\``);
 						queue.shift();
-						executeQueue(music_items[msg.guild.id]['queue']);
+						executeQueue(music_items[msg.guild.id].queue);
 					});
 					dispatcher.on('end',() => {
 						// Wait a second.
 						setTimeout(() => {
-							if (music_items[msg.guild.id]['loop_queue'] && !music_items[msg.guild.id]['loop_song']) {
-								executeQueue(music_items[msg.guild.id]['queue']);
-							} else if (!music_items[msg.guild.id]['loop_queue'] && music_items[msg.guild.id]['loop_song']) {
-								executeQueue(music_items[msg.guild.id]['queue'][0]); // do this until I have it remove the current playing item
+							if (music_items[msg.guild.id].loop_queue && !music_items[msg.guild.id]['loop_song']) {
+								executeQueue(music_items[msg.guild.id].queue);
+							} else if (!music_items[msg.guild.id].loop_queue && music_items[msg.guild.id]['loop_song']) {
+								executeQueue(music_items[msg.guild.id].queue[0]); // do this until I have it remove the current playing item
 							} else {
 								if (queue.length > 0) {
 									queue.shift(); // Remove the song from the queue
-									executeQueue(music_items[msg.guild.id]['queue']); // Play the next song in the queue.
+									executeQueue(music_items[msg.guild.id].queue); // Play the next song in the queue.
 								}
 							}
 						}, 1000);
@@ -136,9 +136,9 @@ exports.run = async (bot, msg, args) => {
 
 exports.info = {
 	name: 'play',
-	usage: 'play <url | search>',
 	userPermissions: ['CONNECT'],
 	clientPermissions: ['SPEAK','CONNECT'],
+	usage: 'play <url | search>',
 	examples: [
 		'play Ozzy Osbourne - Crazy Train',
 		'play Lamb of God - Blood of the Scribe',
