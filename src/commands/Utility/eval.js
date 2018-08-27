@@ -17,7 +17,8 @@ exports.run = async (bot, msg, args) => {
 		let output;
 
 		try {
-			output = await eval(code);
+			//output = await eval(code);
+			output = await eval(`(function() {\n${code}\n}());`);
 		} catch (err) {
 			let message = err;
 			if (err && err.response && err.response.body && err.response.body.message) {
@@ -32,7 +33,8 @@ exports.run = async (bot, msg, args) => {
 		}
 
 		if (typeof output !== 'string') {
-			output = require('util').inspect(output);
+			//output = require('util').inspect(output);
+			output = require('util').inspect(output).replace(/(^\(function\(\) \{)|(\}\(\)\)\;$)/g,'');
 		}
 
 		if (!lang) {
