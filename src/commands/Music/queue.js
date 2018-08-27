@@ -25,7 +25,7 @@ exports.run = async (bot, msg, args) => {
 					}
 				})
 			});*/
-		});
+		//});
 	} catch (err) {
 		console.error(err.toString());
 	}
