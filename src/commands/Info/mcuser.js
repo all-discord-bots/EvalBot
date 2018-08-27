@@ -10,7 +10,7 @@ exports.run = async (bot, msg, args) => {
 	if (!uuid) return msg.channel.send(`<:redx:411978781226696705> I was unable to find that user.`);
 
 	//msg.delete();
-	return msg.channel.send({
+	/*return msg.channel.send({
 		embed: ({
 			image: {
 				url: `https://crafatar.com/skins/${uuid}.png`
@@ -30,8 +30,8 @@ exports.run = async (bot, msg, args) => {
 				}
 			]
 		})
-	});
-/*		embed: bot.utils.embed('', '', [
+	});*/
+		embed: bot.utils.embed('', '', [
 			{
 				name: 'Username',
 				value: username
@@ -45,7 +45,7 @@ exports.run = async (bot, msg, args) => {
 				value: `[Download](https://crafatar.com/skins/${uuid}.png)`
 			}
 		], { thumbnail: `https://crafatar.com/avatars/${uuid}.png?size=250&overlay=true` })
-	});*/
+	});
 };
 
 async function getUUID(username) {
