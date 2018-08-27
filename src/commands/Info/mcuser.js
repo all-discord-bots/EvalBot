@@ -10,8 +10,8 @@ exports.run = async (bot, msg, args) => {
 	if (!uuid) return msg.channel.send(`<:redx:411978781226696705> I was unable to find that user.`);
 
 	//msg.delete();
-	/*return msg.channel.send({
-		embed: ({
+	return msg.channel.send({
+		/*embed: ({
 			image: {
 				url: `https://crafatar.com/skins/${uuid}.png`
 			},
