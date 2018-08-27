@@ -12,7 +12,7 @@ exports.run = async (bot, msg, args) => {
 						if (current >= total) {
 							return msg.edit({
 								embed: ({
-									title: `<:check:411976443522711552> Successfully cleared \`${count}\` messages of reactions.`
+									title: `<:check:411976443522711552> Successfully cleared \`${total}\` messages of reactions.`
 								})
 							});
 						}
@@ -20,7 +20,7 @@ exports.run = async (bot, msg, args) => {
 						console.error(err.toString());
 						return msg.edit({
 							embed: ({
-								title: `<:redx:411978781226696705> I am sorry, but I seem to have encountered an error. I was only able to successfully clean \`${count}\` messages of their reactions.`
+								title: `<:redx:411978781226696705> I am sorry, but I seem to have encountered an error. I was only able to successfully clean \`${total}\` messages of their reactions.`
 							})
 						});
 					});
