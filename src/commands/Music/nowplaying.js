@@ -17,16 +17,16 @@ exports.run = async (bot, msg, args) => {
 		let gvid = args.join(' ');
 		let gsearch;
 		if (gvid.length < 1) {
-			if (!musicqueue[msg.guild.id] || musicqueue[msg.guild.id]['music'].length < 1) return msg.channel.send(`<:redx:411978781226696705> There are no items in the queue!`).catch(err => console.error);
-			gsearch = musicqueue[msg.guild.id]['music'][0];
+			if (!music_items[msg.guild.id] || music_items[msg.guild.id].queue.length < 1) return msg.channel.send(`<:redx:411978781226696705> There are no items in the queue!`).catch(err => console.error);
+			gsearch = music_items[msg.guild.id].queue[0];
 		} else if (gvid.length > 0) {
 			gsearch = gvid;
 		}
-		search.search(gsearch, { type: 'video' }).then(searchResult => {
+		search.search(gsearch, { type: 'video' }).then((searchResult) => {
 			let result = searchResult.first;
-			//if (!result/* || !musicqueue[msg.guild.id]*/) return msg.channel.send(`<:redx:411978781226696705> Could not get the video.`).catch(err => console.error);
-			//global.musicqueue.push(`${result.url}`); // result.id = video id // result.channelID = channel id // result.url = full video url // result.title = video name // result.description = video description
-			if (result || !musicqueue[msg.guild.id] || musicqueue[msg.guild.id] && !musicqueue[msg.guild.id]['streaming']) { // message information about the video on playing the video
+			//if (!result/* || !music_items[msg.guild.id]*/) return msg.channel.send(`<:redx:411978781226696705> Could not get the video.`).catch(err => console.error);
+			//global.music_items.push(`${result.url}`); // result.id = video id // result.channelID = channel id // result.url = full video url // result.title = video name // result.description = video description
+			if (result || !music_items[msg.guild.id] || music_items[msg.guild.id] && !music_items[msg.guild.id]['streaming']) { // message information about the video on playing the video
 				fetchVideoInfo(result.id, function (err, videoInfo) {
 					if (err) throw new Error(err);
 					let videoDuration = duration(`${videoInfo.duration}s`); // seconds --> miliseconds
@@ -248,7 +248,7 @@ exports.run = async (bot, msg, args) => {
 					// ${ListRegionsAllowed.toString() || '`N/A`'}`,
 				});
 				// https://developers.google.com/youtube/v3/docs/activities
-			} else if (!result || musicqueue[msg.guild.id] && musicqueue[msg.guild.id]['streaming']) {
+			} else if (!result || music_items[msg.guild.id] && music_items[msg.guild.id]['streaming']) {
 				const voiceConnection = bot.voiceConnections.find(val => val.channel.guild.id == msg.guild.id);
 				let currenttime;
 				if (voiceConnection) {
@@ -286,8 +286,8 @@ exports.run = async (bot, msg, args) => {
 				msg.channel.send({embed: ({
 					color: 3447003,
 					title: `Streaming`,
-					url: `${musicqueue[msg.guild.id]['music'][0]}`,
-					description: `Streaming [${musicqueue[msg.guild.id]['music'][0]}](${musicqueue[msg.guild.id]['music'][0]}) for \`${hourzero}${streamingDuration[0]}:${minzero}${streamingDuration[1]}:${seczero}${streamingDuration[2]}\``,
+					url: `${music_items[msg.guild.id].queue[0]}`,
+					description: `Streaming [${music_items[msg.guild.id].queue[0]}](${music_items[msg.guild.id].queue[0]}) for \`${hourzero}${streamingDuration[0]}:${minzero}${streamingDuration[1]}:${seczero}${streamingDuration[2]}\``,
 					timestamp: new Date()
 				})});
 			}
@@ -306,6 +306,6 @@ exports.info = {
 		'nowplaying https://www.youtube.com/watch?v=FVovq9TGBw0',
 		'nowplaying Ozzy Osbourne - Crazy Train'
 	],
-	usage: 'nowplaying [url|search]',
+	usage: 'nowplaying [url | search]',
 	description: 'Shows the currently playing song.'
 };
