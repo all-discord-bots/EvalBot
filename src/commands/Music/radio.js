@@ -50,9 +50,9 @@ exports.run = async (bot, msg, args) => {
 		} else {
 			return msg.channel.send(`<:redx:411978781226696705> Please provide a valid stream url to play or built-in radio station name!`);
 		}
-		musicqueue[msg.guild.id]['music'].push(`${queuethis.toString()}`);
-		if (musicqueue[msg.guild.id]['music'].length >= 2) {
-			musicqueue[msg.guild.id]['music'].shift();
+		music_items[msg.guild.id].queue.push(`${queuethis.toString()}`);
+		if (music_items[msg.guild.id].queue.length >= 2) {
+			music_items[msg.guild.id].queue.shift();
 			try {
 				const voiceConnection = bot.voiceConnections.find(val => val.channel.guild.id == msg.guild.id);
 				const dispatcher = voiceConnection.player.dispatcher;
@@ -62,8 +62,8 @@ exports.run = async (bot, msg, args) => {
 				console.error(err.toString());
 			}
 		}
-		if (musicqueue[msg.guild.id]['music'].length === 1 || !bot.voiceConnections.find(val => val.channel.guild.id == msg.guild.id)) {
-			executeQueue(musicqueue[msg.guild.id]['music']);
+		if (music_items[msg.guild.id].queue.length === 1 || !bot.voiceConnections.find(val => val.channel.guild.id == msg.guild.id)) {
+			executeQueue(music_items[msg.guild.id].queue);
 		}
 		let streamingmsg;
 		if (playingbuiltinstations) {
@@ -72,13 +72,8 @@ exports.run = async (bot, msg, args) => {
 			streamingmsg = args.join(' ').toString();
 		}
 		msg.channel.send(`<:check:411976443522711552> Streaming \`${streamingmsg.toString()}\`.`);
-		//console.log(`${musicqueue[msg.guild.id]['music'].toString()}`);
-
-		let musicbot = {
-			defVolume: 100 // The default volume of music. 1 - 200, defaults 50.
-			// https://www.npmjs.com/package/discord.js-musicbot-addon
-		};
-
+		//console.log(`${music_items[msg.guild.id].queue.toString()}`);
+		
 		function executeQueue(queue) {
 			new Promise((resolve, reject) => {
 				const voiceConnection = bot.voiceConnections.find(val => val.channel.guild.id == msg.guild.id);
@@ -109,8 +104,8 @@ exports.run = async (bot, msg, args) => {
 
 				// Play the video.
 				try {
-					musicqueue[msg.guild.id]['streaming'] = true;
-					let dispatcher = connection.playStream(video.toString(), { filter: 'audioonly' }, { volume: (musicbot.defVolume / 100) }); // Radio
+					music_items[msg.guild.id].is_streaming = true;
+					let dispatcher = connection.playStream(video.toString(), { filter: 'audioonly' }, { volume: (music_items[msg.guild.id].volume / 100) }); // Radio
 					
 					connection.on('error',(error) => {
 						// Skip to the next song.
@@ -120,7 +115,7 @@ exports.run = async (bot, msg, args) => {
 							msg.channel.send(`<:redx:411978781226696705> Dispatcher error!\n\`${error}\``);
 						}
 						queue.shift();
-						executeQueue(musicqueue[msg.guild.id]['music']);
+						executeQueue(music_items[msg.guild.id].queue);
 					});
 					
 					dispatcher.on('error',(error) => {
@@ -128,7 +123,7 @@ exports.run = async (bot, msg, args) => {
 						console.error(`Dispatcher: ${error}`);
 						if (msg && msg.channel) msg.channel.send(`<:redx:411978781226696705> Dispatcher error!\n\`${error}\``);
 						queue.shift();
-						executeQueue(musicqueue[msg.guild.id]['music']);
+						executeQueue(music_items[msg.guild.id].queue);
 					});
 					
 					dispatcher.on('end',() => {
@@ -138,7 +133,7 @@ exports.run = async (bot, msg, args) => {
 								// Remove the song from the queue.
 								queue.shift();
 								// Play the next song in the queue.
-								executeQueue(musicqueue[msg.guild.id]['music']);
+								executeQueue(music_items[msg.guild.id].queue);
 							}
 						}, 1000);
 					});
