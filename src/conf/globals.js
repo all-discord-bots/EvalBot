@@ -1,4 +1,4 @@
-const musicqueue = global.musicqueue = {};
+const music_items = global.music_items = {};
 const songqueue = global.songqueue = {};
 const builtinradio = global.builtinradio = {
 	'fun radio': 'http://streaming.radio.funradio.fr/fun-1-44-128',
