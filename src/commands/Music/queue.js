@@ -3,18 +3,28 @@ require('../../conf/globals.js');
 
 exports.run = async (bot, msg, args) => {
 	try {
-		let i = 0;
-		if (!musicqueue[msg.guild.id] || musicqueue[msg.guild.id]['music'].length <= 0) return msg.channel.send(`<:redx:411978781226696705> There are no items in the queue.`).catch(err => console.error);
-		let gqueue = musicqueue[msg.guild.id]['music'];
-		gqueue.map(list => {
-			let hashtag;
-			if (i == 0){
+		if (!music_items[msg.guild.id] || music_items[msg.guild.id].queue.length <= 0) return msg.channel.send(`<:redx:411978781226696705> There are no items in the queue.`);
+		let queue = '';
+		for (let i = 0; i < music_items[msg.guild.id].queue.length; i++) {
+			let hashtag = '  ';
+			if (i == 0) {
 				hashtag = '# ';
-			} else {
-				hashtag = '  ';
 			}
-			msg.channel.send(`\`\`\`md\n${hashtag}${i} - ${list.toString()}\n\`\`\``);
-			i++;
+			queue += `${hashtag}${i + 1}. ${music_items[msg.guild.id].queue[i].title}\n`;
+			//queue += `${i + 1}. [${music_items[msg.guild.id].queue[i].title}](${music_items[msg.guild.id].queue[i].url})\n`;
+		}
+			msg.channel.send(`\`\`\`md\n${queue}\n\`\`\``);
+			/*msg.channel.send({
+				embed: ({
+					description: queue,
+					timestamp: new Date(),
+					color: 6732650,
+					footer: {
+						icon_url: `${bot.user.displayAvatarURL`},
+						text: `${msg.author.tag}`
+					}
+				})
+			});*/
 		});
 	} catch (err) {
 		console.error(err.toString());
