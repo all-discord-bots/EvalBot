@@ -354,14 +354,16 @@ class CripsBot extends Client {
 			{
 				// Create Music Queue
 				try {
-					if (musicqueue[msg.guild.id] === undefined)
+					if (music_items[msg.guild.id] === undefined)
 					{
-						musicqueue[msg.guild.id] = {
-							music: [],
-							loopqueue: false,
-							loopsong: false,
-							streaming: false,
-							shuffle: false
+						music_items[msg.guild.id] = {
+							queue: [],
+							volume: 100,
+							loop_queue: false,
+							loop_song: false,
+							is_streaming: false,
+							stream_mode: 0,
+							shuffle_queue: false
 						}
 					}
 					if (songqueue[msg.guild.id] === undefined)
