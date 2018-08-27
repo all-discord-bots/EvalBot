@@ -23,7 +23,7 @@ exports.run = async (bot, msg, args) => {
 			music_items[msg.guild.id]['queue'].push({
 				title: `${result.title || 'N/A'}`,
 				url: `${result.url}`,
-				requester: msg.author,
+				requester: msg.author
 			});
 			if (music_items[msg.guild.id]['queue'].length === 1 || !bot.voiceConnections.find(val => val.channel.guild.id == msg.guild.id)) executeQueue(music_items[msg.guild.id]['queue']);
 			if (result.url) { // message information about the video on playing the video
