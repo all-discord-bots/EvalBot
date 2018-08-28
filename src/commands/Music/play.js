@@ -110,9 +110,9 @@ exports.run = async (bot, msg, args) => {
 					dispatcher.on('end',() => {
 						// Wait a second.
 						setTimeout(() => {
-							if (music_items[msg.guild.id].loop_queue && !music_items[msg.guild.id]['loop_song']) {
+							if (music_items[msg.guild.id].loop_queue && !music_items[msg.guild.id].loop_song) {
 								executeQueue(music_items[msg.guild.id].queue);
-							} else if (!music_items[msg.guild.id].loop_queue && music_items[msg.guild.id]['loop_song']) {
+							} else if (!music_items[msg.guild.id].loop_queue && music_items[msg.guild.id].loop_song) {
 								executeQueue(music_items[msg.guild.id].queue[0]); // do this until I have it remove the current playing item
 							} else {
 								if (queue.length > 0) {
