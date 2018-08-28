@@ -559,7 +559,7 @@ class CripsBot extends Client {
 					color: 15684432,
 					timestamp: new Date(),
 					title: `Error`,
-					description: `\`${err}\``
+					description: `\`${JSON.stringify(err)}\`` //description: `\`${err}\``
 				})
 			});
 		});
