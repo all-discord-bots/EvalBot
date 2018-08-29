@@ -54,16 +54,15 @@ exports.run = async (bot, msg, args) => {
 		if (music_items[msg.guild.id].queue.length >= 2) {
 			music_items[msg.guild.id].queue.shift();
 			try {
-				const voiceConnection = bot.voiceConnections.get(msg.guild.id);
-				const dispatcher = voiceConnection.dispatcher;
-				if (!dispatcher) return msg.channel.send(`<:redx:411978781226696705> Failed to play the audio.`);
+				const voiceConnection = bot.voiceConnections.find(val => val.channel.guild.id == msg.guild.id);
+				const dispatcher = voiceConnection.player.dispatcher;
 				if (voiceConnection.paused) dispatcher.resume();
 				dispatcher.end();
 			} catch (err) {
 				console.error(err.toString());
 			}
 		}
-		if (music_items[msg.guild.id].queue.length === 1 || !bot.voiceConnections.get(msg.guild.id)) {
+		if (music_items[msg.guild.id].queue.length === 1 || !bot.voiceConnections.find(val => val.channel.guild.id == msg.guild.id)) {
 			executeQueue(music_items[msg.guild.id].queue);
 		}
 		let streamingmsg;
@@ -77,7 +76,7 @@ exports.run = async (bot, msg, args) => {
 		
 		function executeQueue(queue) {
 			new Promise((resolve, reject) => {
-				const voiceConnection = bot.voiceConnections.get(msg.guild.id);
+				const voiceConnection = bot.voiceConnections.find(val => val.channel.guild.id == msg.guild.id);
 				// Join the voice channel if not already in one.
 				if (!msg.member.voiceChannel) return msg.channel.send(`<:redx:411978781226696705> You must be in a voice channel!`).catch((err) => console.error);
 				if (voiceConnection === null) {
