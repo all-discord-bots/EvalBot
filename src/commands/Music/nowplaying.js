@@ -24,10 +24,11 @@ exports.run = async (bot, msg, args) => {
 		}
 		search.search(gsearch, { type: 'video' }).then((searchResult) => {
 			let result = searchResult.first;
+			if (result.url == undefined || result.id == undefined) return msg.channel.send(`<:redx:411978781226696705> Failed to get video information.`);
 			//if (!result/* || !music_items[msg.guild.id]*/) return msg.channel.send(`<:redx:411978781226696705> Could not get the video.`).catch(err => console.error);
 			//global.music_items.push(`${result.url}`); // result.id = video id // result.channelID = channel id // result.url = full video url // result.title = video name // result.description = video description
 			if (result || !music_items[msg.guild.id] || music_items[msg.guild.id] && !music_items[msg.guild.id]['streaming']) { // message information about the video on playing the video
-				fetchVideoInfo(result.id, function (err, videoInfo) {
+				fetchVideoInfo(result.id, function(err, videoInfo) {
 					if (err) throw new Error(err);
 					let videoDuration = duration(`${videoInfo.duration}s`); // seconds --> miliseconds
 					/*Format Duration*/
@@ -92,32 +93,33 @@ exports.run = async (bot, msg, args) => {
 						houronezero = '';
 					}
 					// End add leading zero
-					let thumbnail;
-					if (result.thumbnails.default.url && !result.thumbnails.medium.url && !result.thumbnails.high.url) {
-						thumbnail = `${result.thumbnails.default.url}`;
-					} else if (result.thumbnails.default.url && result.thumbnails.medium.url && !result.thumbnails.high.url) {
-						thumbnail = `${result.thumbnails.medium.url}`;
-					} else if (result.thumbnails.default.url && result.thumbnails.medium.url && result.thumbnails.high.url) {
-						thumbnail = `${result.thumbnails.high.url}`;
-					}
-					let udate = new Date(result.publishedAt).getTime();
-					let dthumbnail;
-					if (result.thumbnails.default.url) {
-						dthumbnail = `- [Default](${result.thumbnails.default.url}) \`${result.thumbnails.default.width}×${result.thumbnails.default.height}\`\n`;
-					} else {
-						dthumbnail = '';
-					}
-					let mthumbnail;
-					if (result.thumbnails.medium.url) {
-						mthumbnail = `- [Medium](${result.thumbnails.medium.url}) \`${result.thumbnails.medium.width}×${result.thumbnails.medium.height}\`\n`;
-					} else {
-						mthumbnail = '';
-					}
-					let hthumbnail;
-					if (result.thumbnails.high.url) {
-						hthumbnail = `- [High](${result.thumbnails.high.url}) \`${result.thumbnails.high.width}×${result.thumbnails.high.height}\``;
-					} else {
-						hthumbnail = '';
+					if (result.thumbnails && ((result.thumbnails.default && result.thumbnails.default.url) || (result.thumbnails.medium && result.thumbnails.medium.url) || (result.thumbnails.high && result.thumbnails.high.url))) {
+						let thumbnail;
+						if (result.thumbnails.default.url && !result.thumbnails.medium.url && !result.thumbnails.high.url) {
+							thumbnail = `${result.thumbnails.default.url}`;
+						} else if (result.thumbnails.default.url && result.thumbnails.medium.url && !result.thumbnails.high.url) {
+							thumbnail = `${result.thumbnails.medium.url}`;
+						} else if (result.thumbnails.default.url && result.thumbnails.medium.url && result.thumbnails.high.url) {
+							thumbnail = `${result.thumbnails.high.url}`;
+						}
+						let dthumbnail;
+						if (result.thumbnails.default.url) {
+							dthumbnail = `- [Default](${result.thumbnails.default.url}) \`${result.thumbnails.default.width}×${result.thumbnails.default.height}\`\n`;
+						} else {
+							dthumbnail = '';
+						}
+						let mthumbnail;
+						if (result.thumbnails.medium.url) {
+							mthumbnail = `- [Medium](${result.thumbnails.medium.url}) \`${result.thumbnails.medium.width}×${result.thumbnails.medium.height}\`\n`;
+						} else {
+							mthumbnail = '';
+						}
+						let hthumbnail;
+						if (result.thumbnails.high.url) {
+							hthumbnail = `- [High](${result.thumbnails.high.url}) \`${result.thumbnails.high.width}×${result.thumbnails.high.height}\``;
+						} else {
+							hthumbnail = '';
+						}
 					}
 					//let GetRegionsAllowed = videoInfo.regionsAllowed.toString();
 					//let regionsstr = "," + GetRegionsAllowed.toString() + ",";
@@ -187,64 +189,69 @@ exports.run = async (bot, msg, args) => {
 						],
 						timestamp: new Date()
 					})});*/
-					msg.channel.send({embed: ({
-						color: 3447003,
-						title: `${result.title}`,
-						url: `${result.url}`,
-						"thumbnail": {
-							url: `${thumbnail}`
-						}, fields: [
-							{
-								name: `**__Video__**`,
-								value: `[${result.title}](${result.url}) \`${result.id}\``
-							}, {
-								name: `**__Channel__**`,
-								value: `[${result.channelTitle}](https://www.youtube.com/channel/${result.channelId}) \`${result.channelId}\``
-							}, {
-								name: `**__Thumbnails__**`,
-								value: `${dthumbnail}${mthumbnail}${hthumbnail}`
-							}, {
-								name: `**__Uploaded__**`,
-								value: `${moment.utc(udate).format("LLLL")}`
-							}, {
-								name: `**__Duration__**`,
-								value: `\`${houronezero}${currenttimepos[0]}:${minonezero}${currenttimepos[1]}:${seconezero}${currenttimepos[2]}/${hourzero}${h}:${minzero}${m}:${seczero}${s}\``
-							}, {
-								name: `**__Genre__**`,
-								value: `\`${videoInfo.genre || 'N/A'}\``,
-								inline: true
-							}, {
-								name: `**__Paid__**`,
-								value: `\`${videoInfo.paid}\``,
-								inline: true
-							}, {
-								name: `**__Unlisted__**`,
-								value: `\`${videoInfo.unlisted}\``,
-								inline: true
-							}, {
-								name: `**__Family Friendly__**`,
-								value: `\`${videoInfo.isFamilyFriendly}\``,
-								inline: true
-							}, {
-								name: `**__Views__**`,
-								value: `\`${videoInfo.views || '0'}\``,
-								inline: true
-							}, {
-								name: `**__Comments__**`,
-								value: `\`${videoInfo.commentCount || '0'}\``,
-								inline: true
-							}, {
+					msg.channel.send({
+						embed: ({
+							color: 3447003,
+							title: `${result.title || 'N/A'}`,
+							url: `${result.url}`,
+							thumbnail: {
+								url: `${thumbnail}`
+							}, fields: [
+								{
+									name: `**__Video__**`,
+									value: `[${result.title || 'N/A'}](${result.url}) \`${result.id || 'N/A'}\``
+								}, {
+									name: `**__Channel__**`,
+									value: `[${result.channelTitle || 'N/A'}](https://www.youtube.com/channel/${result.channelId || 'N/A'}) \`${result.channelId || 'N/A'}\``
+								}, {
+									name: `**__Thumbnails__**`,
+									value: `${dthumbnail}${mthumbnail}${hthumbnail}`
+								}, {
+									name: `**__Uploaded__**`,
+									value: `${moment.utc(new Date(result.publishedAt).getTime()).format("LLLL") || 'N/A'}`
+								}, {
+									name: `**__Description__**`,
+									value: `${result.description.toString() || 'N/A'}`
+								}, {
+									name: `**__Duration__**`,
+									value: `\`${houronezero}${currenttimepos[0]}:${minonezero}${currenttimepos[1]}:${seconezero}${currenttimepos[2]}/${hourzero}${h}:${minzero}${m}:${seczero}${s}\``
+								}, {
+									name: `**__Genre__**`,
+									value: `\`${videoInfo.genre || 'N/A'}\``,
+									inline: true
+								}, {
+									name: `**__Paid__**`,
+									value: `\`${videoInfo.paid || 'N/A'}\``,
+									inline: true
+								}, {
+									name: `**__Unlisted__**`,
+									value: `\`${videoInfo.unlisted || 'N/A'}\``,
+									inline: true
+								}, {
+									name: `**__Family Friendly__**`,
+									value: `\`${videoInfo.isFamilyFriendly || 'N/A'}\``,
+									inline: true
+								}, {
+									name: `**__Views__**`,
+									value: `\`${videoInfo.views || '0'}\``,
+									inline: true
+								}, {
+									name: `**__Comments__**`,
+									value: `\`${videoInfo.commentCount || '0'}\``,
+									inline: true
+								}, {
 								name: `**__Regions Allowed__**`,
-								value: `${videoInfo.regionsAllowed.toString()}`,
+								value: `${(videoInfo.regionsAllowed.toString() === "" || videoInfo.regionsAllowed.toString() === null || videoInfo.regionsAllowed.toString() === undefined) ? `\`N/A\`` : `\`\`\`fix\n${videoInfo.regionsAllowed.toString()/*.replace(/[,]/g,'` `')*/}\n\`\`\``}`,
 								inline: true
-							}, {
-								name: `**__Likes/Dislikes__**`,
-								value: `:thumbsup:\`${videoInfo.likeCount || '0'}\`\n:thumbsdown:\`${videoInfo.dislikeCount || '0'}\``,
-								inline: true
-							}
-						],
-						timestamp: new Date()
-					})}).catch(err => console.error);
+								}, {
+									name: `**__Likes/Dislikes__**`,
+									value: `:thumbsup:\`${videoInfo.likeCount || '0'}\`\n:thumbsdown:\`${videoInfo.dislikeCount || '0'}\``,
+									inline: true
+								}
+							],
+							timestamp: new Date()
+						})
+					}).catch((err) => console.error);
 					// ${ListRegionsAllowed.toString() || '`N/A`'}`,
 				});
 				// https://developers.google.com/youtube/v3/docs/activities
@@ -283,15 +290,17 @@ exports.run = async (bot, msg, args) => {
 				} else if (streamingDuration[0] > 9) {
 					hourzero = '';
 				}
-				msg.channel.send({embed: ({
-					color: 3447003,
-					title: `Streaming`,
-					url: `${music_items[msg.guild.id].queue[0]}`,
-					description: `Streaming [${music_items[msg.guild.id].queue[0]}](${music_items[msg.guild.id].queue[0]}) for \`${hourzero}${streamingDuration[0]}:${minzero}${streamingDuration[1]}:${seczero}${streamingDuration[2]}\``,
-					timestamp: new Date()
-				})});
+				msg.channel.send({
+					embed: ({
+						color: 3447003,
+						title: `Streaming`,
+						url: `${music_items[msg.guild.id].queue[0]}`,
+						description: `Streaming [${music_items[msg.guild.id].queue[0]}](${music_items[msg.guild.id].queue[0]}) for \`${hourzero}${streamingDuration[0]}:${minzero}${streamingDuration[1]}:${seczero}${streamingDuration[2]}\``,
+						timestamp: new Date()
+					})
+				});
 			}
-		}).catch(err => console.error(err.toString()));
+		}).catch((err) => console.error(err.toString()));
 	} catch (err) {
 		console.error(err.toString());
 	}
