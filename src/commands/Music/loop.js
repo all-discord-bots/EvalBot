@@ -3,11 +3,10 @@ require('../../conf/globals.js');
 exports.run = async (bot, msg, args) => {
 	try {
 		if (!msg.member.voiceChannel) return msg.channel.send(`<:redx:411978781226696705> You must be in a voice channel!`);
-		const voiceConnection = bot.voiceConnections.find(val => val.channel.guild.id == msg.guild.id);
+		const voiceConnection = bot.voiceConnections.get(msg.guild.id);
 		if (voiceConnection === null) return msg.channel.send(`<:redx:411978781226696705> There is no audio being played.`);
 		if (!music_items[msg.guild.id] || music_items[msg.guild.id].queue.length <= 0) return msg.channel.send(`<:redx:411978781226696705> There are no audios in the queue to loop!`).catch(err => console.error);
-		let arg = args.join(' ').toLowerCase();
-		if (arg === 'song' || arg === 'current' || arg === 'this' || arg === 'one' || arg === 'repeat') {
+		if (args[0].toLowerCase() === 'song' || args[0].toLowerCase() === 'current' || args[0].toLowerCase() === 'this' || args[0].toLowerCase() === 'one' || args[0].toLowerCase() === 'repeat') {
 			if (!music_items[msg.guild.id].loop_song) {
 				music_items[msg.guild.id].loop_song = true;
 				music_items[msg.guild.id].loop_queue = false;
@@ -17,7 +16,7 @@ exports.run = async (bot, msg, args) => {
 				music_items[msg.guild.id].loop_queue = false;
 				return msg.channel.send(`Song Looping disabled! :arrow_forward:`);
 			}
-		} else if (arg === 'queue' || arg === 'loopqueue' || arg === 'fullqueue' || arg === 'all' || arg.length <= 0) {
+		} else if (args[0].toLowerCase() === 'queue' || args[0].toLowerCase() === 'loopqueue' || args[0].toLowerCase() === 'fullqueue' || args[0].toLowerCase() === 'all' || args[0].toLowerCase().length <= 0) {
 			if (!music_items[msg.guild.id].loop_queue) {
 				music_items[msg.guild.id].loop_queue = true;
 				music_items[msg.guild.id].loop_song = false;
