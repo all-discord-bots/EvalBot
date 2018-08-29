@@ -3,18 +3,18 @@ require('../../conf/globals.js');
 exports.run = async (bot, msg, args) => {
 	try {
 		if (!msg.member.voiceChannel) return msg.channel.send(`<:redx:411978781226696705> You must be in a voice channel!`);
-		const voiceConnection = bot.voiceConnections.find(val => val.channel.guild.id == msg.guild.id);
+		const voiceConnection = bot.voiceConnections.get(msg.guild.id);
 		if (voiceConnection === null) return msg.channel.send(`<:redx:411978781226696705> There is no audio being played.`);
 		if (!music_items[msg.guild.id] || music_items[msg.guild.id].queue.length < 1) return msg.channel.send(`<:redx:411978781226696705> There are no items in the queue.`);
-		if (args.length !== 2) return msg.channel.send(`<:redx:411978781226696705> Invalid arguments provided.`);
-		if (args[0] <= 0) return msg.channel.send(`<:redx:411978781226696705> You can't move the current playing item!`);
+		if (args.length < 2) return msg.channel.send(`<:redx:411978781226696705> Invalid arguments provided.`);
+		if (parseInt(args[0]) <= 0) return msg.channel.send(`<:redx:411978781226696705> You can't move the current playing item!`);
 		let queuepositions;
 		if (music_items[msg.guild.id].length <= 0) {
 			queuepositions = `!`;
 		} else {
 			queuepositions = ` valid position are \`1 - ${music_items[msg.guild.id].length}\`!`;
 		}
-		if (args[1] <= 0 || args[1] > music_items[msg.guild.id].queue.length) return msg.channel.send(`<:redx:411978781226696705> Could not move to position \`${args[1]}\`${queuepositions}`);
+		if (parseInt(args[1]) <= 0 || parseInt(args[1]) > music_items[msg.guild.id].queue.length) return msg.channel.send(`<:redx:411978781226696705> Could not move to position \`${args[1]}\`${queuepositions}`);
 		let old_pos = parseInt(args[0]);
 		let new_pos = parseInt(args[1]);
 		if (new_pos >= music_items[msg.guild.id].queue.length) {
