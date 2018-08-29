@@ -55,12 +55,12 @@ exports.run = async (bot, msg, args) => {
 			if (queue.length <= 0) {
 				msg.channel.send(`<:check:411976443522711552> Playback finished.`);
 				// Leave the voice channel.
-				const voiceConnection = bot.voiceConnections.find((val) => val.channel.guild.id == msg.guild.id);
+				const voiceConnection = bot.voiceConnections.get(msg.guild.id);
 				if (voiceConnection !== null) return voiceConnection.disconnect();
 			}
 			new Promise((resolve, reject) => {
 				// Join the voice channel if not already in one.
-				const voiceConnection = bot.voiceConnections.find((val) => val.channel.guild.id == msg.guild.id);
+				const voiceConnection = bot.voiceConnections.get(msg.guild.id);
 				if (!msg.member.voiceChannel) return msg.channel.send(`<:redx:411978781226696705> You must be in a voice channel!`).catch(err => console.error)
 				if (voiceConnection === null) {
 					// Check if the user is in a voice channel.
