@@ -210,10 +210,10 @@ exports.run = async (bot, msg, args) => {
 								}, {
 									name: `**__Uploaded__**`,
 									value: `${moment.utc(new Date(result.publishedAt).getTime()).format("LLLL") || 'N/A'}`
-								}, {
+								},/* {
 									name: `**__Description__**`,
 									value: `${result.description.toString() || 'N/A'}`
-								}, {
+								},*/ {
 									name: `**__Duration__**`,
 									value: `\`${houronezero}${currenttimepos[0]}:${minonezero}${currenttimepos[1]}:${seconezero}${currenttimepos[2]}/${hourzero}${h}:${minzero}${m}:${seczero}${s}\``
 								}, {
