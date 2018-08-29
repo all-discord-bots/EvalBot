@@ -42,10 +42,11 @@ exports.run = async (bot, msg, args) => {
 					h = h % 24;
 					/*Format Duration*/
 					/*Format Playtime*/
-					const voiceConnection = bot.voiceConnections.find(val => val.channel.guild.id == msg.guild.id);
+					const voiceConnection = bot.voiceConnections.get(msg.guild.id);
 					let currenttime;
 					if (voiceConnection) {
-						currenttime = voiceConnection.player.dispatcher.time; //ms(parseInt(voiceConnection.player.dispatcher.time));
+						if (!voiceConnection.dispatcher) return msg.channel.send(`<:redx:411978781226696705> Failed to retrieve video information.`);
+						currenttime = voiceConnection.dispatcher.time; //ms(parseInt(voiceConnection.player.dispatcher.time));
 					} else if (!voiceConnection) {
 						currenttime = `0`;
 					}
