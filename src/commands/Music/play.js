@@ -25,7 +25,7 @@ exports.run = async (bot, msg, args) => {
 				url: `${result.url}`,
 				requester: msg.author
 			});
-			if (music_items[msg.guild.id].queue.length === 1 || !bot.voiceConnections.find(val => val.channel.guild.id == msg.guild.id)) executeQueue(music_items[msg.guild.id].queue);
+			if (music_items[msg.guild.id].queue.length === 1 || !bot.voiceConnections.get(msg.guild.id)) executeQueue(music_items[msg.guild.id].queue);
 			if (result.url) { // message information about the video on playing the video
 				let thumbnail;
 				if (result.thumbnails.default.url && !result.thumbnails.medium.url && !result.thumbnails.high.url) {
