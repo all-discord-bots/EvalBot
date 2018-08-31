@@ -100,7 +100,6 @@ exports.run = async (bot, msg, args) => {
 					} else if (result.thumbnails.default.url && result.thumbnails.medium.url && result.thumbnails.high.url) {
 						thumbnail = `${result.thumbnails.high.url}`;
 					}
-					let udate = new Date(result.publishedAt).getTime();
 					let dthumbnail;
 					if (result.thumbnails.default.url) {
 						dthumbnail = `- [Default](${result.thumbnails.default.url}) \`${result.thumbnails.default.width}×${result.thumbnails.default.height}\`\n`;
@@ -205,7 +204,10 @@ exports.run = async (bot, msg, args) => {
 								value: `${dthumbnail}${mthumbnail}${hthumbnail}`
 							}, {
 								name: `**__Uploaded__**`,
-								value: `${moment.utc(udate).format("LLLL")}`
+								value: `${moment.utc(new Date(result.publishedAt).getTime()).format("LLLL")} \`${result.publishedAt}\``
+							}, {
+								name: `**__Description__**`,
+								value: `${result.description ? result.description || 'N/A' : 'N/A'}`
 							}, {
 								name: `**__Duration__**`,
 								value: `\`${houronezero}${currenttimepos[0]}:${minonezero}${currenttimepos[1]}:${seconezero}${currenttimepos[2]}/${hourzero}${h}:${minzero}${m}:${seczero}${s}\``
