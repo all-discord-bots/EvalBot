@@ -44,7 +44,11 @@ exports.run = async (bot, msg, args) => {
 					const voiceConnection = bot.voiceConnections.find(val => val.channel.guild.id == msg.guild.id);
 					let currenttime;
 					if (voiceConnection) {
-						currenttime = voiceConnection.player.dispatcher.time; //ms(parseInt(voiceConnection.player.dispatcher.time));
+						if (args.length <= 0) {
+							currenttime = voiceConnection.player.dispatcher.time; //ms(parseInt(voiceConnection.player.dispatcher.time));
+						} else {
+							currenttime = 0;
+						}
 					} else if (!voiceConnection) {
 						currenttime = `0`;
 					}
