@@ -112,7 +112,8 @@ const getHelp = (bot, msg, command, single) => {
 		let description = stripIndents`
 			**Description:** ${'description' in command.info ? command.info.description : `\`<no description>\``}
 			**Usage:** \`${prefix}${'usage' in command.info ? command.info.usage : command.info.name}\`
-			**Aliases:** ${('aliases' in command.info && command.info.aliases.length > 0) ? command.info.aliases.map((alias) => `\`${alias.toLowerCase()}\``).join(` `) : `\`<no aliases>\``}`;
+			**Aliases:** ${('aliases' in command.info && command.info.aliases.length > 0) ? command.info.aliases.map((alias) => `\`${alias.toLowerCase()}\``).join(` `) : `\`<no aliases>\``}
+			**Module:** \`${'category' in command.info ? command.info.category : `<unknown category>`}\``;
 
 		if (command.info.credits)
 			description += `\n**Credits:** \`${command.info.credits}\``;
@@ -124,14 +125,12 @@ const getHelp = (bot, msg, command, single) => {
 			let options = command.info.options.map((option) => {
 				return stripIndents`
 				**${option.name}**
-				**Usage:** \`${option.usage || option.name}\`
-				**Description:** ${option.description}
+				┌ \t**Usage:** \`${option.usage || option.name}\`
+				└ \t**Description:** ${option.description}
 				`;
 			});
 			description += `\n**Options:**\n${options.join('\n\n')}`; // `\n**Options:**\n\n${options.join('\n\n')}`
 		}
-		
-		description += `\n**Module:** \`${'category' in command.info ? command.info.category : `<unknown category>`}\``;
 		
 		return {
 			name: single ? '\u200b' : command.info.name,
