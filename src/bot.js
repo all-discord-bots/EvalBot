@@ -460,6 +460,7 @@ class CripsBot extends Client {
 		});
 		
 		this.on('messageUpdate', (oldMessage,newMessage) => {
+			console.log(newMessage.content);
 			if (newMessage.author.bot) return;
 			if (newMessage.content === "") return;
 			let gmsg = newMessage.content.toLowerCase().split(' ');
