@@ -271,8 +271,8 @@ class CripsBot extends Client {
 			
 			logger.info(stripIndents `Stats:
 			- User: ${this.user.tag} <ID: ${this.user.id}>
-			- Users: ${this.users.filter((user) => !user.bot).size}
-			- Bots: ${this.users.filter((user) => user.bot).size}
+			- Users: ${this.users.filter(user => !user.bot).size}
+			- Bots: ${this.users.filter(user => user.bot).size}
 			- Channels: ${this.channels.size}
 			- Guilds: ${this.guilds.size}
 			- Shards: ${this.shard.count || "undefined"}`
@@ -376,20 +376,16 @@ class CripsBot extends Client {
 							color: 15684432,
 							timestamp: new Date(),
 							title: `${err.toString()}`,
-							description: `\`\`\`\n${err.stack ? err.stack : err.toString()}\n\`\`\``
+							description: `\`\`\`\n${err.stack}\n\`\`\``
 						})
-					}).catch((err) => {
-						console.error(err.toString());
-					});
+					}).catch(err => console.error);
 				}
 				
 				// NO 'XD' messages
 				if (msg.guild.id === this.config.botMainServerID && gmsg[0] === "xd" && gmsg.length === 1) {
 					msg.delete().then(msg => {
 						msg.channel.send(`<:blobDerp:413114089225846785>`);
-					}).catch((err) => {
-						console.error(err.toString());
-					});
+					}).catch(err => console.error);
 				}
 			}
 			/*
@@ -454,74 +450,30 @@ class CripsBot extends Client {
 			//	stats.increment('mentions');
 			//	console.log(`[MENTION] ${msg.author.username} | ${msg.guild ? msg.guild.name : '(DM)'} | #${msg.channel.name || 'N/A'}:\n${msg.cleanContent}`);
 			//}
-			// this.config.blacklistedServers.indexOf(msg.guild.id.toString()) > -1
-			if (msg.guild && this.config.blacklistedServers && this.config.blacklistedServers.includes(msg.guild.id)) return;
+			
+			if (msg.guild && this.config.blacklistedServers && this.config.blacklistedServers.indexOf(msg.guild.id.toString()) > -1) {
+				return;
+			}
 			return this.commands.handleCommand(msg, msg.content);
 		});
-		
-		/*this.on('messageUpdate', (oldMessage,newMessage) => {
-			if (newMessage.author.bot) return;
-			if (newMessage.content === "") return;
-			let gmsg = newMessage.content.toLowerCase().split(' ');
-			if (newMessage.channel.type !== 'dm') {
-				try {
-					if (music_items[newMessage.guild.id] === undefined)
-					{
-						music_items[newMessage.guild.id] = {
-							queue: [],
-							volume: 100,
-							loop_queue: false,
-							loop_song: false,
-							is_streaming: false,
-							stream_mode: 0,
-							shuffle_queue: false
-						}
-					}
-					if (songqueue[newMessage.guild.id] === undefined)
-					{
-						songqueue[newMessage.guild.id] = [];
-					}
-				} catch (err) {
-					this.channels.get("415265475895754752").send({
-						embed: ({
-							color: 15684432,
-							timestamp: new Date(),
-							title: `${err.toString()}`,
-							description: `\`\`\`\n${err.stack ? err.stack : err.toString()}\n\`\`\``
-						})
-					}).catch((err) => {
-						console.error(err.toString());
-					});
-				}
-				if (newMessage.guild.id === this.config.botMainServerID && gmsg[0] === "xd" && gmsg.length === 1) {
-					newMessage.delete().then((msg) => {
-						msg.channel.send(`<:blobDerp:413114089225846785>`);
-					}).catch((err) => {
-						console.error(err.toString());
-					});
-				}
-			}
-			// this.config.blacklistedServers.indexOf(newMessage.guild.id.toString()) > -1
-			if (newMessage.guild && this.config.blacklistedServers && this.config.blacklistedServers.includes(newMessage.guild.id)) return;
-			return this.commands.handleCommand(newMessage, newMessage.content);
-		});*/
 		
 		this.on('messageDelete', (msg) => {
 			//Hookdelmsg.custom(this.user.username, `**User:** <@${msg.author.id}> \`[${msg.author.tag}]\`\n**Channel:** <#${msg.channel.id}> \`[#${msg.channel.name}]\`\n${msg.content}`, "Message Delete", "#EF5350");
 			this.deleted.set(msg.author.id, msg);
 		});
 		
-		this.once('guildUnavailable', (guild) => {
+		this.once("guildUnavailable", (guild) => {
 			if (guild.id !== this.config.botMainServerID) return;
-			this.users.get(`${process.env.bot_owner}`).sendMessage(`<@${process.env.bot_owner}> \`${guild.name} [${guild.id}]\` is currently unavailable!`);
+			this.users.get(`${process.env.bot_owner}`).sendMessage(`<@${this.config.botCreatorID}> \`${guild.name} [${guild.id}]\` is currently unavailable!`);
+			//this.users.filter(user => user.id === this.config.botCreatorID).forEach(user => user.sendMessage(`<@${this.config.botCreatorID}> \`${guild.name} [${guild.id}]\` is currently unavailable!`));
 		});
 		
 		// Joined a server
-		this.on('guildCreate', (guild) => {
+		this.on("guildCreate", (guild) => {
 			console.log(`Joined a new guild: ${guild.name}`);
-			let gusers = guild.members.filter((user) => !user.user.bot).size; // get only users and exclude bots
-			let gtotal = guild.members.filter((user) => user.user).size; // get all users and bots
-			let gbots = guild.members.filter((user) => user.user.bot).size; // get all bots excluding users
+			let gusers = guild.members.filter(user => !user.user.bot).size; // get only users and exclude bots
+			let gtotal = guild.members.filter(user => user.user).size; // get all users and bots
+			let gbots = guild.members.filter(user => user.user.bot).size; // get all bots excluding users
 			let gpercent = `${gtotal}%`; // total users and bots to percentage
 			let gparsepercent = parseFloat(gpercent); // parses the percentage
 			let gdecimal = gparsepercent / 100; // percentage to decimal
@@ -532,7 +484,7 @@ class CripsBot extends Client {
 					timestamp: new Date(),
 					description: `${guild.name} (${guild.id})\n\`${gusers} members   -   ${gbots} bots  (${Math.floor(gbots/gdecimal)}%)\`\n\nOwner: <@${guild.owner.id}>  \`[${guild.owner.user.username}#${guild.owner.user.discriminator}]\``
 				})
-			}).catch((err) => console.error(err.toString()));
+			}).catch(err => console.error);
 			let s;
 			if (this.guilds.size == 1) {
 				s = "";
@@ -543,11 +495,11 @@ class CripsBot extends Client {
 		});
 		
 		// Removed from a server
-		this.on('guildDelete', (guild) => {
+		this.on("guildDelete", (guild) => {
 			console.log(`Left a guild: ${guild.name}`);
-			let gusers = guild.members.filter((user) => !user.user.bot).size; // get only users and exclude bots
-			let gtotal = guild.members.filter((user) => user.user).size - 1; // get all users and bots
-			let gbots = guild.members.filter((user) => user.user.bot).size - 1; // get all bots excluding users
+			let gusers = guild.members.filter(user => !user.user.bot).size; // get only users and exclude bots
+			let gtotal = guild.members.filter(user => user.user).size - 1; // get all users and bots
+			let gbots = guild.members.filter(user => user.user.bot).size - 1; // get all bots excluding users
 			let gpercent = `${gtotal}%`; // total users and bots to percentage
 			let gparsepercent = parseFloat(gpercent); // parses the percentage
 			let gdecimal = gparsepercent / 100; // percentage to decimal
@@ -558,7 +510,7 @@ class CripsBot extends Client {
 					timestamp: new Date(),
 					description: `${guild.name} (${guild.id})\n\`${gusers} members   -   ${gbots} bots  (${Math.floor(gbots/gdecimal)}%)\`\n\nOwner: <@${guild.owner.id}>  \`[${guild.owner.user.username}#${guild.owner.user.discriminator}]\``
 				})
-			}).catch((err) => console.error(err.toString()));
+			}).catch(err => console.error);
 			let s;
 			if (this.guilds.size == 1) {
 				s = "";
@@ -568,8 +520,9 @@ class CripsBot extends Client {
 			this.user.setPresence({ game: { name: `${this.guilds.size} server${s}`, type: 3 } });
 		});
 		
-		this.on('guildMemberAdd', (member) => {
-			if (member.guild.id !== this.config.botMainServerID) return;
+		this.on("guildMemberAdd", (member) => {
+			let guild = member.guild;
+			if (guild.id !== this.config.botMainServerID) return;
 			this.channels.get("413371120234921987").send({
 				embed: ({
 					color: 6732650,
@@ -580,11 +533,12 @@ class CripsBot extends Client {
 						icon_url: `${member.user.displayAvatarURL}`
 					},
 				})
-			}).catch((err) => console.error(err.toString()));
+			}).catch(err => console.error);
 		});
 		
-		this.on('guildMemberRemove', (member) => {
-			if (member.guild.id !== this.config.botMainServerID) return;
+		this.on("guildMemberRemove", (member) => {
+			let guild = member.guild;
+			if (guild.id !== this.config.botMainServerID) return;
 			this.channels.get("413371120234921987").send({
 				embed: ({
 					color: 15684432,
@@ -595,7 +549,7 @@ class CripsBot extends Client {
 						icon_url: `${member.user.displayAvatarURL}`
 					},
 				})
-			}).catch((err) => console.error(err.toString()));
+			}).catch(err => console.error);
 		});
 		
 		this.on('error', (err) => {
@@ -787,7 +741,7 @@ class CripsBot extends Client {
 		});
 		
 		// Process handlers
-		process.on('warning',(warning) => {
+		process.on('warning', (warning) => {
 			this.channels.get("415265475895754752").send({
 				embed: ({
 					color: 12696890,
@@ -810,7 +764,7 @@ class CripsBot extends Client {
 			});
 		});
 		
-		process.on('exit',(code) => {
+		process.on('exit', (code) => {
 			this.logger.info(`Process exited with exit code ${code}`);
 			this.channels.get("415265475895754752").send({
 				embed: ({
@@ -843,24 +797,24 @@ class CripsBot extends Client {
 							}
 						]
 					})
-				}).catch((err) => console.error(err.toString()));
+				}).catch(err => console.error);
 			} catch (err) {
 				console.error(err.toString());
 			}
 		});
 		
 		process.on('unhandledRejection', (err) => {
-			this.logger.severe(`Uncaught Promise error:\n${err.stack || err.toString()}`);
+			this.logger.severe(`Uncaught Promise error:\n${err.stack}`);
 			this.channels.get("415265475895754752").send({
 				embed: ({
 					color: 15684432,
 					timestamp: new Date(),
 					title: `Unhandled Rejection | Uncaught Promise error:`,
-					description: `\`\`\`\n${err.stack || err.toString()}\n\`\`\``,
+					description: `\`\`\`\n${err.stack}\n\`\`\``,
 					fields: [
 						{
 							name: `Error Message:`,
-							value: `\`${err.message || 'N/A'}\``
+							value: `\`${err.message}\``
 						}
 					]
 				})
@@ -893,9 +847,11 @@ class CripsBot extends Client {
 	start() {
 		if (!this.config) return false;
 		
-		this.login(process.env.BOT_TOKEN)
-			.then(console.log)
-			.catch(console.error);
+		this.login(process.env.BOT_TOKEN, (error, token) => {
+			if (error) throw new Error(error);
+			if (token) console.log(token.toString());
+		});
+		
 		return true;
 	}
 	
