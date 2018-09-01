@@ -426,11 +426,21 @@ class CommandManager {
 						timestamp: new Date(),
 						description: `\`\`\`\n${msg.content.toString()}\n\`\`\``,
 						author: {
-							name: `${msg.author.tag} - ${msg.author.id} | ${msg.guild.name || msg.channel.type} - ${msg.guild.id || msg.channel.type}`,
+							name: `${msg.author.tag} - ${msg.author.id}`,
 							icon_url: `${msg.author.displayAvatarURL}`
-						}
+						},
+						fields: [
+							{
+								name: `Guild`,
+								value: `${msg.guild ? msg.guild.name || msg.channel.type : msg.channel.type} \`${msg.guild ? msg.guild.id || msg.channel.type : msg.channel.type}\``
+							},
+							{
+								name: `Channel`,
+								value: `${msg.channel.type !== 'dm' ? `<#${msg.channel.id}> \`${msg.channel.id}\`` : `\`${msg.channel.type}\``}`
+							}
+						]
 					})
-				}).catch(err => console.error(err.toString));
+				}).catch((err) => console.error(err.toString()));
 			}
 			const isUsable = this.isUsable(msg, command.info);
 			if (typeof(isUsable) === 'boolean' && !isUsable) return;
@@ -441,38 +451,38 @@ class CommandManager {
 				embed: ({
 					color: 15684432,
 					timestamp: new Date(),
-					title: `${err.name || "Unknown Error"}`,
+					title: `${err.name ? err.name : `Unknown Error`}`,
 					author: {
 						name: `${msg.author.tag}`,
 						icon_url: `${msg.author.displayAvatarURL}`
 					},
 					footer: {
-						text: `${err.toString() || "N/A"}`
+						text: `${err ? err.toString() : `\`N/A\``}`
 					},
-					description: `\`\`\`\n${err.stack || "N/A"}\n\`\`\``,
+					description: `${err.stack ? `\`\`\`\n${err.stack}\n\`\`\`` : `\`N/A\``}`,
 					fields: [
 						{
-							name: "Extra Information:",
-							value: "​"
+							name: 'Extra Information:',
+							value: '​'
 						}, {
-							name: "Error:",
-							value: `\`${err.toString() || "N/A"}\``
+							name: 'Error:',
+							value: `\`${err ? err.toString() : `N/A`}\``
 						}, {
-							name: "Error Name:",
-							value: `\`${err.name || "N/A"}\``
+							name: 'Error Name:',
+							value: `\`${err.name ? err.name : `N/A`}\``
 						}, {
-							name: "Error Message:",
-							value: `\`${err.message || "N/A"}\``
+							name: 'Error Message:',
+							value: `\`${err.message ? err.message : `N/A`}\``
 						}, {
-							name: "Command:",
-							value: `\`${command.info.name || "Unknown Command"}\``
+							name: 'Command:',
+							value: `\`${(command.info ? (command.info.name ? command.info.name : `Unknown Command`) : `Unknown Command`)}\``
 						}, {
-							name: "Message Content:",
-							value: `\`${msg.content.toString() || "N/A"}\``
+							name: 'Message Content:',
+							value: `${msg.content ? `\`\`\`\n${msg.content.toString()}\n\`\`\`` : `\`N/A\``}`
 						}
 					]
 				})
-			}).catch(err => console.error(err.toString));
+			}).catch((err) => console.error(err.toString()));
 			msg.error(err);
 			return null;
 		}
