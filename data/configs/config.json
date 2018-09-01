@@ -1,14 +1,12 @@
 {
-  "botToken": "HAHAHA_YOU_THOUGHT_THERE_WAS_REALLY_A_TOKEN_HERE?_XD_GUESS_I_FOOLED_YO_BITCH_ASS",
-  "prefix": ">",
-  "blockBots": true,
-  "allowDMCmds": false,
-  "botCreatorID": "269247101697916939",
-  "botMainServerID": "291563214649688064",
-  "cripsBotModeratorRole": "CripsBot Mod",
-  "botCommanderRole": "CripsBot Commander",
-  "blacklistedServers": [
-    "226865538247294976",
-    "239010380385484801"
-  ]
+	botToken: 'No_Bot_Token_Here',
+	prefix: '>',
+	botCreatorID: 269247101697916939,
+	botMainServerID: 291563214649688064,
+	cripsBotModeratorRole: 'CripsBot Mod',
+	botCommanderRole: 'CripsBot Commander',
+	blacklistedServers: [
+		226865538247294976,
+		239010380385484801
+	]
 }
