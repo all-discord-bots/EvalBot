@@ -2,7 +2,7 @@ exports.run = (bot, msg, args) => {
 	try {
 		if (args.length <= 0) return msg.channel.send(`<:redx:411978781226696705> you must provide a message id.`);
 		msg.channel.fetchMessage(`${args[0]}`).then((message) => {
-		if (!message) return msg.channel.send(`<:redx:411978781226696705> could not find message with the id \`${args[0]}\` in the channel <#${msg.channel.id}>.`);
+			if (!message) return msg.channel.send(`<:redx:411978781226696705> could not find message with the id \`${args[0]}\` in the channel <#${msg.channel.id}>.`);
 			msg.channel.send(`Source Code for message id \`${args[0]}\`: \`\`\`md\n${clean(message.content)}\n\`\`\``);//.then(() => {
 				//msg.delete();
 			//});
