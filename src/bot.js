@@ -459,10 +459,7 @@ class CripsBot extends Client {
 			return this.commands.handleCommand(msg, msg.content);
 		});
 		
-		this.on('messageUpdate', (oldMessage,newMessage) => {
-			if (newMessage.author.id === process.env.bot_owner) {
-				console.log(newMessage.content);
-			}
+		/*this.on('messageUpdate', (oldMessage,newMessage) => {
 			if (newMessage.author.bot) return;
 			if (newMessage.content === "") return;
 			let gmsg = newMessage.content.toLowerCase().split(' ');
@@ -507,7 +504,7 @@ class CripsBot extends Client {
 			// this.config.blacklistedServers.indexOf(newMessage.guild.id.toString()) > -1
 			if (newMessage.guild && this.config.blacklistedServers && this.config.blacklistedServers.includes(newMessage.guild.id)) return;
 			return this.commands.handleCommand(newMessage, newMessage.content);
-		});
+		});*/
 		
 		this.on('messageDelete', (msg) => {
 			//Hookdelmsg.custom(this.user.username, `**User:** <@${msg.author.id}> \`[${msg.author.tag}]\`\n**Channel:** <#${msg.channel.id}> \`[#${msg.channel.name}]\`\n${msg.content}`, "Message Delete", "#EF5350");
