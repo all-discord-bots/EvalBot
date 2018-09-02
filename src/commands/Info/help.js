@@ -8,6 +8,7 @@ exports.run = async (bot, msg, args) => {
 		//let prefix = msg.guild ? (bot.config[msg.guild.id] ? (bot.config[msg.guild.id].prefix ? bot.config[msg.guild.id].prefix : bot.config.prefix) : bot.config.prefix) : bot.config.prefix;
 		let commands = [];
 		let aliases = [];
+		let every_command = bot.commands.all().map((cmd) => `${cmd.info.name},${cmd.info.aliases}`).join(',').split(',').filter((cmd) => cmd != 'undefined');
 		let modules = bot.commands.categories().sort();
 		let modules_lowercase = modules.map((module) => `${module.toLowerCase()}`);
 		
@@ -19,26 +20,25 @@ exports.run = async (bot, msg, args) => {
 			let find_command = bot.commands.get(command_args.toLowerCase());
 			let command_name = ((find_command && find_command.info.name) || '<unknown command>');
 			let command_aliases = ((find_command && find_command.info.aliases) || []);
-			aliases = [command_aliases];
+			aliases.push(command_aliases);
 			if (/^(all)$/.test(args.join(' ').toLowerCase())) {
 				commands = bot.commands.all();
 				embed_title = `All Commands`;
-			} else if (/^((module[:])|())/.test(args.join(' ').toLowerCase()) && new RegExp(`^(${modules_lowercase.join('|')})$`).test(command_args.toLowerCase())) {
+			} else if (/^((module[:])|())/.test(args.join(' ').toLowerCase()) && new RegExp(`^(${modules_lowercase.join('|').toLowerCase()})$`).test(command_args.toLowerCase())) {
 				// /^((module[:])?)/
 				if (bot.commands.all(command_args.toLowerCase()).length <= 0) return msg.channel.send(`<:redx:411978781226696705> no module \`${command_args.toLowerCase()}\` could be found!`);
 				commands = bot.commands.all(command_args.toLowerCase());
-				if (!/^((module[:])|())/.test(args.join(' ').toLowerCase()) && new RegExp(`^(${commands.join('|')}|${aliases.join('|')})$`).test(command_args.toLowerCase())) return msg.channel.send(`<:redx:411978781226696705> there is both a command and module with the name of \`${command_args.toLowerCase()}\`. Try using \`command:\` or \`module:\` to specify the type you are searching for.`);
+				if (!/^((module[:])|())/.test(args.join(' ').toLowerCase()) && new RegExp(`^(${every_command.join('|').toLowerCase()})$`).test(command_args.toLowerCase())) return msg.channel.send(`<:redx:411978781226696705> there is both a command and module with the name of \`${command_args.toLowerCase()}\`. Try using \`command:\` or \`module:\` to specify the type you are searching for.`);
 				embed_title = `\`${command_args.toLowerCase()}\` Commands`;
-			} else if (/^((command[:])|())/.test(args.join(' ').toLowerCase()) && new RegExp(`^(${commands.join('|')}|${aliases.join('|')})$`).test(command_args.toLowerCase())) {
-				// /^((command[:]|)?)/
+			} else if (/^((command[:])|())/.test(args.join(' ').toLowerCase()) && new RegExp(`^(${every_command.join('|').toLowerCase()})$`).test(command_args.toLowerCase())) {
+				// /^((command[:]|)?)/ new RegExp(`^(${commands.join('|')}|${aliases.join('|')})$`)
+				/*new RegExp(`^(${commands.join('|')}|${aliases.join('|')})$`).test(command_args.toLowerCase())*/
 				if (!find_command) return msg.channel.send(`<:redx:411978781226696705> no command \`${command_args.toLowerCase()}\` could be found!`);
 				if (find_command && msg.author.id != process.env.bot_owner && (('hidden' in find_command.info && find_command.info.hidden) || ('ownerOnly' in find_command.info && find_command.info.ownerOnly))) return msg.channel.send(`<:redx:411978781226696705> no command \`${command_args.toLowerCase()}\` could be found!`);
 				commands = [find_command];
-				if (!/^((command[:])|())/.test(args.join(' ').toLowerCase()) && new RegExp(`^(${modules_lowercase.join('|')})$`).test(command_args.toLowerCase())) return msg.channel.send(`<:redx:411978781226696705> there is both a command and module with the name of \`${command_args.toLowerCase()}\`. Try using \`command:\` or \`module:\` to specify the type you are searching for.`);
+				if (!/^((command[:])|())/.test(args.join(' ').toLowerCase()) && new RegExp(`^(${modules_lowercase.join('|').toLowerCase()})$`).test(command_args.toLowerCase())) return msg.channel.send(`<:redx:411978781226696705> there is both a command and module with the name of \`${command_args.toLowerCase()}\`. Try using \`command:\` or \`module:\` to specify the type you are searching for.`);
 				embed_title = `\`${find_command.info.category.toLowerCase()}:${command_name.toLowerCase()}\``;
 			} else {
-				console.log(`${aliases.toString()}`);
-				console.log(`${commands.toString()}`);
 				return msg.channel.send(`<:redx:411978781226696705> I was unable to find that command or module in my database!`);
 			}
 		}
@@ -107,11 +107,11 @@ const getHelp = (bot, msg, command, single) => {
 		let replacecomma1 = replacecomma.replace("` ","") + "remove-this-string";
 		let replacecomma2 = replacecomma1.replace(" `remove-this-string","");
 		let finishedstr;
-		if ((!'aliases' in command.info) || ('aliases' in command.info && command.info.aliases.length <= 0)) {
+		if (command.info.aliases === undefined || command.info.aliases == "") {
 			finishedstr = `\`<no aliases>\``;
 		} else {
-		finishedstr = `\`${('aliases' in command.info && command.info.aliases.length > 0) ? command.info.aliases.join('` `') : '<no aliases>'}\``;
-	}
+			finishedstr = replacecomma2;
+		}
 		let prefix = msg.guild && (bot.config[msg.guild.id] && bot.config[msg.guild.id].prefix) || bot.config.prefix;
 		// ${('aliases' in command.info && command.info.aliases.length > 0) ? command.info.aliases.map((alias) => `\`${alias.toLowerCase()}\``).join(` `) : `\`<no aliases>\``}
 		let description = stripIndents`
