@@ -10,7 +10,7 @@ exports.run = async (bot, msg, args) => {
 		if (!delmsg) return msg.channel.send(`<:redx:411978781226696705> No recently deleted messages found.`);
 		
 		bot.deleted.delete(user.id);
-		(await msg.channel.send({ embed: ({ title: `<a:loading:414954381176340480> Loading messages...` })}).then((msg) => {
+		(await msg.channel.send(`Loading Messages...`).then((msg) => {
 			msg.edit(`Undeleted message of \`${user.user.tag}\` in \`${delmsg.guild.name}\` | \`${delmsg.channel.name}\`\n\`\`\`${delmsg.content}\`\`\``);
 		}));
 	} catch (err) {
@@ -26,5 +26,5 @@ exports.info = {
 	examples: [
 		'undelete BannerBomb'
 	],
-	description: 'Undeletes messages'
+	description: 'Undeletes messages from a user.'
 };
