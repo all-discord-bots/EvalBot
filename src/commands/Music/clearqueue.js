@@ -23,7 +23,7 @@ exports.run = async (bot, msg, args) => {
 			} else {
 				return msg.channel.send(`<:redx:411978781226696705> Queue is already empty!`);
 			}
-		}  else {
+		}  else if (args.length > 0) {
 			if (music_items[msg.guild.id].queue.length > 0) {
 				let user = bot.utils.getMembers(msg,args[0]);
 				if (!user) return msg.channel.send(`<:redx:411978781226696705> I could not find that user.`);
@@ -47,7 +47,7 @@ exports.run = async (bot, msg, args) => {
 						}
 					}
 				});
-				return msg.channel.send(`<:check:411976443522711552> Queue has been cleared!`);
+				return msg.channel.send(`<:check:411976443522711552> All audios requested by <@${user.id}> have been cleared.`);
 			} else {
 				return msg.channel.send(`<:redx:411978781226696705> Queue is already empty!`);
 			}
