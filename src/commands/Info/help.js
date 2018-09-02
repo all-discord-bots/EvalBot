@@ -27,16 +27,16 @@ exports.run = async (bot, msg, args) => {
 			} else if (/^((module[:])|())/.test(args.join(' ').toLowerCase()) && new RegExp(`^(${modules_lowercase.join('|').toLowerCase()})$`).test(command_args.toLowerCase())) {
 				// /^((module[:])?)/
 				if (bot.commands.all(command_args.toLowerCase()).length <= 0) return msg.channel.send(`<:redx:411978781226696705> no module \`${command_args.toLowerCase()}\` could be found!`);
-				commands = bot.commands.all(command_args.toLowerCase());
 				if (!/^((module[:])|())/.test(args.join(' ').toLowerCase()) && new RegExp(`^(${every_command.join('|').toLowerCase()})$`).test(command_args.toLowerCase())) return msg.channel.send(`<:redx:411978781226696705> there is both a command and module with the name of \`${command_args.toLowerCase()}\`. Try using \`command:\` or \`module:\` to specify the type you are searching for.`);
+				commands = bot.commands.all(command_args.toLowerCase());
 				embed_title = `\`${command_args.toLowerCase()}\` Commands`;
 			} else if (/^((command[:])|())/.test(args.join(' ').toLowerCase()) && new RegExp(`^(${every_command.join('|').toLowerCase()})$`).test(command_args.toLowerCase())) {
 				// /^((command[:]|)?)/ new RegExp(`^(${commands.join('|')}|${aliases.join('|')})$`)
 				/*new RegExp(`^(${commands.join('|')}|${aliases.join('|')})$`).test(command_args.toLowerCase())*/
 				if (!find_command) return msg.channel.send(`<:redx:411978781226696705> no command \`${command_args.toLowerCase()}\` could be found!`);
-				if (find_command && msg.author.id != process.env.bot_owner && (('hidden' in find_command.info && find_command.info.hidden) || ('ownerOnly' in find_command.info && find_command.info.ownerOnly))) return msg.channel.send(`<:redx:411978781226696705> no command \`${command_args.toLowerCase()}\` could be found!`);
-				commands = [find_command];
+				if (find_command/* && msg.author.id != process.env.bot_owner*/ && (('hidden' in find_command.info && find_command.info.hidden) || ('ownerOnly' in find_command.info && find_command.info.ownerOnly))) return msg.channel.send(`<:redx:411978781226696705> no command \`${command_args.toLowerCase()}\` could be found!`);
 				if (!/^((command[:])|())/.test(args.join(' ').toLowerCase()) && new RegExp(`^(${modules_lowercase.join('|').toLowerCase()})$`).test(command_args.toLowerCase())) return msg.channel.send(`<:redx:411978781226696705> there is both a command and module with the name of \`${command_args.toLowerCase()}\`. Try using \`command:\` or \`module:\` to specify the type you are searching for.`);
+				commands = [find_command];
 				embed_title = `\`${find_command.info.category.toLowerCase()}:${command_name.toLowerCase()}\``;
 			} else {
 				return msg.channel.send(`<:redx:411978781226696705> I was unable to find that command or module in my database!`);
@@ -44,7 +44,10 @@ exports.run = async (bot, msg, args) => {
 		}
 	
 		if (commands.length > 0) {
-			let fields;
+			let fields = commands.filter((cmd) => !cmd.info.hidden && !command.info.ownerOnly)
+				.sort((a,b) => a.info.name.localeCompare(b.info.name))
+				.map((cmd) => getHelp(bot,msg,cmd,commands.length === 1));
+			/*let fields;
 			if (msg.author.id != process.env.bot_owner) {
 				fields = commands.filter((cmd) => !cmd.info.hidden && !command.info.ownerOnly)
 					.sort((a,b) => a.info.name.localeCompare(b.info.name))
@@ -52,7 +55,7 @@ exports.run = async (bot, msg, args) => {
 			} else {
 				fields = commands.sort((a,b) => a.info.name.localeCompare(b.info.name))
 					.map((cmd) => getHelp(bot,msg,cmd,commands.length === 1));
-			}
+			}*/
 			// Temporary workaround for the 2k char limit
 			let maxLength = 1900;
 			let messages = [];
