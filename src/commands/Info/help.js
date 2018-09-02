@@ -33,10 +33,12 @@ exports.run = async (bot, msg, args) => {
 				// /^((command[:]|)?)/
 				if (!find_command) return msg.channel.send(`<:redx:411978781226696705> no command \`${command_args.toLowerCase()}\` could be found!`);
 				if (find_command && msg.author.id != process.env.bot_owner && (('hidden' in find_command.info && find_command.info.hidden) || ('ownerOnly' in find_command.info && find_command.info.ownerOnly))) return msg.channel.send(`<:redx:411978781226696705> no command \`${command_args.toLowerCase()}\` could be found!`);
-				commands =  [find_command];
+				commands = [find_command];
 				if (!/^((command[:])|())/.test(args.join(' ').toLowerCase()) && new RegExp(`^(${modules_lowercase.join('|')})$`).test(command_args.toLowerCase())) return msg.channel.send(`<:redx:411978781226696705> there is both a command and module with the name of \`${command_args.toLowerCase()}\`. Try using \`command:\` or \`module:\` to specify the type you are searching for.`);
 				embed_title = `\`${find_command.info.category.toLowerCase()}:${command_name.toLowerCase()}\``;
 			} else {
+				console.log(`${aliases.toString()}`);
+				console.log(`${commands.toString()}`);
 				return msg.channel.send(`<:redx:411978781226696705> I was unable to find that command or module in my database!`);
 			}
 		}
@@ -100,21 +102,22 @@ exports.run = async (bot, msg, args) => {
 */
 const getHelp = (bot, msg, command, single) => {
 	try {
-		//let aliasesstr = `,${command.info.aliases},`;
-		//let replacecomma = aliasesstr.replace(/,/g, "` `");
-		//let replacecomma1 = replacecomma.replace("` ","") + "remove-this-string";
-		//let replacecomma2 = replacecomma1.replace(" `remove-this-string","");
-	//	let finishedstr;
-	//	if ((!'aliases' in command.info) || ('aliases' in command.info && command.info.aliases.length <= 0)) {
-	//		finishedstr = `\`<no aliases>\``;
-	//	} else {
-	//		finishedstr = `\`${('aliases' in command.info && command.info.aliases.length > 0) ? command.info.aliases.join('` `') : '<no aliases>'}\``;
-	//	}
+		let aliasesstr = `,${command.info.aliases},`;
+		let replacecomma = aliasesstr.replace(/,/g, "` `");
+		let replacecomma1 = replacecomma.replace("` ","") + "remove-this-string";
+		let replacecomma2 = replacecomma1.replace(" `remove-this-string","");
+		let finishedstr;
+		if ((!'aliases' in command.info) || ('aliases' in command.info && command.info.aliases.length <= 0)) {
+			finishedstr = `\`<no aliases>\``;
+		} else {
+		finishedstr = `\`${('aliases' in command.info && command.info.aliases.length > 0) ? command.info.aliases.join('` `') : '<no aliases>'}\``;
+	}
 		let prefix = msg.guild && (bot.config[msg.guild.id] && bot.config[msg.guild.id].prefix) || bot.config.prefix;
+		// ${('aliases' in command.info && command.info.aliases.length > 0) ? command.info.aliases.map((alias) => `\`${alias.toLowerCase()}\``).join(` `) : `\`<no aliases>\``}
 		let description = stripIndents`
 			**Description:** ${'description' in command.info ? command.info.description : `\`<no description>\``}
 			**Usage:** \`${prefix}${'usage' in command.info ? command.info.usage : command.info.name}\`
-			**Aliases:** ${('aliases' in command.info && command.info.aliases.length > 0) ? command.info.aliases.map((alias) => `\`${alias.toLowerCase()}\``).join(` `) : `\`<no aliases>\``}
+			**Aliases:** ${finishedstr}
 			**Module:** \`${'category' in command.info ? command.info.category : `<unknown category>`}\``;
 
 		if (command.info.credits)
