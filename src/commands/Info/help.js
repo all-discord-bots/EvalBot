@@ -44,12 +44,12 @@ exports.run = async (bot, msg, args) => {
 		}
 	
 		if (commands.length > 0) {
-			let fields = commands.filter((cmd) => !cmd.info.hidden && !command.info.ownerOnly)
+			let fields = commands.filter((cmd) => !cmd.info.hidden && !commands.info.ownerOnly)
 				.sort((a,b) => a.info.name.localeCompare(b.info.name))
 				.map((cmd) => getHelp(bot,msg,cmd,commands.length === 1));
 			/*let fields;
 			if (msg.author.id != process.env.bot_owner) {
-				fields = commands.filter((cmd) => !cmd.info.hidden && !command.info.ownerOnly)
+				fields = commands.filter((cmd) => !cmd.info.hidden && !commands.info.ownerOnly)
 					.sort((a,b) => a.info.name.localeCompare(b.info.name))
 					.map((cmd) => getHelp(bot,msg,cmd,commands.length === 1));
 			} else {
