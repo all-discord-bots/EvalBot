@@ -1,26 +1,30 @@
-exports.run = async (bot, msg) => {
-        if (msg.author.id !== bot.config.botCreatorID) {
-            if (!msg.member.hasPermission('ADMINISTRATOR') || !msg.member.hasPermission('manageServer')) return;
-        }
-    const user = msg.mentions.users.first();
-    if (!user) {
-        throw 'Please mention a user.';
-    }
-
-    const delmsg = bot.deleted.get(user.id);
-    if (!delmsg) {
-        throw 'No recently deleted messages found';
-    }
-
-    bot.deleted.delete(user.id);
-    
-    (await msg.channel.send("Loading message...").then((msg)=>{
-      msg.edit(`Undeleted message of ${user.username} in ${delmsg.guild.name} | ${delmsg.channel.name}\n\`\`\`${delmsg.content}\`\`\``);
-    }));
+exports.run = async (bot, msg, args) => {
+	try {
+		if (args.length <= 0) return msg.channel.send(`<:redx:411978781226696705> Invalid \`user\` argument provided.`);
+		let user = bot.utils.getMembers(msg,args.join(' '));
+		if (!user) return msg.channel.send(`<:redx:411978781226696705> I could not find that user.`);
+		if (user.toString().includes("I could not find that user.")) return;
+		if (!msg.guild.members.get(`${user.id}`)) return msg.channel.send(`<:redx:411978781226696705> I could not find that user.`);
+		
+		let delmsg = bot.deleted.get(user.id);
+		if (!delmsg) return msg.channel.send(`<:redx:411978781226696705> No recently deleted messages found.`);
+		
+		bot.deleted.delete(user.id);
+		(await msg.channel.send(({ embed: ({ title: `<a:loading:414954381176340480> Loading messages...` })}).then((msg) => {
+			msg.edit(`Undeleted message of \`${user.user.tag}\` in \`${delmsg.guild.name}\` | \`${delmsg.channel.name}\`\n\`\`\`${delmsg.content}\`\`\``);
+		}));
+	} catch (err) {
+		console.error(err.stack ? err.stack : err.toString());
+	}
 };
 
 exports.info = {
-    name: 'undelete',
-    usage: 'undelete <mention of user>',
-    description: 'Undeletes messages'
+	name: 'undelete',
+	userPermissions: ['MANAGE_MESSAGES','MANAGE_GUILD'],
+	clientPermissions: ['MANAGE_MESSAGES'],
+	usage: 'undelete <user>',
+	examples: [
+		'undelete BannerBomb'
+	],
+	description: 'Undeletes messages'
 };
