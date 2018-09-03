@@ -364,7 +364,8 @@ class CripsBot extends Client {
 							is_streaming: false,
 							stream_mode: 0,
 							shuffle_queue: false,
-							queue_position: 0
+							queue_position: 0,
+							playback_duration: ''
 						}
 					}
 					if (songqueue[msg.guild.id] === undefined)
@@ -476,7 +477,8 @@ class CripsBot extends Client {
 							is_streaming: false,
 							stream_mode: 0,
 							shuffle_queue: false,
-							queue_position: 0
+							queue_position: 0,
+							playback_duration: ''
 						}
 					}
 					if (songqueue[newMessage.guild.id] === undefined)
