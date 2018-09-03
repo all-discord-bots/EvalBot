@@ -13,8 +13,8 @@ exports.run = async (bot, msg, args) => {
 			if (i == music_items[msg.guild.id].queue_position) {
 				hashtag = '# ';
 				fetchVideoInfo(music_items[msg.guild.id].queue[i].id, function (err, videoInfo) {
-					if (err) return console.error(`${err.toString()}`);
-					if (result) {
+					if (err) console.error(`${err.toString()}`);
+					if (videoInfo) {
 						let videoDuration = duration(`${videoInfo.duration}s`);
 						let d, h, m, s; // days, hours, minutes, seconds
 						s = Math.floor(parseInt(videoDuration - 1) / 1000); // - 1 is used to round the video to get the proper second count
