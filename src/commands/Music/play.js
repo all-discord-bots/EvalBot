@@ -97,7 +97,7 @@ exports.run = async (bot, msg, args) => {
 					resolve(voiceConnection);
 				}
 			}).then((connection) => {
-				const video = music_items[msg.guild.id].loop_queue ? queue[music_items[msg.guild.id].queue_position].url : queue[0].url; // Get the audio to play from the queue.
+				const video = (music_items[msg.guild.id].loop_queue || music_items[msg.guild.id].loop_song) ? queue[music_items[msg.guild.id].queue_position].url : queue[0].url; // Get the audio to play from the queue.
 				
 				// Play the video.
 				try {
@@ -153,7 +153,6 @@ exports.run = async (bot, msg, args) => {
 								}
 								executeQueue(music_items[msg.guild.id].queue);
 							} else if (!music_items[msg.guild.id].loop_queue && music_items[msg.guild.id].loop_song) {
-								music_items[msg.guild.id].queue_position = 0;
 								executeQueue(music_items[msg.guild.id].queue);
 							} else {
 								music_items[msg.guild.id].queue_position = 0;
