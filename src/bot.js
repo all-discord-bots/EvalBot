@@ -625,165 +625,172 @@ class CripsBot extends Client {
 		});
 		
 		this.once('disconnect', (event) => {
-			if (event.code === 0) {
-				this.logger.severe("Gateway Error");
-				this.channels.get("415265475895754752").send({
-					embed: ({
-						color: 15684432,
-						timestamp: new Date(),
-						title: `Error`,
-						description: `\`[${event.code}] Gateway Error\``
-					})
-				});
-				//Hook.custom(this.user.username, "[0] Gateway Error", "Warn", "#C1BD3A");
-			} else if (event.code === 1000) {
-				this.logger.info("Disconnected from Discord cleanly.");
-				this.channels.get("415265475895754752").send({
-					embed: ({
-						color: 5892826,
-						timestamp: new Date(),
-						title: `Info`,
-						description: `\`[${event.code}] Disconnected from Discord cleanly.\``
-					})
-				});
-				//Hook.custom(this.user.username, "[1000] Disconnected from Discord cleanly", "Info", "#59EADA");
-			} else if (event.code === 4000) {
-				this.logger.warn('Unknown Error');
-				this.channels.get("415265475895754752").send({
-					embed: ({
-						color: 12696890,
-						timestamp: new Date(),
-						title: `Warn`,
-						description: `\`[${event.code}] Unknown Error\``
-					})
-				});
-				//Hook.custom(this.user.username, "[4000] Unknown Error", "Error", "#C1BD3A");
-			} else if (event.code === 4001) {
-				this.logger.warn('Unknown Opcode');
-				this.channels.get("415265475895754752").send({
-					embed: ({
-						color: 12696890,
-						timestamp: new Date(),
-						title: `Warn`,
-						description: `\`[${event.code}] Unknown Opcode\``
-					})
-				});
-				//Hook.custom(this.user.username, "[4001] Unknown Opcode", "Warn", "#C1BD3A");
-			} else if (event.code === 4002) {
-				this.logger.warn('Decode Error');
-				this.channels.get("415265475895754752").send({
-					embed: ({
-						color: 12696890,
-						timestamp: new Date(),
-						title: `Warn`,
-						description: `\`[${event.code}] Decode Error\``
-					})
-				});
-				//Hook.custom(this.user.username, "[4002] Decode Error", "Warn", "#C1BD3A");
-			} else if (event.code === 4003) {
-				this.logger.severe('Not Authenticated');
-				this.channels.get("415265475895754752").send({
-					embed: ({
-						color: 15684432,
-						timestamp: new Date(),
-						title: `Error`,
-						description: `\`[${event.code}] Not Authenticated\``
-					})
-				});
-				//Hook.custom(this.user.username, "[4003] Not Authenticated", "Error", "#EF5350");
-				return this.shutdown(false);
-			} else if (event.code === 4004) {
-				// Force the user to reconfigure if their token is invalid
-				this.logger.severe(`Failed to authenticate with Discord. Please follow the instructions at ${chalk.green('https://discordapp.com/developers')} and re-enter your token by running ${chalk.green('yarn run config')}.`);
-				this.channels.get("415265475895754752").send({
-					embed: ({
-						color: 15684432,
-						timestamp: new Date(),
-						title: `Error`,
-						description: `\`[${event.code}] Failed to authenticate with Discord. Please follow the instructions at ${chalk.green('https://discordapp.com/developers')} and re-enter your token by running ${chalk.green('yarn run config')}.\``
-					})
-				});
-				//Hook.custom(this.user.username, `[4004] Failed to authenticate with Discord. Please follow the instructions at ${chalk.green('https://discordapp.com/developers')} and re-enter your token by running ${chalk.green('yarn run config')}.`, "Error", "#EF5350");
-				return this.shutdown(false);
-			} else if (event.code === 4005) {
-				this.logger.info('Already Authenticated');
-				this.channels.get("415265475895754752").send({
-					embed: ({
-						color: 5892826,
-						timestamp: new Date(),
-						title: `Info`,
-						description: `\`[${event.code}] Already Authenticated\``
-					})
-				});
-				//Hook.custom(this.user.username, "[4005] Already Authenticated", "Info", "#59EADA");
-			} else if (event.code === 4006) {
-				this.logger.severe('Session Not Valid');
-				this.channels.get("415265475895754752").send({
-					embed: ({
-						color: 15684432,
-						timestamp: new Date(),
-						title: `Error`,
-						description: `\`[${event.code}] Session Not Valid\``
-					})
-				});
-				//Hook.custom(this.user.username, "[4006] Session Not Valid", "Error", "#EF5350");
-				return this.shutdown(false);
-			} else if (event.code === 4007) {
-				this.logger.warn('Invalid Sequence Number');
-				this.channels.get("415265475895754752").send({
-					embed: ({
-						color: 12696890,
-						timestamp: new Date(),
-						title: `Warn`,
-						description: `\`[${event.code}] Invalid Sequence Number\``
-					})
-				});
-				//Hook.custom(this.user.username, "[4007] Invalid Sequence Number", "Warn", "#C1BD3A");
-			} else if (event.code === 4008) {
-				this.logger.info('Rate Limited');
-				this.channels.get("415265475895754752").send({
-					embed: ({
-						color: 5892826,
-						timestamp: new Date(),
-						title: `Info`,
-						description: `\`[${event.code}] Rate Limited\``
-					})
-				});
-				//Hook.custom(this.user.username, "[4008] Rate Limited", "Info", "#59EADA");
-			} else if (event.code === 4009) {
-				this.logger.severe('Session Timeout');
-				this.channels.get("415265475895754752").send({
-					embed: ({
-						color: 15684432,
-						timestamp: new Date(),
-						title: `Error`,
-						description: `\`[${event.code}] Session Timeout\``
-					})
-				});
-				//Hook.custom(this.user.username, "[4009] Session Timeout", "Error", "#EF5350");
-				return this.shutdown(false);
-			} else if (event.code === 4010) {
-				this.logger.warn('Invalid Shard');
-				this.channels.get("415265475895754752").send({
-					embed: ({
-						color: 15684432,
-						timestamp: new Date(),
-						title: `Warn`,
-						description: `\`[${event.code}] Invalid Shard\``
-					})
-				});
-				//Hook.custom(this.user.username, "[4010] Invalid Shard", "Warn", "#C1BD3A");
-			} else {
-				this.logger.warn(`Disconnected from Discord with code ${event.code}`);
-				this.channels.get("415265475895754752").send({
-					embed: ({
-						color: 12696890,
-						timestamp: new Date(),
-						title: `Warn`,
-						description: `\`Disconnected from Discord with code ${event.code}\``
-					})
-				});
-				//Hook.custom(this.user.username, `Disconnected from Discord with code ${event.code}`, "Warn", "#C1BD3A");
+			switch (event.code) {
+				case 0:
+					this.logger.severe("Gateway Error");
+						this.channels.get("415265475895754752").send({
+						embed: ({
+							color: 15684432,
+							timestamp: new Date(),
+							title: `Error`,
+							description: `\`[${event.code}] Gateway Error\``
+						})
+					});
+					break;
+				case 1000:
+					this.logger.info("Disconnected from Discord cleanly.");
+					this.channels.get("415265475895754752").send({
+						embed: ({
+							color: 5892826,
+							timestamp: new Date(),
+							title: `Info`,
+							description: `\`[${event.code}] Disconnected from Discord cleanly.\``
+						})
+					});
+					break;
+				case 4000:
+					this.logger.warn('Unknown Error');
+					this.channels.get("415265475895754752").send({
+						embed: ({
+							color: 12696890,
+							timestamp: new Date(),
+							title: `Warn`,
+							description: `\`[${event.code}] Unknown Error\``
+						})
+					});
+					break;
+				case 4001:
+					this.logger.warn('Unknown Opcode');
+					this.channels.get("415265475895754752").send({
+						embed: ({
+							color: 12696890,
+							timestamp: new Date(),
+							title: `Warn`,
+							description: `\`[${event.code}] Unknown Opcode\``
+						})
+					});
+					break;
+				case 4002:
+					this.logger.warn('Decode Error');
+					this.channels.get("415265475895754752").send({
+						embed: ({
+							color: 12696890,
+							timestamp: new Date(),
+							title: `Warn`,
+							description: `\`[${event.code}] Decode Error\``
+						})
+					});
+					break;
+				case 4003:
+					this.logger.severe('Not Authenticated');
+					this.channels.get("415265475895754752").send({
+						embed: ({
+							color: 15684432,
+							timestamp: new Date(),
+							title: `Error`,
+							description: `\`[${event.code}] Not Authenticated\``
+						})
+					});
+					return this.shutdown(false);
+				case 4004:
+					this.logger.severe(`Failed to authenticate with Discord. Please follow the instructions at ${chalk.green('https://discordapp.com/developers')} and re-enter your token by running ${chalk.green('yarn run config')}.`);
+					this.channels.get("415265475895754752").send({
+						embed: ({
+							color: 15684432,
+							timestamp: new Date(),
+							title: `Error`,
+							description: `\`[${event.code}] Failed to authenticate with Discord. Please follow the instructions at ${chalk.green('https://discordapp.com/developers')} and re-enter your token by running ${chalk.green('yarn run config')}.\``
+						})
+					});
+					return this.shutdown(false);
+				case 4005:
+					this.logger.info('Already Authenticated');
+					this.channels.get("415265475895754752").send({
+						embed: ({
+							color: 5892826,
+							timestamp: new Date(),
+							title: `Info`,
+							description: `\`[${event.code}] Already Authenticated\``
+						})
+					});
+					break;
+				case 4006:
+					this.logger.severe('Session Not Valid');
+					this.channels.get("415265475895754752").send({
+						embed: ({
+							color: 15684432,
+							timestamp: new Date(),
+							title: `Error`,
+							description: `\`[${event.code}] Session Not Valid\``
+						})
+					});
+					return this.shutdown(false);
+				case 4007:
+					this.logger.warn('Invalid Sequence Number');
+					this.channels.get("415265475895754752").send({
+						embed: ({
+							color: 12696890,
+							timestamp: new Date(),
+							title: `Warn`,
+							description: `\`[${event.code}] Invalid Sequence Number\``
+						})
+					});
+					break;
+				case 4008:
+					this.logger.info('Rate Limited');
+					this.channels.get("415265475895754752").send({
+						embed: ({
+							color: 5892826,
+							timestamp: new Date(),
+							title: `Info`,
+							description: `\`[${event.code}] Rate Limited\``
+						})
+					});
+					break;
+				case 4009:
+					this.logger.severe('Session Timeout');
+					this.channels.get("415265475895754752").send({
+						embed: ({
+							color: 15684432,
+							timestamp: new Date(),
+							title: `Error`,
+							description: `\`[${event.code}] Session Timeout\``
+						})
+					});
+					return this.shutdown(false);
+				case 4010:
+					this.logger.warn('Invalid Shard');
+					this.channels.get("415265475895754752").send({
+						embed: ({
+							color: 15684432,
+							timestamp: new Date(),
+							title: `Warn`,
+							description: `\`[${event.code}] Invalid Shard\``
+						})
+					});
+					break;
+				case 4011:
+					this.logger.severe('Sharding is required');
+					this.channels.get("415265475895754752").send({
+						embed: ({
+							color: 15684432,
+							timestamp: new Date(),
+							title: `Error`,
+							description: `\`[${event.code}] Sharding is required!\``
+						})
+					});
+					return this.shutdown(false);
+				case default:
+					this.logger.warn(`Disconnected from Discord with code ${event.code}`);
+					this.channels.get("415265475895754752").send({
+						embed: ({
+							color: 12696890,
+							timestamp: new Date(),
+							title: `Warn`,
+							description: `\`Disconnected from Discord with code ${event.code}\``
+						})
+					});
+					break;
 			}
 			this.shutdown();
 		});
