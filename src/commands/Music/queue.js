@@ -7,7 +7,7 @@ exports.run = async (bot, msg, args) => {
 		let queue = '';
 		for (let i = 0; i < music_items[msg.guild.id].queue.length; i++) {
 			let hashtag = '  ';
-			if (i == 0) {
+			if (i == music_items[msg.guild.id].queue_position) {
 				hashtag = '# ';
 			}
 			queue += `${hashtag}${i + 1}. ${music_items[msg.guild.id].queue[i].title}\n`;
