@@ -146,7 +146,7 @@ exports.run = async (bot, msg, args) => {
 						// Wait a second before continuing
 						setTimeout(() => {
 							if (music_items[msg.guild.id].loop_queue && !music_items[msg.guild.id].loop_song) {
-								music_items[msg.guild.id].queue_position++;
+								music_items[msg.guild.id].queue_position = ++music_items[msg.guild.id].queue_position;
 								if (music_items[msg.guild.id].queue_position >= music_items[msg.guild.id].queue.length - 1) {
 									music_items[msg.guild.id].queue_position = 0;
 								}
