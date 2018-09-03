@@ -69,7 +69,7 @@ exports.run = async (bot, msg, args) => {
 						}
 						video_duration = ` ${houronezero}${currenttimepos[0]}:${minonezero}${currenttimepos[1]}:${seconezero}${currenttimepos[2]}/${hourzero}${h}:${minzero}${m}:${seczero}${s}`;
 					}
-				}).catch((err) => console.error(err.toString()));
+				});
 			}
 			queue += `${hashtag}${i + 1}. ${music_items[msg.guild.id].queue[i].title || 'Failed to get title for this item!'}${video_duration}\n`;
 			//queue += `${i + 1}. [${music_items[msg.guild.id].queue[i].title}](${music_items[msg.guild.id].queue[i].url})\n`;
