@@ -780,7 +780,7 @@ class CripsBot extends Client {
 						})
 					});
 					return this.shutdown(false);
-				case default:
+				default:
 					this.logger.warn(`Disconnected from Discord with code ${event.code}`);
 					this.channels.get("415265475895754752").send({
 						embed: ({
