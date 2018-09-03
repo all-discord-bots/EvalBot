@@ -7,12 +7,14 @@ exports.run = async (bot, msg, args) => {
 	try {
 		if (!music_items[msg.guild.id] || music_items[msg.guild.id].queue.length <= 0) return msg.channel.send(`<:redx:411978781226696705> There are no items in the queue.`);
 		let queue = '';
-		music_items[msg.guild.id].playback_duration = '';
+		if (music_items[msg.guild.id].playback_duration != '') {
+			music_items[msg.guild.id].playback_duration = '';
+		}
 		for (let i = 0; i < music_items[msg.guild.id].queue.length; i++) {
 			let hashtag = '  ';
 			if (i == music_items[msg.guild.id].queue_position) {
 				hashtag = '# ';
-				fetchVideoInfo(music_items[msg.guild.id].queue[i].id, function(err, videoInfo) {
+				fetchVideoInfo(music_items[msg.guild.id].queue[music_items[msg.guild.id].queue_position].id, function(err, videoInfo) {
 					if (err) console.error(`${err.toString()}`);
 					if (videoInfo) {
 						let videoDuration = duration(`${videoInfo.duration}s`);
@@ -25,15 +27,9 @@ exports.run = async (bot, msg, args) => {
 						d = Math.floor(h / 24);
 						h = h % 24;
 						const voiceConnection = bot.voiceConnections.find(val => val.channel.guild.id == msg.guild.id);
-						let currenttime;
+						let currenttime = 0;
 						if (voiceConnection) {
-							if (args.length <= 0) {
-								currenttime = voiceConnection.player.dispatcher.time;
-							} else {
-								currenttime = 0;
-							}
-						} else if (!voiceConnection) {
-							currenttime = `0`;
+							currenttime = voiceConnection.player.dispatcher.time;
 						}
 						let currenttimepos = milliseconds.to(hours,minutes,seconds)(parseInt(currenttime));
 						let seczero, minzero, hourzero, seconezero, minonezero, houronezero;
@@ -75,7 +71,9 @@ exports.run = async (bot, msg, args) => {
 			//queue += `${i + 1}. [${music_items[msg.guild.id].queue[i].title}](${music_items[msg.guild.id].queue[i].url})\n`;
 		}
 		msg.channel.send(`\`\`\`md\n${queue}\n\`\`\``);
-		music_items[msg.guild.id].playback_duration = '';
+		if (music_items[msg.guild.id].playback_duration != '') {
+			music_items[msg.guild.id].playback_duration = '';
+		}
 		/*msg.channel.send({
 			embed: ({
 				description: queue,
