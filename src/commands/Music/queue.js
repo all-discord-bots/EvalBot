@@ -10,7 +10,7 @@ exports.run = async (bot, msg, args) => {
 			if (i == music_items[msg.guild.id].queue_position) {
 				hashtag = '# ';
 			}
-			queue += `${hashtag}${i + 1}. ${music_items[msg.guild.id].queue[i].title}\n`;
+			queue += `${hashtag}${i + 1}. ${music_items[msg.guild.id].queue[i].title || 'Failed to get title for this item!'}\n`;
 			//queue += `${i + 1}. [${music_items[msg.guild.id].queue[i].title}](${music_items[msg.guild.id].queue[i].url})\n`;
 		}
 			msg.channel.send(`\`\`\`md\n${queue}\n\`\`\``);
