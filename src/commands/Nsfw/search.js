@@ -1,42 +1,52 @@
-//const { MessageAttachment } = require('discord.js');
 const Pornsearch = require('pornsearch');
 
 exports.run = async (bot, msg, args) => {
-	//if (!msg.channel.nsfw) return msg.channel.send(`<:redx:411978781226696705> This channel has not been marked as NSFW!`).catch(console.error);
-	if (args.length < 1) return msg.channel.send(`<:redx:411978781226696705> Please provide a search string!`).catch(console.error);
-	//let gbot = msg.guild.members.get(bot.user.id);
-	//if (!gbot.hasPermission(0x00008000)) return msg.channel.send(`<:redx:411978781226696705> I am missing \`Attach Files\`!`).catch(console.error);
-	//if (!msg.member.hasPermission('ATTACH_FILES')) return msg.channel.send(`<:redx:411978781226696705> You are missing the permissions \`Attach Files\`!`).catch(console.error);
-	let searchqueue = args.join(' ');
-	const Searcher = new Pornsearch(searchqueue.toString());
-	let randomnum = Math.floor(Math.random() * 2);
-	if (randomnum <= 0)
-	{
-		Searcher.videos().then(result => {
-			//const attachment = new MessageAttachment(`${result[0].url}`);
-			msg.channel.send(`Title: __**${result[0].title}**__\r\nDuration: **${result[0].duration}**\r\n${result[0].url}`);
-		}).catch(err => {
-			return msg.channel.send(`<:redx:411978781226696705> ${err.toString()}`);
-		});
-	}
-	else if (randomnum >= 1)
-	{
-		Searcher.gifs().then(result => {
-			//const attachment = new MessageAttachment(`${result[0].url}`);
-			msg.channel.send(`Title: __**${result[0].title}**__\r\n${result[0].url}`);
-		}).catch(err => {
-			return msg.channel.send(`<:redx:411978781226696705> ${err.toString()}`);
-		});
-	}
+	try {
+		if (args.length <= 0) return msg.channel.send(`<:redx:411978781226696705> Please provide a search string!`).catch(console.error);
+		const Searcher = new Pornsearch(args.join(' '));
+		let randomnum = Math.floor(Math.random() * 2);
+		if (randomnum <= 0) {
+			Searcher.videos().then((result) => {
+				//const attachment = new MessageAttachment(`${result[0].url}`);
+				return msg.channel.send(`Title: __**${result[0].title || 'N/A'}**__\r\nDuration: **${result[0].duration || 'N/A'}**\r\n${result[0].url}`);
+			}).catch((err) => {
+				return msg.channel.send(`<:redx:411978781226696705> ${err.toString()}`);
+			});
+		} else {
+			Searcher.gifs().then((result) => {
+				let gen_random = Math.floor(Math.random() * 2);
+				if (gen_random <= 0) {
+					return msg.channel.send({
+						embed: ({
+							timestamp: new Date(),
+							footer: {
+								text: `${result[0].title || 'N/A'}`
+							},
+							image: {
+								url: `${result[0].url}`
+							}
+						})
+					});
+				} else {
+					return msg.channel.send(`Title: __**${result[0].title || 'N/A'}**__\r\n${result[0].webm}`);
+				}
+			}).catch((err) => {
+				return msg.channel.send(`<:redx:411978781226696705> ${err.toString()}`);
+			});
+		}
+	} catch (err) {
+		console.error(err.toString());
+	};
 };
 	
 exports.info = {
-	name: 'pornsearch',
+	name: 'nsfwsearch',
+	clientPermissions: ['ATTACH_FILES'],
 	nsfw: true,
-	aliases: ['p0rnsearch','cornsearch','pronsearch','c0rnsearch','pr0nsearch'],
-	usage: 'pornsearch <search>',
+	aliases: ['pornsearch','p0rnsearch','cornsearch','pronsearch','c0rnsearch','pr0nsearch'],
+	usage: 'nsfwsearch <search>',
 	examples: [
-		'pornsearch pussy'
+		'nsfwsearch pussy'
 	],
-	description: 'Sends a porn video/gif.'
+	description: 'Sends a NSFW video/gif.'
 };
