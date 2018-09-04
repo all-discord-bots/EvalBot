@@ -2,8 +2,8 @@ require('../../conf/globals.js');
 
 exports.run = async (bot, msg, args) => {
 	try {
-		if (args.length <= 0) return msg.channel.send(`<:redx:411978781226696705> You must provide a song id to remove. To get the song id run the \`queue\` command!`);
 		if (!msg.member.voiceChannel) return msg.channel.send(`<:redx:411978781226696705> You must be in a voice channel!`).catch(err => console.error);
+		if (args.length <= 0) return msg.channel.send(`<:redx:411978781226696705> You must provide a song id to remove. To get the song id run the \`queue\` command!`);
 		if (!music_items[msg.guild.id] || !music_items[msg.guild.id].queue) return msg.channel.send(`<:redx:411978781226696705> There are no audios in the queue!`);
 		if (parseInt(args[0]) <= 0) return msg.channel.send(`<:redx:411978781226696705> You can't remove the current playing item.`).catch(err => console.error);
 		if (parseInt(args[0]) > music_items[msg.guild.id].queue.length) return msg.channel.send(`<:redx:411978781226696705> You do not have that many songs in the queue!`);
@@ -23,6 +23,6 @@ exports.info = {
 	examples: [
 		'remove 1'
 	],
-	usage: 'remove <song id>',
-	description: 'Remove a song from the queue. To get the song id run the \`queue\` command.'
+	usage: 'remove <track id>',
+	description: 'Remove a song from the queue. To get the track id run the \`queue\` command.'
 };
