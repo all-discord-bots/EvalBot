@@ -1,39 +1,69 @@
-const got = require('got');
+const fetch = require('node-fetch');
 
-function makeCommand(type, url, transformer) {
-    return {
-        run: async (bot, msg, args) => {
-	    if (msg.author.id !== bot.config.botCreatorID) return;
-            let gbot = msg.guild.members.get(bot.user.id);
-            if (!gbot.hasPermission(0x00008000)) return msg.channel.send(`<:redx:411978781226696705> I am missing \`Attach Files\`!`).catch(console.error);
-	    if (!msg.member.hasPermission('ATTACH_FILES')) return msg.channel.send(`<:redx:411978781226696705> You are missing the permissions \`Attach Files\`!`).catch(console.error);
-	    if (!msg.channel.nsfw) return msg.channel.send(`<:redx:411978781226696705> This channel is not marked as NSFW!`).catch(console.error);
-            const res = await got(url);
+exports.run = async (bot, msg, args) => {
+	try {
+		//if (args.length < 1) return msg.channel.send(`<:redx:411978781226696705> Please provide a search string!`).catch(console.error);
+		//let get_random = Math.floor(Math.random() * 12124); // 12124 is the max number for the API
+		let request_info = {
+			ok: false,
+			status: 0,
+			statusText: ''
+		}
+		// return new Promise((resolve, reject) => {
+		new Promise((resolve, reject) => {
+			fetch('http://api.oboobs.ru/boobs/0/1/random',{ method: 'GET', headers: { 'Content-Type': 'application/json' }}).then((res) => {
+				request_info.ok = res.ok;
+				request_info.status = res.status;
+				request_info.statusText = res.statusText;
+				if (res.ok) {
+					resolve(res.json());
+				} else {
+					reject();
+				}
+			}).catch((err) => {
+				console.error(err.toString());
+				return msg.channel.send(`<:redx:411978781226696705> ${err.toString()}`);
+			});
+		}).then((json) => {
+			/*
+			author: [string] or [null]
+			id: [number]
+			model: [string]
+			preview: [string]
+			rank: [number]
+			*/
+			if (request_info.ok) {
+				msg.channel.send({
+					embed:({
+						timestamp: new Date(),
+						image: {
+							url: `http://media.oboobs.ru/${json[0].preview}`
+						},
+						footer: {
+							// ID: #${json[0].id}
+							text: `[${request_info.status}] | Rank: ${json[0].rank}`
+						}
+					})
+				});
+			} else {
+				return msg.channel.send(`<:redx:411978781226696705> ${request_info.statusText}`);
+			}
+		}).catch((err) => {
+			return console.error(`${err.stack ? err.stack : err.toString()}`);
+		});
+	} catch (err) {
+		console.error(err.toString());
+	}
+};
 
-            let file;
-            try {
-                file = `http://media.obutts.ru/${transformer(res.body)}`;
-            } catch (ignore) {
-                return msg.error('Failed to transform image URL!');
-            }
-
-            //msg.delete();
-            msg.channel.send({
-                files: [
-                    file
-                ]
-            });
-        },
-        info: {
-            name: type,
-            usage: type,
-	    hidden: true,
-            description: `Sends a random ${type} image`
-        }
-    };
-}
-
-module.exports = [
-    makeCommand('ass', 'http://api.obutts.ru/butts/0/1/random', body => JSON.parse(body).preview),
-    makeCommand('boobs', 'http://api.oboobs.ru/boobs/0/1/random', body => JSON.parse(body).preview)
-];
+exports.info = {
+	name: 'boobs',
+	clientPermissions: ['ATTACH_FILES'],
+	nsfw: true,
+	aliases: ['b00bs','oboobs','ob00bs','tits','titties','boobies'],
+	usage: 'boobs',
+	examples: [
+		'boobs'
+	],
+	description: 'Sends a NSFW image of boobs.'
+};
