@@ -60,7 +60,7 @@ exports.info = {
 	name: 'butt',
 	clientPermissions: ['ATTACH_FILES'],
 	nsfw: true,
-	aliases: ['obutt','booty','ass','b00ty'],
+	aliases: ['obutt','booty','ass','b00ty','butts'],
 	usage: 'butt',
 	examples: [
 		'butt'
