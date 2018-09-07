@@ -433,10 +433,9 @@ class CommandManager {
 							{
 								name: `Guild`,
 								value: `${msg.guild ? msg.guild.name || msg.channel.type : msg.channel.type} \`${msg.guild ? msg.guild.id || msg.channel.type : msg.channel.type}\``
-							},
-							{
+							},{
 								name: `Channel`,
-								value: `${msg.channel.type !== 'dm' ? `<#${msg.channel.id}> \`${msg.channel.id}\`` : `\`${msg.channel.type}\``}`
+								value: `${msg.channel.type !== 'dm' ? `<#${msg.channel.id}> \`${msg.channel.id}\`` : `\`${msg.channel.type}\``} [Jump](https://discordapp.com/channels/${msg.guild.id}/${msg.channel.id}/${msg.id})`
 							}
 						]
 					})
