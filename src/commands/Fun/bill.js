@@ -1,26 +1,23 @@
 const got = require('got');
 
 exports.run = async (bot, msg) => {
-    //let gbot = msg.guild.members.get(bot.user.id);
-    //if (!gbot.hasPermission(0x00008000)) return msg.channel.send(`<:redx:411978781226696705> I am missing \`Upload Files\`!`);
-//    (await msg.channel.send("Loading message...").then((msg)=>{
-//        msg.edit(':arrows_counterclockwise:');
-//    }));
-    const { body } = await got('http://belikebill.azurewebsites.net/billgen-API.php?default=1', { encoding: null });
-
-    await msg.channel.send({
-        file: {
-            attachment: body,
-            name: 'bill.jpg'
-        }
-    });
-
-//    msg.delete();
+	const { body } = await got('http://belikebill.azurewebsites.net/billgen-API.php?default=1', { encoding: null });
+	await msg.channel.send({
+		embed: ({
+			image: {
+				url: body
+			}
+		})
+	});
 };
 
 exports.info = {
-    name: 'bill',
-    usage: 'bill',
-    clientPermissions: ["ATTACH_FILES"],
-    description: 'Be like Bill!'
+	name: 'bill',
+	userPermissions: ['ATTACH_FILES'],
+	clientPermissions: ['ATTACH_FILES'],
+	usage: 'bill',
+	examples: [
+		'bill'
+	],
+	description: 'Be like Bill!'
 };
