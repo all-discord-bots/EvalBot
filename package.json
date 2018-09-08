@@ -79,7 +79,8 @@
 	"youtube-playlist-info": "^1.1.2",
 	"inquirer": "^6.2.0",
 	"pornsearch": "^2.4.2",
-	"axios": "^0.18.0"
+	"axios": "^0.18.0",
+	"sqlite": "^3.0.0"
   },
 
   "devDependencies": {
