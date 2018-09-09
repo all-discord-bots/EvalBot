@@ -303,14 +303,9 @@ exports.run = async (bot, msg, args) => {
 				hourzero = '';
 			}
 			
-			let next_song = {
-				next_title: '',
-				prev_title: ''
-			};
-			
 			if (music_items[msg.guild.id].queue[0].playlist_api != null) {
 				new Promise((resolve,reject) => {
-					fetch(`${music_items[msg.guild.id].queue[0].playlist_api}`).then((res) => {
+					await fetch(`${music_items[msg.guild.id].queue[0].playlist_api}`).then((res) => {
 							resolve(res.json());
 					}).catch((err) => {
 						console.error(err.toString());
@@ -336,6 +331,7 @@ exports.run = async (bot, msg, args) => {
 						})
 					});
 				}).catch((err) => {
+					console.error(err.toString());
 					return msg.channel.send(`<:redx:411978781226696705> Could not get information on the current playing stream.`);
 				});
 			} else {
