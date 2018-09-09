@@ -435,10 +435,10 @@ class CommandManager {
 								value: `${msg.guild ? msg.guild.name || msg.channel.type : msg.channel.type} \`${msg.guild ? msg.guild.id || msg.channel.type : msg.channel.type}\``
 							},{
 								name: `Channel`,
-								value: `${msg.channel.type !== 'dm' ? `<#${msg.channel.id}> \`${msg.channel.id}\`` : `\`${msg.channel.type}\``}` /*[<:jumpbutton:488127322134806528>](https://discordapp.com/channels/${msg.guild.id}/${msg.channel.id}/${msg.id}#)`*/
+								value: `${msg.channel.type !== 'dm' ? `<#${msg.channel.id}> \`${msg.channel.id}\`` : `\`${msg.channel.type}\``} [<:jumpbutton:488127322134806528>](https://discordapp.com/channels/${msg.guild.id}/${msg.channel.id}/${msg.id})`
 							},{
 								name: `Jump`,
-								value: `${https://discordapp.com/channels/${msg.guild.id}/${msg.channel.id}/${msg.id}#`
+								value: `${https://discordapp.com/channels/${msg.guild.id}/${msg.channel.id}/${msg.id}`
 							}
 						]
 					})
