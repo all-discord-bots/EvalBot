@@ -33,10 +33,10 @@ exports.run = async (bot, msg, args) => {
 				});
 		}
 		if (!msg.member.voiceChannel) return msg.channel.send(`<:redx:411978781226696705> You must be in a voice channel!`).catch((err) => console.error);
-		if (get_video_id(args.join(' ').toString())) return msg.channel.send(`<:redx:411978781226696705> You can play YouTube videos using the \`play\` command. Please specify a radio station url.`);
-		let getarg = args.join(' ').toLowerCase().toString();
+		if (get_video_id(args.join(' '))) return msg.channel.send(`<:redx:411978781226696705> You can play YouTube videos using the \`play\` command. Please specify a radio station url.`);
+		let getarg = args.join(' ').toLowerCase();
 		if (getarg.length <= 3) return msg.channel.send(`<:redx:411978781226696705> You must provide a valid stream.`);
-		let filteredbuiltinradio = radiostationsqueue.map((list) => list.toLowerCase().toString()).filter(list => list.toLowerCase().startsWith(getarg.toString()));
+		let filteredbuiltinradio = radiostationsqueue.map((list) => list.toLowerCase()).filter((list) => list.toLowerCase().startsWith(getarg));
 		let queuethis;
 		let playingbuiltinstations = false;
 		if (filteredbuiltinradio.length > 0 && filteredbuiltinradio.length < 2) {
@@ -46,11 +46,11 @@ exports.run = async (bot, msg, args) => {
 			return msg.channel.send(`<:redx:411978781226696705> Too many results found, try to be a bit more specific with the radio name.\nIf you keep receiving this error please contact the developer!`).catch((err) => console.error);
 		} else if (getarg.includes('.') || getarg.startsWith('http')) {
 			playingbuiltinstations = false;
-			queuethis = getarg.toString();
+			queuethis = getarg;
 		} else {
 			return msg.channel.send(`<:redx:411978781226696705> Please provide a valid stream url to play or built-in radio station name!`);
 		}
-		music_items[msg.guild.id].queue.push(`${queuethis.toString()}`);
+		music_items[msg.guild.id].queue.push(`${queuethis}`);
 		if (music_items[msg.guild.id].queue.length >= 2) {
 			music_items[msg.guild.id].queue.shift();
 			try {
@@ -69,9 +69,9 @@ exports.run = async (bot, msg, args) => {
 		if (playingbuiltinstations) {
 			streamingmsg = filteredbuiltinradio[0];
 		} else if (!playingbuiltinstations) {
-			streamingmsg = args.join(' ').toString();
+			streamingmsg = args.join(' ');
 		}
-		msg.channel.send(`<:check:411976443522711552> Streaming \`${streamingmsg.toString()}\`.`);
+		msg.channel.send(`<:check:411976443522711552> Streaming \`${streamingmsg}\`.`);
 		//console.log(`${music_items[msg.guild.id].queue.toString()}`);
 		
 		function executeQueue(queue) {
