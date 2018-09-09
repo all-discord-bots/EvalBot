@@ -2,12 +2,11 @@ require('../../conf/globals.js');
 
 exports.run = async (bot, msg, args) => {
 	try {
-		let 
 		let radio_stations_array = Object.keys(built_in_radio);
 		switch (args.length) {
 			case 0:
 				let radio_stations = '';
-				radio_stations += Object.keys(built_in_radio).join('\n');
+				radio_stations += radio_stations_array.join('\n');
 				return msg.channel.send({
 					embed: ({
 						color: 3447003,
