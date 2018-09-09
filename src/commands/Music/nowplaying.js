@@ -26,7 +26,7 @@ exports.run = async (bot, msg, args) => {
 			let result = searchResult.first;
 			//if (!result/* || !music_items[msg.guild.id]*/) return msg.channel.send(`<:redx:411978781226696705> Could not get the video.`).catch(err => console.error);
 			//global.music_items.push(`${result.url}`); // result.id = video id // result.channelID = channel id // result.url = full video url // result.title = video name // result.description = video description
-			if (result || !music_items[msg.guild.id] || music_items[msg.guild.id] && !music_items[msg.guild.id]['streaming']) { // message information about the video on playing the video
+			if (result || !music_items[msg.guild.id] || music_items[msg.guild.id] && !music_items[msg.guild.id].is_streaming) { // message information about the video on playing the video
 				fetchVideoInfo(result.id, function (err, videoInfo) {
 					if (err) throw new Error(err);
 					let videoDuration = duration(`${videoInfo.duration}s`); // seconds --> miliseconds
