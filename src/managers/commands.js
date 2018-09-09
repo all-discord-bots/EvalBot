@@ -286,6 +286,7 @@ class CommandManager {
 		//if(this.guildOnly && message && !message.guild) return false;
 		//const hasPermission = this.hasPermission(message);
 		//return this.isEnabledIn(message.guild) && hasPermission && typeof hasPermission !== 'string';
+		if (!msg.channel.permissionsFor(this.bot.user).has(0x00000800)) return false; // Send Messages
 		if (this.getInfo("ownerOnly",info) && msg.author.id != process.env.bot_owner) return false;
 		if (this.getInfo("guildOnly",info) && msg.guild.id != process.env.main_bot_guild) return false;
 		if (!this.getInfo("allowDM",info) && msg.channel.type === 'dm') return `<:redx:411978781226696705> This command can only be used in a server.`;
