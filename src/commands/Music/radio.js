@@ -26,10 +26,12 @@ exports.run = async (bot, msg, args) => {
 		if (filtered_built_in_radio_stations.length == 1) {
 			Object.keys(built_in_radio).forEach((key,index) => {
 				if (key.toLowerCase().startsWith(`${filtered_built_in_radio_stations[0].toLowerCase()}`) {
+					let api_url = (built_in_radio[key].playlist_api === '') ? null : built_in_radio[key].playlist_api;
 					music_items[msg.guild.id].queue.push({
 						title: `${key}`,
 						url: `${built_in_radio[key].stream}`,
 						id: null,
+						playlist_api: api_url,
 						requester: msg.author
 					});
 				}
@@ -39,6 +41,7 @@ exports.run = async (bot, msg, args) => {
 				title: `${args.join(' ')}`,
 				url: `${args.join(' ')}`,
 				id: null,
+				playlist_api: null,
 				requester: msg.author
 			});
 		} else {
