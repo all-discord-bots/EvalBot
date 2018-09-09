@@ -6,6 +6,11 @@ require('../../conf/globals.js');
 
 exports.run = async (bot, msg, args) => {
 	try {
+		
+		if (music_items[msg.guild.id].queue.length <= 0) {
+			music_items[msg.guild.id].playback_duration = '';
+		}
+		
 		switch (args.length) {
 			case 0:
 				return msg.channel.send(`<:redx:411978781226696705> You must provide a url or search string!`);
