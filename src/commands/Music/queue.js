@@ -26,7 +26,7 @@ exports.run = async (bot, msg, args) => {
 						m = m % 60;
 						d = Math.floor(h / 24);
 						h = h % 24;
-						const voiceConnection = bot.voiceConnections.find(val => val.channel.guild.id == msg.guild.id);
+						const voiceConnection = bot.voiceConnections.find((val) => val.channel.guild.id == msg.guild.id);
 						let currenttime = 0;
 						if (voiceConnection) {
 							currenttime = voiceConnection.player.dispatcher.time;
@@ -67,7 +67,11 @@ exports.run = async (bot, msg, args) => {
 					}
 				});
 			}
-			queue += `${hashtag}${i + 1}. ${music_items[msg.guild.id].queue[i].title || 'Failed to get title for this item!'}${music_items[msg.guild.id].playback_duration}\n`;
+			if (i == music_items[msg.guild.id].queue_position) {
+				queue += `${hashtag}${i + 1}. ${music_items[msg.guild.id].queue[i].title || 'Failed to get title for this item!'}${music_items[msg.guild.id].playback_duration}\n`;
+			} else {
+				queue += `${hashtag}${i + 1}. ${music_items[msg.guild.id].queue[i].title || 'Failed to get title for this item!'}\n`;
+			}
 			//queue += `${i + 1}. [${music_items[msg.guild.id].queue[i].title}](${music_items[msg.guild.id].queue[i].url})\n`;
 		}
 		msg.channel.send(`\`\`\`md\n${queue}\n\`\`\``);
