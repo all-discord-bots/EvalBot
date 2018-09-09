@@ -27,6 +27,7 @@ exports.run = (bot, msg, args) => {
 			};
 		}
 		if (user.id == msg.author.id) return msg.channel.send(`<:redx:411978781226696705> I cannot allow self-harm!`);
+		if (user.id == bot.user.id) return msg.channel.send(`<:redx:411978781226696705> I cannot mute myself!`);
 		if (user.manageable == false) return msg.channel.send(`<:redx:411978781226696705> I may need my role moved higher!`);
 		let mute_role = msg.guild.roles.find('name', muted_role_name);
 		if (!mute_role) return msg.channel.send(`<:redx:411978781226696705> I was unable to find the role \`${muted_role_name}\` you can set one up using the \`muted-role\` command.`);
