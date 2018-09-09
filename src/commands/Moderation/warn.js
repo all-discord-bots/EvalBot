@@ -23,6 +23,7 @@ exports.run = async (bot, msg, args) => {
 		
 		if (reason === "") return msg.channel.send(`<:redx:411978781226696705> Invalid \`<reason>\` argument given.`);
 		if (user.id == msg.author.id) return msg.channel.send(`<:redx:411978781226696705> I cannot allow self-harm!`);
+		if (user.id == bot.user.id) return msg.channel.send(`<:redx:411978781226696705> I cannot warn myself!`);
 		if(!warns[user.id]) {
 			warns[user.id] = {
 				warns: 0
