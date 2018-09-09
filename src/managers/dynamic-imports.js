@@ -83,6 +83,32 @@ class DynamicImportsManager {
                 try {
                     imported = require(file);
                 } catch (e) {
+                    this._bot.channels.get("415265475895754752").send({
+						embed: ({
+							color: 15684432,
+							timestamp: new Date(),
+							title: `${e.name ? e.name : `Unknown Error`}`,
+							footer: {
+								text: `${e ? e.toString() : `\`N/A\``}`
+							},
+							description: `${e.stack ? `\`\`\`\n${e.stack}\n\`\`\`` : `\`N/A\``}`,
+							fields: [
+								{
+									name: 'Extra Information:',
+									value: '​'
+								},{
+									name: 'Error:',
+									value: `\`${e ? e.toString() : `N/A`}\``
+								},{
+									name: 'Error Name:',
+									value: `\`${e.name ? e.name : `N/A`}\``
+								},{
+									name: 'Error Message:',
+									value: `\`${e.message ? e.message : `N/A`}\``
+								}
+							]
+						})
+					});
                     return console.error(`Unable to load modules from ${folderName} (${path.relative(folder, file)})\n${e}`);
                 }
 
@@ -100,6 +126,32 @@ class DynamicImportsManager {
             });
         } catch (e) {
             console.error(`Unable to load modules from ${folderName}\n${e}`);
+			this._bot.channels.get("415265475895754752").send({
+				embed: ({
+					color: 15684432,
+					timestamp: new Date(),
+					title: `${e.name ? e.name : `Unknown Error`}`,
+					footer: {
+						text: `${e ? e.toString() : `\`N/A\``}`
+					},
+					description: `${e.stack ? `\`\`\`\n${e.stack}\n\`\`\`` : `\`N/A\``}`,
+					fields: [
+						{
+							name: 'Extra Information:',
+							value: '​'
+						},{
+							name: 'Error:',
+							value: `\`${e ? e.toString() : `N/A`}\``
+						},{
+							name: 'Error Name:',
+							value: `\`${e.name ? e.name : `N/A`}\``
+						},{
+							name: 'Error Message:',
+							value: `\`${e.message ? e.message : `N/A`}\``
+						}
+					]
+				})
+			});
         }
     }
 
