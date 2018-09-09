@@ -21,7 +21,7 @@ exports.run = async (bot, msg, args) => {
 		if (args.join(' ').length <= 3) return msg.channel.send(`<:redx:411978781226696705> You must provide a valid stream url to play or built-in radio station name!`);
 		let filtered_built_in_radio_stations = radio_stations_array.map((list) => list.toLowerCase()).filter((list) => list.toLowerCase().startsWith(args.join(' ').toLowerCase()));
 		
-		if (filtered_built_in_radio_stations.length >= 2) return return msg.channel.send(`<:redx:411978781226696705> Too many results found, try to be a bit more specific with the radio name.\nIf you keep receiving this error please contact the developer!`);
+		if (filtered_built_in_radio_stations.length >= 2) return msg.channel.send(`<:redx:411978781226696705> Too many results found, try to be a bit more specific with the radio name.\nIf you keep receiving this error please contact the developer!`);
 		
 		if (filtered_built_in_radio_stations.length == 1) {
 			Object.keys(built_in_radio).forEach((key,index) => {
