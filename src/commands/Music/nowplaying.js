@@ -14,13 +14,12 @@ exports.run = async (bot, msg, args) => {
 			key: process.env.YOUTUBE_API_KEY,
 			revealkey: true
 		});
-		let gvid = args.join(' ');
 		let gsearch;
-		if (gvid.length < 1) {
-			if (!music_items[msg.guild.id] || music_items[msg.guild.id].queue.length < 1) return msg.channel.send(`<:redx:411978781226696705> There are no items in the queue!`).catch(err => console.error);
-			gsearch = music_items[msg.guild.id].queue[0];
-		} else if (gvid.length > 0) {
-			gsearch = gvid;
+		if (args.length < 1) {
+			if (!music_items[msg.guild.id] || music_items[msg.guild.id].queue.length <= 0) return msg.channel.send(`<:redx:411978781226696705> There are no items in the queue!`).catch(err => console.error);
+			gsearch = music_items[msg.guild.id].queue[music_items[msg.guild.id].queue_position].title;
+		} else if (args.length > 0) {
+			gsearch = args.join(' ');
 		}
 		search.search(gsearch, { type: 'video' }).then((searchResult) => {
 			let result = searchResult.first;
