@@ -17,7 +17,7 @@ exports.run = async (bot, msg, args) => {
 				});
 		}
 		if (!msg.member.voiceChannel) return msg.channel.send(`<:redx:411978781226696705> You must be in a voice channel!`);
-		if (get_video_id(args.join(' '))) return msg.channel.send(`<:redx:411978781226696705> You can play YouTube videos using the \`play\` command. Please specify a radio station url.`);
+		if (get_video_id(args.join(' '))) return msg.channel.send(`<:redx:411978781226696705> You can play YouTube videos using the \`play\` command. You must specify a radio station url.`);
 		if (args.join(' ').length <= 3) return msg.channel.send(`<:redx:411978781226696705> You must provide a valid stream url to play or built-in radio station name!`);
 		let filtered_built_in_radio_stations = radio_stations_array.map((list) => list.toLowerCase()).filter((list) => list.toLowerCase().startsWith(args.join(' ').toLowerCase()));
 		
@@ -25,7 +25,7 @@ exports.run = async (bot, msg, args) => {
 		
 		if (filtered_built_in_radio_stations.length == 1) {
 			Object.keys(built_in_radio).forEach((key,index) => {
-				if (key.toLowerCase().startsWith(`${filtered_built_in_radio_stations[0].toLowerCase()}`) {
+				if (key.toLowerCase().startsWith(`${filtered_built_in_radio_stations[0].toLowerCase()}`)) {
 					let api_url = (built_in_radio[key].playlist_api === '') ? null : built_in_radio[key].playlist_api;
 					music_items[msg.guild.id].queue.push({
 						title: `${key}`,
