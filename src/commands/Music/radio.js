@@ -105,7 +105,7 @@ exports.run = async (bot, msg, args) => {
 				// Play the video.
 				try {
 					music_items[msg.guild.id].is_streaming = true;
-					let dispatcher = connection.playStream(video.toString(), { filter: 'audioonly' }, { volume: (music_items[msg.guild.id].volume / 100) }); // Radio
+					let dispatcher = connection.playStream(video, { filter: 'audioonly' }, { volume: (music_items[msg.guild.id].volume / 100) }); // Radio
 					
 					connection.on('error',(error) => {
 						// Skip to the next song.
@@ -138,10 +138,10 @@ exports.run = async (bot, msg, args) => {
 						}, 1000);
 					});
 				} catch (error) {
-					return console.error(error);
+					return console.error(error.toString());
 				}
 			}).catch((error) => {
-				return console.error(error);
+				return console.error(error.toString());
 			});
 		}
 	} catch (err) {
