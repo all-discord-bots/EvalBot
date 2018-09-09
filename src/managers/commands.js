@@ -130,7 +130,7 @@ class CommandManager {
 	}
 
 	all(category) {
-		return !category ? this._commands : this._commands.filter(c => c.info.category.toLowerCase() === category.toLowerCase());
+		return !category ? this._commands : this._commands.filter((command) => command.info.category.toLowerCase() === category.toLowerCase());
 	}
 
 	categories() {
@@ -139,11 +139,11 @@ class CommandManager {
 
 	get(name) {
 		return this.findBy('name', name) ||
-			this._commands.find(command => command.info.aliases instanceof Array && command.info.aliases.indexOf(name) > -1);
+			this._commands.find((command) => command.info.aliases instanceof Array && command.info.aliases.indexOf(name) > -1);
 	}
 
 	findBy(key, value) {
-		return this._commands.find(c => c.info[key] === value);
+		return this._commands.find((command) => command.info[key] === value);
 	}
 	
 	/**
@@ -243,7 +243,7 @@ class CommandManager {
 			if (this.getInfo("ownerOnly",info) && (ownerOverride || msg.author.id != process.env.bot_owner)) return false; // `The \`${info.name}\` command can only be used by the bot owner.`;
 			if (msg.channel.type === "text" && this.getInfo("userPermissions",info)) {
 				const missing = msg.channel.permissionsFor(msg.author).missing(this.getInfo("userPermissions",info));
-				if (missing.length > 0) return `<:redx:411978781226696705> You do not have permission to use the \`${info.name}\` command.\n<:transparent:411703305467854889>Missing: \`${missing.map(perm => this.bot.utils.permissions[perm]).join("` `")}\``;
+				if (missing.length > 0) return `<:redx:411978781226696705> You do not have permission to use the \`${info.name}\` command.\n<:transparent:411703305467854889>Missing: \`${missing.map((perm) => this.bot.utils.permissions[perm]).join("` `")}\``;
 			}
 		}
 		return true;
@@ -259,7 +259,7 @@ class CommandManager {
 		if (info.clientPermissions) {
 			if (msg.channel.type !== "dm" && this.getInfo("clientPermissions",info)) {
 				const missing = msg.channel.permissionsFor(this.bot.user).missing(this.getInfo("clientPermissions",info));
-				if (missing.length > 0) return `<:redx:411978781226696705> I don't have enough permissions to execute that command.\n<:transparent:411703305467854889>Missing: \`${missing.map(perm => bot.utils.permissions[perm]).join("` `")}\``;
+				if (missing.length > 0) return `<:redx:411978781226696705> I don't have enough permissions to execute that command.\n<:transparent:411703305467854889>Missing: \`${missing.map((perm) => bot.utils.permissions[perm]).join("` `")}\``;
 			}
 		}
 		return true;
@@ -286,11 +286,15 @@ class CommandManager {
 		//if(this.guildOnly && message && !message.guild) return false;
 		//const hasPermission = this.hasPermission(message);
 		//return this.isEnabledIn(message.guild) && hasPermission && typeof hasPermission !== 'string';
-		if (!msg.channel.permissionsFor(this.bot.user).has(0x00000800)) return false; // Send Messages
+		/*for (const id of this.bot.config.blacklistedServers.values()) {
+			if (id == msg.guild.id) return false;
+		}*/
+		if (new Set(this.bot.config.blacklisted).has(`${msg.author.id}`)) return false;
+		if (msg.channel.type !== 'dm' && !msg.channel.permissionsFor(this.bot.user).has(0x00000800)) return false; // Send Messages
 		if (this.getInfo("ownerOnly",info) && msg.author.id != process.env.bot_owner) return false;
-		if (this.getInfo("guildOnly",info) && msg.guild.id != process.env.main_bot_guild) return false;
 		if (!this.getInfo("allowDM",info) && msg.channel.type === 'dm') return `<:redx:411978781226696705> This command can only be used in a server.`;
 		if (this.getInfo("allowDM",info) && msg.channel.type === 'dm') return true;
+		if (this.getInfo("guildOnly",info) && (msg.guild.id != process.env.main_bot_guild || msg.channel.type === 'dm')) return false;
 		if (this.getInfo("nsfw",info) && !msg.channel.nsfw) return `<:redx:411978781226696705> This command can only be used in NSFW marked channels.`;
 		return this.hasPermission(msg,info);
 	}
@@ -298,7 +302,7 @@ class CommandManager {
 	handleCommand(msg, input) {
 		let prefix;
 		if (!input.startsWith(`<@${this.bot.user.id}>`)) { //&& !input.startsWith(`<@!${this.bot.user.id}>`)) {
-			prefix = msg.guild && (this.bot.config[msg.guild.id.toString()] && this.bot.config[msg.guild.id.toString()].prefix) || this.bot.config.prefix;
+			prefix = msg.guild && (this.bot.config[msg.guild.id] && this.bot.config[msg.guild.id].prefix) || this.bot.config.prefix;
 		} else {
 			prefix = `<@${this.bot.user.id}>`;
 		}
@@ -309,9 +313,7 @@ class CommandManager {
 		let spli;
 		if (prefix !== `<@${this.bot.user.id}>`)
 		{
-			let escaped_prefix = prefix.split('');
-			//spli = new RegExp(`[\\${escaped_prefix.join('\\')}]`, 'gi');
-			spli = new RegExp(`\\${escaped_prefix.join('\\')}`, 'gi');
+			spli = new RegExp(`\\${prefix.split('').join('\\')}`, 'gi');
 		}
 		else
 		{
@@ -380,7 +382,7 @@ class CommandManager {
 		const commands = shortcut.command.split(';;');
 
 		return Promise.all(
-			commands.map(c => c.trim()).filter(c => c.length > 0).map(commandString => {
+			commands.map((command) => command.trim()).filter((command) => command.length > 0).map((commandString) => {
 				const base = commandString.split(' ')[0].toLowerCase();
 				const args = commandString.split(' ').splice(1).concat(shortcutArgs);
 
@@ -410,13 +412,9 @@ class CommandManager {
 
 			const discordOutput = `<:redx:411978781226696705> ${displayMessage || 'Something failed!'}`;
 
-			msg.channel.send(discordOutput)
-				.then(m => m.delete(delay || 2000))
-				.catch(() => {
-					msg.channel.send(discordOutput)
-						.then(m => m.delete(delay || 2000))
-						.catch(() => { /* We can't even show the error, so what now? */ });
-				});
+			msg.channel.send(discordOutput).then((m) => m.delete(delay || 2000)).catch(() => {
+				msg.channel.send(discordOutput).then((m) => m.delete(delay || 2000)).catch(() => { /* We can't even show the error, so what now? */ });
+			});
 		}).bind(msg);
 
 		try {
@@ -436,10 +434,10 @@ class CommandManager {
 								value: `${msg.guild ? msg.guild.name || msg.channel.type : msg.channel.type} \`${msg.guild ? msg.guild.id || msg.channel.type : msg.channel.type}\``
 							},{
 								name: `Channel`,
-								value: `${msg.channel.type !== 'dm' ? `<#${msg.channel.id}> \`${msg.channel.id}\`` : `\`${msg.channel.type}\``} [<:jumpbutton:488127322134806528>](https://discordapp.com/channels/${msg.guild.id}/${msg.channel.id}/${msg.id} "Jump to Message")`
+								value: `${msg.channel.type !== 'dm' ? `<#${msg.channel.id}> \`${msg.channel.id}\`` : `\`${msg.channel.type}\``} [<:jumpbutton:488127322134806528>](${msg.channel.type !== 'dm' ? `https://discordapp.com/channels/${msg.guild.id}/${msg.channel.id}/${msg.id} "Jump to Message")` : ''}`
 							},{
 								name: `Jump`,
-								value: `https://discordapp.com/channels/${msg.guild.id}/${msg.channel.id}/${msg.id}`
+								value: `${msg.channel.type !== 'dm' ? `https://discordapp.com/channels/${msg.guild.id}/${msg.channel.id}/${msg.id}` : '`N/A`'}`
 							}
 						]
 					})
