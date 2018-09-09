@@ -298,10 +298,10 @@ exports.run = async (bot, msg, args) => {
 					fields: [
 						{
 							name: 'Now Playing',
-							value: `${get_stream(msg).playlist[0].name || 'N/A'} \`${get_stream(msg).playlist[0].created || 'N/A'}\``
+							value: `${get_stream(msg).playlist[0].name.replace('\u0026','&') || 'N/A'} \`${get_stream(msg).playlist[0].created || 'N/A'}\``
 						},{
 							name: 'Last Played',
-							value: `${get_stream(msg).playlist[1].name || 'N/A'} \`${get_stream(msg).playlist[1].created || 'N/A'}\``
+							value: `${get_stream(msg).playlist[1].name.replace('\u0026','&') || 'N/A'} \`${get_stream(msg).playlist[1].created || 'N/A'}\``
 						}
 					]
 				})});
