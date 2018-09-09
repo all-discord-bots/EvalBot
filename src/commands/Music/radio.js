@@ -2,62 +2,60 @@ require('../../conf/globals.js');
 
 exports.run = async (bot, msg, args) => {
 	try {
-		let radiostationsqueue = [
-			'Fun Radio',
-			'1.FM Absolute Top 40',
-			'977 Hits',
-			'Absolute Radio',
-			'Heart',
-			'Christian Music',
-			'Christian Teaching and Talk',
-			'Todays Christian Music',
-			'OpenFM 100% Metallica',
-			'North Pole Radio',
-			'Metal Rock FM',
-			'Icecast Metal',
-			'Metal Nation',
-			'Streamer Radio Metal',
-			'Hard Radio',
-			'Stream The World',
-			'NC Weather'
-		];
+		let 
+		let radio_stations_array = Object.keys(built_in_radio);
 		switch (args.length) {
 			case 0:
+				let radio_stations = '';
+				radio_stations += Object.keys(built_in_radio).join('\n');
 				return msg.channel.send({
 					embed: ({
 						color: 3447003,
 						title: `__**Radio Stations**__`,
-						description: `${radiostationsqueue.toString().replace(/[,]/gi, '\n')}`,
+						description: `${radio_stations}`,
 						timestamp: new Date()
 					})
 				});
 		}
-		if (!msg.member.voiceChannel) return msg.channel.send(`<:redx:411978781226696705> You must be in a voice channel!`).catch((err) => console.error);
+		if (!msg.member.voiceChannel) return msg.channel.send(`<:redx:411978781226696705> You must be in a voice channel!`);
 		if (get_video_id(args.join(' '))) return msg.channel.send(`<:redx:411978781226696705> You can play YouTube videos using the \`play\` command. Please specify a radio station url.`);
-		let getarg = args.join(' ').toLowerCase();
-		if (getarg.length <= 3) return msg.channel.send(`<:redx:411978781226696705> You must provide a valid stream.`);
-		let filteredbuiltinradio = radiostationsqueue.map((list) => list.toLowerCase()).filter((list) => list.toLowerCase().startsWith(getarg));
-		let queuethis;
-		let playingbuiltinstations = false;
-		if (filteredbuiltinradio.length > 0 && filteredbuiltinradio.length < 2) {
-			playingbuiltinstations = true;
-			queuethis = builtinradio[filteredbuiltinradio[0].toLowerCase()];
-		} else if (filteredbuiltinradio.length > 1) {
-			return msg.channel.send(`<:redx:411978781226696705> Too many results found, try to be a bit more specific with the radio name.\nIf you keep receiving this error please contact the developer!`).catch((err) => console.error);
-		} else if (getarg.includes('.') || getarg.startsWith('http')) {
-			playingbuiltinstations = false;
-			queuethis = getarg;
+		if (args.join(' ').length <= 3) return msg.channel.send(`<:redx:411978781226696705> You must provide a valid stream url to play or built-in radio station name!`);
+		let filtered_built_in_radio_stations = radio_stations_array.map((list) => list.toLowerCase()).filter((list) => list.toLowerCase().startsWith(args.join(' ').toLowerCase()));
+		
+		if (filtered_built_in_radio_stations.length >= 2) return return msg.channel.send(`<:redx:411978781226696705> Too many results found, try to be a bit more specific with the radio name.\nIf you keep receiving this error please contact the developer!`);
+		
+		if (filtered_built_in_radio_stations.length == 1) {
+			Object.keys(built_in_radio).forEach((key,index) => {
+				if (key.toLowerCase().startsWith(`${filtered_built_in_radio_stations[0].toLowerCase()}`) {
+					music_items[msg.guild.id].queue.push({
+						title: `${key}`,
+						url: `${built_in_radio[key].stream}`,
+						id: null,
+						requester: msg.author
+					});
+				}
+			});
+		} else if (new RegExp(`^((https?|ftp)(:|%3A)(\/\/|%2F%2F).+)`).test(args.join(' '))) {
+			music_items[msg.guild.id].queue.push({
+				title: `${args.join(' ')}`,
+				url: `${args.join(' ')}`,
+				id: null,
+				requester: msg.author
+			});
 		} else {
-			return msg.channel.send(`<:redx:411978781226696705> Please provide a valid stream url to play or built-in radio station name!`);
+			return msg.channel.send(`<:redx:411978781226696705> You must provide a valid stream url to play or built-in radio station name!`);
 		}
-		music_items[msg.guild.id].queue.push(`${queuethis}`);
+		
 		if (music_items[msg.guild.id].queue.length >= 2) {
-			music_items[msg.guild.id].queue.shift();
 			try {
-				const voiceConnection = bot.voiceConnections.find(val => val.channel.guild.id == msg.guild.id);
-				const dispatcher = voiceConnection.player.dispatcher;
-				if (voiceConnection.paused) dispatcher.resume();
-				dispatcher.end();
+				music_items[msg.guild.id].queue.shift();
+				const voiceConnection = bot.voiceConnections.find((val) => val.channel.guild.id == msg.guild.id);
+				// might need to add a check to the voiceConnection here.
+				if (voiceConnection !== null) {
+					const dispatcher = voiceConnection.player.dispatcher;
+					if (voiceConnection.paused) dispatcher.resume();
+					dispatcher.end();
+				}
 			} catch (err) {
 				console.error(err.toString());
 			}
@@ -65,30 +63,28 @@ exports.run = async (bot, msg, args) => {
 		if (music_items[msg.guild.id].queue.length === 1 || !bot.voiceConnections.find(val => val.channel.guild.id == msg.guild.id)) {
 			executeQueue(music_items[msg.guild.id].queue);
 		}
-		let streamingmsg;
-		if (playingbuiltinstations) {
-			streamingmsg = filteredbuiltinradio[0];
-		} else if (!playingbuiltinstations) {
-			streamingmsg = args.join(' ');
-		}
-		msg.channel.send(`<:check:411976443522711552> Streaming \`${streamingmsg}\`.`);
-		//console.log(`${music_items[msg.guild.id].queue.toString()}`);
+		
+		msg.channel.send(`<:check:411976443522711552> Streaming \`${music_items[msg.guild.id].queue[0].title}\`.`);
 		
 		function executeQueue(queue) {
 			new Promise((resolve, reject) => {
-				const voiceConnection = bot.voiceConnections.find(val => val.channel.guild.id == msg.guild.id);
+				const voiceConnection = bot.voiceConnections.find((val) => val.channel.guild.id == msg.guild.id);
 				// Join the voice channel if not already in one.
-				if (!msg.member.voiceChannel) return msg.channel.send(`<:redx:411978781226696705> You must be in a voice channel!`).catch((err) => console.error);
+				if (!msg.member.voiceChannel) return msg.channel.send(`<:redx:411978781226696705> You must be in a voice channel!`);
 				if (voiceConnection === null) {
 					// Check if the user is in a voice channel.
 					if (msg.member.voiceChannel && msg.member.voiceChannel.joinable) {
 						msg.member.voiceChannel.join().then((connection) => {
 							resolve(connection);
-						}).catch((error) => {
-							return console.error(error.toString());
+						}).catch((err) => {
+							return console.error(err.toString());
 						});
 					} else if (!msg.member.voiceChannel.joinable) {
-						msg.channel.send(`<:redx:411978781226696705> I do not have permission to join your voice channel!`);
+						if (msg.member.voiceChannel.full) {
+							msg.channel.send(`<:redx:411978781226696705> I do not have permission to join your voice channel; it is full.`);
+						} else {
+							msg.channel.send(`<:redx:411978781226696705> I do not have permission to join your voice channel!`);
+						}
 						reject();
 					} else {
 						// Otherwise, clear the queue and do nothing.
@@ -99,53 +95,59 @@ exports.run = async (bot, msg, args) => {
 					resolve(voiceConnection);
 				}
 			}).then((connection) => {
-				// Get the first item in the queue.
-				const video = queue[0];
-
-				// Play the video.
 				try {
 					music_items[msg.guild.id].is_streaming = true;
-					let dispatcher = connection.playStream(video, { filter: 'audioonly' }, { volume: (music_items[msg.guild.id].volume / 100) }); // Radio
+					music_items[msg.guild.id].queue_position = 0;
+					music_items[msg.guild.id].loop_queue = false;
+					music_items[msg.guild.id].loop_song = false;
 					
-					connection.on('error',(error) => {
-						// Skip to the next song.
-						console.log(`Dispatcher/connection: ${error}`);
+					let dispatcher = connection.playStream(queue[0].url, { filter: 'audioonly' }, { volume: (music_items[msg.guild.id].volume / 100) }); // Radio
+					
+					connection.once('failed', (reason) => {
+						console.error(`${reason.toString()}`);
+						try {
+							if (connection) {
+								connection.disconnect();
+							}
+						} catch (err) {
+							console.error(`${err.toString()}`);
+						};
+					});
+					
+					connection.once('error', (err) => {
+						console.error(`Dispatcher/connection: ${err.stack ? err.stack : err.toString()}`);
 						if (msg && msg.channel) {
-							console.error(error.toString());
-							msg.channel.send(`<:redx:411978781226696705> Dispatcher error!\n\`${error}\``);
+							msg.channel.send(`<:redx:411978781226696705> Dispatcher error!\n\`${err.toString()}\``);
 						}
-						queue.shift();
+						queue.shift(); // Skip to the next audio.
 						executeQueue(music_items[msg.guild.id].queue);
 					});
 					
-					dispatcher.on('error',(error) => {
-						// Skip to the next song.
-						console.error(`Dispatcher: ${error}`);
-						if (msg && msg.channel) msg.channel.send(`<:redx:411978781226696705> Dispatcher error!\n\`${error}\``);
-						queue.shift();
+					dispatcher.once('error', (err) => {
+						console.error(`Dispatcher: ${err.stack ? err.stack : err.toString()}`);
+						if (msg && msg.channel) msg.channel.send(`<:redx:411978781226696705> Dispatcher error!\n\`${err.toString()}\``);
+						queue.shift(); // Skip to the next audio.
 						executeQueue(music_items[msg.guild.id].queue);
 					});
 					
-					dispatcher.on('end',() => {
+					dispatcher.once('end', () => {
 						// Wait a second.
 						setTimeout(() => {
 							if (queue.length > 0) {
-								// Remove the song from the queue.
 								queue.shift();
-								// Play the next song in the queue.
 								executeQueue(music_items[msg.guild.id].queue);
 							}
 						}, 1000);
 					});
-				} catch (error) {
-					return console.error(error.toString());
+				} catch (err) {
+					return console.error(`${err.stack ? err.stack : err.toString()}`);
 				}
-			}).catch((error) => {
-				return console.error(error.toString());
+			}).catch((err) => {
+				return console.error(`${err.stack ? err.stack : err.toString()}`);
 			});
 		}
 	} catch (err) {
-		console.error(err.toString());
+		console.error(`${err.stack ? err.stack : err.toString()}`);
 	}
 };
 
@@ -155,7 +157,7 @@ const get_video_id = (string) => {
 
 exports.info = {
 	name: 'radio',
-	aliases: ['station', 'radio-station'],
+	aliases: ['station','radio-station'],
 	userPermissions: ['CONNECT'],
 	clientPermissions: ['CONNECT','SPEAK'],
 	usage: 'radio [station name | stream url]',
