@@ -18,7 +18,7 @@ exports.run = async (bot, msg, args) => {
 exports.info = {
 	name: 'prefix',
 	userPermissions: ['MANAGE_GUILD'],
-	usage: 'prefix <prefix>',
+	usage: 'prefix [prefix]',
 	examples: [
 		'prefix',
 		'prefix !'
