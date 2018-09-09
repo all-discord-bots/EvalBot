@@ -331,7 +331,7 @@ const get_stream = ((msg) => {
 		switch (music_items[msg.guild.id].queue[0]) {
 			case 'http://media-ice.musicradio.com/HeartSouthWalesMP3':
 				got('https://onlineradiobox.com/json/uk/heart970/playlist/?cs=uk.heart970').then((res) => {
-					return JSON.parse(res.body).playlist;
+					return JSON.parse(res.body);
 				}).catch((err) => {
 					console.log(err.toString());
 					return msg.channel.send(`<:redx:411978781226696705> An error has occurred fetching the current stream!`);
