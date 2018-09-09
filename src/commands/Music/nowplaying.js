@@ -302,45 +302,58 @@ exports.run = async (bot, msg, args) => {
 			} else if (streamingDuration[0] > 9) {
 				hourzero = '';
 			}
-			msg.channel.send({
-				embed: ({
-					color: 3447003,
-					title: `Streaming`,
-					url: `${music_items[msg.guild.id].queue[0]}`,
-					description: `Streaming [${music_items[msg.guild.id].queue[0]}](${music_items[msg.guild.id].queue[0]}) for \`${hourzero}${streamingDuration[0]}:${minzero}${streamingDuration[1]}:${seczero}${streamingDuration[2]}\``,
-					timestamp: new Date(),
-					fields: [
-						{
-							name: 'Now Playing',
-							value: `${get_stream(msg).playlist[0].name.replace('\u0026','&') || 'N/A'} \`${get_stream(msg).playlist[0].created || 'N/A'}\``
-						},{
-							name: 'Last Played',
-							value: `${get_stream(msg).playlist[1].name.replace('\u0026','&') || 'N/A'} \`${get_stream(msg).playlist[1].created || 'N/A'}\``
-						}
-					]
-				})
-			});
+			
+			let next_song = {
+				next_title: '',
+				prev_title: ''
+			};
+			
+			if (music_items[msg.guild.id].queue[0].playlist_api != null) {
+				new Promise((resolve,reject) => {
+					fetch(`${music_items[msg.guild.id].queue[0].playlist_api}`).then((res) => {
+							resolve(res.json());
+					}).catch((err) => {
+						console.error(err.toString());
+						reject();
+					});
+				}).then((res) => {
+					msg.channel.send({
+						embed: ({
+							color: 3447003,
+							title: `Streaming`,
+							url: `${music_items[msg.guild.id].queue[0].url}`,
+							description: `Streaming [${music_items[msg.guild.id].queue[0].title}](${music_items[msg.guild.id].queue[0].url}) for \`${hourzero}${streamingDuration[0]}:${minzero}${streamingDuration[1]}:${seczero}${streamingDuration[2]}\``,
+							timestamp: new Date(),
+							fields: [
+								{
+									name: 'Now Playing',
+									value: `${res.playlist[0].name.replace('\u0026','&') || 'N/A'} \`${res.playlist[0].created || 'N/A'}\``
+								},{
+									name: 'Last Played',
+									value: `${res.playlist[1].name.replace('\u0026','&') || 'N/A'} \`${res.playlist[1].created || 'N/A'}\``
+								}
+							]
+						})
+					});
+				}).catch((err) => {
+					return msg.channel.send(`<:redx:411978781226696705> Could not get information on the current playing stream.`);
+				});
+			} else {
+				msg.channel.send({
+					embed: ({
+						color: 3447003,
+						title: `Streaming`,
+						url: `${music_items[msg.guild.id].queue[0].url}`,
+						description: `Streaming [${music_items[msg.guild.id].queue[0].title}](${music_items[msg.guild.id].queue[0].url}) for \`${hourzero}${streamingDuration[0]}:${minzero}${streamingDuration[1]}:${seczero}${streamingDuration[2]}\``,
+						timestamp: new Date(),
+					})
+				});
+			}
 		}
 	} catch (err) {
 		console.error(err.toString());
 	}
 };
-
-const get_stream = ((msg) => {
-	try {
-		switch (music_items[msg.guild.id].queue[0]) {
-			case 'http://media-ice.musicradio.com/HeartSouthWalesMP3':
-				got('https://onlineradiobox.com/json/uk/heart970/playlist/?cs=uk.heart970').then((res) => {
-					return JSON.parse(res.body);
-				}).catch((err) => {
-					console.log(err.toString());
-					return msg.channel.send(`<:redx:411978781226696705> An error has occurred fetching the current stream!`);
-				});
-		}
-	} catch (err) {
-		console.error(err.toString());
-	}
-});
 
 exports.info = {
 	name: 'nowplaying',
@@ -352,5 +365,5 @@ exports.info = {
 		'nowplaying Ozzy Osbourne - Crazy Train'
 	],
 	usage: 'nowplaying [url | search]',
-	description: 'Shows the currently playing song.'
+	description: 'Shows info on the currently playing audio.'
 };
