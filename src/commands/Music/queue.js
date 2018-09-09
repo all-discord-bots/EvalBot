@@ -17,7 +17,7 @@ exports.run = async (bot, msg, args) => {
 			let hashtag = '  ';
 			if (i == music_items[msg.guild.id].queue_position) {
 				hashtag = '# ';
-				if (!music_items[msg.guild.id].is_streamin) {
+				if (!music_items[msg.guild.id].is_streaming) {
 					fetchVideoInfo(music_items[msg.guild.id].queue[music_items[msg.guild.id].queue_position].id, function(err, videoInfo) {
 						if (err) console.error(`${err.toString()}`);
 						if (videoInfo) {
