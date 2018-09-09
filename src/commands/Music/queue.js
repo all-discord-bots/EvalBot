@@ -7,9 +7,9 @@ exports.run = async (bot, msg, args) => {
 	try {
 		if (!music_items[msg.guild.id] || music_items[msg.guild.id].queue.length <= 0) return msg.channel.send(`<:redx:411978781226696705> There are no items in the queue.`);
 		let queue = '';
-		if (music_items[msg.guild.id].playback_duration != '') {
+		/*if (music_items[msg.guild.id].playback_duration != '') {
 			music_items[msg.guild.id].playback_duration = '';
-		}
+		}*/
 		for (let i = 0; i < music_items[msg.guild.id].queue.length; i++) {
 			let hashtag = '  ';
 			if (i == music_items[msg.guild.id].queue_position) {
@@ -71,9 +71,9 @@ exports.run = async (bot, msg, args) => {
 			//queue += `${i + 1}. [${music_items[msg.guild.id].queue[i].title}](${music_items[msg.guild.id].queue[i].url})\n`;
 		}
 		msg.channel.send(`\`\`\`md\n${queue}\n\`\`\``);
-		if (music_items[msg.guild.id].playback_duration != '') {
+		/*if (music_items[msg.guild.id].playback_duration != '') {
 			music_items[msg.guild.id].playback_duration = '';
-		}
+		}*/
 		/*msg.channel.send({
 			embed: ({
 				description: queue,
