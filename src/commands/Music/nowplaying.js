@@ -322,10 +322,10 @@ exports.run = async (bot, msg, args) => {
 							fields: [
 								{
 									name: 'Now Playing',
-									value: `${res.playlist[0].name.replace('\u0026','&') || 'N/A'} \`${res.playlist[0].created || 'N/A'}\``
+									value: `[${res.playlist[0].name.replace('\u0026','&') || 'N/A'}](https://onlineradiobox.com/track/${res.playlist[0].id}/ '${res.playlist[0].name.replace('\u0026','&')}') \`${res.playlist[0].created || 'N/A'}\``
 								},{
 									name: 'Last Played',
-									value: `${res.playlist[1].name.replace('\u0026','&') || 'N/A'} \`${res.playlist[1].created || 'N/A'}\``
+									value: `[${res.playlist[1].name.replace('\u0026','&') || 'N/A'}](https://onlineradiobox.com/track/${res.playlist[1].id}/ '${res.playlist[1].name.replace('\u0026','&')}') \`${res.playlist[1].created || 'N/A'}\``
 								}
 							]
 						})
