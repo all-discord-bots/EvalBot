@@ -6,6 +6,7 @@ const ms = require('ms');
 const fetchVideoInfo = require('youtube-info');
 const duration = require('go-duration');
 const { milliseconds, seconds, minutes, hours, days } = require('time-convert');
+const got = require('got');
 require('../../conf/globals.js');
 
 exports.run = async (bot, msg, args) => {
@@ -253,7 +254,7 @@ exports.run = async (bot, msg, args) => {
 					// ${ListRegionsAllowed.toString() || '`N/A`'}`,
 				});
 				// https://developers.google.com/youtube/v3/docs/activities
-			} else if (!result || music_items[msg.guild.id] && music_items[msg.guild.id]['streaming']) {
+			} else if (!result || music_items[msg.guild.id] && music_items[msg.guild.id].is_streaming) {
 				const voiceConnection = bot.voiceConnections.find(val => val.channel.guild.id == msg.guild.id);
 				let currenttime;
 				if (voiceConnection) {
@@ -293,14 +294,37 @@ exports.run = async (bot, msg, args) => {
 					title: `Streaming`,
 					url: `${music_items[msg.guild.id].queue[0]}`,
 					description: `Streaming [${music_items[msg.guild.id].queue[0]}](${music_items[msg.guild.id].queue[0]}) for \`${hourzero}${streamingDuration[0]}:${minzero}${streamingDuration[1]}:${seczero}${streamingDuration[2]}\``,
-					timestamp: new Date()
+					timestamp: new Date(),
+					fields: [
+						{
+							name: 'Now Playing',
+							value: `${get_stream(msg).playlist[0].name || 'N/A'} \`${get_stream(msg).playlist[0].created || 'N/A'}\``
+						},{
+							name: 'Last Played',
+							value: `${get_stream(msg).playlist[1].name || 'N/A'} \`${get_stream(msg).playlist[1].created || 'N/A'}\``
+						}
+					]
 				})});
 			}
-		}).catch(err => console.error(err.toString()));
+		}).catch((err) => {
+			return console.error(err.toString());
+		});
 	} catch (err) {
 		console.error(err.toString());
 	}
 };
+
+const get_stream = ((msg) => {
+	switch (music_items[msg.guild.id].queue[0]) {
+		case 'http://media-ice.musicradio.com/HeartSouthWalesMP3':
+			got('https://onlineradiobox.com/json/uk/heart970/playlist/?cs=uk.heart970').then((res) => {
+				return JSON.parse(res.body).playlist;
+			}).catch((err) => {
+				console.log(err.toString());
+				return msg.channel.send(`<:redx:411978781226696705> An error has occurred fetching the current stream!`);
+			});
+	}
+});
 
 exports.info = {
 	name: 'nowplaying',
