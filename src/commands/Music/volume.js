@@ -27,8 +27,9 @@ exports.info = {
 	userPermissions: ['CONNECT'],
 	clientPermissions: ['CONNECT'],
 	aliases: ['vol'],
-	usage: 'volume <number>',
+	usage: 'volume [number]',
 	examples: [
+		'volume',
 		'volume 100',
 		'volume 200'
 	],
