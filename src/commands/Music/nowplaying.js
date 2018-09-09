@@ -6,6 +6,7 @@ const ms = require('ms');
 const fetchVideoInfo = require('youtube-info');
 const duration = require('go-duration');
 const { milliseconds, seconds, minutes, hours, days } = require('time-convert');
+const fetch = require('node-fetch');
 require('../../conf/globals.js');
 
 exports.run = async (bot, msg, args) => {
