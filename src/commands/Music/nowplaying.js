@@ -6,7 +6,6 @@ const ms = require('ms');
 const fetchVideoInfo = require('youtube-info');
 const duration = require('go-duration');
 const { milliseconds, seconds, minutes, hours, days } = require('time-convert');
-const got = require('got');
 require('../../conf/globals.js');
 
 exports.run = async (bot, msg, args) => {
@@ -305,7 +304,7 @@ exports.run = async (bot, msg, args) => {
 			
 			if (music_items[msg.guild.id].queue[0].playlist_api != null) {
 				new Promise((resolve,reject) => {
-					await fetch(`${music_items[msg.guild.id].queue[0].playlist_api}`).then((res) => {
+					fetch(`${music_items[msg.guild.id].queue[0].playlist_api}`).then((res) => {
 							resolve(res.json());
 					}).catch((err) => {
 						console.error(err.toString());
