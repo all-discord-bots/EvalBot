@@ -15,6 +15,7 @@ exports.run = async (bot, msg, args) => {
 			reason = args.slice(1).join(' ');
 		}
 		if (user.id == msg.author.id) return msg.channel.send(`<:redx:411978781226696705> I cannot allow self-harm!`);
+		if (user.id == bot.user.id) return msg.channel.send(`<:redx:411978781226696705> I cannot ban myself!`);
 		if (user.manageable == false) return msg.channel.send(`<:redx:411978781226696705> I may need my role moved higher!`);
 		if (user.bannable == false) return msg.channel.send(`<:redx:411978781226696705> I cannot ban that user.`);
 		await msg.guild.ban(user,{
