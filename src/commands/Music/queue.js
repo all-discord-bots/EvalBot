@@ -5,6 +5,9 @@ require('../../conf/globals.js');
 
 exports.run = async (bot, msg, args) => {
 	try {
+		if (music_items[msg.guild.id].queue.length <= 0) {
+			music_items[msg.guild.id].playback_duration = '';
+		}
 		if (!music_items[msg.guild.id] || music_items[msg.guild.id].queue.length <= 0) return msg.channel.send(`<:redx:411978781226696705> There are no items in the queue.`);
 		let queue = '';
 		/*if (music_items[msg.guild.id].playback_duration != '') {
