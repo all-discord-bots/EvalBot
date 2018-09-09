@@ -68,7 +68,7 @@ exports.run = async (bot, msg, args) => {
 				});
 			}
 			if (i == music_items[msg.guild.id].queue_position) {
-				queue += `${hashtag}${i + 1}. ${music_items[msg.guild.id].queue[i].title || 'Failed to get title for this item!'}${music_items[msg.guild.id].playback_duration}\n`;
+				queue += `${hashtag}${i + 1}. ${music_items[msg.guild.id].queue[i].title || 'Failed to get title for this item!'}${music_items[msg.guild.id].playback_duration !== '' ? music_items[msg.guild.id].playback_duration : '[00:00:00]:'}\n`;
 			} else {
 				queue += `${hashtag}${i + 1}. ${music_items[msg.guild.id].queue[i].title || 'Failed to get title for this item!'} [00:00:00]:\n`;
 			}
