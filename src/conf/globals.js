@@ -45,6 +45,23 @@ const built_in_radio = global.built_in_radio = {
 		'stream': 'http://192.99.62.212:9408/stream',
 		'playlist_api': ''
 	},
+	/*'Bandit Metal Death Metal': {
+		'stream': '',
+		'playlist_api': 'https://onlineradiobox.com/json/se/banditmetal/playlist/?cs=se.banditmetal'
+	},*/
+	
+	// http://fluxfm.hoerradar.de/flux-metalfm-mp3-hq?sABC=5o95pppo%230%23276s24q4226sq84p75586q86348rp4q8%23enqvbqr&amsparams=playerid:radiode;skey:1536543947
+	// http://fluxfm.hoerradar.de/flux-metalfm-mp3-hq?sABC=5o95pq30%230%231rp8spo2095nss5o3qp5pnn4p7p9oo6n%23enqvbqr&amsparams=playerid:radiode;skey:1536544048
+	'Death FM': {
+		'stream': 'http://hi5.death.fm/;',
+		'playlist_api': ''
+		// http://death.fm/soap/FM24sevenJSON.php?action=GetCurrentlyPlaying
+	},
+	'Death FM Alt': {
+		'stream': 'http://hi.death.fm/;',
+		'playlist_api': ''
+		// http://death.fm/soap/FM24sevenJSON.php?action=GetCurrentlyPlaying
+	},
 	'Icecast Metal': {
 		'stream': 'http://sentinel.scenesat.com:8000/stream2',
 		'playlist_api': ''
