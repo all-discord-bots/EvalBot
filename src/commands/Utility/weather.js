@@ -55,7 +55,10 @@ exports.run = async (bot, msg, args) => {
 				value: weatherInfo.astronomy.sunset
 			}
 		],{ inline: true });
-	msg.channel.send({ embed });
+		msg.channel.send({ embed });
+	} catch (err) {
+		console.error(err.toString());
+	}
 };
 
 const makeURL = (city) => `https://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20weather.forecast%20where%20woeid%20in%20(select%20woeid%20from%20geo.places(1)%20where%20text%3D%22${encodeURIComponent(city)}%22)&format=json&env=store%3A%2F%2Fdatatables.org%2Falltableswithkeys`;
