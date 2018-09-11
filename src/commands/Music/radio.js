@@ -2,7 +2,7 @@ require('../../conf/globals.js');
 
 exports.run = async (bot, msg, args) => {
 	try {
-		let radio_stations_array = Object.keys(built_in_radio);
+		let radio_stations_array = Object.keys(built_in_radio).sort();
 		switch (args.length) {
 			case 0:
 				let radio_stations = '';
