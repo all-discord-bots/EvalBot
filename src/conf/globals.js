@@ -26,8 +26,7 @@ const built_in_radio = global.built_in_radio = {
 		'playlist_api': ''
 	},
 	'Metal Hammer Radio': {
-		'stream': 'http://metal-hammer.stream.laut.fm/metal-hammer?ref=radiode&t302=2018-09-11_01-52-54&uuid=f6344de1-c536-400e-92d2-2828a1a211ce',
-		// http://stream.laut.fm/metal-hammer?ref=radiode
+		'stream': 'http://stream.laut.fm/metal-hammer?ref=radiode',
 		'playlist_api': ''
 	},
 	'Metal Only Radio': {
@@ -47,7 +46,7 @@ const built_in_radio = global.built_in_radio = {
 		'playlist_api': ''
 	},
 	'Typeischangelo Radio': {
-		'stream': 'http://typischangelo.stream.laut.fm/typischangelo?ref=radiode&t302=2018-09-11_02-32-18&uuid=2b22e53d-ad9e-4134-b75a-83a55b1fdc42',
+		'stream': 'http://typischangelo.stream.laut.fm/typischangelo?ref=radiode',
 		'playlist_api': ''
 	},
 	'Christian Music': {
