@@ -1,6 +1,13 @@
 const music_items = global.music_items = {};
 const songqueue = global.songqueue = {};
 const built_in_radio = global.built_in_radio = {
+	/**
+	* @todo Make Categories for each station like `Metal, Rock` .etc.
+	*/
+	'AlexFM': {
+		'stream': 'http://alexfm.stream.laut.fm/alexfm?ref=radiode',
+		'playlist_api': ''
+	},
 	'Fun Radio': {
 		'stream': 'http://streaming.radio.funradio.fr/fun-1-44-128',
 		'playlist_api': ''
@@ -96,6 +103,14 @@ const built_in_radio = global.built_in_radio = {
 	},
 	'Metal Nation': {
 		'stream': 'http://198.100.145.185:8900/;',
+		'playlist_api': ''
+	},
+	'Metal Up Your Ass': {
+		'stream': 'http://metal-up-your-ass.stream.laut.fm/metal-up-your-ass?ref=radiode',
+		'playlist_api': ''
+	},
+	'Metal Generation': {
+		'stream': 'http://metalgeneration.stream.laut.fm/metalgeneration?ref=radiode',
 		'playlist_api': ''
 	},
 	'Streamer Radio Metal': {
