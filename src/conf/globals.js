@@ -21,6 +21,35 @@ const built_in_radio = global.built_in_radio = {
 		'stream': 'http://media-ice.musicradio.com/HeartSouthWalesMP3',
 		'playlist_api': 'https://onlineradiobox.com/json/uk/heart970/playlist/?cs=uk.heart970'
 	},
+	'Heavy Metal Radio': {
+		'stream': 'http://www.heavymetalradio.com:8000/;',
+		'playlist_api': ''
+	},
+	'Metal Hammer Radio': {
+		'stream': 'http://metal-hammer.stream.laut.fm/metal-hammer?ref=radiode&t302=2018-09-11_01-52-54&uuid=f6344de1-c536-400e-92d2-2828a1a211ce',
+		// http://stream.laut.fm/metal-hammer?ref=radiode
+		'playlist_api': ''
+	},
+	'Metal Only Radio': {
+		'stream': 'http://server1.blitz-stream.de:4400/stream/1/',
+		'playlist_api': ''
+	},
+	'Pure Metal Radio': {
+		'stream': 'http://91.250.102.222:29000/;/;453565267655398stream.nsv',
+		'playlist_api': ''
+	},
+	'Metal Radio': {
+		'stream': 'http://stream.radiometal.com:8010/;',
+		'playlist_api': ''
+	},
+	'PirateRock Radio': {
+		'stream': 'http://185.86.150.69:8100/webradio',
+		'playlist_api': ''
+	},
+	'Typeischangelo Radio': {
+		'stream': 'http://typischangelo.stream.laut.fm/typischangelo?ref=radiode&t302=2018-09-11_02-32-18&uuid=2b22e53d-ad9e-4134-b75a-83a55b1fdc42',
+		'playlist_api': ''
+	},
 	'Christian Music': {
 		'stream': 'http://17683.live.streamtheworld.com/WFSHFM_SC',
 		'playlist_api': ''
