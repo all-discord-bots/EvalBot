@@ -52,7 +52,7 @@ const built_in_radio = global.built_in_radio = {
 		'tags': ['Deizisau','Germany','Heavy Metal','Medieval','Pop','Traditional']
 	},
 	'Pure Metal Radio': {
-		'stream': 'http://91.250.102.222:29000/;/;453565267655398stream.nsv',
+		'stream': 'http://91.250.102.222:29000/;',
 		'playlist_api': 'https://onlineradiobox.com/json/de/puremetal/playlist/',
 		'tags': ['Beckum','Germany','Alternative','Rock','Heavy Metal']
 	},
