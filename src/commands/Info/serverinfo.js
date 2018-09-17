@@ -20,13 +20,13 @@ exports.run = async (bot, msg, args) => {
 					value: `${days.toFixed(0)}`,
 				},{
 					name: 'Default Channel',
-					value: `${msg.guild.defaultChannel}`,
+					value: `${msg.guild.defaultChannel || `\`N/A\``}`,
 				},{
 					name: 'Region',
 					value: `${msg.guild.region}`,
 				},{
 					name: 'Member Count',
-					value: `${msg.guild.members.filter(m => m.presence.status !== 'offline').size} / ${msg.guild.memberCount}`,
+					value: `${msg.guild.members.filter((m) => m.presence.status !== 'offline').size} / ${msg.guild.memberCount}`,
 				},{
 					name: 'Owner',
 					value: `${owner.username || 'None'}`,
@@ -50,7 +50,7 @@ exports.run = async (bot, msg, args) => {
 			}
 		);
 		if (msg.guild.iconURL != null) {
-			embed.setThumbnail(`${msg.guild.iconURL}`);
+			embed.setThumbnail(`${msg.guild.iconURL()}`);
 		}
 		msg.channel.send({ embed });
 	} catch (err) {
