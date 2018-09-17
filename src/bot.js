@@ -257,7 +257,11 @@ class CripsBot extends Client {
 			} else {
 				s = 's';
 			}
-			this.user.setPresence({ activity: { name: `${this.guilds.size} server${s}`, type: 3 }, status: 'online' }).then(console.log).catch(console.error);
+			this.user.setPresence({ activity: { name: `${this.guilds.size} server${s}`, type: 3 }, status: 'online' }).then((presence) => {
+				console.log(`Successfully updated the bots presence to \`${presence.activity.name}\``);
+			}).catch((err) => {
+				console.error(err.toString())
+			});
 			
 			// Fix mobile notifications
 			this.user.setAFK(true);
@@ -543,7 +547,11 @@ class CripsBot extends Client {
 			} else {
 				s = "s";
 			}
-			this.user.setPresence({ game: { name: `${this.guilds.size} server${s}`, type: 3 } });
+			this.user.setPresence({ activity: { name: `${this.guilds.size} server${s}`, type: 3 }, status: 'online' }).then((presence) => {
+				console.log(`Successfully updated the bots presence to \`${presence.activity.name}\``);
+			}).catch((err) => {
+				console.error(err.toString())
+			});
 		});
 		
 		// Removed from a server
@@ -569,7 +577,11 @@ class CripsBot extends Client {
 			} else {
 				s = "s";
 			}
-			this.user.setPresence({ game: { name: `${this.guilds.size} server${s}`, type: 3 } });
+			this.user.setPresence({ activity: { name: `${this.guilds.size} server${s}`, type: 3 }, status: 'online' }).then((presence) => {
+				console.log(`Successfully updated the bots presence to \`${presence.activity.name}\``);
+			}).catch((err) => {
+				console.error(err.toString())
+			});
 		});
 		
 		this.on('guildMemberAdd', (member) => {
