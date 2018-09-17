@@ -42,7 +42,7 @@ exports.run = async (bot, msg, args) => {
 					timestamp: new Date(),
 					author: {
 						name: `${msg.author.tag}`,
-						icon_url: `${msg.author.displayAvatarURL}`
+						icon_url: `${msg.author.displayAvatarURL()}`
 					},
 					footer: {
 						text: `Case #N/A`
