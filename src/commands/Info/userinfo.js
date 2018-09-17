@@ -43,11 +43,11 @@ exports.run = async (bot, msg, args) => {
 					color: 3447003,
 					description: `${statusemoji} <@${user.id}>${user.bot ? ' <:bot:491157258915414016>' : ''}${ggame}`,
 					thumbnail: {
-						url: `${user.user.displayAvatarURL}`
+						url: `${user.user.displayAvatarURL()}`
 					},
 					author: {
 						name: `${user.user.tag}`,
-						icon_url: `${user.user.displayAvatarURL}`
+						icon_url: `${user.user.displayAvatarURL()}`
 					},
 					fields: [
 						{
@@ -77,11 +77,11 @@ exports.run = async (bot, msg, args) => {
 					color: 3447003,
 					description: `${statusemoji} <@${user.id}>${user.user.bot ? ' <:bot:491157258915414016>' : ''}${ggame}`,
 					thumbnail: {
-						url: `${user.displayAvatarURL}`
+						url: `${user.displayAvatarURL()}`
 					},
 					author: {
 						name: `${user.tag}`,
-						icon_url: `${user.displayAvatarURL}`
+						icon_url: `${user.displayAvatarURL()}`
 					},
 					fields: [
 						{
@@ -110,5 +110,5 @@ exports.info = {
 		'user-info @BannerBomb',
 		'user-info 9772'
 	],
-	description: 'Shows various information and data on the mentioned user.'
+	description: 'Shows various information and data for a specific user.'
 };
