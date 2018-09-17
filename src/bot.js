@@ -257,7 +257,7 @@ class CripsBot extends Client {
 			} else {
 				s = 's';
 			}
-			this.user.setPresence({ game: { name: `${this.guilds.size} server${s}`, type: 3 } });
+			this.user.setPresence({ activity: { name: `${this.guilds.size} server${s}`, type: 3 }, status: 'online' }).then(console.log).catch(console.error);
 			
 			// Fix mobile notifications
 			this.user.setAFK(true);
