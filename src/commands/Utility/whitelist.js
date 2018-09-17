@@ -129,6 +129,7 @@ exports.run = async (bot, msg, args) => {
 
 exports.info = {
 	hidden: true,
+	guildOnly: true,
 	name: 'whitelist',
 	usage: 'whitelist <your HWID>',
 	description: 'Whitelist your HWID to allow full access to my roblox CripsSploit exploit.'
