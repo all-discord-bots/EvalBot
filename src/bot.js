@@ -119,7 +119,7 @@ class CripsBot extends Client {
 						title: `User Upvoted!`,
 						author: {
 							name: `${this.users.get(vote.user.toString()).tag}`,
-							icon_url: `${this.users.get(vote.user.toString()).displayAvatarURL}`
+							icon_url: `${this.users.get(vote.user.toString()).displayAvatarURL()}`
 						},
 						fields: [
 							{
@@ -597,7 +597,7 @@ class CripsBot extends Client {
 					description: `<@${member.user.id}> \`[${member.user.tag}]\``,
 					author: {
 						name: 'User Joined!',
-						icon_url: `${member.user.displayAvatarURL}`
+						icon_url: `${member.user.displayAvatarURL()}`
 					},
 				})
 			}).catch((err) => console.error(err.toString()));
@@ -612,7 +612,7 @@ class CripsBot extends Client {
 					description: `<@${member.user.id}> \`[${member.user.tag}]\``,
 					author: {
 						name: 'User Left!',
-						icon_url: `${member.user.displayAvatarURL}`
+						icon_url: `${member.user.displayAvatarURL()}`
 					},
 				})
 			}).catch((err) => console.error(err.toString()));
