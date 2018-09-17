@@ -2,19 +2,17 @@ require('../../conf/globals.js');
 
 exports.run = async (bot, msg, args) => {
 	try {
-		if (!msg.member.voiceChannel) return msg.channel.send(`<:redx:411978781226696705> You must be in a voice channel!`);
+		if (!msg.member.voice.channel) return msg.channel.send(`<:redx:411978781226696705> You must be in a voice channel!`);
 		if (!music_items[msg.guild.id]) return msg.channel.send(`<:redx:411978781226696705> Queue is already empty!`);
 		if (args.length <= 0) {
 			music_items[msg.guild.id].loop_queue = false;
 			music_items[msg.guild.id].loop_song = false;
 			if (music_items[msg.guild.id].queue.length > 0) {
 				music_items[msg.guild.id].queue.splice(0, music_items[msg.guild.id].queue.length);
-				const voiceConnection = bot.voiceConnections.find(val => val.channel.guild.id == msg.guild.id);
-				if (voiceConnection !== null) {
+				if (msg.guild.voiceConnection !== null) {
 					try {
-						const dispatcher = voiceConnection.player.dispatcher;
-						if (voiceConnection.paused) dispatcher.resume();
-						dispatcher.end();
+						if (msg.guild.voiceConnection.paused) msg.guild.voiceConnection.player.dispatcher.resume();
+						msg.guild.voiceConnection.player.dispatcher.end();
 					} catch (err) {
 						return msg.channel.send(`<:redx:411978781226696705> Error occoured!\n\`\`\`\n${err.toString().split(':')[0]}: ${err.toString().split(':')[1]}\n\`\`\``);
 					}
@@ -34,12 +32,10 @@ exports.run = async (bot, msg, args) => {
 					if (value.requester === user.user) {
 						music_items[msg.guild.id].queue.splice(index,1);
 						if (index == 0) {
-							const voiceConnection = bot.voiceConnections.find(val => val.channel.guild.id == msg.guild.id);
-							if (voiceConnection !== null) {
+							if (msg.guild.voiceConnection !== null) {
 								try {
-									const dispatcher = voiceConnection.player.dispatcher;
-									if (voiceConnection.paused) dispatcher.resume();
-									dispatcher.end();
+									if (msg.guild.voiceConnection.paused) msg.guild.voiceConnection.player.dispatcher.resume();
+									msg.guild.voiceConnection.player.dispatcher.end();
 								} catch (err) {
 									return msg.channel.send(`<:redx:411978781226696705> Error occoured!\n\`\`\`\n${err.toString().split(':')[0]}: ${err.toString().split(':')[1]}\n\`\`\``);
 								}
