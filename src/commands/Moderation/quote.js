@@ -44,6 +44,8 @@ exports.run = async (bot, msg, args) => {
 };
 
 exports.info = {
+	ownerOnly: true,
+	hidden: true,
 	name: 'quote',
 	usage: 'quote <id> [#channel | channel ID]',
 	examples: [
