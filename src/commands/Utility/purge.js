@@ -12,7 +12,7 @@ exports.run = async (bot, msg, args) => {
 			if (user.toString().includes("I could not find that user.")) return;
 		}
 		(await msg.channel.send({ embed: ({ title: `<a:loading:414954381176340480> Purging \`${parseFloat(args[0].toString().replace(/^[-]/g,''))}\` messages...` })}).then((msg) => {
-			msg.channel.fetchMessages({ limit: parseFloat(args[0].toString().replace(/^[-]/g,'')) }).then((messages) => {
+			msg.channel.messages.fetch({ limit: parseFloat(args[0].toString().replace(/^[-]/g,'')) }).then((messages) => {
 				let msg_to_delete = messages;
 				if (args[1]) {
 					if (args[1] === '-bots') {
