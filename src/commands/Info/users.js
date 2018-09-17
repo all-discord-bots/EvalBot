@@ -41,6 +41,7 @@ exports.run = async (bot, msg, args) => {
 };
 
 exports.info = {
+    ownerOnly: true,
     name: 'users',
     hidden: true,
     usage: 'users [role]',
