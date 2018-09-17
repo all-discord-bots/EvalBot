@@ -92,7 +92,7 @@ const built_in_radio = global.built_in_radio = {
 	'North Pole Radio': {
 		'stream': 'http://85.25.217.22:8050/christmas',
 		'playlist_api': 'https://onlineradiobox.com/json/us/northpoleradio/playlist/',
-		'tags': ['Holiday','Christmas'']
+		'tags': ['Holiday','Christmas']
 	},
 	'MetalRock FM': {
 		'stream': 'http://192.99.62.212:9408/stream',
