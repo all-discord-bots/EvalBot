@@ -426,7 +426,7 @@ class CommandManager {
 						description: `\`\`\`\n${msg.content.toString()}\n\`\`\``,
 						author: {
 							name: `${msg.author.tag} - ${msg.author.id}`,
-							icon_url: `${msg.author.displayAvatarURL}`
+							icon_url: `${msg.author.displayAvatarURL()}`
 						},
 						fields: [
 							{
@@ -445,7 +445,7 @@ class CommandManager {
 			}
 			const isUsable = this.isUsable(msg, command.info);
 			if (typeof(isUsable) === 'boolean' && !isUsable) return;
-			if (typeof(isUsable) === 'string') return msg.channel.send({ embed: ({ description: `${isUsable}`, color: 15684432, timestamp: new Date(), author: { name: `${msg.author.tag}`, icon_url: `${msg.author.displayAvatarURL}` }})});
+			if (typeof(isUsable) === 'string') return msg.channel.send({ embed: ({ description: `${isUsable}`, color: 15684432, timestamp: new Date(), author: { name: `${msg.author.tag}`, icon_url: `${msg.author.displayAvatarURL()}` }})});
 			return await command.run(this.bot, msg, args);
 		} catch (err) {
 			this.bot.channels.get("415265475895754752").send({
@@ -455,7 +455,7 @@ class CommandManager {
 					title: `${err.name ? err.name : `Unknown Error`}`,
 					author: {
 						name: `${msg.author.tag}`,
-						icon_url: `${msg.author.displayAvatarURL}`
+						icon_url: `${msg.author.displayAvatarURL()}`
 					},
 					footer: {
 						text: `${err ? err.toString() : `\`N/A\``}`
