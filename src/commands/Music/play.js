@@ -109,7 +109,7 @@ exports.run = async (bot, msg, args) => {
 				try {
 					music_items[msg.guild.id].is_streaming = false;
 					
-					let dispatcher = music_items[msg.guild.id].stream_mode == 0 ? connection.playStream(ytdl(video.toString(), { filter: 'audioonly' }), { volume: (music_items[msg.guild.id].volume / 100) }) : connection.playStream(stream(video.toString()), { volume: (music_items[msg.guild.id].volume / 100) }); // YouTube, and Streams stream (1) is broken
+					let dispatcher = music_items[msg.guild.id].stream_mode == 0 ? connection.play(ytdl(video.toString(), { filter: 'audioonly' }), { volume: (music_items[msg.guild.id].volume / 100) }) : connection.play(stream(video.toString()), { volume: (music_items[msg.guild.id].volume / 100) }); // Will Fix Soon // connection.playStream(stream(video.toString()), { volume: (music_items[msg.guild.id].volume / 100) }); // playStream
 					
 					/*connection.once('authenticated', () => {
 						console.log('Connection has been successfully authenticated');
