@@ -12,8 +12,8 @@ exports.run = async (bot, msg, args) => {
 		let user;
 		if (args.length <= 0) {
 			user = bot.utils.getMembers(msg,`${msg.member.id}`); //msg.guild.members.get(`${msg.member.id}`);
-			//let gtoprole = user.roles.filter(m => m.name).map(m => m.position).sort(function(a, b){return b-a});
-			//toprole = user.roles.filter(m => m.position === gtoprole[0]).map(m => m.id);
+			//let gtoprole = user.roles.filter((m) => m.name).map((m) => m.position).sort(function(a, b){return b-a});
+			//toprole = user.roles.filter((m) => m.position === gtoprole[0]).map(m => m.id);
 		} else {
 			user = bot.utils.getMembers(msg,args.join(' '));
 		}
@@ -102,7 +102,6 @@ exports.run = async (bot, msg, args) => {
 	
 exports.info = {
 	name: 'user-info',
-	ownerOnly: true,
 	aliases: ['user','userinfo','member','member-info','profile'],
 	usage: 'user-info <user>',
 	examples: [
