@@ -103,7 +103,7 @@ exports.run = async (bot, msg, args) => {
 					music_items[msg.guild.id].loop_queue = false;
 					music_items[msg.guild.id].loop_song = false;
 					
-					let dispatcher = connection.playStream(queue[0].url, { filter: 'audioonly' }, { volume: (music_items[msg.guild.id].volume / 100) }); // Radio
+					let dispatcher = connection.play(queue[0].url, { filter: 'audioonly' }, { volume: (music_items[msg.guild.id].volume / 100) }); // Radio
 					
 					connection.once('failed', (reason) => {
 						console.error(`${reason.toString()}`);
