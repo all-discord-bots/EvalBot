@@ -106,6 +106,8 @@ exports.run = async (bot, msg, args) => {
 				try {
 					music_items[msg.guild.id].is_streaming = false;
 					
+					if (!video) return msg.channel.send(`<:redx:411978781226696705> I was unable to play that video.`);
+					
 					let dispatcher = music_items[msg.guild.id].stream_mode == 0 ? connection.play(ytdl(video.toString(), { filter: 'audioonly' }), { volume: (music_items[msg.guild.id].volume / 100) }) : connection.play(stream(video.toString()), { volume: (music_items[msg.guild.id].volume / 100) }); // Will Fix Soon // connection.playStream(stream(video.toString()), { volume: (music_items[msg.guild.id].volume / 100) }); // playStream
 					
 					/*connection.once('authenticated', () => {
