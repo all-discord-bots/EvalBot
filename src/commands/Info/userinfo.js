@@ -3,12 +3,38 @@ require('moment-duration-format');
 
 exports.run = async (bot, msg, args) => {
 	try {
-		const activityTypes = [
-			'Playing',
-			'Streaming',
-			'Listening to',
-			'Watching',
-		];
+		const activityTypes = {
+			'PLAYING': {
+				'status': 'Playing'
+			},
+			'STREAMING': {
+				'status': 'Streaming'
+			},
+			'LISTENING TO': {
+				'status': 'Listening to'
+			},
+			'WATCHING': {
+				'status': 'Watching'
+			}
+		};
+		const statusEmoji = {
+			'online': {
+				'normal': '<:online:411637359398879232>',
+				'color_blind': '<:cb_online:491157259108483074>'
+			},
+			'idle': {
+				'normal': '<:away:411637359214460939>',
+				'color_blind': '<:cb_away:491157259175460864>'
+			},
+			'dnd': {
+				'normal': '<:dnd:411636698993262593>',
+				'color_blind': '<:cb_dnd:491157259078991882>'
+			},
+			'offline': {
+				'normal': '<:offline:411637359361392650>',
+				'color_blind': '<:cb_offline:491157259070603286>'
+			}
+		};
 		let user;
 		if (args.length <= 0) {
 			user = bot.utils.getMembers(msg,`${msg.member.id}`); //msg.guild.members.get(`${msg.member.id}`);
@@ -21,27 +47,16 @@ exports.run = async (bot, msg, args) => {
 		if (!user) return msg.channel.send(`<:redx:411978781226696705> I could not find that user.`);
 		if (user.toString().includes("I could not find that user.")) return;
 		if (!user.presence || !user.presence.status) return;
-		let statusemoji;
-		if (user.presence.status === "online") {
-			statusemoji = `<:online:411637359398879232>`;
-		} else if (user.presence.status === "idle") {
-			statusemoji = `<:away:411637359214460939>`;
-		} else if (user.presence.status === "dnd") {
-			statusemoji = `<:dnd:411636698993262593>`;
-		} else if (user.presence.status === "offline") {
-			statusemoji = `<:offline:411637359361392650>`;
-		}
-		
 		let ggame = '';
 		if (user.presence.activity !== null) {
-			ggame = `\n <:transparent:411703305467854889>${activityTypes[user.presence.activity.type]} **${user.presence.activity.name}**`; // For bot.user.localPresence.activity.since
+			ggame = `\n <:transparent:411703305467854889>${activityTypes[user.presence.activity.type].status} **${user.presence.activity.name}**`; // For bot.user.localPresence.activity.since
 		}
 		
 		if (msg.guild.members.get(`${user.id}`)) {
 			msg.channel.send({
 				embed:({
 					color: 3447003,
-					description: `${statusemoji} <@${user.id}>${user.user.bot ? ' <:bot:491157258915414016>' : ''}${ggame}`,
+					description: `${statusEmoji[user.presence.status].normal} <@${user.id}>${user.user.bot ? ' <:bot:491157258915414016>' : ''}${ggame}`,
 					thumbnail: {
 						url: `${user.user.displayAvatarURL()}`
 					},
@@ -75,7 +90,7 @@ exports.run = async (bot, msg, args) => {
 			msg.channel.send({
 				embed:({
 					color: 3447003,
-					description: `${statusemoji} <@${user.id}>${user.bot ? ' <:bot:491157258915414016>' : ''}${ggame}`,
+					description: `${statusEmoji[user.presence.status].normal} <@${user.id}>${user.bot ? ' <:bot:491157258915414016>' : ''}${ggame}`,
 					thumbnail: {
 						url: `${user.displayAvatarURL()}`
 					},
