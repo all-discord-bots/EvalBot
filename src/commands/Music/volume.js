@@ -14,7 +14,7 @@ exports.run = async (bot, msg, args) => {
 			msg.guild.voiceConnection.player.dispatcher.setVolume(parseInt(args[0]));
 		}
 		
-		msg.guild.voiceConnection.player.dispatcher.volumeChange.once((oldVolume,newVolume) => {
+		msg.guild.voiceConnection.player.dispatcher.once('volumeChange', (oldVolume,newVolume) => {
 			msg.channel.send(`<:check:411976443522711552> Volume set to \`${newVolume}%\``); //\`${parseInt(args[0])}%\`.`);
 		});
 	} catch (err) {
