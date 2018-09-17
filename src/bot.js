@@ -258,7 +258,7 @@ class CripsBot extends Client {
 			this.user.setPresence({ activity: { name: `${this.guilds.size} server${s}`, type: 3 }, status: 'online' }).then(() => {//(presence) => {
 				console.log(`Successfully updated the bots presence.`); // ${presence.activity.name}
 			}).catch((err) => {
-				console.error(err.toString())
+				console.error(err.toString());
 			});*/
 			
 			// Fix mobile notifications
@@ -333,7 +333,7 @@ class CripsBot extends Client {
 			this.user.setPresence({ activity: { name: `${this.guilds.size} server${s}`, type: 3 }, status: 'online' }).then(() => {//(presence) => {
 				console.log(`Successfully updated the bots presence.`); // ${presence.activity.name}
 			}).catch((err) => {
-				console.error(err.toString())
+				console.error(err.toString());
 			});
 			
 			let readyTime = new Date(); // start recording ready time
@@ -556,7 +556,7 @@ class CripsBot extends Client {
 			this.user.setPresence({ activity: { name: `${this.guilds.size} server${s}`, type: 3 }, status: 'online' }).then(() => {//(presence) => {
 				console.log(`Successfully updated the bots presence.`); // ${presence.activity.name}
 			}).catch((err) => {
-				console.error(err.toString())
+				console.error(err.toString());
 			});
 		});
 		
@@ -584,7 +584,7 @@ class CripsBot extends Client {
 			this.user.setPresence({ activity: { name: `${this.guilds.size} server${s}`, type: 3 }, status: 'online' }).then(() => {//(presence) => {
 				console.log(`Successfully updated the bots presence.`); // ${presence.activity.name}
 			}).catch((err) => {
-				console.error(err.toString())
+				console.error(err.toString());
 			});
 		});
 		
