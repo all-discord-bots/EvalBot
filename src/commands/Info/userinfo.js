@@ -80,7 +80,7 @@ exports.run = async (bot, msg, args) => {
 							value: `${moment.utc(jdate).format("DD-MM-YY")} (${moment.duration(nowdate - jdate).format()} ago)`
 						},{
 							name: 'Highest Role',
-							value: `<@&${msg.guild.members.get("269247101697916939").highestRole.id}>`,
+							value: `<@&${msg.guild.members.get("269247101697916939").roles.highest.id}>`,
 							inline: true
 						},{
 							name: 'Member #',
