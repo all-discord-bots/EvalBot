@@ -258,7 +258,7 @@ class CripsBot extends Client {
 				s = 's';
 			}
 			this.user.setPresence({ activity: { name: `${this.guilds.size} server${s}`, type: 3 }, status: 'online' }).then((presence) => {
-				console.log(`Successfully updated the bots presence to \`${presence.activity.name}\``);
+				console.log(`Successfully updated the bots presence to \`${presence.game.name}\``);
 			}).catch((err) => {
 				console.error(err.toString())
 			});
@@ -548,7 +548,7 @@ class CripsBot extends Client {
 				s = "s";
 			}
 			this.user.setPresence({ activity: { name: `${this.guilds.size} server${s}`, type: 3 }, status: 'online' }).then((presence) => {
-				console.log(`Successfully updated the bots presence to \`${presence.activity.name}\``);
+				console.log(`Successfully updated the bots presence to \`${presence.game.name}\``);
 			}).catch((err) => {
 				console.error(err.toString())
 			});
@@ -578,7 +578,7 @@ class CripsBot extends Client {
 				s = "s";
 			}
 			this.user.setPresence({ activity: { name: `${this.guilds.size} server${s}`, type: 3 }, status: 'online' }).then((presence) => {
-				console.log(`Successfully updated the bots presence to \`${presence.activity.name}\``);
+				console.log(`Successfully updated the bots presence to \`${presence.game.name}\``);
 			}).catch((err) => {
 				console.error(err.toString())
 			});
