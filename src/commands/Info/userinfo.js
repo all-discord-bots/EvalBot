@@ -102,6 +102,7 @@ exports.run = async (bot, msg, args) => {
 	
 exports.info = {
 	name: 'user-info',
+	ownerOnly: true,
 	aliases: ['user','userinfo','member','member-info','profile'],
 	usage: 'user-info <user>',
 	examples: [
