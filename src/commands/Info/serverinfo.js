@@ -59,8 +59,6 @@ exports.run = async (bot, msg, args) => {
 };
 
 exports.info = {
-	hidden: true,
-	ownerOnly: true,
 	name: 'serverinfo',
 	usage: 'serverinfo',
 	examples: [
