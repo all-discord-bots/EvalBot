@@ -5,6 +5,7 @@ exports.run = (bot, msg, args) => {
 };
 
 exports.info = {
+  ownerOnly: true,
   name: 'checkinvites',
   hidden: true,
   aliases: ['ci'],
