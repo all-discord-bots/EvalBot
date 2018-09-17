@@ -41,15 +41,14 @@ exports.run = async (bot, msg, args) => {
 						h = h % 24;
 						/*Format Duration*/
 						/*Format Playtime*/
-						const voiceConnection = bot.voiceConnections.find(val => val.channel.guild.id == msg.guild.id);
 						let currenttime;
-						if (voiceConnection) {
+						if (msg.guild.voiceConnection) {
 							if (args.length <= 0) {
-								currenttime = voiceConnection.player.dispatcher.time; //ms(parseInt(voiceConnection.player.dispatcher.time));
+								currenttime = msg.guild.voiceConnection.player.dispatcher.time; //ms(parseInt(msg.guild.voiceConnection.player.dispatcher.time));
 							} else {
 								currenttime = 0;
 							}
-						} else if (!voiceConnection) {
+						} else if (!msg.guild.voiceConnection) {
 							currenttime = `0`;
 						}
 						//let currentDuration = duration(`${currenttime.toString()}`);
@@ -267,11 +266,10 @@ exports.run = async (bot, msg, args) => {
 				return console.error(err.toString());
 			});
 		} else {
-			const voiceConnection = bot.voiceConnections.find((val) => val.channel.guild.id == msg.guild.id);
 			let currenttime;
-			if (voiceConnection) {
-				currenttime = parseInt(voiceConnection.player.dispatcher.time); //ms(parseInt(voiceConnection.player.dispatcher.time));
-			} else if (!voiceConnection) {
+			if (msg.guild.voiceConnection) {
+				currenttime = parseInt(msg.guild.voiceConnection.player.dispatcher.time); //ms(parseInt(voiceConnection.player.dispatcher.time));
+			} else if (!msg.guild.voiceConnection) {
 				currenttime = `0`;
 			}
 			let streamingDuration = milliseconds.to(hours,minutes,seconds)(parseInt(currenttime));
