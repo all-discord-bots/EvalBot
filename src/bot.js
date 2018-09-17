@@ -399,8 +399,8 @@ class CripsBot extends Client {
 				
 				// NO 'XD' messages
 				if (msg.guild.id === this.config.botMainServerID && gmsg[0] === "xd" && gmsg.length === 1) {
-					msg.delete().then(msg => {
-						msg.channel.send(`<:blobDerp:413114089225846785>`);
+					msg.delete().then((message) => {
+						message.channel.send(`<:blobDerp:413114089225846785>`);
 					}).catch((err) => {
 						console.error(err.toString());
 					});
