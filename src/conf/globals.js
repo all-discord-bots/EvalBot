@@ -1,9 +1,9 @@
 const music_items = global.music_items = {};
 const songqueue = global.songqueue = {};
+/**
+ * @todo Make Categories for each station like `Metal, Rock` .etc.
+*/
 const built_in_radio = global.built_in_radio = {
-	/**
-	* @todo Make Categories for each station like `Metal, Rock` .etc.
-	*/
 	'AlexFM': {
 		'stream': 'http://alexfm.stream.laut.fm/alexfm',
 		'playlist_api': '',
@@ -292,13 +292,12 @@ const built_in_radio = global.built_in_radio = {
 			'playlist_api': ''
 		}
 	},
-	/*'Bandit Metal Death Metal': {
-		'stream': '',
-		'playlist_api': 'https://onlineradiobox.com/json/se/banditmetal/playlist/?cs=se.banditmetal'
-	},*/
-	
 	// http://fluxfm.hoerradar.de/flux-metalfm-mp3-hq?sABC=5o95pppo%230%23276s24q4226sq84p75586q86348rp4q8%23enqvbqr&amsparams=playerid:radiode;skey:1536543947
 	// http://fluxfm.hoerradar.de/flux-metalfm-mp3-hq?sABC=5o95pq30%230%231rp8spo2095nss5o3qp5pnn4p7p9oo6n%23enqvbqr&amsparams=playerid:radiode;skey:1536544048
 };
 // 'monstercat': 'https://www.youtube.com/watch?v=ueupsBPNkSc'
 */
+/*'Bandit Metal Death Metal': {
+	'stream': '',
+	'playlist_api': 'https://onlineradiobox.com/json/se/banditmetal/playlist/?cs=se.banditmetal'
+},*/
