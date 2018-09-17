@@ -41,7 +41,7 @@ exports.run = async (bot, msg, args) => {
 			msg.channel.send({
 				embed:({
 					color: 3447003,
-					description: `${statusemoji} <@${user.id}>${user.bot ? ' <:bot:491157258915414016>' : ''}${ggame}`,
+					description: `${statusemoji} <@${user.id}>${user.user.bot ? ' <:bot:491157258915414016>' : ''}${ggame}`,
 					thumbnail: {
 						url: `${user.user.displayAvatarURL()}`
 					},
@@ -75,7 +75,7 @@ exports.run = async (bot, msg, args) => {
 			msg.channel.send({
 				embed:({
 					color: 3447003,
-					description: `${statusemoji} <@${user.id}>${user.user.bot ? ' <:bot:491157258915414016>' : ''}${ggame}`,
+					description: `${statusemoji} <@${user.id}>${user.bot ? ' <:bot:491157258915414016>' : ''}${ggame}`,
 					thumbnail: {
 						url: `${user.displayAvatarURL()}`
 					},
