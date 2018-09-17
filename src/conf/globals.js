@@ -1,7 +1,5 @@
 const music_items = global.music_items = {};
 const songqueue = global.songqueue = {};
-const music_items = global.music_items = {};
-const songqueue = global.songqueue = {};
 const built_in_radio = global.built_in_radio = {
 	/**
 	* @todo Make Categories for each station like `Metal, Rock` .etc.
