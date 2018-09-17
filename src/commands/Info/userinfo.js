@@ -1,6 +1,6 @@
-const https = require('https')
 const moment = require('moment');
 require('moment-duration-format');
+
 exports.run = async (bot, msg, args) => {
 	try {
 		const activityTypes = [
@@ -31,24 +31,7 @@ exports.run = async (bot, msg, args) => {
 		} else if (user.presence.status === "offline") {
 			statusemoji = `<:offline:411637359361392650>`;
 		}
-		let gdate;
-		if (msg.guild.members.get(`${user.id}`)) { // get when the user created their account
-			gdate = new Date(user.user.createdTimestamp);
-		} else if (!msg.guild.members.get(`${user.id}`)) {
-			gdate = new Date(user.createdTimestamp);
-		}
-		//let months = ['01','02','03','04','05','06','07','08','09','10','11','12'];
-		//let days = ['00','01','02','03','04','05','06','07','08','09','10','11','12','13','14','15','16','17','18','19','20','21','22','23','24','25','26','27','28','29','30','31'];
-		//let gmonth = months[gdate.getMonth()];
-		//let gday = days[gdate.getDate()]; // +1
-		//let gyear = gdate.getYear()-100;
-		let nowdate = new Date();
-		//let gnewmonth = months[newyear.getMonth()];
-		//let gnewyear = newyear.getYear()-100;
-		let jdate = new Date(user.joinedTimestamp); // get when the user joined the server
-		//let jmonth = months[jdate.getMonth()];
-		//let jday = days[jdate.getDate()];
-		//let jyear = jdate.getYear()-100;
+		
 		let ggame = '';
 		if (user.presence.activity !== null) {
 			ggame = `\n <:transparent:411703305467854889>${activityTypes[user.presence.activity.type]} **${user.presence.activity.name}**`; // For bot.user.localPresence.activity.since
@@ -56,9 +39,9 @@ exports.run = async (bot, msg, args) => {
 		
 		if (msg.guild.members.get(`${user.id}`)) {
 			msg.channel.send({
-				embed: ({
+				embed:({
 					color: 3447003,
-					description: `${statusemoji} <@${user.id}>${user.bot ? ` <:bot:491157258915414016>` : ``}${ggame}`,
+					description: `${statusemoji} <@${user.id}>${user.bot ? ' <:bot:491157258915414016>' : ''}${ggame}`,
 					thumbnail: {
 						url: `${user.user.displayAvatarURL}`
 					},
@@ -72,15 +55,13 @@ exports.run = async (bot, msg, args) => {
 							value: `${user.id}`
 						},{
 							name: 'Joined Discord',
-							value: `${moment.utc(gdate).format("DD-MM-YY")} (${moment.duration(nowdate - gdate).format()} ago)`
+							value: `${moment.utc(new Date(user.user.createdTimestamp)).format("DD-MM-YY")} (${moment.duration(new Date() - new Date(user.user.createdTimestamp)).format()} ago)`
 						},{
 							name: 'Joined Server',
-							//value: `${gsday}-${gsmonth}-${gsyear} (${gsmonth-gmonth} month ago)`
-							//value: `${moment.utc(jdate).format(`${jday}-${jmonth}-${jyear}`, "DD-MM-YY")}`
-							value: `${moment.utc(jdate).format("DD-MM-YY")} (${moment.duration(nowdate - jdate).format()} ago)`
+							value: `${moment.utc(new Date(user.joinedTimestamp)).format("DD-MM-YY")} (${moment.duration(new Date() - new Date(user.joinedTimestamp)).format()} ago)`
 						},{
 							name: 'Highest Role',
-							value: `<@&${msg.guild.members.get("269247101697916939").roles.highest.id}>`,
+							value: `<@&${user.roles.highest.id}>`,
 							inline: true
 						},{
 							name: 'Member #',
@@ -92,9 +73,9 @@ exports.run = async (bot, msg, args) => {
 			});
 		} else if (!msg.guild.members.get(`${user.id}`)) {
 			msg.channel.send({
-				embed: ({
+				embed:({
 					color: 3447003,
-					description: `${statusemoji} <@${user.id}>${user.user.bot ? ` <:bot:491157258915414016>` : ``}${ggame}`,
+					description: `${statusemoji} <@${user.id}>${user.user.bot ? ' <:bot:491157258915414016>' : ''}${ggame}`,
 					thumbnail: {
 						url: `${user.displayAvatarURL}`
 					},
@@ -108,7 +89,7 @@ exports.run = async (bot, msg, args) => {
 							value: `${user.id}`
 						},{
 							name: 'Joined Discord',
-							value: `${moment.utc(gdate).format("DD-MM-YY")} (${moment.duration(nowdate - gdate).format()} ago)`
+							value: `${moment.utc(gdate).format("DD-MM-YY")} (${moment.duration(new Date() - new Date(user.createdTimestamp)).format()} ago)`
 						}
 					],
 				})
@@ -117,7 +98,7 @@ exports.run = async (bot, msg, args) => {
 	} catch (err) {
 		console.error(err.toString());
 	}
-}
+};
 	
 exports.info = {
 	name: 'user-info',
