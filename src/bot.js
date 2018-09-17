@@ -251,17 +251,15 @@ class CripsBot extends Client {
 				return this.shutdown(false);
 			}
 			
-			let s;
+			/*let s = 's';
 			if (this.guilds.size === 1) {
 				s = '';
-			} else {
-				s = 's';
 			}
 			this.user.setPresence({ activity: { name: `${this.guilds.size} server${s}`, type: 3 }, status: 'online' }).then(() => {//(presence) => {
 				console.log(`Successfully updated the bots presence.`); // ${presence.activity.name}
 			}).catch((err) => {
 				console.error(err.toString())
-			});
+			});*/
 			
 			// Fix mobile notifications
 			this.user.setAFK(true);
@@ -327,6 +325,16 @@ class CripsBot extends Client {
 				this.storage.saveAll();
 				console.log("Successfully set and saved the custom configuration data.");
 			}
+			
+			let s = 's';
+			if (this.guilds.size === 1) {
+				s = '';
+			}
+			this.user.setPresence({ activity: { name: `${this.guilds.size} server${s}`, type: 3 }, status: 'online' }).then(() => {//(presence) => {
+				console.log(`Successfully updated the bots presence.`); // ${presence.activity.name}
+			}).catch((err) => {
+				console.error(err.toString())
+			});
 			
 			let readyTime = new Date(); // start recording ready time
 			this.channels.get("409508147850379264").send({
@@ -541,11 +549,9 @@ class CripsBot extends Client {
 					description: `${guild.name} (${guild.id})\n\`${gusers} members   -   ${gbots} bots  (${Math.floor(gbots/gdecimal)}%)\`\n\nOwner: <@${guild.owner.id}>  \`[${guild.owner.user.username}#${guild.owner.user.discriminator}]\``
 				})
 			}).catch((err) => console.error(err.toString()));
-			let s;
+			let s = 's';
 			if (this.guilds.size == 1) {
-				s = "";
-			} else {
-				s = "s";
+				s = '';
 			}
 			this.user.setPresence({ activity: { name: `${this.guilds.size} server${s}`, type: 3 }, status: 'online' }).then(() => {//(presence) => {
 				console.log(`Successfully updated the bots presence.`); // ${presence.activity.name}
@@ -571,9 +577,9 @@ class CripsBot extends Client {
 					description: `${guild.name} (${guild.id})\n\`${gusers} members   -   ${gbots} bots  (${Math.floor(gbots/gdecimal)}%)\`\n\nOwner: <@${guild.owner.id}>  \`[${guild.owner.user.username}#${guild.owner.user.discriminator}]\``
 				})
 			}).catch((err) => console.error(err.toString()));
-			let s = "s";
+			let s = 's';
 			if (this.guilds.size == 1) {
-				s = "";
+				s = '';
 			}
 			this.user.setPresence({ activity: { name: `${this.guilds.size} server${s}`, type: 3 }, status: 'online' }).then(() => {//(presence) => {
 				console.log(`Successfully updated the bots presence.`); // ${presence.activity.name}
