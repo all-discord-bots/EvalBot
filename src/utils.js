@@ -1,4 +1,4 @@
-const { RichEmbed } = require('discord.js');
+const { MessageEmbed } = require('discord.js'); // RichEmbed
 const got = require('got');
 
 let shards = [];
@@ -164,7 +164,7 @@ const embed = (title, description = '', fields = [], options = {}) => {
 		});
 	}
 
-	return new RichEmbed({ fields, video: options.video || url })
+	return new MessageEmbed({ fields, video: options.video || url })
 		.setTitle(title)
 		.setColor(color)
 		.setDescription(description)
