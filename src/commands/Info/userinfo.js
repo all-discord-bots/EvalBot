@@ -89,7 +89,7 @@ exports.run = async (bot, msg, args) => {
 							value: `${user.id}`
 						},{
 							name: 'Joined Discord',
-							value: `${moment.utc(gdate).format("DD-MM-YY")} (${moment.duration(new Date() - new Date(user.createdTimestamp)).format()} ago)`
+							value: `${moment.utc(new Date(user.createdTimestamp)).format("DD-MM-YY")} (${moment.duration(new Date() - new Date(user.createdTimestamp)).format()} ago)`
 						}
 					],
 				})
