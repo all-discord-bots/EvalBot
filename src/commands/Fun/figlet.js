@@ -34,6 +34,8 @@ exports.run = async (bot, msg, args) => {
 };
 
 exports.info = {
+    ownerOnly: true,
+    hidden: true,
     name: 'figlet',
     usage: 'figlet <text>',
     description: 'Renders fancy ASCII text',
