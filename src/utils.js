@@ -170,7 +170,7 @@ const embed = (title, description = '', fields = [], options = {}) => {
 		.setDescription(description)
 		.setURL(url)
 		.setImage(options.image)
-		.setTimestamp(options.timestamp ? timestampToDate(options.timestamp) : null)
+		.setTimestamp(options.timestamp ? timestampToDate(options.timestamp) : new Date())//null)
 		.setFooter(options.footer === true ? randomFooter() : (options.footer ? options.footer : ''), options.footer ? global.bot.user.avatarURL : undefined)
 		.setAuthor(options.author === undefined ? '' : options.author)
 		.setThumbnail(options.thumbnail);
