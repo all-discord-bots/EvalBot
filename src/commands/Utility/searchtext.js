@@ -45,8 +45,10 @@ function _(number) {
 }
 
 exports.info = {
+	hidden: true,
+	ownerOnly: true,
 	name: 'searchtext',
-  aliases: ['searchmsg','searchtxt','searchmessage','searchmessages','findtext','findtxt','findmessage','findmessages','textsearch','txtsearch','txtfind','textfind'],
+	aliases: ['searchmsg','searchtxt','searchmessage','searchmessages','findtext','findtxt','findmessage','findmessages','textsearch','txtsearch','txtfind','textfind'],
 	usage: 'searchtext <text>',
-	description: 'Searches messages for some text'
+	description: 'Searches messages for some text.'
 };
