@@ -140,6 +140,7 @@ msg.channel.send(`\`\`\`md
 
 exports.info = {
 	name: 'shards',
+	ownerOnly: true,
 	hidden: true,
 	usage: 'shards',
 	description: 'Displays information on each shard of the bot.'
