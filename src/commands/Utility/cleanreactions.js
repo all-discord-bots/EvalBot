@@ -2,12 +2,12 @@ exports.run = async (bot, msg, args) => {
 	try {
 		if (args.length <= 0) return msg.channel.send(`<:redx:411978781226696705> You must specify the number of messages to clean reactions for.`);
 		if (!parseFloat(args[0]) || !parseFloat(parseFloat(args[0].toString().replace(/^[-]/g,'')), 10)) return msg.channel.send(`<:redx:411978781226696705> Please provide a number of messages to clean reactions for.`);
-		msg.channel.fetchMessages({ limit: parseFloat(parseFloat(args[0].toString().replace(/^[-]/g,'')), 10) }).then(async(msglog) => {
+		msg.channel.messages.fetch({ limit: parseFloat(parseFloat(args[0].toString().replace(/^[-]/g,'')), 10) }).then(async(msglog) => {
 			(await msg.channel.send({ embed: ({ title: `<a:loading:414954381176340480> Clearing reactions for \`${parseFloat(args[0].toString().replace(/^[-]/g,''))}\` messages in this channel...` })}).then((msg) => {
 				let total = 0;
 				let current = 0;
 				msglog.forEach((message) => {
-					message.clearReactions().then(() => {
+					message.clearReactions().then(() => { // need to fix this
 						++current;
 						if (current >= total) {
 							return msg.edit({
@@ -49,6 +49,7 @@ exports.run = async (bot, msg, args) => {
 
 exports.info = {
 	name: 'clearreactions',
+	ownerOnly: true,
 	userPermissions: ['MANAGE_MESSAGES','MANAGE_GUILD'],
 	clientPermissions: ['MANAGE_MESSAGES'],
 	hidden: true,
