@@ -1,3 +1,4 @@
+const https = require('https')
 const moment = require('moment');
 require('moment-duration-format');
 exports.run = async (bot, msg, args) => {
@@ -19,7 +20,7 @@ exports.run = async (bot, msg, args) => {
 		
 		if (!user) return msg.channel.send(`<:redx:411978781226696705> I could not find that user.`);
 		if (user.toString().includes("I could not find that user.")) return;
-		if (user.presence === undefined || user.presence.status === undefined) return;
+		if (!user.presence || !user.presence.status) return;
 		let statusemoji;
 		if (user.presence.status === "online") {
 			statusemoji = `<:online:411637359398879232>`;
@@ -48,18 +49,16 @@ exports.run = async (bot, msg, args) => {
 		//let jmonth = months[jdate.getMonth()];
 		//let jday = days[jdate.getDate()];
 		//let jyear = jdate.getYear()-100;
-		let ggame;
+		let ggame = '';
 		if (user.presence.activity !== null) {
 			ggame = `\n <:transparent:411703305467854889>${activityTypes[user.presence.activity.type]} **${user.presence.activity.name}**`; // For bot.user.localPresence.activity.since
-		} else {
-			ggame = "";
 		}
 		
 		if (msg.guild.members.get(`${user.id}`)) {
 			msg.channel.send({
 				embed: ({
 					color: 3447003,
-					description: `${statusemoji} <@${user.id}>${ggame}`,
+					description: `${statusemoji} <@${user.id}>${user.bot ? ` <:bot:491157258915414016>` : ``}${ggame}`,
 					thumbnail: {
 						url: `${user.user.displayAvatarURL}`
 					},
@@ -85,7 +84,7 @@ exports.run = async (bot, msg, args) => {
 							inline: true
 						},{
 							name: 'Member #',
-							value: `${msg.guild.members.map((member) => member.joinedTimestamp.toString()).sort().indexOf(`${user.joinedTimestamp}`)}`,
+							value: `${msg.guild.members.map((member) => member.joinedTimestamp.toString()).sort().indexOf(`${user.joinedTimestamp}`) + 1}`,
 							inline: true
 						}
 					],
@@ -95,7 +94,7 @@ exports.run = async (bot, msg, args) => {
 			msg.channel.send({
 				embed: ({
 					color: 3447003,
-					description: `${statusemoji} <@${user.id}>${ggame}`,
+					description: `${statusemoji} <@${user.id}>${user.user.bot ? ` <:bot:491157258915414016>` : ``}${ggame}`,
 					thumbnail: {
 						url: `${user.displayAvatarURL}`
 					},
