@@ -75,7 +75,7 @@ const log_moderation = async (msg,user,args,mute_length,color,action,reason,modl
 				timestamp: new Date(),
 				author: {
 					name: `${msg.author.tag}`,
-					icon_url: `${msg.author.displayAvatarURL}`
+					icon_url: `${msg.author.displayAvatarURL()}`
 				},
 				footer: {
 					text: `Case #N/A`
