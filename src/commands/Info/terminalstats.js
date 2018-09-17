@@ -9,5 +9,6 @@ exports.info = {
   name: 'terminalstats',
   aliases: ['tstats'],
   hidden: true,
+  ownerOnly: true,
   description: 'Shows the bot\'s stats on terminal.ink'
 };
