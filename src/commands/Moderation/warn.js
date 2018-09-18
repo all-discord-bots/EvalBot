@@ -1,9 +1,8 @@
-const fs = require("fs");
-const ms = require("ms");
+//const fs = require("fs");
 
 exports.run = async (bot, msg, args) => {
 	try {
-		let warns = JSON.parse(fs.readFileSync("./warnings.json", "utf8"));
+		//let warns = JSON.parse(fs.readFileSync("./warnings.json", "utf8"));
 		//let autopunish = false;
 		//let mutedrole = "muted";
 		let modlogs = "mod_logs";
@@ -24,15 +23,15 @@ exports.run = async (bot, msg, args) => {
 		if (reason === "") return msg.channel.send(`<:redx:411978781226696705> Invalid \`<reason>\` argument given.`);
 		if (user.id == msg.author.id) return msg.channel.send(`<:redx:411978781226696705> I cannot allow self-harm!`);
 		if (user.id == bot.user.id) return msg.channel.send(`<:redx:411978781226696705> I cannot warn myself!`);
-		if(!warns[user.id]) {
-			warns[user.id] = {
-				warns: 0
-			};
-		}
-		warns[user.id].warns++;
-		fs.writeFile("./warnings.json",JSON.stringify(warns),(err) => {
-			if (err) console.error(err);
-		});
+		//if(!warns[user.id]) {
+		//	warns[user.id] = {
+		//		warns: 0
+		//	};
+		//}
+		//warns[user.id].warns++;
+		//fs.writeFile("./warnings.json",JSON.stringify(warns),(err) => {
+		//	if (err) console.error(err);
+		//});
 		msg.channel.send(`<:check:411976443522711552> \`Case #N/A\` <@${user.id}> has been warned.`);
 		if (modlogs_channel) {
 			modlogs_channel.send({
