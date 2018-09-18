@@ -1,6 +1,7 @@
 const got = require('got');
 
 exports.run = async (bot, msg, args) => {
+// http://belikebill.azurewebsites.net/billgen-API.php?default=2
 	let random = Math.random() * 2;
 	let sex;
 	if (random <= 0) {
