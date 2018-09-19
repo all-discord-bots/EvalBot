@@ -63,7 +63,7 @@ exports.run = async (bot, msg, args) => {
 		if (music_items[msg.guild.id].queue.length === 1 || !msg.guild.voiceConnection) {
 			executeQueue(music_items[msg.guild.id].queue);
 		}
-		if (!queue[0] || !queue[0].url) return msg.channel.send(`<:redx:411978781226696705> I was unable to play the stream. Make sure the stream is valid.`);
+		if (!music_items[msg.guild.id].queue[0] || !music_items[msg.guild.id].queue[0].url) return msg.channel.send(`<:redx:411978781226696705> I was unable to play the stream. Make sure the stream is valid.`);
 		msg.channel.send(`<:check:411976443522711552> Streaming \`${music_items[msg.guild.id].queue[0].title}\`.`);
 		
 		function executeQueue(queue) {
