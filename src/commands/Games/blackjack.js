@@ -1,181 +1,144 @@
-const { MessageEmbed } = require('discord.js');
+const { stripIndents } = require('common-tags');
+const suits = ['♣', '♥', '♦', '♠'];
+const faces = ['Jack','Queen','King'];
 
 exports.run = async (bot,msg,args) => {
-	let bet = 50; //Number(args[0]);
-	let min_bet = 50;
-	if (!bet) {
-		return await msg.channel.send(new MessageEmbed()
-			.setAuthor(msg.author.tag, msg.author.displayAvatarURL())
-			.addField('Invalid usage', `bj \`<bet>\``)
-			.setColor('#FC2323'));
+	const deckCount = 1;
+	let decks = new Map();
+	if (decks.has(msg.channel.id)) return msg.channel.send(`<:redx:411978781226696705> only one game a channel!`);
+	try {
+		decks.set(msg.channel.id, generateDeck(bot,deckCount));
+		const dealerHand = [];
+		draw(msg.channel, decks, dealerHand);
+		draw(msg.channel, decks, dealerHand);
+		const playerHand = [];
+		draw(msg.channel, decks, playerHand);
+		draw(msg.channel, decks, playerHand);
+		const dealerInitialTotal = calculate(dealerHand);
+		const playerInitialTotal = calculate(playerHand);
+		if (dealerInitialTotal === 21 && playerInitialTotal === 21) {
+			decks.delete(msg.channel.id);
+			return msg.channel.send(`Well, both of you just hit blackjack. Right away. Rigged.`);
+		} else if (dealerInitialTotal === 21) {
+			decks.delete(msg.channel.id);
+			return msg.channel.send(`Ouch, the dealer hit blackjack right away. Try again!`);
+		} else if (playerInitialTotal === 21) {
+			decks.delete(msg.channel.id);
+			return msg.channel.send(`Wow, you hit blackjack right away! Lucky you!`);
+		}
+		let playerTurn = true;
+		let win = false;
+		let reason;
+		while (!win) {
+			if (playerTurn) {
+				await msg.channel.send(stripIndents`
+					**First Dealer Card:** ${dealerHand[0].display}
+
+					**You (${calculate(playerHand)}):**
+					${playerHand.map((card) => card.display).join('\n')}
+
+					_Hit?_
+				`);
+				const hit = await bot.utils.verify(msg.channel, msg.author);
+				if (hit) {
+					const card = draw(msg.channel, decks, playerHand);
+					const total = calculate(playerHand);
+					if (total > 21) {
+						reason = `You drew ${card.display}, total of ${total}! Bust`;
+						break;
+					} else if (total === 21) {
+						reason = `You drew ${card.display} and hit 21`;
+						win = true;
+					}
+				} else {
+					const dealerTotal = calculate(dealerHand);
+					await msg.channel.send(`Second dealer card is ${dealerHand[1].display}, total of ${dealerTotal}.`);
+					playerTurn = false;
+				}
+			} else {
+				const initial = calculate(dealerHand);
+				let card;
+				if (initial < 17) card = draw(msg.channel, decks, dealerHand);
+				const total = calculate(dealerHand);
+				if (total > 21) {
+					reason = `Dealer drew ${card.display}, total of ${total}! Dealer bust`;
+					win = true;
+				} else if (total >= 17) {
+					const playerTotal = calculate(playerHand);
+					if (total === playerTotal) {
+						reason = `${card ? `Dealer drew ${card.display}, making it ` : ''}${playerTotal}-${total}`;
+						break;
+					} else if (total > playerTotal) {
+						reason = `${card ? `Dealer drew ${card.display}, making it ` : ''}${playerTotal}-**${total}**`;
+						break;
+					} else {
+						reason = `${card ? `Dealer drew ${card.display}, making it ` : ''}**${playerTotal}**-${total}`;
+						win = true;
+					}
+				} else {
+					await msg.channel.send(`Dealer drew ${card.display}, total of ${total}.`);
+				}
+			}
+		}
+		decks.delete(msg.channel.id);
+		if (win) return msg.reply(`${reason}! You won!`);
+		return msg.reply(`${reason}! Too bad.`);
+	} catch (err) {
+		decks.delete(msg.channel.id);
+		console.log(err.toString());
+		msg.channel.send(err.toString());
 	}
-	
-	if (bet < min_bet) {
-		return await msg.channel.send(new MessageEmbed()
-			.setAuthor(msg.author.tag, msg.author.displayAvatarURL())
-			.setDescription(`<:redx:411978781226696705> You **must** bet at least **${min_bet}**`)
-			.setColor('#FC2323'));
-	}
-	
-	// Cards Variables
-	const deck = [],
-		suits = ['♥', '♦', '♠', '♣'],
-		values = ['A', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K'];
-	
-	// Creating deck
-	for (const value of values) {
-		for (const suit of suits) {
-			let points = parseInt(value) || (value === 'A' ? 11 : 10)
-			deck.push({
-				value,
-				suit,
-				points
-			});
-		}
-	}
-	
-	// Shuffles the deck
-	for (let i = deck.length - 1; i > 0; i--) {
-		let r = ~~(Math.random() * (i + 1));
-		// Switches cards
-		[deck[i], deck[r]] = [deck[r], deck[i]]
-	}
-	class Player {
-		constructor( /*bet = null, split = false*/ ) {
-			this._cards = [];
-			/*this.bet = bet;
-			this.split = split;*/
-		}
-		
-		hit() {
-			this._cards.push(deck.shift());
-		}
-		
-		double() {
-			// this.bet *= 2;
-			bet *= 2
-			this.hit();
-		}
-		
-		get points() {
-			return this._cards.map((c) => c.points)
-		}
-		
-		get value() {
-			let val = this.points.reduce((a,b) => a + b);
-			let aces = this.points.filter((p) => p === 11).length;
-			while (val > 21 && aces--)
-				val -= 10;
-			
-			if (isNaN(val)) throw new Error('Value is NaN');
-			return val;
-		}
-		
-		get print() {
-			return this._cards.map((a) => a.value + a.suit).join(' ');
-		}
-	}
-	
-	// Declaring player and dealer
-	const player = new Player( /*bet*/ );
-	const dealer = new Player();
-	
-	// To start the game - Player - 2 cards / Dealer - 1
-	player.hit();
-	player.hit();
-	player.hit();
-	
-	let EmbedObj = new MessageEmbed()
-		.setAuthor(msg.author.tag, msg.author.displayAvatarURL())
-		.setDescription('Type `hit` to draw another card, `double` to double down, or `stand` to pass.')
-		.addField(`Your hand`, player.print + "\n\nValue: " + player.value, true)
-		.addBlankField(true)
-		.addField("Dealer hand", dealer.print + "\n\nValue: " + dealer.value, true)
-		.setColor("#4286f4");
-	const start = await msg.channel.send(EmbedObj);
-	
-	if (player.value === 21) {
-		if (dealer.value === 21) return await start.edit(EmbedObj.setDescription(`:recycle: **DRAW  returned**`).setColor('#f9f400'));
-		
-		return await start.edit(EmbedObj.setDescription(`:b:**BLACKJACK ${bet * 1.5}**`).setColor('#000000'));
-	}
-	
-	// BLUE - #4286f4 - START
-	// RED - #f20202 - LOST
-	// GREEN - #00f91d - WON'
-	// YELLOW - #f9f400 - EVEN
-	// BLACK - #000000 - Blackjack
-	
-	// Making a filter for all the available commands once entered a blackjack game
-	let turn = 0,
-		state = true;
-	const filter = (m) => ['hit', 'double', 'doubledown', 'double down', 'stand'].includes(m.content.toLowerCase()) && m.author.id === msg.author.id;
-	
-	const collector = msg.channel.createMessageCollector(filter);
-	collector.on('collect', async (m) => {
-		turn++;
-		let cmd = m.content.toLowerCase();
-		switch (cmd) {
-			// fall through
-			case 'double down':
-			case 'doubledown':
-				cmd = 'double';
-			case 'double':
-				if (turn !== 1) return m.reply("You can only double on the first turn");
-				state = false;
-			case 'hit':
-				player[cmd]();
-				break;
-			/*case 'split':
-				if (turn !== 1) return m.reply("You can only double on the first turn");
-				break;
-				*/
-			default:
-				return collector.stop('Player Stand');
-		}
-		
-		EmbedObj = new MessageEmbed()
-			.setAuthor(msg.author.tag, msg.author.displayAvatarURL())
-			.setDescription('Type `hit` to draw another card, `double` to double down, or `stand` to pass.')
-			.addField(`Your hand`, player.print + "\n\nValue: " + player.value, true)
-			.addBlankField(true)
-			.addField("Dealer hand", dealer.print + "\n\nValue: " + dealer.value, true)
-			.setColor('#4286f4');
-		await start.edit(EmbedObj);
-		(player.value > 20 || !state) && collector.stop('Player ' + (state ? (player.value > 21 ? 'Bust' : '21') : 'Double'))
-	});
-	collector.once('end', async (c,reason) => {
-		// console.log(reason);
-		if (player.value > 21) return start.edit(EmbedObj.setDescription(`:outbox_tray: **LOST - ${bet}**`).setColor("#f20202")); // Player bust
-		while (dealer.value < 17) // Dealer's turn
-			dealer.hit()
-		EmbedObj = new MessageEmbed()
-			.setAuthor(msg.author.tag, msg.author.displayAvatarURL())
-			.addField(`Your hand`, player.print + '\n\nValue: ' + player.value, true)
-			.addBlankField(true)
-			.addField("Dealer hand", dealer.print + "\n\nValue: " + dealer.value, true)
-			
-		if (dealer.value > 21) return start.edit(EmbedObj.setDescription(`:inbox_tray: **WON ${bet}**`).setColor('#00f91d')); // Dealer busted - WON
-		// [Lose, Draw, Win] <[Description,Color]>
-		const descClr = [
-			[`:outbox_tray: **LOST - ${bet}**`, "#f20202"],
-			[`:recycle: **DRAW returned**`, '#f9f400'],
-			[`:inbox_tray: **WON ${bet}**`, '#00f91d']
-		]
-		//Math.sign(n) returns: -1 when n is negative, 0/-0 when n is exactly 0/-0, 1 when n is positive
-		const [desc, clr] = descClr[Math.sign(player.value - dealer.value) + 1];
-		start.edit(EmbedObj.setDescription(desc).setColor(clr));
-	});
 };
 
+function generateDeck(bot,deckCount) {
+	const deck = [];
+	for (let i = 0; i < deckCount; i++) {
+		for (const suit of suits) {
+			deck.push({
+				value: 11,
+				display: `${suit} Ace`
+			});
+			for (let j = 2; j <= 10; j++) {
+				deck.push({
+					value: j,
+					display: `${suit} ${j}`
+				});
+			}
+			for (const face of faces) {
+				deck.push({
+					value: 10,
+					display: `${suit} ${face}`
+				});
+			}
+		}
+	}
+	return bot.utils.shuffle(deck);
+}
+
+function draw(channel, decks, hand) {
+	const deck = decks.get(channel.id);
+	const card = deck[0];
+	deck.shift();
+	hand.push(card);
+	return card;
+}
+
+function calculate(hand) {
+	return hand.sort((a, b) => a.value - b.value).reduce((a, b) => {
+		let { value } = b;
+		if (value === 11 && a + value > 21) value = 1;
+		return a + value;
+	}, 0);
+}
+
 exports.info = {
-	name: 'blackjack',
-	ownerOnly: true,
-	hidden: true,
-	aliases: ['bj'],
-	usage: 'blackjack',
-	examples: [
-		'blackjack'
-	],
-	description: 'Play a game of blackjack.'
+  name: 'blackjack',
+  ownerOnly: true,
+  hidden: true,
+  aliases: ['bj'],
+  usage: 'blackjack',
+  examples: [
+    'blackjack'
+  ],
+  description: 'Play a game of blackjack.'
 };
