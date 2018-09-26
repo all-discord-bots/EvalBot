@@ -58,7 +58,7 @@ exports.run = async (bot,msg,args) => {
 			} else {
 				const initial = calculate(dealerHand);
 				let card;
-				if (inital < 17) card = draw(msg.channel, decks, dealerHand);
+				if (initial < 17) card = draw(msg.channel, decks, dealerHand);
 				const total = calculate(dealerHand);
 				if (total > 21) {
 					reason = `Dealer drew ${card.display}, total of ${total}! Dealer bust`;
