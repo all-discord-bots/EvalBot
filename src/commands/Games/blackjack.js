@@ -39,7 +39,7 @@ exports.run = async (bot,msg,args) => {
 
 					_Hit?_
 				`);
-				const hit = await bot.util.verify(msg.channel, msg.author);
+				const hit = await bot.utils.verify(msg.channel, msg.author);
 				if (hit) {
 					const card = draw(msg.channel, decks, playerHand);
 					const total = calculate(playerHand);
@@ -112,7 +112,7 @@ function generateDeck(bot,deckCount) {
 			}
 		}
 	}
-	return bot.util.shuffle(deck);
+	return bot.utils.shuffle(deck);
 }
 
 function draw(channel, decks, hand) {
