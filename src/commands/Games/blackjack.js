@@ -1,6 +1,6 @@
 const { MessageEmbed } = require('discord.js');
 
-module.exports = async (bot,msg,args) => {
+exports.run = async (bot,msg,args) => {
 	let bet = 50; //Number(args[0]);
 	let min_bet = 50;
 	if (!bet) {
