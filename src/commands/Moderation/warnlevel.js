@@ -1,5 +1,4 @@
 const { stripIndents } = require('common-tags');
-const { shuffle, verify } = require('../../util/Util');
 const suits = ['♣', '♥', '♦', '♠'];
 const faces = ['Jack','Queen','King'];
 
