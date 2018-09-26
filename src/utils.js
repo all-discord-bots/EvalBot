@@ -2,6 +2,8 @@ const { MessageEmbed } = require('discord.js'); // RichEmbed
 const got = require('got');
 
 let shards = [];
+const yes = ['yes', 'y', 'ye', 'yeah', 'yup', 'yea', 'ya'];
+const no = ['no', 'n', 'nah', 'nope', 'nop'];
 
 const memberSearch = (search,guildOnly = false) => {
 	if (guildOnly)
