@@ -46,7 +46,7 @@ class CommandManager {
 				if (!this.bot.utils.permissions[perm]) return `invalid command userPermission object: ${perm}`; //throw new RangeError(`Invalid command userPermission: ${perm}`);
 			}
 		}
-		if (object.info.dmOnly && !Boolean(object.info.dmOnly) return 'command dmOnly object must be a Boolean.';
+		if (object.info.dmOnly && !Boolean(object.info.dmOnly)) return 'command dmOnly object must be a Boolean.';
 		/*if (object.info.throttling) {
 			if (typeof object.info.throttling !== 'object') throw new TypeError('Command throttling must be an Object.');
 			if (typeof object.info.throttling.usages !== 'number' || isNaN(object.info.throttling.usages)) {
