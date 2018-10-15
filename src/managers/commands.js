@@ -46,6 +46,7 @@ class CommandManager {
 				if (!this.bot.utils.permissions[perm]) return `invalid command userPermission object: ${perm}`; //throw new RangeError(`Invalid command userPermission: ${perm}`);
 			}
 		}
+		if (object.info.dmOnly && !Boolean(object.info.dmOnly) return 'command dmOnly object must be a Boolean.';
 		/*if (object.info.throttling) {
 			if (typeof object.info.throttling !== 'object') throw new TypeError('Command throttling must be an Object.');
 			if (typeof object.info.throttling.usages !== 'number' || isNaN(object.info.throttling.usages)) {
@@ -165,6 +166,12 @@ class CommandManager {
 				* @type {boolean}
 				*/
 				return Boolean(info.guildOnly) || false;
+			case 'dmOnly':
+				/**
+				* Whether the command can only be run in a dm channel
+				* @type {boolean}
+				*/
+				return Boolean(info.dmOnly) || false;
 			case 'clientPermissions':
 				/**
 				* Permissions required by the client to use the info.
@@ -238,11 +245,11 @@ class CommandManager {
 	 */
 	checkUserPermissions(msg,info,ownerOverride = true) {
 		if (info.userPermissions) {
-			if (!this.getInfo("ownerOnly",info) && !this.getInfo("userPermissions",info)) return true;
+			if (!this.getInfo('ownerOnly',info) && !this.getInfo('userPermissions',info)) return true;
 			if (ownerOverride && msg.author.id == process.env.bot_owner) return true;
-			if (this.getInfo("ownerOnly",info) && (ownerOverride || msg.author.id != process.env.bot_owner)) return false; // `The \`${info.name}\` command can only be used by the bot owner.`;
-			if (msg.channel.type === "text" && this.getInfo("userPermissions",info)) {
-				const missing = msg.channel.permissionsFor(msg.author).missing(this.getInfo("userPermissions",info));
+			if (this.getInfo('ownerOnly',info) && (ownerOverride || msg.author.id != process.env.bot_owner)) return false; // `The \`${info.name}\` command can only be used by the bot owner.`;
+			if (msg.channel.type === 'text' && this.getInfo('userPermissions',info)) {
+				const missing = msg.channel.permissionsFor(msg.author).missing(this.getInfo('userPermissions',info));
 				if (missing.length > 0) return `<:redx:411978781226696705> You do not have permission to use the \`${info.name}\` command.\n<:transparent:411703305467854889>Missing: \`${missing.map((perm) => this.bot.utils.permissions[perm]).join("` `")}\``;
 			}
 		}
@@ -257,8 +264,8 @@ class CommandManager {
 	 */
 	checkClientPermissions(msg,info) {
 		if (info.clientPermissions) {
-			if (msg.channel.type !== "dm" && this.getInfo("clientPermissions",info)) {
-				const missing = msg.channel.permissionsFor(this.bot.user).missing(this.getInfo("clientPermissions",info));
+			if (msg.channel.type !== 'dm' && this.getInfo('clientPermissions',info)) {
+				const missing = msg.channel.permissionsFor(this.bot.user).missing(this.getInfo('clientPermissions',info));
 				if (missing.length > 0) return `<:redx:411978781226696705> I don't have enough permissions to execute that command.\n<:transparent:411703305467854889>Missing: \`${missing.map((perm) => bot.utils.permissions[perm]).join("` `")}\``;
 			}
 		}
@@ -292,6 +299,8 @@ class CommandManager {
 		if (new Set(this.bot.config.blacklisted).has(`${msg.author.id}`)) return false;
 		if (msg.channel.type !== 'dm' && !msg.channel.permissionsFor(this.bot.user).has(0x00000800)) return false; // Send Messages
 		if (this.getInfo("ownerOnly",info) && msg.author.id != process.env.bot_owner) return false;
+		if (this.getInfo('dmOnly',info) && msg.channel.type !== 'dm') return `<:redx:411978781226696705> This command can only be used in the bots Direct Messages.`;
+		if (this.getInfo('dmOnly',info) && msg.channel.type === 'dm') return true;
 		if (!this.getInfo("allowDM",info) && msg.channel.type === 'dm') return `<:redx:411978781226696705> This command can only be used in a server.`;
 		if (this.getInfo("allowDM",info) && msg.channel.type === 'dm') return true;
 		if (this.getInfo("guildOnly",info) && (msg.guild.id != process.env.main_bot_guild || msg.channel.type === 'dm')) return false;
