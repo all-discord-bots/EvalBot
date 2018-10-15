@@ -50,7 +50,7 @@ exports.run = async (bot, msg, args) => {
 
 		let ggame = '';
 		if (user.presence.activity !== null) {
-			ggame = `\n <:transparent:411703305467854889>${activityTypes[user.presence.activity.type].status} **${user.presence.activity.name}**${user.presence.activity.timestamps ? ` for ${moment.duration(new Date().getTime() + new Date(user.presence.activity.timestamps.start).getTime(), 'milliseconds').format('y [years], w [weeks], d [days], h [hours], m [minutes], s [seconds]', { largest: 1 }) : ''}`}`;
+			ggame = `\n <:transparent:411703305467854889>${activityTypes[user.presence.activity.type].status} **${user.presence.activity.name}**${user.presence.activity.timestamps ? ` for ${moment.duration(new Date().getTime() + new Date(user.presence.activity.timestamps.start).getTime(), 'milliseconds').format('y [years], w [weeks], d [days], h [hours], m [minutes], s [seconds]', { largest: 1 })}` : ''}`;
 		}
 		
 		if (msg.guild.members.get(`${user.id}`)) {
