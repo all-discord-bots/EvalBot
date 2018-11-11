@@ -16,14 +16,12 @@
 	"cripsbot": "./bin/cripsbot"
   },
   "engines": {
-	"node": ">=8.0.0",
 	"yarn": ">=1.0.0",
 	"npm": ">=6.0.0"
   },
   "author": "BannerBomb",
   "license": "MIT",
   "dependencies": {
-	"lzma-native": "^4.0.2",
 	"chalk": "^2.4.1",
 	"cheerio": "^1.0.0-rc.2",
 	"common-tags": "^1.8.0",
@@ -83,7 +81,6 @@
 	"axios": "^0.18.0",
 	"sqlite": "^3.0.0"
   },
-
   "devDependencies": {
 	"eslint": "^5.9.0",
 	"husky": "^1.1.3",
