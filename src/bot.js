@@ -9,7 +9,7 @@ const chalk = require('chalk');
 const Managers = require('./managers');
 const DBL = require('dblapi.js');
 const axios = require('axios');
-const Webhook = require("webhook-discord");
+const { Webhook } = require("webhook-discord");
 const Hook = new Webhook(process.env.WEBHOOK_CONSOLE_LOGGER);
 require('./conf/globals.js'); // load global variables file
 
