@@ -4,7 +4,7 @@
 */
 
 const utils = require('./utils');
-const Webhook = require('webhook-discord');
+const { Webhook } = require('webhook-discord');
 const wbhook = new Webhook(process.env.WEBHOOK_SHARD_LOGGER);
 const path = require('path');
 const { ShardingManager } = require('discord.js');
