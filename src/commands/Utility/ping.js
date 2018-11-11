@@ -4,10 +4,10 @@ exports.run = async (bot, msg, args) => {
 		(await msg.channel.send({ embed: ({ title: `<a:loading:414954381176340480> Pinging...` })}).then((msg) => {
 			let end = new Date().getTime();
 			let bpings;
-			if (bot.pings.length < 1) {
+			if (bot.ws.shards[bot.shard.id].pings.length < 1) {
 				bpings = "N/A";
 			} else {
-				bpings = bot.pings[0];
+				bpings = bot.ws.shards[bot.shard.id].pings[0];
 			}
 			let bitrate;
 			if (msg.guild.members.get(bot.user.id).hasPermission(0x00100000)) {
