@@ -27,7 +27,7 @@ exports.run = async (bot, msg, args) => {
 					description: `
 Roundtrip: \`${Math.round((end - msg.createdTimestamp) / 2)}ms\`
 Discord Latency: \`${end - start}ms\`
-API Latency: \`${Math.round(bot.ping)}ms\`
+API Latency: \`${Math.round(bot.ws.ping)}ms\`
 Heartbeat: \`${Math.floor(bpings)}ms\`
 Message Edit: \`${edited - start}ms\`
 ${bitrate}
