@@ -39,11 +39,11 @@ exports.run = async (bot, msg) => {
             },
             {
                 name: ':desktop: Servers',
-                value: `${bot.guilds.size}`,//.toLocaleString()}`,
+                value: `${bot.guilds.size.toLocaleString()}`,
             },
             {
                 name: ':keyboard: Channels',
-                value: `${bot.channels.size}`,//.toLocaleString()}`,
+                value: `${bot.channels.size.toLocaleString()}`,
             },
             {
                 name: ':thinking: RAM usage',
@@ -63,11 +63,11 @@ exports.run = async (bot, msg) => {
 //            },
             {
                 name: ':robot: Total Shards',
-                value: `${bot.options.shardCount.toLocaleString()}`,
+                value: `${bot.options.shardCount}`,
             },
             {
                 name: ':1234: Shard ID',
-                value: `${bot.options.shardId.toLocaleString()}`,
+                value: `${bot.options.shardId}`,
             }
         ], { inline: true })
     });
