@@ -47,7 +47,7 @@ CPU
 • Speed        : ${require('os').cpus()[0].speed}
 
 DEBUG INFO
-• Listeners    : ${bot._eventsCount}/${bot._maxListeners}
+• Listeners    : ${bot._eventsCount}/${bot.getMaxListeners()}
 \`\`\``);
 };
 
