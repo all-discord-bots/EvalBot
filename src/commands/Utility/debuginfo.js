@@ -5,7 +5,7 @@ exports.run = async (bot, msg, args) => {
 			fields: [
 				{
 					name: `**__Listeners:__**`,
-					value: `\`${bot.actions.client._eventsCount}\`/\`${bot.actions.client._maxListeners}\``
+					value: `\`${bot.actions.client._eventsCount}\`/\`${bot.getMaxListeners()}\``
 				}
 			],
 			timestamp: new Date()
