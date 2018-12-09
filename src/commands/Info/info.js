@@ -39,11 +39,11 @@ exports.run = async (bot, msg) => {
             },
             {
                 name: ':desktop: Servers',
-                value: `${bot.guilds.size.toLocaleString()}`,
+                value: `${bot.guilds.size}`,//.toLocaleString()}`,
             },
             {
                 name: ':keyboard: Channels',
-                value: `${bot.channels.size.toLocaleString()}`,
+                value: `${bot.channels.size}`,//.toLocaleString()}`,
             },
             {
                 name: ':thinking: RAM usage',
