@@ -6,7 +6,7 @@ exports.run = async (bot, msg, args) => {
 		let guser = msg.guild.members.get(`${msg.author.id}`);
 		let upvoteRole = msg.guild.roles.get(`414897780553941002`);
 		if (dbl.hasVoted(msg.author.id) && !msg.member.roles.has(upvoteRole.id)) { // user has already upvoted
-			guser.addRole(upvoteRole).then(() => {
+			msg.member.roles.add(upvoteRole).then(() => {
 				msg.channel.send({ embed: ({
 					color: 6732394,
 					title: `Successfully Verified ${msg.author.tag}!`,
