@@ -20,7 +20,7 @@ const ShardManager = new ShardingManager(path.resolve(__dirname, '../bin/cripsbo
 
 //Manager.spawn(Manager.totalShards, 15000);
 ShardManager.spawn();
-ShardManager.on('launch', (shard) => {
+ShardManager.on('shardCreate', (shard) => {
 	try {
 		collected_shards.push(shard);
 		if (collected_shards.length >= ShardManager.totalShards) {
