@@ -32,7 +32,7 @@ exports.run = async (bot, msg, args) => {
 							h = h % 24;
 							let currenttime = 0;
 							if (msg.guild.voiceConnection) {
-								currenttime = msg.guild.voiceConnection.player.dispatcher.time;
+								currenttime = msg.guild.voiceConnection.player.dispatcher.streamTime; //msg.guild.voiceConnection.player.dispatcher.time;
 							}
 							let currenttimepos = milliseconds.to(hours,minutes,seconds)(parseInt(currenttime));
 							let seczero, minzero, hourzero, seconezero, minonezero, houronezero;
