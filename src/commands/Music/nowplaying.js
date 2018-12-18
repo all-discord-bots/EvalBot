@@ -44,7 +44,7 @@ exports.run = async (bot, msg, args) => {
 						let currenttime;
 						if (msg.guild.voiceConnection) {
 							if (args.length <= 0) {
-								currenttime = msg.guild.voiceConnection.player.dispatcher.time; //ms(parseInt(msg.guild.voiceConnection.player.dispatcher.time));
+								currenttime = msg.guild.voiceConnection.player.dispatcher.streamTime; //msg.guild.voiceConnection.player.dispatcher.time; //ms(parseInt(msg.guild.voiceConnection.player.dispatcher.time));
 							} else {
 								currenttime = 0;
 							}
@@ -237,11 +237,11 @@ exports.run = async (bot, msg, args) => {
 										inline: true
 									},{
 										name: `**__Views__**`,
-										value: `\`${videoInfo.views || '0'}\``,
+										value: `\`${videoInfo.views.toLocaleString() || '0'}\``,
 										inline: true
 									},{
 										name: `**__Comments__**`,
-										value: `\`${videoInfo.commentCount || '0'}\``,
+										value: `\`${videoInfo.commentCount.toLocaleString() || '0'}\``,
 										inline: true
 									},{
 										name: `**__Regions Allowed__**`,
@@ -249,7 +249,7 @@ exports.run = async (bot, msg, args) => {
 										inline: true
 									},{
 										name: `**__Likes/Dislikes__**`,
-										value: `:thumbsup:\`${videoInfo.likeCount || '0'}\`\n:thumbsdown:\`${videoInfo.dislikeCount || '0'}\``,
+										value: `:thumbsup:\`${videoInfo.likeCount.toLocaleString() || '0'}\`\n:thumbsdown:\`${videoInfo.dislikeCount.toLocaleString() || '0'}\``,
 										inline: true
 									}
 								],
@@ -268,7 +268,7 @@ exports.run = async (bot, msg, args) => {
 		} else {
 			let currenttime;
 			if (msg.guild.voiceConnection) {
-				currenttime = parseInt(msg.guild.voiceConnection.player.dispatcher.time); //ms(parseInt(voiceConnection.player.dispatcher.time));
+				currenttime = parseInt(msg.guild.voiceConnection.player.dispatcher.streamTime); //msg.guild.voiceConnection.player.dispatcher.time); //ms(parseInt(voiceConnection.player.dispatcher.time));
 			} else if (!msg.guild.voiceConnection) {
 				currenttime = `0`;
 			}
