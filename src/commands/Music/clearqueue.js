@@ -63,5 +63,5 @@ exports.info = {
 		'clearqueue',
 		'clearqueue BannerBomb'
 	],
-	description: 'Clears the entire playback queue or all of a users queues audios.'
+	description: 'Clears the entire playback queue or all of a users queued audios.'
 };
