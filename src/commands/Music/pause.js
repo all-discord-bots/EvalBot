@@ -2,8 +2,8 @@ require('../../conf/globals.js');
 
 exports.run = async (bot, msg, args) => {
 	try {
-		if (msg.member.voice.channel === null) return msg.channel.send(`<:redx:411978781226696705> You must be in a voice channel!`);
-		if (msg.guild.voiceConnection === null) return msg.channel.send(`<:redx:411978781226696705> No audio is being played`);
+		if (!msg.member.voice.channel) return msg.channel.send(`<:redx:411978781226696705> You must be in a voice channel!`);
+		if (!msg.guild.voiceConnection) return msg.channel.send(`<:redx:411978781226696705> No audio is being played`);
 		if (!music_items[msg.guild.id]) return msg.channel.send(`<:redx:411978781226696705> There is no audios in the queue playing!`);
 		if (music_items[msg.guild.id].is_streaming) return msg.channel.send(`<:redx:411978781226696705> Streams cannot be paused.`);
 		if (msg.guild.voiceConnection.player.dispatcher) {
