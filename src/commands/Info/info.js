@@ -63,11 +63,11 @@ exports.run = async (bot, msg) => {
 //            },
             {
                 name: ':robot: Total Shards',
-                value: `${bot.options.shardCount}`,
+                value: `${bot.options.shardCount || bot.options.totalShardCount}`,
             },
             {
                 name: ':1234: Shard ID',
-                value: `${bot.options.shardId}`,
+                value: `${msg.guild.shard.id}`,//bot.options.shardId}`,
             }
         ], { inline: true })
     });
