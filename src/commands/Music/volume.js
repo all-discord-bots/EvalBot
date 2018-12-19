@@ -21,17 +21,17 @@ exports.run = async (bot, msg, args) => {
 				}
 			}
 			if (args.length <= 0) {
-				return msg.channel.send(`Current volume is \`${parseInt(msg.guild.voiceConnection.player.dispatcher.volume) * 100}%\`.`);
+				return msg.channel.send(`Current volume is \`${parseFloat(msg.guild.voiceConnection.player.dispatcher.volume) * 100}%\`.`);
 				//reject();
 			}
 			resolve(msg.guild.voiceConnection);
 		}).then((connection) => {
 			if (!args[1] || (args[1] && args[1] == false)) {
-				return msg.guild.voiceConnection.player.dispatcher.setVolume(parseInt(args[0]) / 100);
+				return msg.guild.voiceConnection.player.dispatcher.setVolume(parseFloat(args[0]) / 100);
 			} else if (args[1] && args[1] == true) {
-				return msg.guild.voiceConnection.player.dispatcher.setVolume(parseInt(args[0]));
+				return msg.guild.voiceConnection.player.dispatcher.setVolume(parseFloat(args[0]));
 			}
-			connection.player.dispatcher.once('volumeChange', (oldVolume,newVolume) => {
+			connection.player.dispatcher.on('volumeChange', (oldVolume,newVolume) => {
 				msg.channel.send(`<:check:411976443522711552> Volume set to \`${newVolume * 100}%\`.`);
 			});
 		}).catch((err) => {
