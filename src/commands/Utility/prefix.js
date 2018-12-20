@@ -6,7 +6,7 @@ exports.run = async (bot, msg, args) => {
 		//if (bot.config[msg.guild.id]) return msg.channel.send(`This guilds current prefix is \`${bot.config[msg.guild.id].prefix}\`.`).catch((err) => console.error);
 	
 	try {
-		bot.managers.config.set(msg.guild.id, {prefix: args.join(' ')});
+		await bot.managers.config.set(msg.guild.id, {prefix: args.join(' ')});
 		await fetch(`http://cripsbot.000webhostapp.com/database/database_update.php?guild_id=${msg.guild.id}&prefix=${args.join(' ')}&database_token=QISqwssXd93riidEqjjRFom19SDuSTEU`).catch((err) => console.error);
 		msg.channel.send(`<:check:411976443522711552> Prefix changed to \`${args.join(' ')}\`.`);
 	} catch (err) {
