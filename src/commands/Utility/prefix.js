@@ -2,10 +2,8 @@ const fetch = require('node-fetch');
 
 exports.run = async (bot, msg, args) => {
 	if (msg.author.id !== "269247101697916939") return;
-	if (args.length <= 0) {
-		if (!bot.config[msg.guild.id]) return msg.channel.send(`This guilds current prefix is \`${bot.config[msg.guild.id] ? bot.config[msg.guild.id].prefix : bot.config.prefix}\`.`).catch((err) => console.error);
+	if (args.length <= 0) return msg.channel.send(`This guilds current prefix is \`${bot.config[msg.guild.id] ? bot.config[msg.guild.id].prefix : bot.config.prefix}\`.`).catch((err) => console.error);
 		//if (bot.config[msg.guild.id]) return msg.channel.send(`This guilds current prefix is \`${bot.config[msg.guild.id].prefix}\`.`).catch((err) => console.error);
-	}
 	
 	try {
 		bot.managers.config.set(msg.guild.id, {prefix: args.join(' ')});
