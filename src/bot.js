@@ -118,16 +118,16 @@ class CripsBot extends Client {
 						timestamp: new Date(),
 						title: `User Upvoted!`,
 						author: {
-							name: `${this.users.get(vote.user.toString()).tag}`,
-							icon_url: `${this.users.get(vote.user.toString()).displayAvatarURL()}`
+							name: `${this.users.get(vote.user).tag}`,
+							icon_url: `${this.users.get(vote.user).displayAvatarURL()}`
 						},
 						fields: [
 							{
 								name: `Tag:`,
-								value: `\`${this.users.get(vote.user.toString()).username}\``
+								value: `\`${this.users.get(vote.user).username}\``
 							}, {
 								name: `Username:`,
-								value: `\`${this.users.get(vote.user.toString()).username}\``
+								value: `\`${this.users.get(vote.user).username}\``
 							}, {
 								name: `ID:`,
 								value: `\`${vote.user}\``
@@ -247,7 +247,7 @@ class CripsBot extends Client {
 		// Event listeners
 		this.on('ready', () => {
 			if (!this.user.bot) {
-				logger.severe(`${this.user.username} is a bot, but you entered a user token. Please follow the instructions at ${chalk.green('https://discordapp.com/developers')} and re-enter your token by running ${chalk.green('yarn run config')}.`);
+				logger.severe(`${this.user.tag} is a bot, but you entered a user token. Please follow the instructions at ${chalk.green('https://discordapp.com/developers')} and re-enter your token by running ${chalk.green('yarn run config')}.`);
 				return this.shutdown(false);
 			}
 			
@@ -273,10 +273,10 @@ class CripsBot extends Client {
 			
 			logger.info(stripIndents `Stats:
 			- User: ${this.user.tag} <ID: ${this.user.id}>
-			- Users: ${this.users.filter((user) => !user.bot).size}
-			- Bots: ${this.users.filter((user) => user.bot).size}
-			- Channels: ${this.channels.size}
-			- Guilds: ${this.guilds.size}
+			- Users: ${this.users.filter((user) => !user.bot).size.toLocaleString()}
+			- Bots: ${this.users.filter((user) => user.bot).size.toLocaleString()}
+			- Channels: ${this.channels.size.toLocaleString()}
+			- Guilds: ${this.guilds.size.toLocaleString()}
 			- Shards: ${this.shard.count || "undefined"}`
 			);
 			
@@ -285,7 +285,7 @@ class CripsBot extends Client {
 			delete this.user.email;
 			delete this.user.verified;
 			
-			console.info(`Connected user ${this.user.username}`);
+			console.info(`Connected user ${this.user.tag}`);
 			logger.info('Bot loaded');
 			
 			this.loaded = true;
@@ -316,9 +316,9 @@ class CripsBot extends Client {
 				
 				try {
 					fetch('http://cripsbot.000webhostapp.com/database/read_json.php')
-						.then(res => res.json())
-						.then(json => fse.writeJsonSync(path.resolve(__dirname, '../data/configs/config.json'), merge(this.config,json))) //JSON.stringify(merge(this.config,json))))
-						.catch(err => console.error(err.toString()));
+						.then((res) => res.json())
+						.then((json) => fse.writeJsonSync(path.resolve(__dirname, '../data/configs/config.json'), merge(this.config,json))) //JSON.stringify(merge(this.config,json))))
+						.catch((err) => console.error(err.toString()));
 				} catch (err) {
 					return console.error(err.toString());
 				}
@@ -330,7 +330,7 @@ class CripsBot extends Client {
 			if (this.guilds.size === 1) {
 				s = '';
 			}
-			this.user.setPresence({ activity: { name: `${this.guilds.size} server${s}`, type: 3 }, status: 'online' }).then(() => {//(presence) => {
+			this.user.setPresence({ activity: { name: `${this.guilds.size.toLocaleString()} server${s}`, type: 3 }, status: 'online' }).then(() => {//(presence) => {
 				console.log(`Successfully updated the bots presence.`); // ${presence.activity.name}
 			}).catch((err) => {
 				console.error(err.toString());
@@ -344,7 +344,7 @@ class CripsBot extends Client {
 					timestamp: new Date(),
 					description: `Ready in: \`${parseInt(readyTime - startTime)}ms\``
 				})
-			}).catch(err => console.error);
+			}).catch((err) => console.error);
 		});
 		
 		this.on('message', (msg) => {
@@ -469,7 +469,7 @@ class CripsBot extends Client {
 			//	console.log(`[MENTION] ${msg.author.username} | ${msg.guild ? msg.guild.name : '(DM)'} | #${msg.channel.name || 'N/A'}:\n${msg.cleanContent}`);
 			//}
 			// this.config.blacklistedServers.indexOf(msg.guild.id.toString()) > -1
-			if (msg.guild && this.config.blacklistedServers && this.config.blacklistedServers.includes(msg.guild.id.toString())) return;
+			if (msg.guild && this.config.blacklistedServers && this.config.blacklistedServers.includes(msg.guild.id)) return;
 			return this.commands.handleCommand(msg, msg.content);
 		});
 		
@@ -546,14 +546,14 @@ class CripsBot extends Client {
 					color: 6732650,
 					title: 'Added',
 					timestamp: new Date(),
-					description: `${guild.name} (${guild.id})\n\`${gusers} members   -   ${gbots} bots  (${Math.floor(gbots/gdecimal)}%)\`\n\nOwner: <@${guild.owner.id}>  \`[${guild.owner.user.username}#${guild.owner.user.discriminator}]\``
+					description: `${guild} (${guild.id})\n\`${gusers} members   -   ${gbots} bots  (${Math.floor(gbots/gdecimal)}%)\`\n\nOwner: ${guild.owner}  \`[${guild.owner.user.username}#${guild.owner.user.discriminator}]\``
 				})
 			}).catch((err) => console.error(err.toString()));
 			let s = 's';
 			if (this.guilds.size == 1) {
 				s = '';
 			}
-			this.user.setPresence({ activity: { name: `${this.guilds.size} server${s}`, type: 3 }, status: 'online' }).then(() => {//(presence) => {
+			this.user.setPresence({ activity: { name: `${this.guilds.size.toLocaleString()} server${s}`, type: 3 }, status: 'online' }).then(() => {//(presence) => {
 				console.log(`Successfully updated the bots presence.`); // ${presence.activity.name}
 			}).catch((err) => {
 				console.error(err.toString());
@@ -574,14 +574,14 @@ class CripsBot extends Client {
 					color: 15684432,
 					title: 'Removed',
 					timestamp: new Date(),
-					description: `${guild.name} (${guild.id})\n\`${gusers} members   -   ${gbots} bots  (${Math.floor(gbots/gdecimal)}%)\`\n\nOwner: <@${guild.owner.id}>  \`[${guild.owner.user.username}#${guild.owner.user.discriminator}]\``
+					description: `${guild} (${guild.id})\n\`${gusers} members   -   ${gbots} bots  (${Math.floor(gbots/gdecimal)}%)\`\n\nOwner: ${guild.owner}  \`[${guild.owner.user.username}#${guild.owner.user.discriminator}]\``
 				})
 			}).catch((err) => console.error(err.toString()));
 			let s = 's';
-			if (this.guilds.size == 1) {
+			if (this.guilds.size === 1) {
 				s = '';
 			}
-			this.user.setPresence({ activity: { name: `${this.guilds.size} server${s}`, type: 3 }, status: 'online' }).then(() => {//(presence) => {
+			this.user.setPresence({ activity: { name: `${this.guilds.size.toLocaleString()} server${s}`, type: 3 }, status: 'online' }).then(() => {//(presence) => {
 				console.log(`Successfully updated the bots presence.`); // ${presence.activity.name}
 			}).catch((err) => {
 				console.error(err.toString());
@@ -594,7 +594,7 @@ class CripsBot extends Client {
 				embed: ({
 					color: 6732650,
 					timestamp: new Date(),
-					description: `<@${member.user.id}> \`[${member.user.tag}]\``,
+					description: `${member.user} \`[${member.user.tag}]\``,
 					author: {
 						name: 'User Joined!',
 						icon_url: `${member.user.displayAvatarURL()}`
@@ -609,7 +609,7 @@ class CripsBot extends Client {
 				embed: ({
 					color: 15684432,
 					timestamp: new Date(),
-					description: `<@${member.user.id}> \`[${member.user.tag}]\``,
+					description: `${member.user} \`[${member.user.tag}]\``,
 					author: {
 						name: 'User Left!',
 						icon_url: `${member.user.displayAvatarURL()}`
