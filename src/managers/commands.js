@@ -322,7 +322,7 @@ class CommandManager {
 		let spli;
 		if (prefix !== `<@${this.bot.user.id}>`)
 		{
-			spli = new RegExp(`\\${prefix.split('').join('\\')}`, 'gi');
+			spli = new RegExp(`\\${prefix.trim().split('').join('\\')}`, 'gi');
 		}
 		else
 		{
@@ -330,7 +330,7 @@ class CommandManager {
 		}
 		// split1[0].match(spli).length;
 		//if (spli > prefix.length || spli < prefix.length) return; //|| spli > `<@${this.bot.id}>`.length || spli < `<@${this.bot.id}>`.length) return; // do this if you input the prefix more than one time ex. >>help when the prefix is >help
-		if (split1[0].match(spli).length !== 1 || split1[0].match(spli)[0].length !== prefix.length) return;
+		if (split1[0].match(spli).length !== 1 || split1[0].match(spli)[0].length !== prefix.trim().length) return;
 		let base = split[0].toLowerCase();
 		let args = split.slice(1);
 
