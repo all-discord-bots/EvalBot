@@ -11,7 +11,7 @@ exports.run = async (bot, msg, args) => {
 			}
 			let bitrate;
 			if (msg.guild.members.get(bot.user.id).hasPermission(0x00100000)) {
-				if (msg.guild.voiceConnection) {
+				if (msg.guild.voiceConnection && msg.guild.voiceConnection.player.opusEncoder) {
 					bitrate = `Bitrate: \`${msg.guild.voiceConnection.player.opusEncoder.bitrate}ms\``;
 				} else {
 					bitrate = '';
