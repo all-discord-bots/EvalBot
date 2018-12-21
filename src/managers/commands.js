@@ -316,18 +316,16 @@ class CommandManager {
 			prefix = `<@${this.bot.user.id}>`;
 		}
 		
-		if (!input.startsWith(prefix)) return; // || !input.startsWith(`<@${this.bot.id}>`)) return;
-		let split = input.substr(prefix.length).trim().split(' ');
-		let split1 = input.substr(prefix).trim().split(' ');
+		if (!input.startsWith(prefix.trim())) return; // || !input.startsWith(`<@${this.bot.id}>`)) return;
+		let split = input.substr(prefix.trim().length).trim().split(' ');
+		let split1 = input.substr(prefix.trim()).trim().split(' ');
 		let spli;
-		if (prefix !== `<@${this.bot.user.id}>`)
-		{
+		if (prefix !== `<@${this.bot.user.id}>`) {
 			spli = new RegExp(`\\${prefix.trim().split('').join('\\')}`, 'gi');
+		} else {
+			spli = new RegExp(prefix.trim(),'gi');
 		}
-		else
-		{
-			spli = new RegExp(prefix,'gi');
-		}
+		if (!split1[0].match(spli)) spli = new RegExp(prefix.trim(), 'gi');
 		// split1[0].match(spli).length;
 		//if (spli > prefix.length || spli < prefix.length) return; //|| spli > `<@${this.bot.id}>`.length || spli < `<@${this.bot.id}>`.length) return; // do this if you input the prefix more than one time ex. >>help when the prefix is >help
 		if (split1[0].match(spli).length !== 1 || split1[0].match(spli)[0].length !== prefix.trim().length) return;
