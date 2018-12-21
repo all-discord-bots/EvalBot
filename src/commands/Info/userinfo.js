@@ -57,7 +57,7 @@ exports.run = async (bot, msg, args) => {
 			msg.channel.send({
 				embed:({
 					color: 3447003,
-					description: `${statusEmoji[user.presence.status].normal} <@${user.id}>${user.user.bot ? ' <:bot:491157258915414016>' : ''}${ggame}`,
+					description: `${statusEmoji[user.presence.status].normal} ${user.id}${user.user.bot ? ' <:bot:491157258915414016>' : ''}${ggame}`,
 					thumbnail: {
 						url: `${user.user.displayAvatarURL()}`
 					},
@@ -77,7 +77,7 @@ exports.run = async (bot, msg, args) => {
 							value: `${moment.utc(new Date(user.joinedTimestamp)).format("DD-MM-YY")} (${moment.duration(new Date() - new Date(user.joinedTimestamp)).format()} ago)`
 						},{
 							name: 'Highest Role',
-							value: `<@&${user.roles.highest.id}>`,
+							value: `${user.roles.highest}`,
 							inline: true
 						},{
 							name: 'Member #',
@@ -91,7 +91,7 @@ exports.run = async (bot, msg, args) => {
 			msg.channel.send({
 				embed:({
 					color: 3447003,
-					description: `${statusEmoji[user.presence.status].normal} <@${user.id}>${user.bot ? ' <:bot:491157258915414016>' : ''}${ggame}`,
+					description: `${statusEmoji[user.presence.status].normal} ${user.id}${user.bot ? ' <:bot:491157258915414016>' : ''}${ggame}`,
 					thumbnail: {
 						url: `${user.displayAvatarURL()}`
 					},
