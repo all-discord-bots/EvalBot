@@ -74,24 +74,27 @@ const permissions = {
 };
 
 const client_information = async() => {
-	let [users, guilds, channels, connections] = [0, 0, 0, 0];
+	let [users, guilds, guilds_per_shard, channels, connections] = [0, 0, [], 0, 0];
 	if (global.bot.shard) {
-		const results = await global.bot.shard.broadcastEval(`[this.users.size, this.guilds.size, this.channels.size, this.voice.connections.size]`); // this.voiceConnections.size
+		const results = await global.bot.shard.broadcastEval(`[this.users.size, this.guilds.size, [this.guilds.size], this.channels.size, this.voice.connections.size]`); // this.voiceConnections.size
 		for (const result of results) {
 			users += result[0];
 			guilds += result[1];
-			channels += result[2];
-			connections += result[3];
+			guilds_per_shard = result[2]; // [...result[2]]
+			channels += result[3];
+			connections += result[4];
 		}
 	} else {
 		users += global.bot.users.size;
 		guilds += global.bot.guilds.size;
+		//guilds_per_shard = []; //[global.bot.guilds.size];
 		channels += global.bot.channels.size;
 		connections += global.bot.voice.connections.size;
 	}
 	return {
 		'user_size': users,
 		'guild_size': guilds,
+		'guilds_per_shard': guilds_per_shard,
 		'channel_size': channels,
 		'voice_connections': connections
 	};
