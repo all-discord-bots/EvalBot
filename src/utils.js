@@ -73,6 +73,30 @@ const permissions = {
 	USE_VAD: 'Use voice activity'
 };
 
+const client_information = async() => {
+	let [users, guilds, channels, connections] = [0, 0, 0, 0];
+	if (global.bot.shard) {
+		const results = await global.bot.shard.broadcastEval(`[this.users.size, this.guilds.size, this.channels.size, this.voice.connections.size]`); // this.voiceConnections.size
+		for (const result of results) {
+			users += result[0];
+			guilds += result[1];
+			channels += result[2];
+			connections += result[3];
+		}
+	} else {
+		users += global.bot.users.size;
+		guilds += global.bot.guilds.size;
+		channels += global.bot.channels.size;
+		connections += global.bot.voice.connections.size;
+	}
+	return {
+		'user_size': users,
+		'guild_size': guilds,
+		'channel_size': channels,
+		'voice_connections': connections
+	};
+};
+
 const randomSelection = choices => choices[Math.floor(Math.random() * choices.length)];
 
 const randomColor = () => [
@@ -337,6 +361,8 @@ module.exports = {
 	shuffle,
 	// Permissions
 	permissions,
+	// Client stats values
+	client_information,
 	// Randomizers
 	randomSelection,
 	randomColor,
