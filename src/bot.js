@@ -171,14 +171,30 @@ class CripsBot extends Client {
 						Authorization: `${process.env.DBL_TOKEN_AUTH}`
 					},
 					data: {
-						server_count: bot.guilds.size, // Type: Numbers or Array of numbers, The amount of servers the bot is in. If an array it acts like `shards`
+						server_count: bot.utils.client_information().guild_size, // Type: Numbers or Array of numbers, The amount of servers the bot is in. If an array it acts like `shards`
 						// shards: [], // Type: Array of numbers, The amount of servers the bot is in per shard.
 						shard_id: bot.shard.id, // Type: Number, The zero-indexed id of the shard posting. Makes server_count set the shard specific server count.
 						shard_count: bot.shard.count // Type: Number, The amount of shards the bot has.
 					}
 				}).then(() => {
-					console.log("Uploaded Bot Stats to DBL!");
-				}).catch(err => console.error(err.toString()));
+					console.log("Uploaded bot stats to discordbots.org!");
+				}).catch(console.error);
+				
+				const discordBotList = axios({
+					method: 'post',
+					url: `https://discordbotlist.com/api/bots/${bot.user.id}/stats`,
+					headers: {
+						Authorization: `Bot ${process.env.DBL_TOKEN}`
+					},
+					data: {
+						shard_id: bot.shard.id,
+						guilds: bot.utils.client_information().guild_size,
+						users: bot.utils.client_information().user_size,
+						voice_connections: bot.utils.client_information().voice_connections
+					}
+				}).then(() => {
+					console.log("Uploaded bot stats to discordbotlist.com!");
+				}).catch(console.error);
 				/*
 				const discordPw = axios({
 					method: 'post',
@@ -223,10 +239,10 @@ class CripsBot extends Client {
 				const [dbres, dpwres, bspaceres, dservres, listres] = await Promise.all([discordBots, discordPw, botlistSpace, discordServices, listCord])
 				console.log(dbres.res, dpwres.res, bspaceres.res, dservres.res, listres.res)
 				*/
-				const [dbres] = await Promise.all([discordBots]);
+				const [discordbots, discordbotlist] = await Promise.all([discordBots, discordBotList]);
 				///console.log(dbres.toString());
 			} catch (err) {
-				console.error(err.toString());
+				console.error(err.stack ? err.stack : err.toString());
 			}
 		}
 		
@@ -234,7 +250,7 @@ class CripsBot extends Client {
 			try {
 				postDiscordStats(this);
 			} catch (err) {
-				console.error(err.toString());
+				console.error(err.stack ? err.stack : err.toString());
 			}
 		}, 1800000);
 		
