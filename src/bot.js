@@ -219,18 +219,22 @@ class CripsBot extends Client {
 					data: {
 						server_count: this.guilds.size
 					}
-				})
+				})*/
 				const botlistSpace = axios({
 					method: 'post',
-					url: `https://botlist.space/api/bots/${this.user.id}`,
+					url: `https://botlist.space/api/bots/${bot.user.id}`,
 					headers: {
-						Authorization: `${process.env.BOTLIST_SPACE_TOKEN_AUTH}`
+						'Content-Type': 'application/json',
+						'Authorization': `${process.env.BOTLIST_SPACE_TOKEN_AUTH}`
 					},
 					data: {
-						server_count: this.guilds.size
+						server_count: bot.utils.client_information().guild_size
+						//shards: [] - server count per shard
 					}
-				})
-				const discordServices = axios({
+				}).then(() => {
+					console.log("Uploaded bot stats to botlist.space!");
+				}).catch(console.error);
+				/*const discordServices = axios({
 					method: 'post',
 					url: `https://discord.services/api/bots/${this.user.id}`,
 					headers: {
@@ -253,7 +257,7 @@ class CripsBot extends Client {
 				const [dbres, dpwres, bspaceres, dservres, listres] = await Promise.all([discordBots, discordPw, botlistSpace, discordServices, listCord])
 				console.log(dbres.res, dpwres.res, bspaceres.res, dservres.res, listres.res)
 				*/
-				const [discordbots, discordbotlist, botsfordiscord] = await Promise.all([discordBots, discordBotList, botsForDiscord]);
+				const [discordbots, discordbotlist, botsfordiscord, botlistspace] = await Promise.all([discordBots, discordBotList, botsForDiscord, botlistSpace]);
 				///console.log(dbres.toString());
 			} catch (err) {
 				console.error(err.stack ? err.stack : err.toString());
