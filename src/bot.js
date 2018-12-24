@@ -168,6 +168,7 @@ class CripsBot extends Client {
 					method: 'post',
 					url: `https://discordbots.org/api/bots/${bot.user.id}/stats`,
 					headers: {
+						'Content-Type': 'application/json',
 						'Authorization': `${process.env.DBL_TOKEN_AUTH}`
 					},
 					data: {
@@ -184,6 +185,7 @@ class CripsBot extends Client {
 					method: 'post',
 					url: `https://discordbotlist.com/api/bots/${bot.user.id}/stats`,
 					headers: {
+						'Content-Type': 'application/json',
 						'Authorization': `Bot ${process.env.DBL_TOKEN}`
 					},
 					data: {
