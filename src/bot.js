@@ -172,7 +172,7 @@ class CripsBot extends Client {
 					},
 					data: {
 						server_count: bot.utils.client_information().guild_size, // Type: Numbers or Array of numbers, The amount of servers the bot is in. If an array it acts like `shards`
-						// shards: [], // Type: Array of numbers, The amount of servers the bot is in per shard.
+						shards: bot.utils.client_information().guilds_per_shard, // Type: Array of numbers, The amount of servers the bot is in per shard.
 						shard_id: bot.shard.id, // Type: Number, The zero-indexed id of the shard posting. Makes server_count set the shard specific server count.
 						shard_count: bot.shard.count // Type: Number, The amount of shards the bot has.
 					}
@@ -228,8 +228,8 @@ class CripsBot extends Client {
 						'Authorization': `${process.env.BOTLIST_SPACE_TOKEN_AUTH}`
 					},
 					data: {
-						server_count: bot.utils.client_information().guild_size
-						//shards: [] - server count per shard
+						server_count: bot.utils.client_information().guild_size,
+						shards: bot.utils.client_information().guilds_per_shard // - server count per shard
 					}
 				}).then(() => {
 					console.log("Uploaded bot stats to botlist.space!");
