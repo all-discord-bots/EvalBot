@@ -168,7 +168,7 @@ class CripsBot extends Client {
 					method: 'post',
 					url: `https://discordbots.org/api/bots/${bot.user.id}/stats`,
 					headers: {
-						Authorization: `${process.env.DBL_TOKEN_AUTH}`
+						'Authorization': `${process.env.DBL_TOKEN_AUTH}`
 					},
 					data: {
 						server_count: bot.utils.client_information().guild_size, // Type: Numbers or Array of numbers, The amount of servers the bot is in. If an array it acts like `shards`
@@ -184,7 +184,7 @@ class CripsBot extends Client {
 					method: 'post',
 					url: `https://discordbotlist.com/api/bots/${bot.user.id}/stats`,
 					headers: {
-						Authorization: `Bot ${process.env.DBL_TOKEN}`
+						'Authorization': `Bot ${process.env.DBL_TOKEN}`
 					},
 					data: {
 						shard_id: bot.shard.id,
@@ -194,6 +194,20 @@ class CripsBot extends Client {
 					}
 				}).then(() => {
 					console.log("Uploaded bot stats to discordbotlist.com!");
+				}).catch(console.error);
+				
+				const botsForDiscord = axios({
+					method: 'post',
+					url: `https://botsfordiscord.com/api/bot/${bot.user.id}`,
+					headers: {
+						'Content-Type': 'application/json',
+						'Authorization': `${process.env.B4D_TOKEN}`
+					},
+					data: {
+						server_count: bot.utils.client_information().guild_size
+					}
+				}).then(() => {
+					console.log("Uploaded bot stats to botsfordiscord.com!");
 				}).catch(console.error);
 				/*
 				const discordPw = axios({
@@ -239,7 +253,7 @@ class CripsBot extends Client {
 				const [dbres, dpwres, bspaceres, dservres, listres] = await Promise.all([discordBots, discordPw, botlistSpace, discordServices, listCord])
 				console.log(dbres.res, dpwres.res, bspaceres.res, dservres.res, listres.res)
 				*/
-				const [discordbots, discordbotlist] = await Promise.all([discordBots, discordBotList]);
+				const [discordbots, discordbotlist, botsfordiscord] = await Promise.all([discordBots, discordBotList, botsForDiscord]);
 				///console.log(dbres.toString());
 			} catch (err) {
 				console.error(err.stack ? err.stack : err.toString());
