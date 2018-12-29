@@ -571,18 +571,14 @@ class CripsBot extends Client {
 		// Joined a server
 		this.on('guildCreate', (guild) => {
 			console.log(`Joined a new guild: ${guild.name}`);
-			let gusers = guild.members.filter((user) => !user.user.bot).size; // get only users and exclude bots
-			let gtotal = guild.members.filter((user) => user.user).size; // get all users and bots
-			let gbots = guild.members.filter((user) => user.user.bot).size; // get all bots excluding users
-			let gpercent = `${gtotal}%`; // total users and bots to percentage
-			let gparsepercent = parseFloat(gpercent); // parses the percentage
-			let gdecimal = gparsepercent / 100; // percentage to decimal
+			const gusers = guild.members.filter((user) => !user.user.bot).size; // get only users and exclude bots
+			const gbots = guild.members.filter((user) => user.user.bot).size; // get all bots excluding users
 			this.channels.get("409525042137792533").send({
 				embed: ({
 					color: 6732650,
 					title: 'Added',
 					timestamp: new Date(),
-					description: `${guild} (${guild.id})\n\`${gusers} members   -   ${gbots} bots  (${Math.floor(gbots/gdecimal)}%)\`\n\nOwner: ${guild.owner}  \`[${guild.owner.user.username}#${guild.owner.user.discriminator}]\``
+					description: `${guild} (${guild.id})\n\`${gusers} members   -   ${gbots} bots  (${Math.floor((gbots/guild.memberCount)*100)}%)\`\n\nOwner: ${guild.owner}  \`[${guild.owner.user.tag}]\``
 				})
 			}).catch((err) => console.error(err.toString()));
 			let s = 's';
@@ -599,18 +595,14 @@ class CripsBot extends Client {
 		// Removed from a server
 		this.on('guildDelete', (guild) => {
 			console.log(`Left a guild: ${guild.name}`);
-			let gusers = guild.members.filter((user) => !user.user.bot).size; // get only users and exclude bots
-			let gtotal = guild.members.filter((user) => user.user).size - 1; // get all users and bots
-			let gbots = guild.members.filter((user) => user.user.bot).size - 1; // get all bots excluding users
-			let gpercent = `${gtotal}%`; // total users and bots to percentage
-			let gparsepercent = parseFloat(gpercent); // parses the percentage
-			let gdecimal = gparsepercent / 100; // percentage to decimal
+			const gusers = guild.members.filter((user) => !user.user.bot).size; // get only users and exclude bots
+			const gbots = guild.members.filter((user) => user.user.bot).size - 1; // get all bots excluding users
 			this.channels.get("409525042137792533").send({
 				embed: ({
 					color: 15684432,
 					title: 'Removed',
 					timestamp: new Date(),
-					description: `${guild} (${guild.id})\n\`${gusers} members   -   ${gbots} bots  (${Math.floor(gbots/gdecimal)}%)\`\n\nOwner: ${guild.owner}  \`[${guild.owner.user.username}#${guild.owner.user.discriminator}]\``
+					description: `${guild} (${guild.id})\n\`${gusers} members   -   ${gbots} bots  (${Math.floor((gbots/guild.memberCount)*100)}%)\`\n\nOwner: ${guild.owner}  \`[${guild.owner.user.username}#${guild.owner.user.discriminator}]\``
 				})
 			}).catch((err) => console.error(err.toString()));
 			let s = 's';
