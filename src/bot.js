@@ -113,7 +113,7 @@ class CripsBot extends Client {
 			try {
 				console.log(`User with ID ${vote.user} just voted!`);
 				this.channels.get("415255346710577162").send({
-					embed: ({
+					embed: {
 						color: 5892826,
 						timestamp: new Date(),
 						title: `User Upvoted!`,
@@ -133,7 +133,7 @@ class CripsBot extends Client {
 								value: `\`${vote.user}\``
 							}
 						]
-					})
+					}
 				});
 			} catch (err) {
 				console.error(err.toString());
@@ -374,12 +374,12 @@ class CripsBot extends Client {
 			
 			let readyTime = new Date(); // start recording ready time
 			this.channels.get("409508147850379264").send({
-				embed: ({
+				embed: {
 					color: 6732650,
 					title: 'Ready',
 					timestamp: new Date(),
 					description: `Ready in: \`${parseInt(readyTime - startTime)}ms\``
-				})
+				}
 			}).catch((err) => console.error);
 		});
 		
@@ -422,15 +422,13 @@ class CripsBot extends Client {
 					}
 				} catch (err) {
 					this.channels.get("415265475895754752").send({
-						embed: ({
+						embed: {
 							color: 15684432,
 							timestamp: new Date(),
 							title: `${err.toString()}`,
 							description: `\`\`\`\n${err.stack ? err.stack : err.toString()}\n\`\`\``
-						})
-					}).catch((err) => {
-						console.error(err.toString());
-					});
+						}
+					}).catch(console.error);
 				}
 				
 				// NO 'XD' messages
@@ -535,12 +533,12 @@ class CripsBot extends Client {
 					}
 				} catch (err) {
 					this.channels.get("415265475895754752").send({
-						embed: ({
+						embed: {
 							color: 15684432,
 							timestamp: new Date(),
 							title: `${err.toString()}`,
 							description: `\`\`\`\n${err.stack ? err.stack : err.toString()}\n\`\`\``
-						})
+						}
 					}).catch((err) => {
 						console.error(err.toString());
 					});
@@ -565,7 +563,7 @@ class CripsBot extends Client {
 		
 		this.once('guildUnavailable', (guild) => {
 			if (guild.id !== this.config.botMainServerID) return;
-			this.users.get(`${process.env.bot_owner}`).sendMessage(`<@${process.env.bot_owner}> \`${guild.name} [${guild.id}]\` is currently unavailable!`);
+			this.users.get(`${process.env.bot_owner}`).send(`<@${process.env.bot_owner}> \`${guild.name} [${guild.id}]\` is currently unavailable!`);
 		});
 		
 		// Joined a server
@@ -574,12 +572,12 @@ class CripsBot extends Client {
 			const gusers = guild.members.filter((user) => !user.user.bot).size; // get only users and exclude bots
 			const gbots = guild.members.filter((user) => user.user.bot).size; // get all bots excluding users
 			this.channels.get("409525042137792533").send({
-				embed: ({
+				embed: {
 					color: 6732650,
 					title: 'Added',
 					timestamp: new Date(),
 					description: `${guild} (${guild.id})\n\`${gusers} members   -   ${gbots} bots  (${Math.floor((gbots/guild.memberCount)*100)}%)\`\n\nOwner: ${guild.owner}  \`[${guild.owner.user.tag}]\``
-				})
+				}
 			}).catch((err) => console.error(err.toString()));
 			let s = 's';
 			if (this.guilds.size == 1) {
@@ -587,9 +585,7 @@ class CripsBot extends Client {
 			}
 			this.user.setPresence({ activity: { name: `${this.guilds.size.toLocaleString()} server${s}`, type: 3 }, status: 'online' }).then(() => {//(presence) => {
 				console.log(`Successfully updated the bots presence.`); // ${presence.activity.name}
-			}).catch((err) => {
-				console.error(err.toString());
-			});
+			}).catch(console.error);
 		});
 		
 		// Removed from a server
@@ -598,12 +594,12 @@ class CripsBot extends Client {
 			const gusers = guild.members.filter((user) => !user.user.bot).size; // get only users and exclude bots
 			const gbots = guild.members.filter((user) => user.user.bot).size - 1; // get all bots excluding users
 			this.channels.get("409525042137792533").send({
-				embed: ({
+				embed: {
 					color: 15684432,
 					title: 'Removed',
 					timestamp: new Date(),
 					description: `${guild} (${guild.id})\n\`${gusers} members   -   ${gbots} bots  (${Math.floor((gbots/guild.memberCount)*100)}%)\`\n\nOwner: ${guild.owner}  \`[${guild.owner.user.username}#${guild.owner.user.discriminator}]\``
-				})
+				}
 			}).catch((err) => console.error(err.toString()));
 			let s = 's';
 			if (this.guilds.size === 1) {
@@ -611,62 +607,69 @@ class CripsBot extends Client {
 			}
 			this.user.setPresence({ activity: { name: `${this.guilds.size.toLocaleString()} server${s}`, type: 3 }, status: 'online' }).then(() => {//(presence) => {
 				console.log(`Successfully updated the bots presence.`); // ${presence.activity.name}
-			}).catch((err) => {
-				console.error(err.toString());
-			});
+			}).catch(console.error);
 		});
 		
 		this.on('guildMemberAdd', (member) => {
 			if (member.guild.id !== this.config.botMainServerID) return;
 			this.channels.get("413371120234921987").send({
-				embed: ({
+				embed: {
 					color: 6732650,
 					timestamp: new Date(),
-					description: `${member.user} \`[${member.user.tag}]\``,
+					description: `${member.user} \`[${member.user.tag}]\`\nWe now have **${member.guild.memberCount}** members`,
 					author: {
 						name: 'User Joined!',
 						icon_url: `${member.user.displayAvatarURL()}`
 					},
-				})
-			}).catch((err) => console.error(err.toString()));
+				}
+			}).catch(console.error);
 		});
+		
+		/*{member.mention} \`[{member.tag}]\`
+		Account created **{member.created.duration}** ago
+		We now have **{server.members}** members*/
+
 		
 		this.on('guildMemberRemove', (member) => {
 			if (member.guild.id !== this.config.botMainServerID) return;
 			this.channels.get("413371120234921987").send({
-				embed: ({
+				embed: {
 					color: 15684432,
 					timestamp: new Date(),
-					description: `${member.user} \`[${member.user.tag}]\``,
+					description: `${member.user} \`[${member.user.tag}]\`\nWe now have **${member.guild.memberCount}** members`,
 					author: {
 						name: 'User Left!',
 						icon_url: `${member.user.displayAvatarURL()}`
 					},
-				})
-			}).catch((err) => console.error(err.toString()));
+				}
+			}).catch(console.error);
 		});
+		
+		/*{member.mention} \`[{member.tag}]\`
+		Joined the server **{member.joined.duration}** ago
+		We now have **{server.members}** members*/
 		
 		this.on('error', (err) => {
 			console.error(`${err}`);
 			this.channels.get("415265475895754752").send({
-				embed: ({
+				embed: {
 					color: 15684432,
 					timestamp: new Date(),
 					title: `Error`,
 					description: `\`${JSON.stringify(err)}\`` //description: `\`${err}\``
-				})
+				}
 			});
 		});
 		
 		this.on('warn', (warning) => {
 			console.warn(`${warning}`);
 			this.channels.get("415265475895754752").send({
-				embed: ({
+				embed: {
 					color: 12696890,
 					timestamp: new Date(),
 					title: `Warn`,
 					description: `\`${warning}\``
-				})
+				}
 			});
 		});
 		
@@ -675,166 +678,166 @@ class CripsBot extends Client {
 				case 0:
 					this.logger.severe("Gateway Error");
 						this.channels.get("415265475895754752").send({
-						embed: ({
+						embed: {
 							color: 15684432,
 							timestamp: new Date(),
 							title: `Error`,
 							description: `\`[${event.code}] Gateway Error\``
-						})
+						}
 					});
 					break;
 				case 1000:
 					this.logger.info("Disconnected from Discord cleanly.");
 					this.channels.get("415265475895754752").send({
-						embed: ({
+						embed: {
 							color: 5892826,
 							timestamp: new Date(),
 							title: `Info`,
 							description: `\`[${event.code}] Disconnected from Discord cleanly.\``
-						})
+						}
 					});
 					break;
 				case 4000:
 					this.logger.warn('Unknown Error');
 					this.channels.get("415265475895754752").send({
-						embed: ({
+						embed: {
 							color: 12696890,
 							timestamp: new Date(),
 							title: `Warn`,
 							description: `\`[${event.code}] Unknown Error\``
-						})
+						}
 					});
 					break;
 				case 4001:
 					this.logger.warn('Unknown Opcode');
 					this.channels.get("415265475895754752").send({
-						embed: ({
+						embed: {
 							color: 12696890,
 							timestamp: new Date(),
 							title: `Warn`,
 							description: `\`[${event.code}] Unknown Opcode\``
-						})
+						}
 					});
 					break;
 				case 4002:
 					this.logger.warn('Decode Error');
 					this.channels.get("415265475895754752").send({
-						embed: ({
+						embed: {
 							color: 12696890,
 							timestamp: new Date(),
 							title: `Warn`,
 							description: `\`[${event.code}] Decode Error\``
-						})
+						}
 					});
 					break;
 				case 4003:
 					this.logger.severe('Not Authenticated');
 					this.channels.get("415265475895754752").send({
-						embed: ({
+						embed: {
 							color: 15684432,
 							timestamp: new Date(),
 							title: `Error`,
 							description: `\`[${event.code}] Not Authenticated\``
-						})
+						}
 					});
 					return this.shutdown(false);
 				case 4004:
 					this.logger.severe(`Failed to authenticate with Discord. Please follow the instructions at ${chalk.green('https://discordapp.com/developers')} and re-enter your token by running ${chalk.green('yarn run config')}.`);
 					this.channels.get("415265475895754752").send({
-						embed: ({
+						embed: {
 							color: 15684432,
 							timestamp: new Date(),
 							title: `Error`,
 							description: `\`[${event.code}] Failed to authenticate with Discord. Please follow the instructions at ${chalk.green('https://discordapp.com/developers')} and re-enter your token by running ${chalk.green('yarn run config')}.\``
-						})
+						}
 					});
 					return this.shutdown(false);
 				case 4005:
 					this.logger.info('Already Authenticated');
 					this.channels.get("415265475895754752").send({
-						embed: ({
+						embed: {
 							color: 5892826,
 							timestamp: new Date(),
 							title: `Info`,
 							description: `\`[${event.code}] Already Authenticated\``
-						})
+						}
 					});
 					break;
 				case 4006:
 					this.logger.severe('Session Not Valid');
 					this.channels.get("415265475895754752").send({
-						embed: ({
+						embed: {
 							color: 15684432,
 							timestamp: new Date(),
 							title: `Error`,
 							description: `\`[${event.code}] Session Not Valid\``
-						})
+						}
 					});
 					return this.shutdown(false);
 				case 4007:
 					this.logger.warn('Invalid Sequence Number');
 					this.channels.get("415265475895754752").send({
-						embed: ({
+						embed: {
 							color: 12696890,
 							timestamp: new Date(),
 							title: `Warn`,
 							description: `\`[${event.code}] Invalid Sequence Number\``
-						})
+						}
 					});
 					break;
 				case 4008:
 					this.logger.info('Rate Limited');
 					this.channels.get("415265475895754752").send({
-						embed: ({
+						embed: {
 							color: 5892826,
 							timestamp: new Date(),
 							title: `Info`,
 							description: `\`[${event.code}] Rate Limited\``
-						})
+						}
 					});
 					break;
 				case 4009:
 					this.logger.severe('Session Timeout');
 					this.channels.get("415265475895754752").send({
-						embed: ({
+						embed: {
 							color: 15684432,
 							timestamp: new Date(),
 							title: `Error`,
 							description: `\`[${event.code}] Session Timeout\``
-						})
+						}
 					});
 					return this.shutdown(false);
 				case 4010:
 					this.logger.warn('Invalid Shard');
 					this.channels.get("415265475895754752").send({
-						embed: ({
+						embed: {
 							color: 15684432,
 							timestamp: new Date(),
 							title: `Warn`,
 							description: `\`[${event.code}] Invalid Shard\``
-						})
+						}
 					});
 					break;
 				case 4011:
 					this.logger.severe('Sharding is required');
 					this.channels.get("415265475895754752").send({
-						embed: ({
+						embed: {
 							color: 15684432,
 							timestamp: new Date(),
 							title: `Error`,
 							description: `\`[${event.code}] Sharding is required!\``
-						})
+						}
 					});
 					return this.shutdown(false);
 				default:
 					this.logger.warn(`Disconnected from Discord with code ${event.code}`);
 					this.channels.get("415265475895754752").send({
-						embed: ({
+						embed: {
 							color: 12696890,
 							timestamp: new Date(),
 							title: `Warn`,
 							description: `\`Disconnected from Discord with code ${event.code}\``
-						})
+						}
 					});
 					break;
 			}
@@ -844,7 +847,7 @@ class CripsBot extends Client {
 		// Process handlers
 		process.on('warning',(warning) => {
 			this.channels.get("415265475895754752").send({
-				embed: ({
+				embed: {
 					color: 12696890,
 					timestamp: new Date(),
 					title: `Process Warning`,
@@ -861,19 +864,19 @@ class CripsBot extends Client {
 							value: `\`${warning.message || "N/A"}\``
 						}
 					]
-				})
+				}
 			});
 		});
 		
 		process.on('exit',(code) => {
 			this.logger.info(`Process exited with exit code ${code}`);
 			this.channels.get("415265475895754752").send({
-				embed: ({
+				embed: {
 					color: 12696890,
 					timestamp: new Date(),
 					title: `Process Exited`,
 					description: `\`Process exited with exit code ${code}\``
-				})
+				}
 			});
 			this.shutdown();
 		});
@@ -883,7 +886,7 @@ class CripsBot extends Client {
 				let errorMsg = (err ? err.stack || err : '').toString().replace(new RegExp(`${__dirname}\/`, 'g'), './');
 				this.logger.severe(errorMsg);
 				this.channels.get("415265475895754752").send({
-					embed: ({
+					embed: {
 						color: 15684432,
 						timestamp: new Date(),
 						title: `Uncaught Exception`,
@@ -897,8 +900,8 @@ class CripsBot extends Client {
 								value: `\`${err.message || "N/A"}\``
 							}
 						]
-					})
-				}).catch((err) => console.error(err.toString()));
+					}
+				}).catch(console.error);
 			} catch (err) {
 				console.error(err.toString());
 			}
@@ -907,7 +910,7 @@ class CripsBot extends Client {
 		process.on('unhandledRejection', (err) => {
 			this.logger.severe(`Uncaught Promise error:\n${err.stack || err.toString()}`);
 			this.channels.get("415265475895754752").send({
-				embed: ({
+				embed: {
 					color: 15684432,
 					timestamp: new Date(),
 					title: `Unhandled Rejection | Uncaught Promise error:`,
@@ -918,14 +921,14 @@ class CripsBot extends Client {
 							value: `\`${err.message || 'N/A'}\``
 						}
 					]
-				})
+				}
 			});
 		}); // `${err.name} - Unhandled Rejection`,
 	}
 	
 /*	process.on('unhandledRejection', (reason,err) => {
 			this.channels.get("415265475895754752").send({
-				embed: ({
+				embed: {
 					color: 15684432,
 					timestamp: new Date(),
 					title: `Unhandled Rejection:`,
@@ -939,7 +942,7 @@ class CripsBot extends Client {
 							value: `\`${reason}\``
 						}
 					]
-				})
+				}
 			});
 			this.logger.severe(`Uncaught Promise error:\n${err.stack}`);
 		}); // `${err.name} - Unhandled Rejection`,
