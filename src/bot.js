@@ -144,7 +144,7 @@ class CripsBot extends Client {
 			let errorMsg = (err ? err.stack || err : '').toString().replace(new RegExp(`${__dirname}\/`, 'g'), './');
 			console.log(`Oops! ${errorMsg}`);
 			this.channels.get("415265475895754752").send({
-				embed: ({
+				embed: {
 					color: 15684432,
 					timestamp: new Date(),
 					title: `Uncaught Exception`,
@@ -158,7 +158,7 @@ class CripsBot extends Client {
 							value: `\`${err.message || "N/A"}\``
 						}
 					]
-				})
+				}
 			});
 		})
 		
