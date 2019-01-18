@@ -33,7 +33,11 @@ function makeCommand(type, url, transformer) {
     };
 }
 
+const vote = Math.floor(Math.random() * 2) >= 1 ? true : false;
+
 module.exports = [
-    makeCommand('cat', 'http://aws.random.cat/meow', body => JSON.parse(body).file),
-    makeCommand('dog', 'http://random.dog/woof', body => `http://random.dog/${body}`)
+    makeCommand('cat', vote ? 'http://aws.random.cat/meow' : 'https://nekos.life/api/v2/img/meow', body => vote ? JSON.parse(body).file : JSON.parse(body).url),
+    makeCommand('dog', vote ? 'http://random.dog/woof.json' : 'https://nekos.life/api/v2/img/woof', body => JSON.parse(body).url),
+    //makeCommand('dog', vote ? 'http://random.dog/woof' : 'https://nekos.life/api/v2/img/woof', body => vote ? `http://random.dog/${body}` : JSON.parse(body).url),
+    makeCommand('lizard', 'https://nekos.life/api/v2/img/lizard', body => JSON.parse(body).url)
 ];
