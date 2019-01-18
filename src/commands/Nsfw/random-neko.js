@@ -2,10 +2,30 @@ const fetch = require('node-fetch');
 
 exports.run = async (bot, msg, args) => {
 	try {
-		const nsfw_topics = [
-			''
+		const endpoints = [
+			'api/hug',
+			'api/kiss',
+			'api/neko',
+			'api/pat',
+			'api/v2/img/tickle',
+			'api/v2/img/ngif',
+			'api/v2/img/poke',
+			'api/v2/img/kiss',
+			'api/v2/img/slap',
+			'api/v2/img/cuddle',
+			'api/v2/img/avatar',
+			'api/v2/img/fox_girl',
+			'api/v2/img/hug',
+			'api/v2/img/gecg',
+			'api/v2/img/pat',
+			'api/v2/img/smug',
+			'api/v2/img/kemonomimi',
+			'api/v2/img/wallpaper',
+			'api/v2/img/baka',
+			'api/v2/img/feed',
+			'api/v2/img/neko'
 		];
-		const get_category = nsfw_topics[Math.floor(Math.random() * nsfw_topics.length)];
+		const get_category = endpoints[Math.floor(Math.random() * endpoints.length)];
 		let request_info = {
 			ok: false,
 			status: 0,
