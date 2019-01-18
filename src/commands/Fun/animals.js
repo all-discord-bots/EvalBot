@@ -39,5 +39,6 @@ module.exports = [
     makeCommand('cat', vote ? 'http://aws.random.cat/meow' : 'https://nekos.life/api/v2/img/meow', body => vote ? JSON.parse(body).file : JSON.parse(body).url),
     makeCommand('dog', vote ? 'http://random.dog/woof.json' : 'https://nekos.life/api/v2/img/woof', body => JSON.parse(body).url),
     //makeCommand('dog', vote ? 'http://random.dog/woof' : 'https://nekos.life/api/v2/img/woof', body => vote ? `http://random.dog/${body}` : JSON.parse(body).url),
-    makeCommand('lizard', 'https://nekos.life/api/v2/img/lizard', body => JSON.parse(body).url)
+    makeCommand('lizard', 'https://nekos.life/api/v2/img/lizard', body => JSON.parse(body).url),
+    makeCommand('duck', 'https://random-d.uk/api/v1/random', body => JSON.parse(body).url)
 ];
