@@ -1,4 +1,3 @@
-https://nekos.life/api/v2/img/lewd
 const fetch = require('node-fetch');
 
 exports.run = async (bot, msg, args) => {
@@ -32,15 +31,15 @@ exports.run = async (bot, msg, args) => {
 			*/
 			if (request_info.ok) {
 				msg.channel.send({
-					embed:({
+					embed: {
 						timestamp: new Date(),
 						image: {
-							url: `http://media.o${url}.ru/${json[0].preview}`
+							url: json.url
 						},
 						footer: {
 							text: `[${request_info.status}]`
 						}
-					})
+					}
 				});
 			} else {
 				return msg.channel.send(`<:redx:411978781226696705> ${request_info.statusText}`);
