@@ -53,7 +53,7 @@ exports.run = async (bot, msg, args) => {
 };
 
 exports.info = {
-	name: 'onoise',
+	name: 'lewd-neko',
 	clientPermissions: ['ATTACH_FILES'],
 	aliases: ['lewdneko','lewdnekos'],
 	nsfw: true,
