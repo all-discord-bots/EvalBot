@@ -1,3 +1,4 @@
+// https://nekos.life/api/v2/8ball
 const responses = [
 	'Unclear, ask again later',
 	'Soon',
