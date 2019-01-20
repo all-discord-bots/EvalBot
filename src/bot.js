@@ -211,9 +211,10 @@ class CripsBot extends Client {
 				}).then(() => {
 					console.log("Uploaded bot stats to botsfordiscord.com!");
 				}).catch(console.error);
-				const discordBestBots = axios({
+				
+				const discordsBestBots = axios({
 					method: 'post',
-					url: `https://discordsbestbots.xyz/bots/${bot.user.id}`,
+					url: `https://discordsbestbots.xyz/api/bots/${bot.user.id}`,
 					headers: {
 						'Content-Type': 'application/json',
 						'Authorization': `${process.env.DBB_TOKEN}`
@@ -223,7 +224,7 @@ class CripsBot extends Client {
 						shards: bot.shard.count
 					}
 				}).then(() => {
-					console.log("Uploaded bot stats to discordbestbots.xyz!");
+					console.log("Uploaded bot stats to discordsbestbots.xyz!");
 				}).catch(console.error);
 				/*
 				const discordPw = axios({
@@ -273,7 +274,7 @@ class CripsBot extends Client {
 				const [dbres, dpwres, bspaceres, dservres, listres] = await Promise.all([discordBots, discordPw, botlistSpace, discordServices, listCord])
 				console.log(dbres.res, dpwres.res, bspaceres.res, dservres.res, listres.res)
 				*/
-				const [discordbots, discordbotlist, botsfordiscord, botlistspace, discordbestbots] = await Promise.all([discordBots, discordBotList, botsForDiscord, botlistSpace, discordBestBots]);
+				const [discordbots, discordbotlist, botsfordiscord, botlistspace, discordsbestbots] = await Promise.all([discordBots, discordBotList, botsForDiscord, botlistSpace, discordsBestBots]);
 				///console.log(dbres.toString());
 			} catch (err) {
 				console.error(err.stack ? err.stack : err.toString());
