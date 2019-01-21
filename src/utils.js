@@ -73,7 +73,7 @@ const permissions = {
 	USE_VAD: 'Use voice activity'
 };
 
-const client_information = async() => {
+const get_client_data = async() => {
 	let [users, guilds, guilds_per_shard, channels, connections] = [0, 0, [], 0, 0];
 	if (global.bot.shard) {
 		const results = await global.bot.shard.broadcastEval(`[this.users.size, this.guilds.size, [this.guilds.size], this.channels.size, this.voice.connections.size]`); // this.voiceConnections.size
@@ -98,6 +98,10 @@ const client_information = async() => {
 		channel_size: channels,
 		voice_connections: connections
 	};
+};
+
+const client_information = async(key) => {
+	return Object(await get_client_data())[key];
 };
 
 const randomSelection = choices => choices[Math.floor(Math.random() * choices.length)];
