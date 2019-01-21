@@ -92,11 +92,11 @@ const client_information = async() => {
 		connections += global.bot.voice.connections.size;
 	}
 	return {
-		'user_size': users,
-		'guild_size': guilds,
-		'guilds_per_shard': guilds_per_shard,
-		'channel_size': channels,
-		'voice_connections': connections
+		user_size: users,
+		guild_size: guilds,
+		guilds_per_shard: guilds_per_shard,
+		channel_size: channels,
+		voice_connections: connections
 	};
 };
 
