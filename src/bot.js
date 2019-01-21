@@ -220,7 +220,7 @@ class CripsBot extends Client {
 						'Authorization': `${process.env.DBB_TOKEN}`
 					},
 					data: {
-						guilds: bot.utils.client_information('guild_size'),
+						guilds: bot.guilds.size,//bot.utils.client_information('guild_size'),
 						shards: bot.shard.count
 					}
 				}).then(() => {
