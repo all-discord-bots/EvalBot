@@ -7,7 +7,7 @@ exports.run = async (bot, msg, args) => {
 		if (!music_items[msg.guild.id] || !music_items[msg.guild.id].queue) return msg.channel.send(`<:redx:411978781226696705> There are no audios in the queue!`);
 		if (parseInt(args[0]) <= 0) return msg.channel.send(`<:redx:411978781226696705> The positions range from \`1-${music_items[msg.guild.id].queue.length-1}\`.`);
 		if (parseInt(args[0]) === music_items[msg.guild.id].queue_position) return msg.channel.send(`<:redx:411978781226696705> You can't remove the current playing item.`).catch((err) => console.error);
-		if (parseInt(args[0]) > music_items[msg.guild.id].queue.length-1) return msg.channel.send(`<:redx:411978781226696705> You do not have that many songs in the queue!`);
+		if (parseInt(args[0]) > music_items[msg.guild.id].queue.length) return msg.channel.send(`<:redx:411978781226696705> You do not have that many songs in the queue!`);
 		const audio = music_items[msg.guild.id].queue.indexOf(music_items[msg.guild.id].queue[parseInt(args[0])]);
 		msg.channel.send(`<:check:411976443522711552> Removed \`${music_items[msg.guild.id].queue[parseInt(args[0])]}\` from the queue.`);
 		music_items[msg.guild.id].queue.splice(audio, 1);
