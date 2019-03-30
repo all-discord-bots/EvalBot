@@ -80,7 +80,7 @@ exports.run = async (bot, msg, args) => {
 			}
 			//queue += `${i + 1}. [${music_items[msg.guild.id].queue[i].title}](${music_items[msg.guild.id].queue[i].url})\n`;
 		}
-		msg.channel.send(`\`\`\`md\n${queue}\n\`\`\``);
+		msg.channel.send(`\`\`\`md\n${queue.replace(/(&quot;)/g, '"').replace(/(&amp)/g, '&').replace(/(&apos;)/g, '\'').replace(/(&gt;)/g, '>').replace(/(&lt;)/g, '<')}\n\`\`\``);
 		/*if (music_items[msg.guild.id].playback_duration != '') {
 			music_items[msg.guild.id].playback_duration = '';
 		}*/
