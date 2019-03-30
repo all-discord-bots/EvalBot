@@ -187,8 +187,9 @@ exports.info = {
 	usage: 'play <url | search>',
 	examples: [
 		'play Ozzy Osbourne - Crazy Train',
-		'play Lamb of God - Blood of the Scribe',
-		'play Nickleback - How you remind me'
+		'play DEATH - Zombie Ritual',
+		'play Underoath - On My Teeth',
+		'play Under My Feet - Sink to the bottom or swim for the shore'
 	],
 	description: 'Play audio from YouTube.'
 };
