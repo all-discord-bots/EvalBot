@@ -5,8 +5,8 @@ exports.run = async (bot, msg, args) => {
 		if (!msg.member.voice.channel) return msg.channel.send(`<:redx:411978781226696705> You must be in a voice channel!`);
 		if (!music_items[msg.guild.id]) return msg.channel.send(`<:redx:411978781226696705> Queue is already empty!`);
 		if (args.length <= 0) {
-			music_items[msg.guild.id].loop_queue = false;
-			music_items[msg.guild.id].loop_song = false;
+			music_items[msg.guild.id].loop = false;
+			music_items[msg.guild.id].repeat = false;
 			if (music_items[msg.guild.id].queue.length > 0) {
 				music_items[msg.guild.id].queue.splice(0, music_items[msg.guild.id].queue.length);
 				if (msg.guild.voiceConnection !== null) {
