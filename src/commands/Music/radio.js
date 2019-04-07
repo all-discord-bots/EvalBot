@@ -153,7 +153,7 @@ const get_video_id = (string) => {
 
 exports.info = {
 	name: 'radio',
-	guildOnly: true,
+	allowDM: false,
 	aliases: ['station','radio-station'],
 	userPermissions: ['CONNECT'],
 	clientPermissions: ['CONNECT','SPEAK'],
