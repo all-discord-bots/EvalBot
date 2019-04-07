@@ -9,50 +9,48 @@ exports.run = async (bot, msg, args) => {
 	try {
 		switch (args.length) {
 			case 0:
-				return msg.channel.send(`<:redx:411978781226696705> You must provide a url or search string!`);
+				return msg.channel.send('<:redx:411978781226696705> You must provide a url or search string!');
 		}
-		
-		if (!msg.member.voice.channel) return msg.channel.send(`<:redx:411978781226696705> You must be in a voice channel!`);
+
+		if (!msg.member.voice.channel) return msg.channel.send('<:redx:411978781226696705> You must be in a voice channel!');
 
 		const search = new YTSearcher({
 			key: process.env.YOUTUBE_API_KEY,
 			revealkey: true
 		});
-		
+
 		search.search(args.join(' '), { type: 'video' }).then((searchResult) => {
 			let result = searchResult.first;
 			//if (!result) return msg.channel.send(`<:redx:411978781226696705> Could not find this video.`).catch(err => console.error)
 			// result.id = video id // result.channelID = channel id // result.url = full video url // result.title = video name // result.description = video description
-			if (!result.url || !result.id) return msg.channel.send(`<:redx:411978781226696705> I was unable to find that video.`);
+			if (!result.url || !result.id) return msg.channel.send('<:redx:411978781226696705> I was unable to find that video.');
 			fetched_queue.queue.push({
-				title: `${result.title || 'N/A'}`,
-				url: `${result.url}`,
-				id: `${result.id}`,
+				title: result.title || 'N/A',
+				url: result.url,
+				id: result.id,
 				requester: msg.author,
 				total_duration: ''
 			});
 			
-			if (fetched_queue.queue.length === 1 || !msg.guild.voiceConnection) {
-				executeQueue(fetched_queue.queue);
-			}
+			if (fetched_queue.queue.length === 1 || !msg.guild.voiceConnection) executeQueue(fetched_queue.queue);
 			
 			if (result.url) { // message information about the video on playing the video
 				let thumbnail;
 				if (result.thumbnails.default.url && !result.thumbnails.medium.url && !result.thumbnails.high.url) {
-					thumbnail = `${result.thumbnails.default.url}`;
+					thumbnail = result.thumbnails.default.url;
 				} else if (result.thumbnails.default.url && result.thumbnails.medium.url && !result.thumbnails.high.url) {
-					thumbnail = `${result.thumbnails.medium.url}`;
+					thumbnail = result.thumbnails.medium.url;
 				} else if (result.thumbnails.default.url && result.thumbnails.medium.url && result.thumbnails.high.url) {
-					thumbnail = `${result.thumbnails.high.url}`;
+					thumbnail = result.thumbnails.high.url;
 				}
 				msg.channel.send({
 					embed: {
 						color: 3447003,
 						title: `${result.title || 'N/A'} by ${result.channelTitle || 'N/A'}`,
-						url: `${result.url}`,
-						description: `${result.description || 'N/A'}`,
+						url: result.url,
+						description: result.description || 'N/A',
 						thumbnail: {
-							url: `${thumbnail}`
+							url: thumbnail
 						},
 						timestamp: new Date()
 					}
@@ -65,15 +63,15 @@ exports.run = async (bot, msg, args) => {
 		const executeQueue = ((queue) => {
 			// If the queue is empty
 			if (queue.length <= 0) {
-				msg.channel.send(`<:check:411976443522711552> Playback finished.`);
 				fetched_queue.queue_position = 0;
+				msg.channel.send('<:check:411976443522711552> Playback finished.');
 				if (msg.guild.voiceConnection !== null) return msg.guild.voiceConnection.disconnect(); // Leave the voice channel.
 			}
 			
 			new Promise((resolve, reject) => {
 				// Join the voice channel if not already in one.
-				if (!msg.member.voice.channel) return msg.channel.send('<:redx:411978781226696705> You must be in a voice channel!');
 				if (msg.guild.voiceConnection === null) {
+					if (!msg.member.voice.channel) return msg.channel.send('<:redx:411978781226696705> You must be in a voice channel!');
 					// Check if the user is in a voice channel.
 					if (msg.member.voice.channel && msg.member.voice.channel.joinable) {
 						msg.member.voice.channel.join().then((connection) => {
