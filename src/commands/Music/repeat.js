@@ -16,6 +16,7 @@ exports.run = async (bot, msg, args) => {
 
 exports.info = {
 	name: 'repeat',
+	guildOnly: true,
 	userPermissions: ['CONNECT'],
 	clientPermissions: ['CONNECT'],
 	aliases: ['repeat','repeatsong','repeat-song','songrepeat','song-repeat'],
