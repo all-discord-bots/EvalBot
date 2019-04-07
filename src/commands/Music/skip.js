@@ -23,7 +23,7 @@ exports.run = async (bot, msg, args) => {
 
 exports.info = {
 	name: 'skip',
-	guildOnly: true,
+	allowDM: false,
 	userPermissions: ['CONNECT'],
 	clientPermissions: ['CONNECT'],
 	usage: 'skip [number]',
