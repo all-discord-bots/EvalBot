@@ -16,7 +16,7 @@ exports.run = async (bot, msg, args) => {
 
 exports.info = {
 	name: 'loop',
-	guildOnly: true,
+	allowDM: false,
 	userPermissions: ['CONNECT'],
 	clientPermissions: ['CONNECT'],
 	aliases: ['loop', 'loopqueue', 'loop-queue', 'queueloop', 'queue-loop'],
