@@ -31,5 +31,5 @@ exports.info = {
 		'skip',
 		'skip 2'
 	],
-	description: 'Skip a song or multi songs.'
+	description: 'Skip one or more tracks.'
 };
