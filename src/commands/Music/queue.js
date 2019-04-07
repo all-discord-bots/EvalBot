@@ -31,9 +31,9 @@ exports.run = async (bot, msg, args) => {
 						let current_time = 0;
 						if (msg.guild.voiceConnection) current_time = msg.guild.voiceConnection.player.dispatcher.streamTime;
 						let [hrs, mins, secs] = milliseconds.to(hours, minutes, seconds)(parseInt(current_time));
-						hrs = hrs.padStart(0x2, '0');
-						mins = mins.padStart(0x2, '0');
-						secs = secs.padStart(0x2, '0');
+						hrs = hrs.toString().padStart(0x2, '0');
+						mins = mins.toString().padStart(0x2, '0');
+						secs = secs.toString().padStart(0x2, '0');
 						const total_duration = (fetched_queue.queue_position === index) ? ` [${hrs}:${mins}:${secs}/${h}:${m}:${s}]` : ` [${h}:${m}:${s}]`;
 						song.total_duration = total_duration;
 						playback_duration = total_duration;
