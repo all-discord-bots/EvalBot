@@ -100,7 +100,7 @@ exports.run = async (bot, msg, args) => {
 					resolve(msg.guild.voiceConnection);
 				}
 			}).then((connection) => {
-				const video = (music_items[msg.guild.id].loop_queue || music_items[msg.guild.id].loop_song) ? queue[music_items[msg.guild.id].queue_position].url : queue[0].url; // Get the audio to play from the queue.
+				const video = (music_items[msg.guild.id].loop || music_items[msg.guild.id].repeat) ? queue[music_items[msg.guild.id].queue_position].url : queue[0].url; // Get the audio to play from the queue.
 				
 				// Play the video.
 				try {
@@ -150,14 +150,14 @@ exports.run = async (bot, msg, args) => {
 					dispatcher.once('end', () => {
 						// Wait a second before continuing
 						setTimeout(() => {
-							if (music_items[msg.guild.id].loop_queue && !music_items[msg.guild.id].loop_song) {
+							if (music_items[msg.guild.id].loop && !music_items[msg.guild.id].repeat) {
 								if (music_items[msg.guild.id].queue_position >= music_items[msg.guild.id].queue.length - 1) {
 									music_items[msg.guild.id].queue_position = 0;
 								} else {
 									music_items[msg.guild.id].queue_position++;
 								}
 								executeQueue(music_items[msg.guild.id].queue);
-							} else if (!music_items[msg.guild.id].loop_queue && music_items[msg.guild.id].loop_song) {
+							} else if (!music_items[msg.guild.id].loop && music_items[msg.guild.id].repeat) {
 								executeQueue(music_items[msg.guild.id].queue);
 							} else {
 								music_items[msg.guild.id].queue_position = 0;
