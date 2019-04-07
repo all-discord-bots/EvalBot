@@ -171,7 +171,7 @@ exports.run = async (bot, msg, args) => {
 
 exports.info = {
 	name: 'play',
-	guildOnly: true,
+	allowDM: false,
 	userPermissions: ['CONNECT'],
 	clientPermissions: ['SPEAK','CONNECT'],
 	usage: 'play <url | search>',
