@@ -1,27 +1,21 @@
 require('../../conf/globals.js');
 exports.run = async (bot, msg, args) => {
 	try {
-		if (!msg.member.voice.channel) return msg.channel.send(`<:redx:411978781226696705> You must be in a voice channel!`).catch(err => console.error);
-		if (msg.guild.voiceConnection === null || !music_items[msg.guild.id] || music_items[msg.guild.id] && music_items[msg.guild.id].queue.length < 1) return msg.channel.send(`<:redx:411978781226696705> There is no audio being played.`);
-		if (!music_items[msg.guild.id] || music_items[msg.guild.id].queue.length <= 0) return msg.channel.send(`<:redx:411978781226696705> There are no audios in the queue to loop!`);
-		let skipped, s;
-		if (!args[0]) {
-			skipped = `1`;
-			s = '';
-		} else if (args[0]) {
-			skipped = args[0];
-			s = 's';
-		}
-		let toSkip = Math.min(parseInt(args[0]), music_items[msg.guild.id].queue.length);
-		music_items[msg.guild.id].queue.splice(0, parseInt(toSkip) - 1);
+		if (!msg.member.voice.channel) return msg.channel.send('<:redx:411978781226696705> You must be in a voice channel!').catch((err) => console.error);
+		let fetched_queue = music_items[msg.guild.id];
+		if ((msg.guild.voiceConnection === null || !fetched_queue) || (fetched_queue && fetched_queue.queue.length < 1)) return msg.channel.send('<:redx:411978781226696705> There is no audio being played.');
+		//if (!fetched_queue || fetched_queue.queue.length <= 0) return msg.channel.send('<:redx:411978781226696705> There are no audios in the queue to loop!');
+		let [skipped, s] = !args[0] ? ['1', ''] : [args[0], 's'];
+		let toSkip = Math.min(parseInt(args[0]), fetched_queue.queue.length);
+		fetched_queue.queue.splice(0, parseInt(toSkip) - 1);
 		try {
-			if (msg.guild.voiceConnection.paused) msg.guild.voiceConnection.player.dispatcher.resume();
+			if (msg.guild.voiceConnection && msg.guild.voiceConnection.paused) msg.guild.voiceConnection.player.dispatcher.resume();
 			msg.guild.voiceConnection.player.dispatcher.end();
+			msg.channel.send(`<:check:411976443522711552> Skipped ${skipped} tracks${s}.`);
 		} catch (err) {
-			return msg.channel.send(`<:redx:411978781226696705> Error occoured!\n\`\`\`\n${err.toString().split(':')[0]}: ${err.toString().split(':')[1]}\n\`\`\``);
-		};
+			msg.channel.send(`<:redx:411978781226696705> Error occurred!\n\`\`\`\n${err.toString().split(':')[0]}: ${err.toString().split(':')[1]}\n\`\`\``);
+		}
 		//console.log(`Skipped ${skipped} song${s}.`);
-		msg.channel.send(`<:check:411976443522711552> Skipped ${skipped} song${s}.`);
 	} catch (err) {
 		console.error(err.toString());
 	}
@@ -29,6 +23,7 @@ exports.run = async (bot, msg, args) => {
 
 exports.info = {
 	name: 'skip',
+	guildOnly: true,
 	userPermissions: ['CONNECT'],
 	clientPermissions: ['CONNECT'],
 	usage: 'skip [number]',
