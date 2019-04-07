@@ -8,7 +8,7 @@ exports.run = async (bot, msg, args) => {
 		let playback_duration = '';
 		let fetched_queue = music_items[msg.guild.id];
 		if (fetched_queue.queue.length <= 0) playback_duration = '';
-		if (!fetched_queue || fetched_queue.queue.length <= 0) return msg.channel.send(`<:redx:411978781226696705> There are no items in the queue.`);
+		if (!fetched_queue || fetched_queue.queue.length <= 0) return msg.channel.send('<:redx:411978781226696705> There are no items in the queue.');
 
 		const queue = fetched_queue.queue.map((song, index, array) => {
 			if (!fetched_queue.is_streaming) {
