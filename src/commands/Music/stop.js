@@ -26,7 +26,7 @@ exports.info = {
 	guildOnly: true,
 	userPermissions: ['CONNECT'],
 	clientPermissions: ['CONNECT'],
-	aliases: ['leave'],
+	aliases: ['leave','disconnect'],
 	usage: 'stop',
 	examples: [
 		'stop'
