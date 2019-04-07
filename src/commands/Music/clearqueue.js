@@ -1,14 +1,15 @@
 require('../../conf/globals.js');
 
 exports.run = async (bot, msg, args) => {
+	let fetched_queue = music_items[msg.guild.id];
 	try {
-		if (!msg.member.voice.channel) return msg.channel.send(`<:redx:411978781226696705> You must be in a voice channel!`);
-		if (!music_items[msg.guild.id]) return msg.channel.send(`<:redx:411978781226696705> Queue is already empty!`);
+		if (!msg.member.voice.channel) return msg.channel.send('<:redx:411978781226696705> You must be in a voice channel!');
+		if (!fetched_queue) return msg.channel.send('<:redx:411978781226696705> Queue is already empty!');
 		if (args.length <= 0) {
-			music_items[msg.guild.id].loop = false;
-			music_items[msg.guild.id].repeat = false;
-			if (music_items[msg.guild.id].queue.length > 0) {
-				music_items[msg.guild.id].queue.splice(0, music_items[msg.guild.id].queue.length);
+			fetched_queue.loop = false;
+			fetched_queue.repeat = false;
+			if (fetched_queue.queue.length > 0) {
+				fetched_queue.queue.splice(0, fetched_queue.queue.length);
 				if (msg.guild.voiceConnection !== null) {
 					try {
 						if (msg.guild.voiceConnection.paused) msg.guild.voiceConnection.player.dispatcher.resume();
@@ -17,20 +18,20 @@ exports.run = async (bot, msg, args) => {
 						return msg.channel.send(`<:redx:411978781226696705> Error occoured!\n\`\`\`\n${err.toString().split(':')[0]}: ${err.toString().split(':')[1]}\n\`\`\``);
 					}
 				}
-				return msg.channel.send(`<:check:411976443522711552> Queue has been cleared!`);
+				return msg.channel.send('<:check:411976443522711552> Queue has been cleared!');
 			} else {
-				return msg.channel.send(`<:redx:411978781226696705> Queue is already empty!`);
+				return msg.channel.send('<:redx:411978781226696705> Queue is already empty!');
 			}
 		}  else if (args.length > 0) {
-			if (music_items[msg.guild.id].queue.length > 0) {
-				let user = bot.utils.getMembers(msg,args[0]);
-				if (!user) return msg.channel.send(`<:redx:411978781226696705> I could not find that user.`);
-				if (user.toString().includes("I could not find that user.")) return;
-				if (!msg.guild.members.get(`${user.id}`)) return msg.channel.send(`<:redx:411978781226696705> I could not find that user.`);
-				if (music_items[msg.guild.id].queue.filter((song) => song.requester === user.user).length <= 0) return msg.channel.send(`<:redx:411978781226696705> That user does not have any audios in the queue.`);
-				music_items[msg.guild.id].queue.forEach((value,index) => {
+			if (fetched_queue.queue.length > 0) {
+				let user = bot.utils.getMembers(msg, args[0]);
+				if (!user) return msg.channel.send('<:redx:411978781226696705> I could not find that user.');
+				if (user.toString().includes('I could not find that user.')) return;
+				if (!msg.guild.members.get(`${user.id}`)) return msg.channel.send('<:redx:411978781226696705> I could not find that user.');
+				if (fetched_queue.queue.filter((song) => song.requester === user.user).length <= 0) return msg.channel.send('<:redx:411978781226696705> That user does not have any audios in the queue.');
+				fetched_queue.queue.forEach((value,index) => {
 					if (value.requester === user.user) {
-						music_items[msg.guild.id].queue.splice(index,1);
+						fetched_queue.queue.splice(index,1);
 						if (index == 0) {
 							if (msg.guild.voiceConnection !== null) {
 								try {
@@ -45,7 +46,7 @@ exports.run = async (bot, msg, args) => {
 				});
 				return msg.channel.send(`<:check:411976443522711552> All audios requested by <@${user.id}> have been cleared.`);
 			} else {
-				return msg.channel.send(`<:redx:411978781226696705> Queue is already empty!`);
+				return msg.channel.send('<:redx:411978781226696705> Queue is already empty!');
 			}
 		}
 	} catch (err) {
@@ -55,6 +56,7 @@ exports.run = async (bot, msg, args) => {
 
 exports.info = {
 	name: 'clearqueue',
+	guildOnly: true,
 	userPermissions: ['CONNECT'],
 	clientPermissions: ['CONNECT'],
 	aliases: ['clear-queue'],
