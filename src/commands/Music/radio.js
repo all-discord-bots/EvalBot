@@ -9,12 +9,12 @@ exports.run = async (bot, msg, args) => {
 				let radio_stations = '';
 				radio_stations += radio_stations_array.join('\n');
 				return msg.channel.send({
-					embed: ({
+					embed: {
 						color: 3447003,
-						title: `__**Radio Stations**__`,
-						description: `${radio_stations}`,
+						title: '__**Radio Stations**__',
+						description: radio_stations,
 						timestamp: new Date()
-					})
+					}
 				});
 		}
 		if (!msg.member.voice.channel) return msg.channel.send('<:redx:411978781226696705> You must be in a voice channel!');
@@ -71,8 +71,8 @@ exports.run = async (bot, msg, args) => {
 		function executeQueue(queue) {
 			new Promise((resolve, reject) => {
 				// Join the voice channel if not already in one.
-				if (!msg.member.voice.channel) return msg.channel.send('<:redx:411978781226696705> You must be in a voice channel!');
 				if (msg.guild.voiceConnection === null) {
+					if (!msg.member.voice.channel) return msg.channel.send('<:redx:411978781226696705> You must be in a voice channel!');
 					// Check if the user is in a voice channel.
 					if (msg.member.voice.channel && msg.member.voice.channel.joinable) {
 						msg.member.voice.channel.join().then((connection) => {
@@ -106,19 +106,15 @@ exports.run = async (bot, msg, args) => {
 					connection.once('failed', (reason) => {
 						console.error(`${reason.toString()}`);
 						try {
-							if (connection) {
-								connection.disconnect();
-							}
+							if (connection) connection.disconnect();
 						} catch (err) {
 							console.error(`${err.toString()}`);
 						};
 					});
-					
+
 					connection.once('error', (err) => {
 						console.error(`Dispatcher/connection: ${err.stack ? err.stack : err.toString()}`);
-						if (msg && msg.channel) {
-							msg.channel.send(`<:redx:411978781226696705> Dispatcher error!\n\`${err.toString()}\``);
-						}
+						if (msg && msg.channel) msg.channel.send(`<:redx:411978781226696705> Dispatcher error!\n\`${err.toString()}\``);
 						queue.shift(); // Skip to the next audio.
 						executeQueue(fetched_queue.queue);
 					});
