@@ -103,7 +103,7 @@ exports.run = async (bot, msg, args) => {
 					
 					if (!video) return msg.channel.send('<:redx:411978781226696705> I was unable to play that video.');
 					
-					let dispatcher = fetched_queue.stream_mode == 0 ? connection.play(ytdl(video.toString(), { filter: 'audioonly' }), { volume: (fetched_queue.volume / 100) }) : connection.play(stream(video.toString()), { volume: (fetched_queue.volume / 100) }); // Will Fix Soon // connection.playStream(stream(video.toString()), { volume: (music_items[msg.guild.id].volume / 100) }); // playStream
+					let dispatcher = fetched_queue.stream_mode === 0 ? connection.play(ytdl(video.toString(), { filter: 'audioonly' }), { volume: (fetched_queue.volume / 100) }) : connection.play(stream(video.toString()), { volume: (fetched_queue.volume / 100) }); // Will Fix Soon // connection.playStream(stream(video.toString()), { volume: (music_items[msg.guild.id].volume / 100) }); // playStream
 					
 					/*connection.once('authenticated', () => {
 						console.log('Connection has been successfully authenticated');
