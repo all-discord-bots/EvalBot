@@ -27,7 +27,7 @@ exports.run = async (bot, msg, args) => {
 
 exports.info = {
 	name: 'volume',
-	guildOnly: true,
+	allowDM: false,
 	userPermissions: ['CONNECT'],
 	clientPermissions: ['CONNECT'],
 	aliases: ['vol'],
