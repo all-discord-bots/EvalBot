@@ -4,28 +4,11 @@ exports.run = async (bot, msg, args) => {
 	try {
 		if (!msg.member.voice.channel) return msg.channel.send(`<:redx:411978781226696705> You must be in a voice channel!`);
 		if (msg.guild.voiceConnection === null) return msg.channel.send(`<:redx:411978781226696705> There is no audio being played.`);
-		if (!music_items[msg.guild.id] || music_items[msg.guild.id].queue.length <= 0) return msg.channel.send(`<:redx:411978781226696705> There are no audios in the queue to loop!`).catch(err => console.error);
-		if (args[0].toLowerCase() === 'song' || args[0].toLowerCase() === 'current' || args[0].toLowerCase() === 'this' || args[0].toLowerCase() === 'one' || args[0].toLowerCase() === 'repeat') {
-			if (!music_items[msg.guild.id].loop_song) {
-				music_items[msg.guild.id].loop_song = true;
-				music_items[msg.guild.id].loop_queue = false;
-				return msg.channel.send(`<:check:411976443522711552> Song Looping enabled! :repeat_one:`);
-			} else if (music_items[msg.guild.id].loop_song) {
-				music_items[msg.guild.id].loop_song = false;
-				music_items[msg.guild.id].loop_queue = false;
-				return msg.channel.send(`<:check:411976443522711552> Song Looping disabled! :arrow_forward:`);
-			}
-		} else if (args[0].toLowerCase() === 'queue' || args[0].toLowerCase() === 'loopqueue' || args[0].toLowerCase() === 'fullqueue' || args[0].toLowerCase() === 'all' || args[0].toLowerCase().length <= 0) {
-			if (!music_items[msg.guild.id].loop_queue) {
-				music_items[msg.guild.id].loop_queue = true;
-				music_items[msg.guild.id].loop_song = false;
-				return msg.channel.send(`<:check:411976443522711552> Queue Looping enabled! :repeat:`);
-			} else if (music_items[msg.guild.id].loop_queue) {
-				music_items[msg.guild.id].loop_queue = false;
-				music_items[msg.guild.id].loop_song = false;
-				return msg.channel.send(`<:check:411976443522711552> Queue Looping disabled! :arrow_forward:`);
-			}
-		}
+		let fetched_queue = music_items[msg.guild.id];
+		if (!fetched_queue || fetched_queue.queue.length <= 0) return msg.channel.send(`<:redx:411978781226696705> There are no audios in the queue to loop!`).catch((err) => console.error);
+		fetched_queue.loop = !fetched_queue.loop;
+		fetched_queue.repeat = false;
+		return msg.channel.send(`<:check:411976443522711552> Queue Looping ${!fetched_queue.loop ? 'enabled! :repeat:' : 'disabled! :arrow_forward:'}`);
 	} catch (err) {
 		console.error(err.toString());
 	}
@@ -35,12 +18,10 @@ exports.info = {
 	name: 'loop',
 	userPermissions: ['CONNECT'],
 	clientPermissions: ['CONNECT'],
-	aliases: ['loopqueue', 'loopsong', 'loopone', 'loopcurrent', 'loopall'],
-	usage: 'loop [queue | song]',
+	aliases: ['loop', 'loopqueue', 'loop-queue', 'queueloop', 'queue-loop'],
+	usage: 'loop',
 	examples: [
-		'loop',
-		'loop queue',
-		'loop song'
+		'loop'
 	],
-	description: 'Loop the current song or full queue.'
+	description: 'Loop the queue.'
 };
