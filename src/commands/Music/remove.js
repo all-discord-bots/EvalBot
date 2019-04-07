@@ -11,10 +11,10 @@ exports.run = async (bot, msg, args) => {
 		if (parseInt(args[0]) > fetched_queue.queue.length) return msg.channel.send('<:redx:411978781226696705> You do not have that many tracks in the queue!');
 		try {
 			const audio = fetched_queue.queue.indexOf(fetched_queue.queue[parseInt(args[0]) - 0x1]);
+			msg.channel.send(`<:check:411976443522711552> Removed \`${fetched_queue.queue[audio].title}\` from the queue.`);
 			fetched_queue.queue.splice(audio, 1);
-			return msg.channel.send(`<:check:411976443522711552> Removed \`${fetched_queue.queue[parseInt(args[0])].title}\` from the queue.`);
 		} catch (e) {
-			return msg.channel.send(`<:redx:411978781226696705> Failed to remove track at position \`${args[0]}\` from the queue.`);
+			msg.channel.send(`<:redx:411978781226696705> Failed to remove track at position \`${args[0]}\` from the queue.`);
 		}
 	} catch (err) {
 		console.error(err.toString());
