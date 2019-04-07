@@ -9,8 +9,8 @@ exports.run = async (bot, msg, args) => {
 		if (parseInt(args[0]) <= 0) return msg.channel.send(`<:redx:411978781226696705> The positions range from \`1-${fetched_queue.queue.length}\`.`);
 		if (parseInt(args[0]) === fetched_queue.queue_position) return msg.channel.send('<:redx:411978781226696705> You can\'t remove the current playing track.').catch((err) => console.error);
 		if (parseInt(args[0]) > fetched_queue.queue.length) return msg.channel.send('<:redx:411978781226696705> You do not have that many tracks in the queue!');
-		const audio = fetched_queue.queue.indexOf(fetched_queue.queue[parseInt(args[0]) - 0x1]);
 		try {
+			const audio = fetched_queue.queue.indexOf(fetched_queue.queue[parseInt(args[0]) - 0x1]);
 			fetched_queue.queue.splice(audio, 1);
 			msg.channel.send(`<:check:411976443522711552> Removed \`${fetched_queue.queue[parseInt(args[0])].title}\` from the queue.`);
 		} catch (e) {
