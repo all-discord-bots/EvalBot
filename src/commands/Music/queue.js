@@ -5,85 +5,47 @@ require('../../conf/globals.js');
 
 exports.run = async (bot, msg, args) => {
 	try {
-		if (music_items[msg.guild.id].queue.length <= 0) {
-			music_items[msg.guild.id].playback_duration = '';
-		}
-		if (!music_items[msg.guild.id] || music_items[msg.guild.id].queue.length <= 0) return msg.channel.send(`<:redx:411978781226696705> There are no items in the queue.`);
-		let queue = '';
-		/*if (music_items[msg.guild.id].playback_duration != '') {
-			music_items[msg.guild.id].playback_duration = '';
-		}*/
-		for (let i = 0; i < music_items[msg.guild.id].queue.length; i++) {
-			let hashtag = '  ';
-			if (i == music_items[msg.guild.id].queue_position) {
-				hashtag = '# ';
-				if (!music_items[msg.guild.id].is_streaming) {
-					fetchVideoInfo(music_items[msg.guild.id].queue[music_items[msg.guild.id].queue_position].id, function(err, videoInfo) {
-						if (err) console.error(`${err.toString()}`);
-						if (videoInfo) {
-							let videoDuration = duration(`${videoInfo.duration}s`);
-							let d, h, m, s; // days, hours, minutes, seconds
-							s = Math.floor(parseInt(videoDuration - 1) / 1000); // - 1 is used to round the video to get the proper second count
-							m = Math.floor(s / 60);
-							s = s % 60;
-							h = Math.floor(m / 60);
-							m = m % 60;
-							d = Math.floor(h / 24);
-							h = h % 24;
-							let currenttime = 0;
-							if (msg.guild.voiceConnection) {
-								currenttime = msg.guild.voiceConnection.player.dispatcher.streamTime; //msg.guild.voiceConnection.player.dispatcher.time;
-							}
-							let currenttimepos = milliseconds.to(hours,minutes,seconds)(parseInt(currenttime));
-							let seczero, minzero, hourzero, seconezero, minonezero, houronezero;
-							if (s < 10) {
-								seczero = '0';
-							} else if (s > 9) {
-								seczero = '';
-							}
-							if (m < 10) {
-								minzero = '0';
-							} else if (m > 9) {
-								minzero = '';
-							}
-							if (h < 10) {
-								hourzero = '0';
-							} else if (h > 9) {
-								hourzero = '';
-							}
-							if (currenttimepos[2] < 10) {
-								seconezero = '0';
-							} else if (currenttimepos[2] > 9) {
-								seconezero = '';
-							}
-							if (currenttimepos[1] < 10) {
-								minonezero = '0';
-							} else if (currenttimepos[1] > 9) {
-								minonezero = '';
-							}
-							if (currenttimepos[0] < 10) {
-								houronezero = '0';
-							} else if (currenttimepos[0] > 9) {
-								houronezero = '';
-							}
-							music_items[msg.guild.id].playback_duration = ` [${houronezero}${currenttimepos[0]}:${minonezero}${currenttimepos[1]}:${seconezero}${currenttimepos[2]}/${hourzero}${h}:${minzero}${m}:${seczero}${s}]`;
-						}
-					});
-				} else {
-					music_items[msg.guild.id].playback_duration = '';
-				}
-			}
-			if (i == music_items[msg.guild.id].queue_position) {
-				queue += `${hashtag}${i + 1}. ${music_items[msg.guild.id].queue[i].title || 'Failed to get title for this item!'}${music_items[msg.guild.id].playback_duration !== '' ? music_items[msg.guild.id].playback_duration : ' [00:00:00]'}\n`;
+		let playback_duration = '';
+		let fetched_queue = music_items[msg.guild.id];
+		if (fetched_queue.queue.length <= 0) playback_duration = '';
+		if (!fetched_queue || fetched_queue.queue.length <= 0) return msg.channel.send(`<:redx:411978781226696705> There are no items in the queue.`);
+
+		const queue = fetched_queue.queue.map((song, index, array) => {
+			if (!fetched_queue.is_streaming) {
+				//fetchVideoInfo(fetched_queue.queue[fetched_queue.queue_position].id, (err, videoInfo) => {
+				fetchVideoInfo(song.id, (err, videoInfo) => {
+					if (err) console.error(`${err.toString()}`);
+					if (videoInfo) {
+						let videoDuration = duration(`${videoInfo.duration}s`);
+						let d, h, m, s; // days, hours, minutes, seconds
+						s = Math.floor(parseInt(videoDuration - 0x1) / 0x3E8); // - 0x1 is used to round the video to get the proper second count
+						m = Math.floor(s / 0x3C);
+						s = s % 0x3C;
+						h = Math.floor(m / 0x3C);
+						m = m % 0x3C;
+						d = Math.floor(h / 0x18);
+						h = h % 0x18;
+						s = s.toString().padStart(0x2, '0');
+						m = m.toString().padStart(0x2, '0');
+						h = m.toString().padStart(0x2, '0');
+						let current_time = 0;
+						if (msg.guild.voiceConnection) current_time = msg.guild.voiceConnection.player.dispatcher.streamTime;
+						let [hrs, mins, secs] = milliseconds.to(hours, minutes, seconds)(parseInt(current_time));
+						hrs = hrs.padStart(0x2, '0');
+						mins = mins.padStart(0x2, '0');
+						secs = secs.padStart(0x2, '0');
+						const total_duration = (fetched_queue.queue_position === index) ? ` [${hrs}:${mins}:${secs}/${h}:${m}:${s}]` : ` [${h}:${m}:${s}]`;
+						song.total_duration = total_duration;
+						playback_duration = total_duration;
+					}
+				});
 			} else {
-				queue += `${hashtag}${i + 1}. ${music_items[msg.guild.id].queue[i].title || 'Failed to get title for this item!'} [00:00:00]\n`;
+				song.total_duration = '';
+				playback_duration = '';
 			}
-			//queue += `${i + 1}. [${music_items[msg.guild.id].queue[i].title}](${music_items[msg.guild.id].queue[i].url})\n`;
-		}
-		msg.channel.send(`\`\`\`md\n${queue.replace(/(&quot;)/g, '"').replace(/(&amp)/g, '&').replace(/(&apos;)/g, '\'').replace(/(&gt;)/g, '>').replace(/(&lt;)/g, '<')}\n\`\`\``);
-		/*if (music_items[msg.guild.id].playback_duration != '') {
-			music_items[msg.guild.id].playback_duration = '';
-		}*/
+			return `${(fetched_queue.queue_position === index) ? '#' : ' '} ${index + 0x1}. ${song.title || 'Failed to get title for this item!'}${(playback_duration !== '') ? playback_duration : ' [00:00:00]'}`;
+		}).join('\n').replace(/(&quot;)/g, '"').replace(/(&amp)/g, '&').replace(/(&apos;)/g, '\'').replace(/(&gt;)/g, '>').replace(/(&lt;)/g, '<');
+		msg.channel.send(`\`\`\`md\n${queue}\n\`\`\``);
 		/*msg.channel.send({
 			embed: ({
 				description: queue,
@@ -95,7 +57,6 @@ exports.run = async (bot, msg, args) => {
 				}
 			})
 		});*/
-	//});
 	} catch (err) {
 		console.error(err.toString());
 	}
