@@ -56,7 +56,7 @@ exports.run = async (bot, msg, args) => {
 
 exports.info = {
 	name: 'clearqueue',
-	guildOnly: true,
+	allowDM: false,
 	userPermissions: ['CONNECT'],
 	clientPermissions: ['CONNECT'],
 	aliases: ['clear-queue'],
