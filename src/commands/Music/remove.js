@@ -23,7 +23,7 @@ exports.run = async (bot, msg, args) => {
 
 exports.info = {
 	name: 'remove',
-	guildOnly: true,
+	allowDM: false,
 	userPermissions: ['CONNECT'],
 	clientPermissions: ['CONNECT'],
 	aliases: ['removesong','removemusic','removeaudio','removetrack','remove-song','remove-music','remove-audio','remove-track'],
