@@ -18,7 +18,7 @@ exports.run = async (bot, msg, args) => {
 
 exports.info = {
 	name: 'resume',
-	guildOnly: true,
+	allowDM: false,
 	userPermissions: ['CONNECT'],
 	clientPermissions: ['CONNECT'],
 	usage: 'resume',
