@@ -1,6 +1,7 @@
 require('../../conf/globals.js');
 
 exports.run = async (bot, msg, args) => {
+	let fetched_queue = music_items[msg.guild.id];
 	try {
 		let radio_stations_array = Object.keys(built_in_radio).sort();
 		switch (args.length) {
@@ -16,18 +17,18 @@ exports.run = async (bot, msg, args) => {
 					})
 				});
 		}
-		if (!msg.member.voice.channel) return msg.channel.send(`<:redx:411978781226696705> You must be in a voice channel!`);
-		if (get_video_id(args.join(' '))) return msg.channel.send(`<:redx:411978781226696705> You can play YouTube videos using the \`play\` command. You must specify a radio station url.`);
-		if (args.join(' ').length <= 3) return msg.channel.send(`<:redx:411978781226696705> You must provide a valid stream url to play or built-in radio station name!`);
+		if (!msg.member.voice.channel) return msg.channel.send('<:redx:411978781226696705> You must be in a voice channel!');
+		if (get_video_id(args.join(' '))) return msg.channel.send('<:redx:411978781226696705> You can play YouTube videos using the `play` command. You must specify a radio station url.');
+		if (args.join(' ').length <= 3) return msg.channel.send('<:redx:411978781226696705> You must provide a valid stream url to play or built-in radio station name!');
 		let filtered_built_in_radio_stations = radio_stations_array.map((list) => list.toLowerCase()).filter((list) => list.toLowerCase().startsWith(args.join(' ').toLowerCase()));
 		
 		if (filtered_built_in_radio_stations.length >= 2) return msg.channel.send(`<:redx:411978781226696705> Too many results found, try to be a bit more specific with the radio name.\nIf you keep receiving this error please contact the developer!`);
 		
-		if (filtered_built_in_radio_stations.length == 1) {
+		if (filtered_built_in_radio_stations.length === 1) {
 			Object.keys(built_in_radio).forEach((key,index) => {
 				if (key.toLowerCase().startsWith(`${filtered_built_in_radio_stations[0].toLowerCase()}`)) {
 					let api_url = (built_in_radio[key].playlist_api === '') ? null : built_in_radio[key].playlist_api;
-					music_items[msg.guild.id].queue.push({
+					fetched_queue.queue.push({
 						title: `${key}`,
 						url: `${built_in_radio[key].stream}`,
 						id: null,
@@ -37,20 +38,21 @@ exports.run = async (bot, msg, args) => {
 				}
 			});
 		} else if (new RegExp(`^((https?|ftp)(:|%3A)(\/\/|%2F%2F).+)`).test(args.join(' '))) {
-			music_items[msg.guild.id].queue.push({
+			fetched_queue.queue.push({
 				title: `${args.join(' ')}`,
 				url: `${args.join(' ')}`,
 				id: null,
 				playlist_api: null,
-				requester: msg.author
+				requester: msg.author,
+				total_duration: ''
 			});
 		} else {
-			return msg.channel.send(`<:redx:411978781226696705> You must provide a valid stream url to play or built-in radio station name!`);
+			return msg.channel.send('<:redx:411978781226696705> You must provide a valid stream url to play or built-in radio station name!');
 		}
 		
-		if (music_items[msg.guild.id].queue.length >= 2) {
+		if (fetched_queue.queue.length >= 2) {
 			try {
-				music_items[msg.guild.id].queue.shift();
+				fetched_queue.queue.shift();
 				// might need to add a check to the voiceConnection here.
 				if (msg.guild.voiceConnection !== null) {
 					if (msg.guild.voiceConnection.paused) msg.guild.voiceConnection.player.dispatcher.resume();
@@ -60,16 +62,16 @@ exports.run = async (bot, msg, args) => {
 				console.error(err.toString());
 			}
 		}
-		if (music_items[msg.guild.id].queue.length === 1 || !msg.guild.voiceConnection) {
-			executeQueue(music_items[msg.guild.id].queue);
+		if (fetched_queue.queue.length === 1 || !msg.guild.voiceConnection) {
+			executeQueue(fetched_queue.queue);
 		}
-		if (!music_items[msg.guild.id].queue[0] || !music_items[msg.guild.id].queue[0].url) return msg.channel.send(`<:redx:411978781226696705> I was unable to play the stream. Make sure the stream is valid.`);
-		msg.channel.send(`<:check:411976443522711552> Streaming \`${music_items[msg.guild.id].queue[0].title}\`.`);
+		if (!fetched_queue.queue[0] || !fetched_queue.queue[0].url) return msg.channel.send('<:redx:411978781226696705> I was unable to play the stream. Make sure the stream is valid.');
+		msg.channel.send(`<:check:411976443522711552> Streaming \`${fetched_queue.queue[0].title}\`.`);
 		
 		function executeQueue(queue) {
 			new Promise((resolve, reject) => {
 				// Join the voice channel if not already in one.
-				if (!msg.member.voice.channel) return msg.channel.send(`<:redx:411978781226696705> You must be in a voice channel!`);
+				if (!msg.member.voice.channel) return msg.channel.send('<:redx:411978781226696705> You must be in a voice channel!');
 				if (msg.guild.voiceConnection === null) {
 					// Check if the user is in a voice channel.
 					if (msg.member.voice.channel && msg.member.voice.channel.joinable) {
@@ -80,9 +82,9 @@ exports.run = async (bot, msg, args) => {
 						});
 					} else if (!msg.member.voice.channel.joinable) {
 						if (msg.member.voice.channel.full) {
-							msg.channel.send(`<:redx:411978781226696705> I do not have permission to join your voice channel; it is full.`);
+							msg.channel.send('<:redx:411978781226696705> I do not have permission to join your voice channel; it is full.');
 						} else {
-							msg.channel.send(`<:redx:411978781226696705> I do not have permission to join your voice channel!`);
+							msg.channel.send('<:redx:411978781226696705> I do not have permission to join your voice channel!');
 						}
 						reject();
 					} else {
@@ -95,11 +97,11 @@ exports.run = async (bot, msg, args) => {
 				}
 			}).then((connection) => {
 				try {
-					music_items[msg.guild.id].is_streaming = true;
-					music_items[msg.guild.id].queue_position = 0;
-					music_items[msg.guild.id].loop_queue = false;
-					music_items[msg.guild.id].loop_song = false;
-					let dispatcher = connection.play(queue[0].url, { filter: 'audioonly' }, { volume: (music_items[msg.guild.id].volume / 100) }); // Radio
+					fetched_queue.is_streaming = true;
+					fetched_queue.queue_position = 0;
+					fetched_queue.loop = false;
+					fetched_queue.repeat = false;
+					let dispatcher = connection.play(queue[0].url, { filter: 'audioonly' }, { volume: (fetched_queue.volume / 100) }); // Radio
 					
 					connection.once('failed', (reason) => {
 						console.error(`${reason.toString()}`);
@@ -118,14 +120,14 @@ exports.run = async (bot, msg, args) => {
 							msg.channel.send(`<:redx:411978781226696705> Dispatcher error!\n\`${err.toString()}\``);
 						}
 						queue.shift(); // Skip to the next audio.
-						executeQueue(music_items[msg.guild.id].queue);
+						executeQueue(fetched_queue.queue);
 					});
 					
 					dispatcher.once('error', (err) => {
 						console.error(`Dispatcher: ${err.stack ? err.stack : err.toString()}`);
 						if (msg && msg.channel) msg.channel.send(`<:redx:411978781226696705> Dispatcher error!\n\`${err.toString()}\``);
 						queue.shift(); // Skip to the next audio.
-						executeQueue(music_items[msg.guild.id].queue);
+						executeQueue(fetched_queue.queue);
 					});
 					
 					dispatcher.once('end', () => {
@@ -133,7 +135,7 @@ exports.run = async (bot, msg, args) => {
 						setTimeout(() => {
 							if (queue.length > 0) {
 								queue.shift();
-								executeQueue(music_items[msg.guild.id].queue);
+								executeQueue(fetched_queue.queue);
 							}
 						}, 1000);
 					});
@@ -155,6 +157,7 @@ const get_video_id = (string) => {
 
 exports.info = {
 	name: 'radio',
+	guildOnly: true,
 	aliases: ['station','radio-station'],
 	userPermissions: ['CONNECT'],
 	clientPermissions: ['CONNECT','SPEAK'],
