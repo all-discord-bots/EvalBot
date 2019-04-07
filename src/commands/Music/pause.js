@@ -9,8 +9,12 @@ exports.run = async (bot, msg, args) => {
 		if (fetched_queue.is_streaming) return msg.channel.send('<:redx:411978781226696705> Streams cannot be paused.');
 		if (msg.guild.voiceConnection.player.dispatcher) {
 			if (!msg.guild.voiceConnection.player.dispatcher.pause) return msg.channel.send('<:redx:411978781226696705> Playback already paused!');
-			msg.guild.voiceConnection.player.dispatcher.pause();
-			msg.channel.send('<:check:411976443522711552> Playback paused.');
+			try {
+				msg.guild.voiceConnection.player.dispatcher.pause();
+				msg.channel.send('<:check:411976443522711552> Playback paused.');
+			} catch (e) {
+				msg.channel.send('<:redx:411978781226696705> Failed to pause playback.');
+			}
 		}
 	} catch (err) {
 		console.error(err.toString());
@@ -19,7 +23,7 @@ exports.run = async (bot, msg, args) => {
 
 exports.info = {
 	name: 'pause',
-	guildOnly: true,
+	allowDM: false,
 	userPermissions: ['CONNECT'],
 	clientPermissions: ['CONNECT'],
 	usage: 'pause',
