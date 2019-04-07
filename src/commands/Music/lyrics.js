@@ -31,8 +31,8 @@ exports.run = async (bot, msg, args) => {
 			if (artist && artist.toString().length > 2048) return msg.channel.send(`<:redx:411978781226696705> Artist name exceeded the maximum length. Artist name was \`${artist.toString().length}/2048\` characters.`).catch(err => console.error);
 			if (song_name && song_name.toString().length > 2048) return msg.channel.send(`<:redx:411978781226696705> Song name exceeded the maximum length. Song name was \`${song_name.toString().length}/2048\` characters.`).catch(err => console.error);
 			let pagenum = 1;
-			lyric.forEach(glyrics => {
-				msg.channel.send({embed: ({
+			lyric.forEach((glyrics) => {
+				msg.channel.send({embed: {
 					color: 3447003,
 					title: `${song_name.toString() || 'N/A'}`,
 					author: {
@@ -43,7 +43,7 @@ exports.run = async (bot, msg, args) => {
 					},
 					description: `${glyrics.toString() || 'N/A'}`,
 					timestamp: new Date()
-				})});
+				}});
 			});
 		});
 	} catch (err) {
