@@ -4,7 +4,7 @@ exports.run = async (bot, msg, args) => {
 		new Promise((resolve,reject) => {
 			if (!msg.member.voice.channel) return msg.channel.send('<:redx:411978781226696705> You must be in a voice channel!');
 			if (!msg.guild.voiceConnection) return msg.channel.send('<:redx:411978781226696705> There\'s no audio currently being played.');
-			if (!msg.guild.voiceConnection.player.dispatcher) return msg.channel.send('<:redx:411978781226696705> Failed to set the volume.');
+			if (!msg.guild.voiceConnection.dispatcher) return msg.channel.send('<:redx:411978781226696705> Failed to set the volume.');
 			if ((parseInt(args[0]) < 0 || parseInt(args[0]) > 200) && (!args[1] || (args[1] && args[1] == false))) return msg.channel.send('<:redx:411978781226696705> Volume must be between `0-200`!');
 			if (args.length <= 0) return msg.channel.send(`Current volume is \`${parseFloat(msg.guild.voiceConnection.dispatcher.volume) * 100}%\`.`);
 			resolve(msg.guild.voiceConnection);
