@@ -350,7 +350,7 @@ exports.run = async (bot, msg, args) => {
 
 exports.info = {
 	name: 'nowplaying',
-	guildOnly: true,
+	allowDM: false,
 	clientPermissions: ['CONNECT'],
 	aliases: ['np','searchvideo','searchvid','viddetails','videodetails'],
 	examples: [
