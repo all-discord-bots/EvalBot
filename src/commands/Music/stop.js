@@ -23,7 +23,7 @@ exports.run = async (bot, msg, args) => {
 
 exports.info = {
 	name: 'stop',
-	guildOnly: true,
+	allowDM: false,
 	userPermissions: ['CONNECT'],
 	clientPermissions: ['CONNECT'],
 	aliases: ['leave','disconnect'],
