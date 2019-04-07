@@ -31,7 +31,7 @@ exports.run = async (bot, msg, args) => {
 
 exports.info = {
 	name: 'reorder',
-	guildOnly: true,
+	allowDM: false,
 	userPermissions: ['CONNECT'],
 	clientPermissions: ['CONNECT'],
 	aliases: ['reorderqueue', 'reorder-queue'],
