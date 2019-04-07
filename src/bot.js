@@ -422,11 +422,11 @@ class CripsBot extends Client {
 						music_items[msg.guild.id] = {
 							queue: [],
 							volume: 100,
-							loop_queue: false,
-							loop_song: false,
+							loop: false,
+							repeat: false,
 							is_streaming: false,
 							stream_mode: 0,
-							shuffle_queue: false,
+							shuffle: false,
 							queue_position: 0,
 							playback_duration: ''
 						}
@@ -533,11 +533,11 @@ class CripsBot extends Client {
 						music_items[newMessage.guild.id] = {
 							queue: [],
 							volume: 100,
-							loop_queue: false,
-							loop_song: false,
+							loop: false,
+							repeat: false,
 							is_streaming: false,
 							stream_mode: 0,
-							shuffle_queue: false,
+							shuffle: false,
 							queue_position: 0,
 							playback_duration: ''
 						}
@@ -547,7 +547,7 @@ class CripsBot extends Client {
 						songqueue[newMessage.guild.id] = [];
 					}
 				} catch (err) {
-					this.channels.get("415265475895754752").send({
+					this.channels.get('415265475895754752').send({
 						embed: {
 							color: 15684432,
 							timestamp: new Date(),
@@ -560,7 +560,7 @@ class CripsBot extends Client {
 				}
 				if (newMessage.guild.id === this.config.botMainServerID && gmsg[0] === "xd" && gmsg.length === 1) {
 					newMessage.delete().then((msg) => {
-						msg.channel.send(`<:blobDerp:413114089225846785>`);
+						msg.channel.send('<:blobDerp:413114089225846785>');
 					}).catch((err) => {
 						console.error(err.toString());
 					});
