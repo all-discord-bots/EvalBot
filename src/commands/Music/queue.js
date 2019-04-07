@@ -64,6 +64,7 @@ exports.run = async (bot, msg, args) => {
 
 exports.info = {
 	name: 'queue',
+	guildOnly: true,
 	aliases: ['getqueue','musicqueue','songqueue','queuelist','listqueue','queued','get-queue','music-queue','song-queue','queue-list','list-queue'],
 	usage: 'queue',
 	examples: [
