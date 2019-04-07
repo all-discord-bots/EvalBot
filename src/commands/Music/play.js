@@ -5,19 +5,15 @@ const ypi = require('youtube-playlist-info');
 require('../../conf/globals.js');
 
 exports.run = async (bot, msg, args) => {
+	let fetched_queue = music_items[msg.guild.id];
 	try {
-		
-		if (music_items[msg.guild.id].queue.length <= 0) {
-			music_items[msg.guild.id].playback_duration = '';
-		}
-		
 		switch (args.length) {
 			case 0:
 				return msg.channel.send(`<:redx:411978781226696705> You must provide a url or search string!`);
 		}
 		
 		if (!msg.member.voice.channel) return msg.channel.send(`<:redx:411978781226696705> You must be in a voice channel!`);
-		
+
 		const search = new YTSearcher({
 			key: process.env.YOUTUBE_API_KEY,
 			revealkey: true
@@ -28,15 +24,16 @@ exports.run = async (bot, msg, args) => {
 			//if (!result) return msg.channel.send(`<:redx:411978781226696705> Could not find this video.`).catch(err => console.error)
 			// result.id = video id // result.channelID = channel id // result.url = full video url // result.title = video name // result.description = video description
 			if (!result.url || !result.id) return msg.channel.send(`<:redx:411978781226696705> I was unable to find that video.`);
-			music_items[msg.guild.id].queue.push({
+			fetched_queue.queue.push({
 				title: `${result.title || 'N/A'}`,
 				url: `${result.url}`,
 				id: `${result.id}`,
-				requester: msg.author
+				requester: msg.author,
+				total_duration: ''
 			});
 			
-			if (music_items[msg.guild.id].queue.length === 1 || !msg.guild.voiceConnection) {
-				executeQueue(music_items[msg.guild.id].queue);
+			if (fetched_queue.queue.length === 1 || !msg.guild.voiceConnection) {
+				executeQueue(fetched_queue.queue);
 			}
 			
 			if (result.url) { // message information about the video on playing the video
@@ -49,7 +46,7 @@ exports.run = async (bot, msg, args) => {
 					thumbnail = `${result.thumbnails.high.url}`;
 				}
 				msg.channel.send({
-					embed: ({
+					embed: {
 						color: 3447003,
 						title: `${result.title || 'N/A'} by ${result.channelTitle || 'N/A'}`,
 						url: `${result.url}`,
@@ -58,7 +55,7 @@ exports.run = async (bot, msg, args) => {
 							url: `${thumbnail}`
 						},
 						timestamp: new Date()
-					})
+					}
 				});
 			}
 		}).catch((err) => {
@@ -69,13 +66,13 @@ exports.run = async (bot, msg, args) => {
 			// If the queue is empty
 			if (queue.length <= 0) {
 				msg.channel.send(`<:check:411976443522711552> Playback finished.`);
-				music_items[msg.guild.id].queue_position = 0;
+				fetched_queue.queue_position = 0;
 				if (msg.guild.voiceConnection !== null) return msg.guild.voiceConnection.disconnect(); // Leave the voice channel.
 			}
 			
 			new Promise((resolve, reject) => {
 				// Join the voice channel if not already in one.
-				if (!msg.member.voice.channel) return msg.channel.send(`<:redx:411978781226696705> You must be in a voice channel!`);
+				if (!msg.member.voice.channel) return msg.channel.send('<:redx:411978781226696705> You must be in a voice channel!');
 				if (msg.guild.voiceConnection === null) {
 					// Check if the user is in a voice channel.
 					if (msg.member.voice.channel && msg.member.voice.channel.joinable) {
@@ -86,9 +83,9 @@ exports.run = async (bot, msg, args) => {
 						});
 					} else if (!msg.member.voice.channel.joinable) {
 						if (msg.member.voice.channel.full) {
-							msg.channel.send(`<:redx:411978781226696705> I do not have permission to join your voice channel; it is full.`);
+							msg.channel.send('<:redx:411978781226696705> I do not have permission to join your voice channel; it is full.');
 						} else {
-							msg.channel.send(`<:redx:411978781226696705> I do not have permission to join your voice channel!`);
+							msg.channel.send('<:redx:411978781226696705> I do not have permission to join your voice channel!');
 						}
 						reject();
 					} else {
@@ -100,15 +97,15 @@ exports.run = async (bot, msg, args) => {
 					resolve(msg.guild.voiceConnection);
 				}
 			}).then((connection) => {
-				const video = (music_items[msg.guild.id].loop || music_items[msg.guild.id].repeat) ? queue[music_items[msg.guild.id].queue_position].url : queue[0].url; // Get the audio to play from the queue.
+				const video = (fetched_queue.loop || fetched_queue.repeat) ? queue[fetched_queue.queue_position].url : queue[0].url; // Get the audio to play from the queue.
 				
 				// Play the video.
 				try {
-					music_items[msg.guild.id].is_streaming = false;
+					fetched_queue.is_streaming = false;
 					
-					if (!video) return msg.channel.send(`<:redx:411978781226696705> I was unable to play that video.`);
+					if (!video) return msg.channel.send('<:redx:411978781226696705> I was unable to play that video.');
 					
-					let dispatcher = music_items[msg.guild.id].stream_mode == 0 ? connection.play(ytdl(video.toString(), { filter: 'audioonly' }), { volume: (music_items[msg.guild.id].volume / 100) }) : connection.play(stream(video.toString()), { volume: (music_items[msg.guild.id].volume / 100) }); // Will Fix Soon // connection.playStream(stream(video.toString()), { volume: (music_items[msg.guild.id].volume / 100) }); // playStream
+					let dispatcher = fetched_queue.stream_mode == 0 ? connection.play(ytdl(video.toString(), { filter: 'audioonly' }), { volume: (fetched_queue.volume / 100) }) : connection.play(stream(video.toString()), { volume: (fetched_queue.volume / 100) }); // Will Fix Soon // connection.playStream(stream(video.toString()), { volume: (music_items[msg.guild.id].volume / 100) }); // playStream
 					
 					/*connection.once('authenticated', () => {
 						console.log('Connection has been successfully authenticated');
@@ -120,9 +117,7 @@ exports.run = async (bot, msg, args) => {
 					connection.once('failed', (reason) => {
 						console.error(`${reason.toString()}`);
 						try {
-							if (connection) {
-								connection.disconnect();
-							}
+							if (connection) connection.disconnect();
 						} catch (err) {
 							console.error(`${err.toString()}`);
 						};
@@ -131,39 +126,35 @@ exports.run = async (bot, msg, args) => {
 					connection.once('error', (err) => {
 						// Skip to the next song.
 						console.error(`Dispatcher/connection: ${err.stack ? err.stack : err.toString()}`);
-						if (msg && msg.channel) {
-							msg.channel.send(`<:redx:411978781226696705> Dispatcher error!\n\`${err.toString()}\``);
-						}
+						if (msg && msg.channel) msg.channel.send(`<:redx:411978781226696705> Dispatcher error!\n\`${err.toString()}\``);
 						queue.shift();
-						executeQueue(music_items[msg.guild.id].queue);
+						executeQueue(fetched_queue.queue);
 					});
 					
 					dispatcher.once('error', (err) => {
 						console.error(`Dispatcher: ${err.stack ? err.stack : err.toString()}`);
-						if (msg && msg.channel) {
-							msg.channel.send(`<:redx:411978781226696705> Dispatcher error!\n\`${err.toString()}\``);
-						}
+						if (msg && msg.channel) msg.channel.send(`<:redx:411978781226696705> Dispatcher error!\n\`${err.toString()}\``);
 						queue.shift(); // Skip to the next song.
-						executeQueue(music_items[msg.guild.id].queue);
+						executeQueue(fetched_queue.queue);
 					});
 					
 					dispatcher.once('end', () => {
 						// Wait a second before continuing
 						setTimeout(() => {
-							if (music_items[msg.guild.id].loop && !music_items[msg.guild.id].repeat) {
-								if (music_items[msg.guild.id].queue_position >= music_items[msg.guild.id].queue.length - 1) {
-									music_items[msg.guild.id].queue_position = 0;
+							if (fetched_queue.loop && !fetched_queue.repeat) {
+								if (fetched_queue.queue_position >= fetched_queue.queue.length - 1) {
+									fetched_queue.queue_position = 0;
 								} else {
-									music_items[msg.guild.id].queue_position++;
+									fetched_queue.queue_position++;
 								}
-								executeQueue(music_items[msg.guild.id].queue);
-							} else if (!music_items[msg.guild.id].loop && music_items[msg.guild.id].repeat) {
-								executeQueue(music_items[msg.guild.id].queue);
+								executeQueue(fetched_queue.queue);
+							} else if (!fetched_queue.loop && fetched_queue.repeat) {
+								executeQueue(fetched_queue.queue);
 							} else {
-								music_items[msg.guild.id].queue_position = 0;
+								fetched_queue.queue_position = 0;
 								if (queue.length > 0) {
 									queue.shift(); // Skip to the next song.
-									executeQueue(music_items[msg.guild.id].queue);
+									executeQueue(fetched_queue.queue);
 								}
 							}
 						}, 1000);
