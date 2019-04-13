@@ -145,16 +145,17 @@ exports.run = async (bot, msg, args) => {
 								} else {
 									fetched_queue.queue_position++;
 								}
-								executeQueue(fetched_queue.queue);
+								//executeQueue(fetched_queue.queue);
 							} else if (!fetched_queue.loop && fetched_queue.repeat) {
-								executeQueue(fetched_queue.queue);
+								//executeQueue(fetched_queue.queue);
 							} else {
 								fetched_queue.queue_position = 0;
 								if (queue.length > 0) {
 									queue.shift(); // Skip to the next song.
-									executeQueue(fetched_queue.queue);
+									//executeQueue(fetched_queue.queue);
 								}
 							}
+							executeQueue(fetched_queue.queue);
 						}, 1000);
 					});
 				} catch (err) {
