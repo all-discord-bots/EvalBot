@@ -9,8 +9,7 @@ exports.run = async (bot, msg, args) => {
 		if (!fetched_queue || fetched_queue.queue.length <= 0) return msg.channel.send('<:redx:411978781226696705> There are no items in the queue.');
 
 		const queue = fetched_queue.queue.map((song, index, array) => {
-			let playback_duration = '';
-			if (fetched_queue.queue.length <= 0) playback_duration = '';
+			if (fetched_queue.queue.length <= 0) song.total_duration = '';
 			if (!fetched_queue.is_streaming) {
 				//fetchVideoInfo(fetched_queue.queue[fetched_queue.queue_position].id, (err, videoInfo) => {
 				fetchVideoInfo(song.id).then((videoInfo) => {
@@ -35,16 +34,14 @@ exports.run = async (bot, msg, args) => {
 						secs = secs.toString().padStart(0x2, '0');
 						const total_duration = (fetched_queue.queue_position === index) ? ` [${hrs}:${mins}:${secs}/${h}:${m}:${s}]` : ` [${h}:${m}:${s}]`;
 						song.total_duration = total_duration;
-						playback_duration = total_duration;
 					}
 				}).catch((e) => {
 					console.error(`${e.toString()}`);
 				});
 			} else {
 				song.total_duration = '';
-				playback_duration = '';
 			}
-			return `${(fetched_queue.queue_position === index) ? '#' : ' '} ${index + 0x1}. ${song.title || 'Failed to get title for this item!'}${(playback_duration !== '') ? playback_duration : ' [00:00:00]'}`;
+			return `${(fetched_queue.queue_position === index) ? '#' : ' '} ${index + 0x1}. ${song.title || 'Failed to get title for this item!'}${(song.total_duration !== '') ? song.total_duration : ' [00:00:00]'}`;
 		}).join('\n').replace(/(&quot;)/g, '"').replace(/(&amp)/g, '&').replace(/(&apos;)/g, '\'').replace(/(&gt;)/g, '>').replace(/(&lt;)/g, '<');
 		msg.channel.send(`\`\`\`md\n${queue}\n\`\`\``);
 		/*msg.channel.send({
