@@ -13,8 +13,7 @@ exports.run = async (bot, msg, args) => {
 			if (fetched_queue.queue.length <= 0) playback_duration = '';
 			if (!fetched_queue.is_streaming) {
 				//fetchVideoInfo(fetched_queue.queue[fetched_queue.queue_position].id, (err, videoInfo) => {
-				fetchVideoInfo(song.id, (err, videoInfo) => {
-					if (err) console.error(`${err.toString()}`);
+				fetchVideoInfo(song.id).then((videoInfo) => {
 					if (videoInfo) {
 						let videoDuration = duration(`${videoInfo.duration}s`);
 						let d, h, m, s; // days, hours, minutes, seconds
@@ -38,6 +37,8 @@ exports.run = async (bot, msg, args) => {
 						song.total_duration = total_duration;
 						playback_duration = total_duration;
 					}
+				}).catch((e) => {
+					console.error(`${e.toString()}`);
 				});
 			} else {
 				song.total_duration = '';
