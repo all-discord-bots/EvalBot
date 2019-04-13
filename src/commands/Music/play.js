@@ -46,7 +46,7 @@ exports.run = async (bot, msg, args) => {
 				msg.channel.send({
 					embed: {
 						color: 3447003,
-						title: `${result.title || 'N/A'} by ${result.channelTitle || 'N/A'}`,
+						title: `${result.title.replace(/\&quote/g, '"') || 'N/A'} by ${result.channelTitle || 'N/A'}`,
 						url: result.url,
 						description: result.description || 'N/A',
 						thumbnail: {
