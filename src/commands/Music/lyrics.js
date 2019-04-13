@@ -13,9 +13,8 @@ exports.run = async (bot, msg, args) => {
 		let song_name = `${gsong[1]}`;
 		lyricsFetcher.fetch(`${artist.toString() || 'THIS IS HERE TO FORCE A FAKE ARTIST NAME'}`, `${song_name.toString() || 'THIS IS HERE TO FORCE A FAKE SONG NAME'}`, function(err, lyrics) {
 			if (err) return msg.channel.send(`<:redx:411978781226696705> ${err}`).catch(err => console.error);
-			if (lyrics) {
-				console.log(`Lyrics are ${lyrics.length}/2048 characters.`);
-			}
+			if (lyrics.includes("Something went wrong!!! :-(")) throw 'Could not find lyrics for that song!';
+			if (lyrics) console.log(`Lyrics are ${lyrics.length}/2048 characters.`);
 			const MESSAGE_CHAR_LIMIT = 2000;
 			const splitString = (string, prepend = '', append = '') => {
 				if (string.length <= MESSAGE_CHAR_LIMIT) {
