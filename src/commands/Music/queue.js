@@ -5,12 +5,12 @@ require('../../conf/globals.js');
 
 exports.run = async (bot, msg, args) => {
 	try {
-		let playback_duration = '';
 		let fetched_queue = music_items[msg.guild.id];
-		if (fetched_queue.queue.length <= 0) playback_duration = '';
 		if (!fetched_queue || fetched_queue.queue.length <= 0) return msg.channel.send('<:redx:411978781226696705> There are no items in the queue.');
 
 		const queue = fetched_queue.queue.map((song, index, array) => {
+			let playback_duration = '';
+			if (fetched_queue.queue.length <= 0) playback_duration = '';
 			if (!fetched_queue.is_streaming) {
 				//fetchVideoInfo(fetched_queue.queue[fetched_queue.queue_position].id, (err, videoInfo) => {
 				fetchVideoInfo(song.id, (err, videoInfo) => {
