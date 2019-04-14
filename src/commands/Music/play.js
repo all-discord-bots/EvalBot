@@ -125,14 +125,38 @@ exports.run = async (bot, msg, args) => {
 						// Skip to the next song.
 						console.error(`Dispatcher/connection: ${err.stack ? err.stack : err.toString()}`);
 						if (msg && msg.channel) msg.channel.send(`<:redx:411978781226696705> Dispatcher error!\n\`${err.toString()}\``);
-						queue.shift();
+						//queue.shift();
+						if (fetched_queue.loop || fetched_queue.repeat) {
+							if (fetched_queue.queue_position >= fetched_queue.queue.length - 1) {
+								fetched_queue.queue_position = 0;
+							} else {
+								fetched_queue.queue_position++;
+							}
+						} else {
+							fetched_queue.queue_position = 0;
+							if (queue.length > 0) {
+								queue.shift(); // Skip to the next song.
+							}
+						}
 						executeQueue(fetched_queue.queue);
 					});
 					
 					dispatcher.once('error', (err) => {
 						console.error(`Dispatcher: ${err.stack ? err.stack : err.toString()}`);
 						if (msg && msg.channel) msg.channel.send(`<:redx:411978781226696705> Dispatcher error!\n\`${err.toString()}\``);
-						queue.shift(); // Skip to the next song.
+						//queue.shift(); // Skip to the next song.
+						if (fetched_queue.loop || fetched_queue.repeat) {
+							if (fetched_queue.queue_position >= fetched_queue.queue.length - 1) {
+								fetched_queue.queue_position = 0;
+							} else {
+								fetched_queue.queue_position++;
+							}
+						} else {
+							fetched_queue.queue_position = 0;
+							if (queue.length > 0) {
+								queue.shift(); // Skip to the next song.
+							}
+						}
 						executeQueue(fetched_queue.queue);
 					});
 					
@@ -147,6 +171,7 @@ exports.run = async (bot, msg, args) => {
 								}
 								//executeQueue(fetched_queue.queue);
 							} else if (!fetched_queue.loop && fetched_queue.repeat) {
+								// do nothing
 								//executeQueue(fetched_queue.queue);
 							} else {
 								fetched_queue.queue_position = 0;
