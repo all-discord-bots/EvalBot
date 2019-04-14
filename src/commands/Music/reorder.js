@@ -20,9 +20,9 @@ exports.run = async (bot, msg, args) => {
 		}
 		try {
 			fetched_queue.queue.splice(new_pos, 0, fetched_queue.queue.splice(old_pos, 1)[0]);
-			msg.channel.send(`<:check:411976443522711552> track \`${old_pos}\` has been moved to position \`${new_pos}\` in the queue.`);
+			msg.channel.send(`<:check:411976443522711552> track \`${old_pos + 1}\` has been moved to position \`${new_pos + 1}\` in the queue.`);
 		} catch (e) {
-			msg.channel.send(`<:redx:411978781226696705> failed to move track \`${old_pos}\` to position \`${new_pos}\` in the queue.`);
+			msg.channel.send(`<:redx:411978781226696705> failed to move track \`${old_pos + 1}\` to position \`${new_pos + 1}\` in the queue.`);
 		}
 	} catch (err) {
 		console.error(err.toString());
