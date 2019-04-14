@@ -8,6 +8,7 @@ exports.run = async (bot, msg, args) => {
 		if (args.length <= 0) {
 			fetched_queue.loop = false;
 			fetched_queue.repeat = false;
+			fetched_queue.queue_position = 0;
 			if (fetched_queue.queue.length > 0) {
 				fetched_queue.queue.splice(0, fetched_queue.queue.length);
 				if (msg.guild.voiceConnection !== null) {
