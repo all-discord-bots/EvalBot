@@ -25,7 +25,7 @@ exports.run = async (bot, msg, args) => {
 						h = h % 0x18;
 						s = s.toString().padStart(0x2, '0');
 						m = m.toString().padStart(0x2, '0');
-						h = m.toString().padStart(0x2, '0');
+						h = h.toString().padStart(0x2, '0');
 						let current_time = 0;
 						if (msg.guild.voiceConnection) current_time = msg.guild.voiceConnection.player.dispatcher.streamTime;
 						let [hrs, mins, secs] = milliseconds.to(hours, minutes, seconds)(parseInt(current_time));
