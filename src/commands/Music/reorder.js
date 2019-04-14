@@ -10,8 +10,8 @@ exports.run = async (bot, msg, args) => {
 		if (args[0] === fetched_queue.queue_position) return msg.channel.send('<:redx:411978781226696705> You can\'t move the current playing track!');
 		let queuepositions = (fetched_queue.queue.length <= 0) ? '!' : ` valid position are \`1 - ${fetched_queue.queue.length}\`!`;
 		if (args[1] == fetched_queue.queue_position || args[1] > fetched_queue.queue.length) return msg.channel.send(`<:redx:411978781226696705> Could not move to position \`${args[1]}\`${queuepositions}`);
-		let old_pos = parseInt(args[0]) + 1;
-		let new_pos = parseInt(args[1]);
+		let old_pos = parseInt(args[0]) - 1;
+		let new_pos = parseInt(args[1]) - 1;
 		if (new_pos >= fetched_queue.queue.length) {
 			let pos = new_pos - fetched_queue.queue.length; //+ 1;
 			while (pos--) {
