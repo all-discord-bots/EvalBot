@@ -13,7 +13,13 @@ exports.run = async (bot, msg, args) => {
 		let song_name = `${gsong[1]}`;
 		lyricsFetcher.fetch(`${artist.toString() || 'THIS IS HERE TO FORCE A FAKE ARTIST NAME'}`, `${song_name.toString() || 'THIS IS HERE TO FORCE A FAKE SONG NAME'}`, function(err, lyrics) {
 			if (err) return msg.channel.send(`<:redx:411978781226696705> ${err}`).catch(err => console.error);
-			if (lyrics.includes("Something went wrong!!! :-(")) throw 'Could not find lyrics for that song!';
+			if (lyrics.includes("Something went wrong!!! :-(")) {
+				if (artist.toLowerCase() === 'beneath my feet' && song_name.toLowerCase() === 'sink to the bottom or swim for the shore') {
+					lyrics = "[Verse 1]\nYou're crossing the ocean where many got lost\nYou're facing the danger with all that you’ve got\nAn ocean of bodies with a rotten smell\nCold and relentless, where agony dwells\nAlone and afraid you can feel it within\nWhile the waves they are crashing and whipping your skin\nFight the ocean, fight its will\nReady to slaughter, ready to kill\n\n[Pre-Chorus]\nSwim! Swim!\nSwim! Swim!\nSwim on the waves you will ascend\nSwim for your safety and revenge\nSwim it is your life you must defend\nSwim or prepare to meet the end\n\n[Chorus]\nGive it all you've got\nYour life depends on how this ends\nSo sink to the bottom or swim for the shore\nGo on and live your life as long as you may\nSwim with desire like never before\nSo sink to the bottom or swim for the shore\n\n(Swim for the shore)\n(Swim for the shore)\n\n[Verse 2]\nYou left your home now there's no turning back\nFor where your home once were, is now under attack\nYou flee the war and you get blamed when in fact\nYou face the effect of someone else's fucking act\nThe ocean awakes, prepares to entomb\nYou try to hold on but there's not enough room\nYou're gasping for air while the water consumes\nThis is your last chance, this is your doom\n\n[Pre-Chorus]\nSwim! Swim!\nSwim! Swim!\nSwim on the waves you will ascend\nSwim for your safety and revenge\nSwim it is your life you must defend\nSwim or prepare to meet the end\n\n[Chorus]\nGive it all you've got\nYour life depends on how this ends\nSo sink to the bottom or swim for the shore\nGo on and live your life as long as you may\nSwim with desire like never before\nSo sink to the bottom or swim for the shore\n\nSwim!\n\n[Chorus]\nGive it all you've got\nYour life depends on how this ends\nSo sink to the bottom or swim for the shore\nGo on and live your life as long as you may\nSwim with desire like never before\nSo sink to the bottom or swim for the shore";
+				} else {
+					msg.channel.send('Could not find lyrics for that song!');
+				}
+			}
 			if (lyrics) console.log(`Lyrics are ${lyrics.length}/2048 characters.`);
 			const MESSAGE_CHAR_LIMIT = 2000;
 			const splitString = (string, prepend = '', append = '') => {
