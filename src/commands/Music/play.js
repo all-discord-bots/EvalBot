@@ -23,7 +23,7 @@ exports.run = async (bot, msg, args) => {
 			let result = searchResult.first;
 			//if (!result) return msg.channel.send(`<:redx:411978781226696705> Could not find this video.`).catch(err => console.error)
 			// result.id = video id // result.channelID = channel id // result.url = full video url // result.title = video name // result.description = video description
-			if (!result.url || !result.id) return msg.channel.send('<:redx:411978781226696705> I was unable to find that video.');
+			if (!result || !result.url || !result.id) return msg.channel.send('<:redx:411978781226696705> I was unable to find that video.');
 			fetched_queue.queue.push({
 				title: result.title || 'N/A',
 				url: result.url,
