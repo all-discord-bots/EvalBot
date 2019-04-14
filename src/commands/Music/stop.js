@@ -9,6 +9,7 @@ exports.run = async (bot, msg, args) => {
 		fetched_queue.loop = false;
 		fetched_queue.repeat = false;
 		fetched_queue.playback_duration = '';
+		fetched_queue.queue_position = 0;
 		try {
 			if (fetched_queue.queue && fetched_queue.queue.length > 0) fetched_queue.queue.splice(0, fetched_queue.queue.length);
 			if (msg.guild.voiceConnection !== null) return msg.guild.voiceConnection.disconnect();
