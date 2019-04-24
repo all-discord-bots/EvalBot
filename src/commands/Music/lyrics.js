@@ -11,7 +11,7 @@ exports.run = async (bot, msg, args) => {
 				'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3',
 				'Content-Type': 'application/json; charset=utf-8'
 			}
-		}).then((res) => {
+		}).then(async(res) => {
 			if (!res.data.result.length) return msg.channel.send(`Couldn't find lyrics for the song \`${args.join(' ')}\`.`);
 			let audd_song = res.data.result[0];
 			/*
