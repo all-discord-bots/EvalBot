@@ -21,7 +21,9 @@ exports.run = async (bot, msg, args) => {
 				msg.channel.send({
 					embed: {
 						description: text_truncate(page.toString(), 2048) || 'N/A',
-						thumbnail: song.album_art ? song.album_art : undefined,
+						thumbnail: {
+							url: song.album_art ? song.album_art : undefined
+						},
 						timestamp: new Date(),
 						color: 3447003,
 						title: text_truncate(`${song.album ? '[' + song.album + '] ' : ''}${song.artist} - ${song.name}${song.album_year ? ' (' + song.album_year + ')' : ''}`, 256),
