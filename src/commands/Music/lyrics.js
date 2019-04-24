@@ -10,12 +10,16 @@ exports.run = async (bot, msg, args) => {
 				'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3',
 				'Content-Type': 'application/json; charset=utf-8'
 			}
-		}).then((res) => {
+		}).then(async(res) => {
 			if (!res.data.data.length) return msg.channel.send(`Couldn't find lyrics for the song \`${args.join(' ')}\`.`);
 			let song = res.data.data[0];
+			try {
+				let fetched_song = await axios.get(`https://makeitpersonal.co/lyrics?artist=${encodeURIComponent(song.artist)}&title=${encodeURIComponent(song.name)}`);
+				song.lyrics = fetched_song.data
+			} catch (e) {}
 			song.lyrics = song.lyrics.replace(/^\n+/, '').replace(/\n{3,}/g, '\n\n').replace(/&amp;/g, '&');
-			if (song.lyrics) console.log(`Lyrics are ${song.lyrics.length}/2048 characters.`);
-			song.lyrics = splitString(song.lyrics);
+			//if (song.lyrics) console.log(`Lyrics are ${song.lyrics.length}/2048 characters.`);
+			//song.lyrics = splitString(song.lyrics);
 			let pagenum = 1;
 			song.lyrics.forEach((page) => {
 				msg.channel.send({
