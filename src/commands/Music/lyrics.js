@@ -13,14 +13,14 @@ exports.run = async (bot, msg, args) => {
 		}).then((res) => {
 			if (!res.data.data.length) return msg.channel.send(`Couldn't find lyrics for the song \`${args.join(' ')}\`.`);
 			let song = res.data.data[0];
-			song.lyrics = song.lyrics.substring(1);
+			song.lyrics = song.lyrics;
 			if (song.lyrics) console.log(`Lyrics are ${song.lyrics.length}/2048 characters.`);
 			song.lyrics = splitString(song.lyrics);
 			let pagenum = 1;
 			song.lyrics.forEach((page) => {
 				msg.channel.send({
 					embed: {
-						description: text_truncate(page.toString(), 2048) || 'N/A',
+						description: page.toString() || 'N/A',
 						thumbnail: {
 							url: song.album_art ? song.album_art : undefined
 						},
@@ -31,7 +31,7 @@ exports.run = async (bot, msg, args) => {
 							name: text_truncate(song.artist, 256) || 'N/A'
 						},
 						footer: {
-							text: text_truncate(`Page: ${pagenum++ || 'N/A'}`, 2048)
+							text: `Page: ${pagenum++ || 'N/A'}`
 						}
 					}
 				});
