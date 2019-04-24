@@ -1,3 +1,5 @@
+const axios = require('axios');
+
 exports.run = async (bot, msg, args) => {
 	try {
 		if (args.length <= 0) return msg.channel.send('<:redx:411978781226696705> You must provide a song to get lyrics for!');
