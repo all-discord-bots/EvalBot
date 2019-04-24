@@ -13,7 +13,7 @@ exports.run = async (bot, msg, args) => {
 		}).then((res) => {
 			if (!res.data.data.length) return msg.channel.send(`Couldn't find lyrics for the song \`${args.join(' ')}\`.`);
 			let song = res.data.data[0];
-			song.lyrics = song.lyrics.replace(/^(?:\\n)+/, '').replace(/\\n\\n/g, '\n');
+			song.lyrics = song.lyrics.replace(/^\n+/, '').replace(/\n{3,}/g, '\n\n');
 			if (song.lyrics) console.log(`Lyrics are ${song.lyrics.length}/2048 characters.`);
 			song.lyrics = splitString(song.lyrics);
 			let pagenum = 1;
