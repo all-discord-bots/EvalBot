@@ -61,9 +61,9 @@ const splitString = (string, prepend = '', append = '') => {
 
 exports.info = {
 	name: 'lyrics',
-	usage: 'lyrics <artist> <song>',
+	usage: 'lyrics <song>',
 	examples: [
-		'lyrics Ozzy Osbourne - Crazy Train'
+		'lyrics Underoath - On My Teeth'
 	],
 	description: 'Fetch lyrics for a given artist and song.'
 };
