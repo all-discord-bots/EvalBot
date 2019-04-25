@@ -249,7 +249,7 @@ exports.run = async (bot, msg, args) => {
 										inline: true
 									},{
 										name: `**__Likes/Dislikes__**`,
-										value: `:thumbsup:\`${videoInfo.likeCount.toLocaleString() || '0'}\`\n:thumbsdown:\`${videoInfo.dislikeCount.toLocaleString() || '0'}\``,
+										value: `<:like:571086411353292824>\`${videoInfo.likeCount.toLocaleString() || '0'}\`\n<:dislike:571086411059429387>\`${videoInfo.dislikeCount.toLocaleString() || '0'}\``,
 										inline: true
 									}
 								],
