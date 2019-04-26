@@ -10,15 +10,16 @@ require('../../conf/globals.js');
 
 exports.run = async (bot, msg, args) => {
 	try {
-		if (!music_items[msg.guild.id].is_streaming) {
+		const fetched_queue = music_items[msg.guild.id];
+		if (!fetched_queue.is_streaming) {
 			const search = new YTSearcher({
 				key: process.env.YOUTUBE_API_KEY,
 				revealkey: true
 			});
 			let gsearch;
 			if (args.length < 1) {
-				if (!music_items[msg.guild.id] || music_items[msg.guild.id].queue.length <= 0) return msg.channel.send(`<:redx:411978781226696705> There are no items in the queue!`).catch(err => console.error);
-				gsearch = music_items[msg.guild.id].queue[music_items[msg.guild.id].queue_position].title;
+				if (!fetched_queue || fetched_queue.queue.length <= 0) return msg.channel.send('<:redx:411978781226696705> There are no items in the queue!').catch((err) => console.error);
+				gsearch = fetched_queue.queue[fetched_queue.queue_position].title;
 			} else if (args.length > 0) {
 				gsearch = args.join(' ');
 			}
@@ -27,74 +28,32 @@ exports.run = async (bot, msg, args) => {
 				//if (!result/* || !music_items[msg.guild.id]*/) return msg.channel.send(`<:redx:411978781226696705> Could not get the video.`).catch(err => console.error);
 				//global.music_items.push(`${result.url}`); // result.id = video id // result.channelID = channel id // result.url = full video url // result.title = video name // result.description = video description
 				if (result) { // message information about the video on playing the video
-					fetchVideoInfo(result.id, function(err, videoInfo) {
+					fetchVideoInfo(result.id).then((err, videoInfo) => {
 						if (err) console.error(err);
 						let videoDuration = duration(`${videoInfo.duration}s`); // seconds --> miliseconds
 						/*Format Duration*/
 						let d, h, m, s; // days, hours, minutes, seconds
-						s = Math.floor(parseInt(videoDuration - 1) / 1000); // - 1 is used to round the video to get the proper second count
-						m = Math.floor(s / 60);
-						s = s % 60;
-						h = Math.floor(m / 60);
-						m = m % 60;
-						d = Math.floor(h / 24);
-						h = h % 24;
-						/*Format Duration*/
-						/*Format Playtime*/
-						let currenttime;
+						s = Math.floor(parseInt(videoDuration - 0x1) / 0x3E8); // - 0x1 is used to round the video to get the proper second count
+						m = Math.floor(s / 0x3C);
+						s = s % 0x3C;
+						h = Math.floor(m / 0x3C);
+						m = m % 0x3C;
+						d = Math.floor(h / 0x18);
+						h = h % 0x18;
+						s = s.toString().padStart(0x2, '0');
+						m = m.toString().padStart(0x2, '0');
+						h = h.toString().padStart(0x2, '0');
+						let current_time = 0;
 						if (msg.guild.voiceConnection) {
 							if (args.length <= 0) {
-								currenttime = msg.guild.voiceConnection.player.dispatcher.streamTime; //msg.guild.voiceConnection.player.dispatcher.time; //ms(parseInt(msg.guild.voiceConnection.player.dispatcher.time));
-							} else {
-								currenttime = 0;
+								current_time = msg.guild.voiceConnection.player.dispatcher.streamTime;
 							}
-						} else if (!msg.guild.voiceConnection) {
-							currenttime = `0`;
 						}
-						//let currentDuration = duration(`${currenttime.toString()}`);
-						//let done, hone, mone, sone; // days, hours, minutes, seconds
-						let currenttimepos = milliseconds.to(hours,minutes,seconds)(parseInt(currenttime));
-						/*sone = Math.floor(currentDuration / 1000);
-						mone = Math.floor(sone / 60);
-						sone = sone % 60;
-						hone = Math.floor(mone / 60);
-						mone = mone % 60; // -1 here
-						done = Math.floor(hone / 24);
-						hone = hone % 24;*/
-						/*Format Playtime*/
-						// Begin adding leading zeros
-						let seczero, minzero, hourzero, seconezero, minonezero, houronezero;
-						if (s < 10) {
-							seczero = '0';
-						} else if (s > 9) {
-							seczero = '';
-						}
-						if (m < 10) {
-							minzero = '0';
-						} else if (m > 9) {
-							minzero = '';
-						}
-						if (h < 10) {
-							hourzero = '0';
-						} else if (h > 9) {
-							hourzero = '';
-						}
-						if (currenttimepos[2] < 10) {
-							seconezero = '0';
-						} else if (currenttimepos[2] > 9) {
-							seconezero = '';
-						}
-						if (currenttimepos[1] < 10) {
-							minonezero = '0';
-						} else if (currenttimepos[1] > 9) {
-							minonezero = '';
-						}
-						if (currenttimepos[0] < 10) {
-							houronezero = '0';
-						} else if (currenttimepos[0] > 9) {
-							houronezero = '';
-						}
-						// End add leading zero
+						let [hrs, mins, secs] = milliseconds.to(hours, minutes, seconds)(parseInt(current_time));
+						hrs = hrs.toString().padStart(0x2, '0');
+						mins = mins.toString().padStart(0x2, '0');
+						secs = secs.toString().padStart(0x2, '0');
+						const total_duration = args.length ? `\`${hrs}:${mins}:${secs}/${h}:${m}:${s}\`` : `\`${h}:${m}:${s}\``;
 						let thumbnail;
 						if (result.thumbnails.default.url && !result.thumbnails.medium.url && !result.thumbnails.high.url) {
 							thumbnail = `${result.thumbnails.default.url}`;
@@ -193,116 +152,89 @@ exports.run = async (bot, msg, args) => {
 							})
 						});*/
 						msg.channel.send({
-							embed: ({
+							embed: {
 								color: 3447003,
-								title: `${result.title}`,
-								url: `${result.url}`,
+								title: result.title,
+								url: result.url,
 								thumbnail: {
-									url: `${thumbnail}`
+									url: thumbnail
 								},
 								fields: [
 									{
-										name: `**__Video__**`,
+										name: '**__Video__**',
 										value: `[${result.title}](${result.url}) \`${result.id}\``
 									},{
-										name: `**__Channel__**`,
+										name: '**__Channel__**',
 										value: `[${result.channelTitle}](https://www.youtube.com/channel/${result.channelId}) \`${result.channelId}\``
 									},{
-										name: `**__Thumbnails__**`,
+										name: '**__Thumbnails__**',
 										value: `${dthumbnail}${mthumbnail}${hthumbnail}`
 									},{
-										name: `**__Uploaded__**`,
+										name: '**__Uploaded__**',
 										value: `${moment.utc(new Date(result.publishedAt).getTime()).format("LLLL")} \`${result.publishedAt}\``
 									},{
-										name: `**__Description__**`,
-										value: `${result.description ? result.description || 'N/A' : 'N/A'}`
+										name: '**__Description__**',
+										value: result.description ? result.description || 'N/A' : 'N/A'
 									},{
-										name: `**__Duration__**`,
-										value: `\`${houronezero}${currenttimepos[0]}:${minonezero}${currenttimepos[1]}:${seconezero}${currenttimepos[2]}/${hourzero}${h}:${minzero}${m}:${seczero}${s}\``
+										name: '**__Duration__**',
+										value: total_duration
 									},{
-										name: `**__Genre__**`,
+										name: '**__Genre__**',
 										value: `\`${videoInfo.genre || 'N/A'}\``,
 										inline: true
 									},{
-										name: `**__Paid__**`,
+										name: '**__Paid__**',
 										value: `\`${videoInfo.paid}\``,
 										inline: true
 									},{
-										name: `**__Unlisted__**`,
+										name: '**__Unlisted__**',
 										value: `\`${videoInfo.unlisted}\``,
 										inline: true
 									},{
-										name: `**__Family Friendly__**`,
+										name: '**__Family Friendly__**',
 										value: `\`${videoInfo.isFamilyFriendly}\``,
 										inline: true
 									},{
-										name: `**__Views__**`,
+										name: '**__Views__**',
 										value: `\`${videoInfo.views.toLocaleString() || '0'}\``,
 										inline: true
 									},{
-										name: `**__Comments__**`,
+										name: '**__Comments__**',
 										value: `\`${videoInfo.commentCount.toLocaleString() || '0'}\``,
 										inline: true
 									},{
-										name: `**__Regions Allowed__**`,
-										value: `${videoInfo.regionsAllowed.toString()}`,
+										name: '**__Regions Allowed__**',
+										value: videoInfo.regionsAllowed.toString(),
 										inline: true
 									},{
-										name: `**__Likes/Dislikes__**`,
-										value: `<:like:571086411353292824>\`${videoInfo.likeCount.toLocaleString() || '0'}\`\n<:dislike:571086411059429387>\`${videoInfo.dislikeCount.toLocaleString() || '0'}\``,
+										name: '**__Likes/Dislikes__**',
+										value: `<:like:571086411353292824>\`${abbrNum(videoInfo.likeCount, 1)/*.toLocaleString()*/ || '0'}\`\n<:dislike:571086411059429387>\`${abbrNum(videoInfo.dislikeCount, 1)/*.toLocaleString()*/ || '0'}\``,
 										inline: true
 									}
 								],
 								timestamp: new Date()
-							})
+							}
 						});
 						// ${ListRegionsAllowed.toString() || '`N/A`'}`,
 					});
 				} else {
-					return msg.channel.send(`<:redx:411978781226696705> Could not get information on the current playing audio.`);
+					return msg.channel.send('<:redx:411978781226696705> Could not get information on the current playing audio.');
 				}
 				// https://developers.google.com/youtube/v3/docs/activities
 			}).catch((err) => {
 				return console.error(err.toString());
 			});
 		} else {
-			let currenttime;
-			if (msg.guild.voiceConnection) {
-				currenttime = parseInt(msg.guild.voiceConnection.player.dispatcher.streamTime); //msg.guild.voiceConnection.player.dispatcher.time); //ms(parseInt(voiceConnection.player.dispatcher.time));
-			} else if (!msg.guild.voiceConnection) {
-				currenttime = `0`;
-			}
-			let streamingDuration = milliseconds.to(hours,minutes,seconds)(parseInt(currenttime));
-			/*let currentDuration = duration(`${currenttime.toString()}`);
-			let d, h, m, s; // days, hours, minutes, seconds
-			s = Math.floor(currentDuration / 1000);
-			m = Math.floor(s / 60);
-			s = s % 60;
-			h = Math.floor(m / 60);
-			m = m % 60; // -1 here
-			d = Math.floor(h / 24);
-			h = h % 24;
-			*/
-			let seczero, minzero, hourzero;
-			if (streamingDuration[2] < 10) {
-				seczero = '0';
-			} else if (streamingDuration[2] > 9) {
-				seczero = '';
-			}
-			if (streamingDuration[1] < 10) {
-				minzero = '0';
-			} else if (streamingDuration[1] > 9) {
-				minzero = '';
-			}
-			if (streamingDuration[0] < 10) {
-				hourzero = '0';
-			} else if (streamingDuration[0] > 9) {
-				hourzero = '';
-			}
-			
-			if (music_items[msg.guild.id].queue[0].playlist_api != null) {
+			let current_time = 0;
+			if (msg.guild.voiceConnection) current_time = parseInt(msg.guild.voiceConnection.player.dispatcher.streamTime);
+			let [hrs, mins, secs] = milliseconds.to(hours,minutes,seconds)(parseInt(current_time));
+			hrs = hrs.toString().padStart(0x2, '0');
+			mins = mins.toString().padStart(0x2, '0');
+			secs = secs.toString().padStart(0x2, '0');
+			const total_duration = `\`${hrs}:${mins}:${secs}\``;
+			if (fetched_queue.queue[0].playlist_api != null) {
 				new Promise((resolve,reject) => {
-					fetch(`${music_items[msg.guild.id].queue[0].playlist_api}`).then((res) => {
+					fetch(fetched_queue.queue[0].playlist_api).then((res) => {
 							resolve(res.json());
 					}).catch((err) => {
 						console.error(err.toString());
@@ -310,11 +242,11 @@ exports.run = async (bot, msg, args) => {
 					});
 				}).then((res) => {
 					msg.channel.send({
-						embed: ({
+						embed: {
 							color: 3447003,
-							title: `Streaming`,
-							url: `${music_items[msg.guild.id].queue[0].url}`,
-							description: `Streaming [${music_items[msg.guild.id].queue[0].title}](${music_items[msg.guild.id].queue[0].url}) for \`${hourzero}${streamingDuration[0]}:${minzero}${streamingDuration[1]}:${seczero}${streamingDuration[2]}\``,
+							title: 'Streaming',
+							url: fetched_queue.queue[0].url,
+							description: `Streaming [${fetched_queue.queue[0].title}](${fetched_queue.queue[0].url}) for ${total_duration}`,
 							timestamp: new Date(),
 							fields: [
 								{
@@ -325,21 +257,21 @@ exports.run = async (bot, msg, args) => {
 									value: `[${res.playlist[1].name.replace('\u0026','&') || 'N/A'}](https://onlineradiobox.com/track/${res.playlist[1].id}/ '${res.playlist[1].name.replace('\u0026','&')}') \`${res.playlist[1].created || 'N/A'}\``
 								}
 							]
-						})
+						}
 					});
 				}).catch((err) => {
 					console.error(err.toString());
-					return msg.channel.send(`<:redx:411978781226696705> Could not get information on the current playing stream.`);
+					return msg.channel.send('<:redx:411978781226696705> Could not get information on the current playing stream.');
 				});
 			} else {
 				msg.channel.send({
-					embed: ({
+					embed: {
 						color: 3447003,
-						title: `Streaming`,
-						url: `${music_items[msg.guild.id].queue[0].url}`,
-						description: `Streaming [${music_items[msg.guild.id].queue[0].title}](${music_items[msg.guild.id].queue[0].url}) for \`${hourzero}${streamingDuration[0]}:${minzero}${streamingDuration[1]}:${seczero}${streamingDuration[2]}\``,
-						timestamp: new Date(),
-					})
+						title: 'Streaming',
+						url: fetched_queue.queue[0].url,
+						description: `Streaming [${fetched_queue.queue[0].title}](${fetched_queue.queue[0].url}) for ${total_duration}`,
+						timestamp: new Date()
+					}
 				});
 			}
 		}
@@ -347,6 +279,36 @@ exports.run = async (bot, msg, args) => {
 		console.error(err.toString());
 	}
 };
+
+const abbrNum = (number, decPlaces) => {
+	// 2 decimal places => 100, 3 => 1000, etc
+	decPlaces = Math.pow(10, decPlaces);
+
+	// Enumerate number abbreviations
+	var abbrev = ["K", "M", "B", "T"];
+
+	// Go through the array backwards, so we do the largest first
+	for (var i = abbrev.length - 1; i >= 0; i--) {
+
+		// Convert array index to "1000", "1000000", etc
+		var size = Math.pow(10, (i + 1) * 3);
+
+		// If the number is bigger or equal do the abbreviation
+		if (size <= number) {
+			// Here, we multiply by decPlaces, round, and then divide by decPlaces.
+			// This gives us nice rounding to a particular decimal place.
+			number = Math.round(number * decPlaces / size) / decPlaces;
+
+			// Add the letter for the abbreviation
+			number += abbrev[i];
+
+			// We are done... stop
+			break;
+		}
+	}
+
+	return number;
+}
 
 exports.info = {
 	name: 'nowplaying',
