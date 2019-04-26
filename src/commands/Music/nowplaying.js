@@ -16,14 +16,12 @@ exports.run = async (bot, msg, args) => {
 				key: process.env.YOUTUBE_API_KEY,
 				revealkey: true
 			});
-			let gsearch;
+			let keywords = args.join(' ');
 			if (args.length < 1) {
 				if (!fetched_queue || fetched_queue.queue.length <= 0) return msg.channel.send('<:redx:411978781226696705> There are no items in the queue!').catch((err) => console.error);
-				gsearch = fetched_queue.queue[fetched_queue.queue_position].title;
-			} else if (args.length > 0) {
-				gsearch = args.join(' ');
+				keywords = fetched_queue.queue[fetched_queue.queue_position].title;
 			}
-			search.search(gsearch, { type: 'video' }).then((searchResult) => {
+			search.search(keywords, { type: 'video' }).then((searchResult) => {
 				let result = searchResult.first;
 				//if (!result/* || !music_items[msg.guild.id]*/) return msg.channel.send(`<:redx:411978781226696705> Could not get the video.`).catch(err => console.error);
 				//global.music_items.push(`${result.url}`); // result.id = video id // result.channelID = channel id // result.url = full video url // result.title = video name // result.description = video description
