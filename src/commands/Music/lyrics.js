@@ -5,7 +5,7 @@ exports.run = async (bot, msg, args) => {
 		if (args.length <= 0) return msg.channel.send('<:redx:411978781226696705> You must provide a song to get lyrics for!');
 		await axios({
 			method: 'GET',
-			url: `https://api.audd.io/findLyrics/?itunes_country=us&api_token=8ec90ef80fd1b750c990642d6e17ccb9&q=${encodeURIComponent(args.join(' '))}`,
+			url: `https://api.audd.io/findLyrics/?itunes_country=us&api_token=${process.env.AUDD_LYRICS_TOKEN}&q=${encodeURIComponent(args.join(' '))}`,
 			//url: ``,
 			headers: {
 				'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3',
