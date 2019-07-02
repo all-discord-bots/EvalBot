@@ -63,7 +63,7 @@
 	"node-fetch": "^2.3.0",
 	"got": "^9.4.0",
 	"libsodium-wrappers": "^0.7.3",
-	"table-layout": "^0.4.4",
+	"table-layout": "^1.0.0",
 	"pg": "^7.7.1",
 	"lyrics-fetcher": "^1.0.2",
 	"pm2": "^3.2.4",
