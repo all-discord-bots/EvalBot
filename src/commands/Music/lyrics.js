@@ -6,7 +6,6 @@ exports.run = async (bot, msg, args) => {
 		await axios({
 			method: 'GET',
 			url: `https://api.audd.io/findLyrics/?itunes_country=us&api_token=${process.env.AUDD_LYRICS_TOKEN}&q=${encodeURIComponent(args.join(' '))}`,
-			//url: ``,
 			headers: {
 				'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3',
 				'Content-Type': 'application/json; charset=utf-8'
