@@ -32,7 +32,7 @@ exports.run = async (bot, msg, args) => {
 				total_duration: ''
 			});
 			
-			if (fetched_queue.queue.length === 1 || !msg.guild.voiceConnection) executeQueue(fetched_queue.queue);
+			if (fetched_queue.queue.length === 1 || !bot.voice.connections.has(msg.guild.id)) executeQueue(fetched_queue.queue);
 			
 			if (result.url) { // message information about the video on playing the video
 				let thumbnail;
@@ -65,12 +65,12 @@ exports.run = async (bot, msg, args) => {
 			if (queue.length <= 0) {
 				fetched_queue.queue_position = 0;
 				msg.channel.send('<:check:411976443522711552> Playback finished.');
-				if (msg.guild.voiceConnection !== null) return msg.guild.voiceConnection.disconnect(); // Leave the voice channel.
+				if (bot.voice.connections.has(msg.guild.id)) return bot.voice.connections.get(msg.guild.id).disconnect(); // Leave the voice channel.
 			}
 			
 			new Promise((resolve, reject) => {
 				// Join the voice channel if not already in one.
-				if (msg.guild.voiceConnection === null) {
+				if (!bot.voice.connections.has(msg.guild.id)) {
 					if (!msg.member.voice.channel) return msg.channel.send('<:redx:411978781226696705> You must be in a voice channel!');
 					// Check if the user is in a voice channel.
 					if (msg.member.voice.channel && msg.member.voice.channel.joinable) {
@@ -92,7 +92,7 @@ exports.run = async (bot, msg, args) => {
 						reject();
 					}
 				} else {
-					resolve(msg.guild.voiceConnection);
+					resolve(bot.voice.connections.get(msg.guild.id));
 				}
 			}).then((connection) => {
 				const video = (fetched_queue.loop || fetched_queue.repeat) ? queue[fetched_queue.queue_position].url : queue[0].url; // Get the audio to play from the queue.
@@ -202,7 +202,7 @@ exports.info = {
 	clientPermissions: ['SPEAK','CONNECT'],
 	usage: 'play <url | search>',
 	examples: [
-		'play Ozzy Osbourne - Crazy Train',
+		'play Hollywood Undead - Bang Bang',
 		'play DEATH - Zombie Ritual',
 		'play Underoath - On My Teeth',
 		'play Under My Feet - Sink to the bottom or swim for the shore'
