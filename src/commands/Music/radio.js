@@ -54,15 +54,15 @@ exports.run = async (bot, msg, args) => {
 			try {
 				fetched_queue.queue.shift();
 				// might need to add a check to the voiceConnection here.
-				if (msg.guild.voiceConnection !== null) {
-					if (msg.guild.voiceConnection.paused) msg.guild.voiceConnection.player.dispatcher.resume();
-					msg.guild.voiceConnection.player.dispatcher.end();
+				if (bot.voice.connections.has(msg.guild.id)) {
+					if (bot.voice.connections.get(msg.guild.id).paused) bot.voice.connections.get(msg.guild.id).player.dispatcher.resume();
+					bot.voice.connections.get(msg.guild.id).player.dispatcher.end();
 				}
 			} catch (err) {
 				console.error(err.toString());
 			}
 		}
-		if (fetched_queue.queue.length === 1 || !msg.guild.voiceConnection) {
+		if (fetched_queue.queue.length === 1 || !bot.voice.connections.has(msg.guild.id)) {
 			executeQueue(fetched_queue.queue);
 		}
 		if (!fetched_queue.queue[0] || !fetched_queue.queue[0].url) return msg.channel.send('<:redx:411978781226696705> I was unable to play the stream. Make sure the stream is valid.');
@@ -71,7 +71,7 @@ exports.run = async (bot, msg, args) => {
 		function executeQueue(queue) {
 			new Promise((resolve, reject) => {
 				// Join the voice channel if not already in one.
-				if (msg.guild.voiceConnection === null) {
+				if (!bot.voice.connections.has(msg.guild.id)) {
 					if (!msg.member.voice.channel) return msg.channel.send('<:redx:411978781226696705> You must be in a voice channel!');
 					// Check if the user is in a voice channel.
 					if (msg.member.voice.channel && msg.member.voice.channel.joinable) {
@@ -93,7 +93,7 @@ exports.run = async (bot, msg, args) => {
 						reject();
 					}
 				} else {
-					resolve(msg.guild.voiceConnection);
+					resolve(bot.voice.connections.get(msg.guild.id));
 				}
 			}).then((connection) => {
 				try {
