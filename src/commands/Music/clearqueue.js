@@ -11,10 +11,10 @@ exports.run = async (bot, msg, args) => {
 			fetched_queue.queue_position = 0;
 			if (fetched_queue.queue.length > 0) {
 				fetched_queue.queue.splice(0, fetched_queue.queue.length);
-				if (msg.guild.voiceConnection !== null) {
+				if (!bot.voice.connections.has(msg.guild.id)) {
 					try {
-						if (msg.guild.voiceConnection.paused) msg.guild.voiceConnection.player.dispatcher.resume();
-						msg.guild.voiceConnection.player.dispatcher.end();
+						if (bot.voice.connections.get(msg.guild.id).paused) bot.voice.connections.get(msg.guild.id).player.dispatcher.resume();
+						bot.voice.connections.get(msg.guild.id).player.dispatcher.end();
 					} catch (err) {
 						return msg.channel.send(`<:redx:411978781226696705> Error occoured!\n\`\`\`\n${err.toString().split(':')[0]}: ${err.toString().split(':')[1]}\n\`\`\``);
 					}
@@ -33,11 +33,11 @@ exports.run = async (bot, msg, args) => {
 				fetched_queue.queue.forEach((value,index) => {
 					if (value.requester === user.user) {
 						fetched_queue.queue.splice(index,1);
-						if (index == 0) {
-							if (msg.guild.voiceConnection !== null) {
+						if (!index) {
+							if (!bot.voice.connections.has(msg.guild.id)) {
 								try {
-									if (msg.guild.voiceConnection.paused) msg.guild.voiceConnection.player.dispatcher.resume();
-									msg.guild.voiceConnection.player.dispatcher.end();
+									if (bot.voice.connections.get(msg.guild.id).paused) bot.voice.connections.get(msg.guild.id).player.dispatcher.resume();
+									bot.voice.connections.get(msg.guild.id).player.dispatcher.end();
 								} catch (err) {
 									return msg.channel.send(`<:redx:411978781226696705> Error occoured!\n\`\`\`\n${err.toString().split(':')[0]}: ${err.toString().split(':')[1]}\n\`\`\``);
 								}
