@@ -220,7 +220,7 @@ exports.run = async (bot, msg, args) => {
 				}
 				// https://developers.google.com/youtube/v3/docs/activities
 			}).catch((err) => {
-				return console.error(err.toString());
+				return console.error(err.stack ? err.stack : err.toString());
 			});
 		} else {
 			let current_time = 0;
@@ -230,12 +230,12 @@ exports.run = async (bot, msg, args) => {
 			mins = mins.toString().padStart(0x2, '0');
 			secs = secs.toString().padStart(0x2, '0');
 			const total_duration = `\`${hrs}:${mins}:${secs}\``;
-			if (fetched_queue.queue[0].playlist_api != null) {
+			if (fetched_queue.queue.length && fetched_queue.queue[0].playlist_api != null) {
 				new Promise((resolve,reject) => {
 					fetch(fetched_queue.queue[0].playlist_api).then((res) => {
 							resolve(res.json());
 					}).catch((err) => {
-						console.error(err.toString());
+						console.error(err.stack ? err.stack : err.toString());
 						reject();
 					});
 				}).then((res) => {
@@ -258,7 +258,7 @@ exports.run = async (bot, msg, args) => {
 						}
 					});
 				}).catch((err) => {
-					console.error(err.toString());
+					console.error(err.stack ? err.stack : err.toString());
 					return msg.channel.send('<:redx:411978781226696705> Could not get information on the current playing stream.');
 				});
 			} else {
@@ -274,7 +274,7 @@ exports.run = async (bot, msg, args) => {
 			}
 		}
 	} catch (err) {
-		console.error(err.toString());
+		console.error(err.stack ? err.stack : err.toString());
 	}
 };
 
