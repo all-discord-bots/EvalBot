@@ -7,6 +7,8 @@ exports.run = async (bot, msg, args) => {
 	try {
 		let fetched_queue = music_items[msg.guild.id];
 		if (!fetched_queue || fetched_queue.queue.length <= 0) return msg.channel.send('<:redx:411978781226696705> There are no items in the queue.');
+		const voice_channel = msg.member.voice.channel;
+		const voice_connection = msg.guild.voice.connection;
 
 		const queue = fetched_queue.queue.map((song, index, array) => {
 			if (fetched_queue.queue.length <= 0) song.total_duration = '';
@@ -27,7 +29,7 @@ exports.run = async (bot, msg, args) => {
 						m = m.toString().padStart(0x2, '0');
 						h = h.toString().padStart(0x2, '0');
 						let current_time = 0;
-						if (bot.voice.connections.has(msg.guild.id)) current_time = bot.voice.connections.get(msg.guild.id).player.dispatcher.streamTime;
+						if (voice_connection) current_time = voice_connection.player.dispatcher.streamTime;
 						let [hrs, mins, secs] = milliseconds.to(hours, minutes, seconds)(parseInt(current_time));
 						hrs = hrs.toString().padStart(0x2, '0');
 						mins = mins.toString().padStart(0x2, '0');
