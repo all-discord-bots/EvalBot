@@ -3,8 +3,10 @@ require('../../conf/globals.js');
 exports.run = async (bot, msg, args) => {
 	try {
 		let fetched_queue = music_items[msg.guild.id];
-		if (!msg.member.voice.channel) return msg.channel.send('<:redx:411978781226696705> You must be in a voice channel!');
-		if (!bot.voice.connections.has(msg.guild.id)) return msg.channel.send('<:redx:411978781226696705> There is no tracks being played.');
+		const voice_channel = msg.member.voice.channel;
+		const voice_connection = msg.guild.voice.connection;
+		if (!voice_channel) return msg.channel.send('<:redx:411978781226696705> You must be in a voice channel!');
+		if (!voice_connection) return msg.channel.send('<:redx:411978781226696705> There is no tracks being played.');
 		if (!fetched_queue || fetched_queue.queue.length < 1) return msg.channel.send('<:redx:411978781226696705> There are no tracks in the queue.');
 		if (args.length !== 2) return msg.channel.send('<:redx:411978781226696705> Invalid arguments given!');
 		if (args[0] === fetched_queue.queue_position) return msg.channel.send('<:redx:411978781226696705> You can\'t move the current playing track!');
