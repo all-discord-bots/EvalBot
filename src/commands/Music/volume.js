@@ -1,18 +1,20 @@
 exports.run = async (bot, msg, args) => {
 	try {
 		//let parsed = bot.utils.parseArgs(args, ['d']);
+		const voice_channel = msg.member.voice.channel;
+		const voice_connection = msg.guild.voice.connection;
 		new Promise((resolve,reject) => {
-			if (!msg.member.voice.channel) return msg.channel.send('<:redx:411978781226696705> You must be in a voice channel!');
-			if (!bot.voice.connections.has(msg.guild.id)) return msg.channel.send('<:redx:411978781226696705> There\'s no audio currently being played.');
-			if (!bot.voice.connections.get(msg.guild.id).dispatcher) return msg.channel.send('<:redx:411978781226696705> Failed to set the volume.');
+			if (!voice_channel) return msg.channel.send('<:redx:411978781226696705> You must be in a voice channel!');
+			if (!voice_connection) return msg.channel.send('<:redx:411978781226696705> There\'s no audio currently being played.');
+			if (!voice_connection.dispatcher) return msg.channel.send('<:redx:411978781226696705> Failed to set the volume.');
 			if ((parseInt(args[0]) < 0 || parseInt(args[0]) > 200) && (!args[1] || (args[1] && args[1] == false))) return msg.channel.send('<:redx:411978781226696705> Volume must be between `0-200`!');
-			if (args.length <= 0) return msg.channel.send(`Current volume is \`${parseFloat(bot.voice.connections.get(msg.guild.id).dispatcher.volume) * 100}%\`.`);
-			resolve(bot.voice.connections.get(msg.guild.id));
+			if (args.length <= 0) return msg.channel.send(`Current volume is \`${parseFloat(voice_connection.dispatcher.volume) * 100}%\`.`);
+			resolve(voice_connection);
 		}).then((connection) => {
 			if (!args[1] || (args[1] && args[1] == false)) {
-				return bot.voice.connections.get(msg.guild.id).dispatcher.setVolume(parseFloat(args[0]) / 100);
+				return voice_connection.dispatcher.setVolume(parseFloat(args[0]) / 100);
 			} else if (args[1] && args[1] == true) {
-				return bot.voice.connections.get(msg.guild.id).dispatcher.setVolume(parseFloat(args[0]));
+				return voice_connection.dispatcher.setVolume(parseFloat(args[0]));
 			}
 			//connection.player.dispatcher.once('volumeChange', (oldVolume,newVolume) => {
 			connection.dispatcher.once('volumeChange', (oldVolume,newVolume) => {
