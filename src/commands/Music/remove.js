@@ -3,7 +3,8 @@ require('../../conf/globals.js');
 exports.run = async (bot, msg, args) => {
 	try {
 		let fetched_queue = music_items[msg.guild.id];
-		if (!msg.member.voice.channel) return msg.channel.send('<:redx:411978781226696705> You must be in a voice channel!').catch((err) => console.error);
+		const voice_channel = msg.member.voice.channel;
+		if (!voice_channel) return msg.channel.send('<:redx:411978781226696705> You must be in a voice channel!').catch((err) => console.error);
 		if (args.length <= 0) return msg.channel.send('<:redx:411978781226696705> You must provide a track id to remove. To get the track id run the `queue` command!');
 		if (!fetched_queue || !fetched_queue.queue) return msg.channel.send('<:redx:411978781226696705> There are no tracks in the queue!');
 		if (parseInt(args[0]) <= 0) return msg.channel.send(`<:redx:411978781226696705> The positions range from \`1-${fetched_queue.queue.length}\`.`);
