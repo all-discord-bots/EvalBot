@@ -11,8 +11,11 @@ exports.run = async (bot, msg, args) => {
 			case 0:
 				return msg.channel.send('<:redx:411978781226696705> You must provide a url or search string!');
 		}
+		
+		const voice_channel = msg.member.voice.channel;
+		const voice_connection = msg.guild.voice.connection;
 
-		if (!msg.member.voice.channel) return msg.channel.send('<:redx:411978781226696705> You must be in a voice channel!');
+		if (!voice_channel) return msg.channel.send('<:redx:411978781226696705> You must be in a voice channel!');
 
 		const search = new YTSearcher({
 			key: process.env.YOUTUBE_API_KEY,
@@ -32,7 +35,7 @@ exports.run = async (bot, msg, args) => {
 				total_duration: ''
 			});
 			
-			if (fetched_queue.queue.length === 1 || !bot.voice.connections.has(msg.guild.id)) executeQueue(fetched_queue.queue);
+			if (fetched_queue.queue.length === 1 || !voice_connection) executeQueue(fetched_queue.queue);
 			
 			if (result.url) { // message information about the video on playing the video
 				let thumbnail;
@@ -65,22 +68,22 @@ exports.run = async (bot, msg, args) => {
 			if (queue.length <= 0) {
 				fetched_queue.queue_position = 0;
 				msg.channel.send('<:check:411976443522711552> Playback finished.');
-				if (bot.voice.connections.has(msg.guild.id)) return bot.voice.connections.get(msg.guild.id).disconnect(); // Leave the voice channel.
+				if (voice_connection) return voice_connection.disconnect(); // Leave the voice channel.
 			}
 			
 			new Promise((resolve, reject) => {
 				// Join the voice channel if not already in one.
-				if (!bot.voice.connections.has(msg.guild.id)) {
-					if (!msg.member.voice.channel) return msg.channel.send('<:redx:411978781226696705> You must be in a voice channel!');
+				if (!voice_connection) {
+					if (!voice_channel) return msg.channel.send('<:redx:411978781226696705> You must be in a voice channel!');
 					// Check if the user is in a voice channel.
-					if (msg.member.voice.channel && msg.member.voice.channel.joinable) {
-						msg.member.voice.channel.join().then((connection) => {
+					if (voice_channel && voice_channel.joinable) {
+						voice_channel.join().then((connection) => {
 							resolve(connection);
 						}).catch((error) => {
 							return console.error(`${error.stack ? error.stack : error.toString()}`);
 						});
-					} else if (!msg.member.voice.channel.joinable) {
-						if (msg.member.voice.channel.full) {
+					} else if (!voice_channel.joinable) {
+						if (voice_channel.full) {
 							msg.channel.send('<:redx:411978781226696705> I do not have permission to join your voice channel; it is full.');
 						} else {
 							msg.channel.send('<:redx:411978781226696705> I do not have permission to join your voice channel!');
@@ -88,11 +91,11 @@ exports.run = async (bot, msg, args) => {
 						reject();
 					} else {
 						// Otherwise, clear the queue and do nothing.
-						queue.splice(0, queue.length);
+						queue.length = 0;//queue.splice(0, queue.length);
 						reject();
 					}
 				} else {
-					resolve(bot.voice.connections.get(msg.guild.id));
+					resolve(voice_connection);
 				}
 			}).then((connection) => {
 				const video = (fetched_queue.loop || fetched_queue.repeat) ? queue[fetched_queue.queue_position].url : queue[0].url; // Get the audio to play from the queue.
