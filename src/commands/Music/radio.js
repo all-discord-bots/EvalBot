@@ -17,7 +17,9 @@ exports.run = async (bot, msg, args) => {
 					}
 				});
 		}
-		if (!msg.member.voice.channel) return msg.channel.send('<:redx:411978781226696705> You must be in a voice channel!');
+		const voice_channel = msg.member.voice.channel;
+		const voice_connection = msg.guild.voice.connection;
+		if (!voice_channel) return msg.channel.send('<:redx:411978781226696705> You must be in a voice channel!');
 		if (get_video_id(args.join(' '))) return msg.channel.send('<:redx:411978781226696705> You can play YouTube videos using the `play` command. You must specify a radio station url.');
 		if (args.join(' ').length <= 3) return msg.channel.send('<:redx:411978781226696705> You must provide a valid stream url to play or built-in radio station name!');
 		let filtered_built_in_radio_stations = radio_stations_array.map((list) => list.toLowerCase()).filter((list) => list.toLowerCase().startsWith(args.join(' ').toLowerCase()));
@@ -54,15 +56,15 @@ exports.run = async (bot, msg, args) => {
 			try {
 				fetched_queue.queue.shift();
 				// might need to add a check to the voiceConnection here.
-				if (bot.voice.connections.has(msg.guild.id)) {
-					if (bot.voice.connections.get(msg.guild.id).paused) bot.voice.connections.get(msg.guild.id).player.dispatcher.resume();
-					bot.voice.connections.get(msg.guild.id).player.dispatcher.end();
+				if (voice_connection) {
+					if (voice_connection.paused) voice_connection.player.dispatcher.resume();
+					voice_connection.player.dispatcher.end();
 				}
 			} catch (err) {
 				console.error(err.toString());
 			}
 		}
-		if (fetched_queue.queue.length === 1 || !bot.voice.connections.has(msg.guild.id)) {
+		if (fetched_queue.queue.length === 1 || !voice_connection) {
 			executeQueue(fetched_queue.queue);
 		}
 		if (!fetched_queue.queue[0] || !fetched_queue.queue[0].url) return msg.channel.send('<:redx:411978781226696705> I was unable to play the stream. Make sure the stream is valid.');
@@ -71,17 +73,17 @@ exports.run = async (bot, msg, args) => {
 		function executeQueue(queue) {
 			new Promise((resolve, reject) => {
 				// Join the voice channel if not already in one.
-				if (!bot.voice.connections.has(msg.guild.id)) {
+				if (!voice_connection) {
 					if (!msg.member.voice.channel) return msg.channel.send('<:redx:411978781226696705> You must be in a voice channel!');
 					// Check if the user is in a voice channel.
-					if (msg.member.voice.channel && msg.member.voice.channel.joinable) {
-						msg.member.voice.channel.join().then((connection) => {
+					if (voice_channel && voice_channel.joinable) {
+						voice_channel.join().then((connection) => {
 							resolve(connection);
 						}).catch((err) => {
 							return console.error(err.toString());
 						});
-					} else if (!msg.member.voice.channel.joinable) {
-						if (msg.member.voice.channel.full) {
+					} else if (!voice_channel.joinable) {
+						if (voice_channel.full) {
 							msg.channel.send('<:redx:411978781226696705> I do not have permission to join your voice channel; it is full.');
 						} else {
 							msg.channel.send('<:redx:411978781226696705> I do not have permission to join your voice channel!');
@@ -89,11 +91,11 @@ exports.run = async (bot, msg, args) => {
 						reject();
 					} else {
 						// Otherwise, clear the queue and do nothing.
-						queue.splice(0, queue.length);
+						queue.length = 0;//queue.splice(0, queue.length);
 						reject();
 					}
 				} else {
-					resolve(bot.voice.connections.get(msg.guild.id));
+					resolve(voice_connection);
 				}
 			}).then((connection) => {
 				try {
