@@ -14,7 +14,7 @@ let collected_shards = global.collected_shards = [];
 const ShardManager = new ShardingManager(path.resolve(__dirname, '../bin/cripsbot'), {
 	respawn: true,
 	token: process.env.BOT_TOKEN,
-	totalShards: 'auto',
+	totalShards: 2,//'auto',
 	delay: 15000
 });
 
