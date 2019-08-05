@@ -117,6 +117,7 @@ exports.info = {
 	name: 'eval',
 	aliases: ['js'],
 	hidden: true,
+	allowDM: true,
 	usage: 'eval <code>',
 	examples: [
 		'eval bot.user.id'
