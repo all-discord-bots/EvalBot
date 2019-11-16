@@ -1,1 +1,1 @@
-module.exports = require('./src/bot');
+module.exports = require('./src/shard');
