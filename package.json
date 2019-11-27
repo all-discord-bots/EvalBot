@@ -73,7 +73,7 @@
 	"better-pastebin": "^0.4.1",
 	"youtube-audio-stream": "^0.3.1",
 	"ytsearcher": "^1.2.2",
-	"ytdl-core": "^0.29.3",
+	"ytdl-core": "^1.0.2",
 	"youtube-playlist-info": "^1.1.2",
 	"inquirer": "^6.5.0",
 	"pornsearch": "^2.4.3",
