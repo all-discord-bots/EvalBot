@@ -45,7 +45,7 @@
 	"webdict": "^0.3.0",
 	"node-opus": "^0.3.2",
 	"opusscript": "^0.0.7",
-	"music-metadata": "^4.2.0",
+	"music-metadata": "^6.3.0",
 	"enmap": "^5.0.0",
 	"enmap-level": "^2.1.0",
 	"ms": "^2.1.2",
