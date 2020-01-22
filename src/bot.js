@@ -26,7 +26,7 @@ class CripsBot extends Client {
 		let startTime = new Date(); // start recording time of boot
 		
 		//const dbl = new DBL(process.env.DBL_TOKEN_AUTH, client);
-		const dbl = new DBL(process.env.DBL_TOKEN_AUTH, { webhookPort: 5000, webhookAuth: process.env.DBL_WEBHOOK_AUTH });
+		const dbl = new DBL(process.env.DBL_TOKEN_AUTH, { webhookPort: 26759, webhookAuth: process.env.DBL_WEBHOOK_AUTH });
 		
 		global.bot = this;
 		
