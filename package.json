@@ -37,7 +37,7 @@
 	"math-expression-evaluator": "^1.2.17",
 	"meow": "^5.0.0",
 	"node-notifier": "^5.4.0",
-	"normalize-url": "^4.3.0",
+	"normalize-url": "^5.0.0",
 	"opn": "^6.0.0",
 	"path": "^0.12.7",
 	"readdir-recursive": "^0.0.4",
