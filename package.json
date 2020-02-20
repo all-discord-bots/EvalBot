@@ -18,7 +18,8 @@
   "engines": {
 	"yarn": ">=1.0.0",
 	"npm": ">=6.12.0",
-	"node": "13.0.1"
+	"node": "13.0.1",
+	"node-gyp": "6.1.0"
   },
   "author": "BannerBomb",
   "license": "MIT",
