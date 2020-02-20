@@ -419,8 +419,8 @@ class CommandManager {
 
 			const discordOutput = `<:redx:411978781226696705> ${displayMessage || 'Something failed!'}`;
 
-			msg.channel.send(discordOutput).then((m) => m.delete(delay || 2000)).catch(() => {
-				msg.channel.send(discordOutput).then((m) => m.delete(delay || 2000)).catch(() => { /* We can't even show the error, so what now? */ });
+			msg.channel.send(discordOutput).catch(() => {//.then((m) => m.delete(delay || 2000))
+				msg.channel.send(discordOutput).catch(() => { /* We can't even show the error, so what now? */ });//.then((m) => m.delete(delay || 2000))
 			});
 		}).bind(msg);
 
