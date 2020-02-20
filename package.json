@@ -48,8 +48,6 @@
 	"node-opus": "^0.3.3",
 	"opusscript": "^0.0.7",
 	"music-metadata": "^6.3.4",
-	"enmap": "^5.2.4",
-	"enmap-level": "^2.1.0",
 	"ms": "^2.1.2",
 	"country-data": "^0.0.31",
 	"mysql": "^2.18.1",
