@@ -357,7 +357,7 @@ class CommandManager {
 			});
 
 			if (maybe) {
-				/*let mprefix;
+				let mprefix;
 				if (msg.channel.type !== "dm") {
 					if (!this.bot.config[msg.guild.id.toString()]) {
 						mprefix = this.bot.config.prefix;
@@ -366,11 +366,11 @@ class CommandManager {
 					}
 				} else {
 					mprefix = this.bot.config.prefix;
-				}*/
-				//let mprefix = msg.guild && (this.bot.config[msg.guild.id.toString()] && this.bot.config[msg.guild.id.toString()].prefix) || this.bot.config.prefix;
-				return; //msg.channel.send(`:question: Did you mean \`${mprefix}${maybe}\`?`).then(m => m.delete(5000));
+				}
+				let mprefix = msg.guild && (this.bot.config[msg.guild.id.toString()] && this.bot.config[msg.guild.id.toString()].prefix) || this.bot.config.prefix;
+				msg.channel.send(`:question: Did you mean \`${mprefix}${maybe}\`?`).then(m => m.delete(5000));
 			} else {
-				/*let nprefix;
+				let nprefix;
 				if (msg.channel.type !== "dm") {
 					if (!this.bot.config[msg.guild.id.toString()]) {
 						nprefix = this.bot.config.prefix;
@@ -379,10 +379,10 @@ class CommandManager {
 					}
 				} else {
 					nprefix = this.bot.config.prefix;
-				}*/
-				//let nprefix = msg.guild && (this.bot.config[msg.guild.id.toString()] && this.bot.config[msg.guild.id.toString()].prefix) || this.bot.config.prefix;
-				return; //msg.channel.send(`:no_entry_sign: No commands were found that were similar to \`${nprefix}${name}\``);
-				//.then(m => m.delete(5000));
+				}
+				let nprefix = msg.guild && (this.bot.config[msg.guild.id.toString()] && this.bot.config[msg.guild.id.toString()].prefix) || this.bot.config.prefix;
+				msg.channel.send(`:no_entry_sign: No commands were found that were similar to \`${nprefix}${name}\``)
+				.then(m => m.delete(5000));
 			}
 		}
 
