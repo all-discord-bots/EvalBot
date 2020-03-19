@@ -33,7 +33,7 @@
 	"discord.js": "github:discordjs/discord.js#ea8b4e73559d118a826ac3b242c1a3626b",
 	"env-paths": "^2.2.0",
 	"figlet": "^1.2.4",
-	"fs-extra": "^8.1.0",
+	"fs-extra": "^9.0.0",
 	"google-translate-api": "^2.3.0",
 	"https": "^1.0.0",
 	"math-expression-evaluator": "^1.2.22",
