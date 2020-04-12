@@ -77,7 +77,7 @@
 	"inquirer": "^7.0.4",
 	"pornsearch": "^2.4.3",
 	"axios": "^0.19.2",
-	"sqlite": "^3.0.3",
+	"sqlite": "^4.0.7",
 	"ffmpeg-static": "^4.0.1"
   },
   "devDependencies": {
