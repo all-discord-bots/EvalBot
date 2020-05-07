@@ -37,7 +37,7 @@
 	"google-translate-api": "^2.3.0",
 	"https": "^1.0.0",
 	"math-expression-evaluator": "^1.2.22",
-	"meow": "^6.0.1",
+	"meow": "^7.0.0",
 	"node-notifier": "^6.0.0",
 	"normalize-url": "^5.0.0",
 	"opn": "^6.0.0",
