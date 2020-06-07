@@ -22,7 +22,7 @@ class CripsBot extends Client {
 			autoReconnect: true,
 			internalSharding: false,
 		});
-		
+
 		let startTime = new Date(); // start recording time of boot
 		
 		//const dbl = new DBL(process.env.DBL_TOKEN_AUTH, client);
